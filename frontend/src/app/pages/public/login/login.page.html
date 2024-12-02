@@ -1,0 +1,59 @@
+<div class="center">
+  <div class="col-xs-12 col-md-12 login-card">
+    <div class="logo">
+      <img [src]="logo" alt="Logo" />
+    </div>
+    <div class="title">
+      <p class="text-center mb-4 credText">Please sign in to your existing account</p>
+    </div>
+  
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div style="margin-bottom: 1rem;">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label class="credText">Email</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="example@gmail.com" />
+          <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" style="padding: 0;">
+            Please enter a valid email.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    
+      <div style="margin-bottom: 1rem;">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label class="credText">Password</mat-label>
+          <input [type]="passwordVisible ? 'text' : 'password'" matInput formControlName="password" />
+          <button type="button" mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <mat-icon color="primary">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            Password must be at least 6 characters long.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    
+      <div class="d-flex justify-content-between align-items-center mb-3 forgot-password">
+        <mat-checkbox formControlName="rememberMe" color="primary" style="color: #7E8A97;">Remember me</mat-checkbox>
+        <a [routerLink]="['/public/forgot-password']" class="forgot-password">Forgot Password</a>
+      </div>
+    
+      <div class="marginT">
+        <div class="ion-activatable ripple-parent rounded-rectangle">
+          <button mat-fab extended class="LoginBtn" style="box-shadow: none !important;" [disabled]="!loginForm.valid">
+            <p style="font-size: larger;">Login</p>
+          </button>
+        </div>
+      </div>
+    </form>
+  
+    <div class="marginT signUp">
+      <p style="color: #646982;">
+        Don’t have an account?
+        <span><a style="color: #ff7d34;">Sign Up</a></span>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+

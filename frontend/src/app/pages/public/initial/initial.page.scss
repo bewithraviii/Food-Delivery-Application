@@ -1,0 +1,47 @@
+.full-height {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Style for the SVG containers positioned in corners */
+.ellips-svg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Ensures the SVGs are behind the main content */
+    pointer-events: none; /* Prevents SVG from interfering with interactions */
+}
+
+.ellips-svg-container {
+	img {
+		position: absolute;
+		z-index: -1;
+		pointer-events: none;
+		&:nth-child(1) {
+			top: -11.5rem;
+			left: -11.5rem;
+			width: 29rem;
+		}
+		&:nth-child(2) {
+			top: 0rem;
+			right: 0rem;
+			width: 120px;
+		}
+		&:nth-child(3) {
+			bottom: 0rem;
+			right: 0rem;
+			width: 10rem;
+		}
+	}
+}
+
+::ng-deep ion-page {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+  }

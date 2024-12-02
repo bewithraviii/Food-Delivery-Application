@@ -1,0 +1,116 @@
+
+//   @media (max-width: 600px) {
+// 	.login-card {
+// 	  margin-bottom: 50px; /* Provides some space above the social media icons */
+// 	}
+  
+// 	.social-media {
+// 	  position: relative;
+// 	  margin-top: auto; /* Pushes the social media icons to the bottom of the page */
+// 	}
+//   }
+  
+
+
+.center {
+	display: flex;
+	justify-content: center;  /* Center horizontally */
+	align-items: center;      /* Center vertically */
+	height: 100vh;            /* Make the container take full viewport height */
+	width: 100%;              /* Ensure it takes full width */
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+
+
+
+.login-card {
+	width: 100%;
+	max-width: 450px;
+	padding: 1rem;
+	border-radius: 24px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	background: #FFFFFF;
+	color: #ff7d34;
+	z-index: 1;
+	margin: 1rem;
+}
+
+
+
+
+
+
+.login-button {
+	background-color: #ff7d34;
+}
+.forgot-password {
+	color: #ff7d34;
+	text-decoration: none;
+}
+.social-login {
+	button {
+		margin: 0 10px;
+	}
+}
+mat-form-field {
+	width: 100%;
+}
+
+
+
+
+
+
+.logo {
+	justify-content: center;
+    display: flex;
+	img {
+		padding: 1rem;
+	}
+}
+
+.title {
+	justify-content: center;
+    align-items: center;
+    display: flex;
+	margin-bottom: 1rem;
+}
+
+.forgot-password {
+	justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.mat-accent {
+    --mat-option-selected-state-label-text-color: #ff7d34 !important;
+}
+
+
+.credText {
+	color: #1E1E2E;
+}
+
+.LoginBtn {
+	width: 100%;
+	background-color: #FF7622;
+	color: white;
+	box-shadow: none;
+	&:disabled {
+		opacity: 0.8;
+		cursor: not-allowed;
+	}
+}
+
+.marginT {
+	margin-top: 1.5rem;
+}
+
+.signUp {
+	justify-content: center;
+    display: flex;
+    align-items: center;
+}
