@@ -6,48 +6,116 @@
 	100% {
 	  transform: rotate(360deg);
 	}
+}
+
+// @keyframes bounce {
+// 	0%, 100% {
+// 	  transform: translateY(0);
+// 	}
+// 	50% {
+// 	  transform: translateY(-20px);
+// 	}
+//   }
+  
+//   .logo img {
+// 	height: 5rem;
+// 	width: 150px; /* Adjust size as needed */
+// 	animation: bounce 2s infinite;
+// }
+
+@keyframes pulse {
+	0%, 100% {
+	  transform: scale(1);
+	}
+	50% {
+	  transform: scale(1.1);
+	}
   }
   
+  .logo img {
+	width: 10rem;
+	animation: pulse 2s ease-in-out;
+}
   
-  .ellips-svg-container {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: -1; /* Ensures the SVGs are behind the main content */
-	pointer-events: none; /* Prevents SVG from interfering with interactions */
-  }
+// @keyframes fadeRotate {
+// 	0% {
+// 	  opacity: 0;
+// 	  transform: rotate(0deg);
+// 	}
+// 	100% {
+// 	  opacity: 1;
+// 	  transform: rotate(360deg);
+// 	}
+//   }
   
-  .ellips-svg-container img {
-	position: absolute;
-	z-index: -1;
-	pointer-events: none;
-	 
-  }
+//   .logo img {
+// 	width: 150px;
+// 	animation: fadeRotate 3s infinite linear;
+// }
+
+// @keyframes swing {
+// 	0% {
+// 	  transform: rotate(0deg);
+// 	}
+// 	25% {
+// 	  transform: rotate(15deg);
+// 	}
+// 	50% {
+// 	  transform: rotate(-15deg);
+// 	}
+// 	75% {
+// 	  transform: rotate(10deg);
+// 	}
+// 	100% {
+// 	  transform: rotate(0deg);
+// 	}
+//   }
   
-  .ellips-svg-container img:nth-child(1) {
-	top: -11.5rem;
-	left: -11.5rem;
-	width: 29rem;
-	animation: rotate 10s linear infinite; /* rotation animation */
-  }
+//   .logo img {
+// 	width: 150px;
+// 	animation: swing 2s ease-in-out;
+// }
   
-  .ellips-svg-container img:nth-child(2) {
-	bottom: 0rem;
-	right: 0rem;
-	width: 16rem;
-  }
   
-  .logo {
-	justify-content: center;
-	display: flex;
-	align-items: center;
-	height: inherit;
-  }
-  
-  .main {
-	width: 100%;
-	height: 100vh;
-  }
-  
+
+.ellips-svg-container {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+z-index: -1; /* Ensures the SVGs are behind the main content */
+pointer-events: none; /* Prevents SVG from interfering with interactions */
+}
+
+.ellips-svg-container img {
+position: absolute;
+z-index: -1;
+pointer-events: none;
+	
+}
+
+.ellips-svg-container img:nth-child(1) {
+top: -11.5rem;
+left: -11.5rem;
+width: 28rem;
+animation: rotate 10s linear infinite; /* rotation animation */
+}
+
+.ellips-svg-container img:nth-child(2) {
+bottom: 0rem;
+right: 0rem;
+width: 14rem;
+}
+
+.logo {
+justify-content: center;
+display: flex;
+align-items: center;
+height: inherit;
+}
+
+.main {
+width: 100%;
+height: 100vh;
+}

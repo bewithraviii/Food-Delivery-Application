@@ -1,0 +1,99 @@
+<div class="center">
+  <div class="col-xs-12 col-md-12 signup-card">
+    <div class="logo">
+      <img [src]="logo" alt="Logo" />
+    </div>
+    <div class="title">
+      <p class="text-center mb-4 credText">Sign Up</p>
+    </div>
+
+    <!-- Toggle between User and Admin -->
+    <div class="toggle-group">
+      <mat-button-toggle-group 
+        #userTypeToggle="matButtonToggleGroup" 
+        [value]="userType" 
+        (change)="onUserTypeChange(userTypeToggle.value)">
+        <mat-button-toggle value="user">User</mat-button-toggle>
+        <mat-button-toggle value="admin">Admin</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <!-- User Signup Form -->
+    <form [formGroup]="signupForm" *ngIf="userType === 'user'" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Mobile Number</mat-label>
+        <input matInput formControlName="mobile" type="tel" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Address</mat-label>
+        <textarea matInput formControlName="address" required></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Sign Up</button>
+    </form>
+
+    <!-- Admin Signup Multi-Step Form -->
+    <mat-horizontal-stepper *ngIf="userType === 'admin'" [linear]="true">
+      <mat-step [stepControl]="adminFormGroup1">
+        <form [formGroup]="adminFormGroup1">
+          <ng-template matStepLabel>Restaurant Details</ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Restaurant Name</mat-label>
+            <input matInput formControlName="restaurantName" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Owner Name</mat-label>
+            <input matInput formControlName="ownerName" required />
+          </mat-form-field>
+
+          <button mat-raised-button matStepperNext color="primary">Next</button>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="adminFormGroup2">
+        <form [formGroup]="adminFormGroup2">
+          <ng-template matStepLabel>Contact Details</ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone" type="tel" required />
+          </mat-form-field>
+
+          <button mat-raised-button matStepperPrevious color="accent">Back</button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
+        </form>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Complete</ng-template>
+        <p>All steps completed. You're now ready to submit!</p>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+      </mat-step>
+    </mat-horizontal-stepper>
+
+    <div class="marginT signUp">
+      <p style="color: #646982;">
+        Already have an account?
+        <span>
+          <a style="color: #ff7d34;" (click)="goToSignIn()">Sign In</a>
+        </span>
+      </p>
+    </div>
+  </div>
+</div>

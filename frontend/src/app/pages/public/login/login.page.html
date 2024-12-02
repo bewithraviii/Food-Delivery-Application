@@ -33,13 +33,13 @@
     
       <div class="d-flex justify-content-between align-items-center mb-3 forgot-password">
         <mat-checkbox formControlName="rememberMe" color="primary" style="color: #7E8A97;">Remember me</mat-checkbox>
-        <a [routerLink]="['/public/forgot-password']" class="forgot-password">Forgot Password</a>
+        <a class="forgot-password" type="button" (click)="goToForgotPassword()">Forgot Password</a>
       </div>
     
       <div class="marginT">
         <div class="ion-activatable ripple-parent rounded-rectangle">
           <button mat-fab extended class="LoginBtn" style="box-shadow: none !important;" [disabled]="!loginForm.valid">
-            <p style="font-size: larger;">Login</p>
+            Login
           </button>
         </div>
       </div>
@@ -48,7 +48,7 @@
     <div class="marginT signUp">
       <p style="color: #646982;">
         Don’t have an account?
-        <span><a style="color: #ff7d34;">Sign Up</a></span>
+        <span><a style="color: #ff7d34;" (click)="goToSignUp()" type="button">Sign Up</a></span>
       </p>
     </div>
   </div>

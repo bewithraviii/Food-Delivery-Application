@@ -32,4 +32,8 @@ export class ForgotPasswordPage implements OnInit {
     }
   }
 
+  backToLogin() {
+    this.router.navigate(['/public/login']);
+  }
+
 }

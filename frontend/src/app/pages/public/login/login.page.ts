@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,10 @@ export class LoginPage implements OnInit {
 
   passwordVisible: boolean = false;
   
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -23,7 +27,6 @@ export class LoginPage implements OnInit {
     })
   }
 
-    // password visibility
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
     }
@@ -36,6 +39,14 @@ export class LoginPage implements OnInit {
       } else {
         console.log('Form is invalid');
       }
+    }
+
+    goToForgotPassword() {
+      this.router.navigate(["/public/forgot-password"]);
+    }
+
+    goToSignUp() {
+      this.router.navigate(["/public/sign-up"]);
     }
 
 }

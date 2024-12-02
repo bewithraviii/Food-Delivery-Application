@@ -12,6 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoginPage } from '../login/login.page';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password.page';
+import { SignUpPage } from '../sign-up/sign-up.page';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 
 @NgModule({
@@ -26,11 +31,15 @@ import { ForgotPasswordPage } from '../forgot-password/forgot-password.page';
     MatCheckboxModule,
     MatIconModule,
     MatFormFieldModule,
+    MatStepperModule,
+    MatSlideToggleModule,
+    MatButtonToggleModule
   ],
   declarations: [
     InitialPage,
     LoginPage,
     ForgotPasswordPage,
+    SignUpPage
   ]
 })
 export class InitialPageModule {}
