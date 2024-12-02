@@ -1,112 +1,187 @@
+// .center {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 100vh;
+//     width: 100%;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//   }
+  
+//   .signup-card {
+//     width: auto;
+//     // max-width: 450px;
+//     padding: 1rem;
+//     border-radius: 24px;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//     background: #FFFFFF;
+//     color: #ff7d34;
+//     z-index: 1;
+//     margin: 1rem;
+//   }
+  
+
+
+//   .logo {
+//     justify-content: center;
+//     display: flex;
+//     img {
+//       padding: 1rem;
+//     }
+//   }
+  
+//   .title {
+//     justify-content: center;
+//     align-items: center;
+//     display: flex;
+//     margin-bottom: 1rem;
+//   }
+
+//   .mat-slide-toggle {
+//     display: flex;
+//     justify-content: center;
+//     margin: 1rem 0;
+//   }
+
+//   .signup-container {
+//     margin-top: 1.5rem;
+//   }
+  
+//   .mat-form-field {
+//     width: 100%;
+//     margin-bottom: 1rem;
+//   }
+
+//   button {
+//     width: 100%;
+//     margin-top: 1rem;
+//     background-color: #ff7d34;
+//     color: white;
+//   }
+  
+//   button:hover {
+//     background-color: #ff5c1c;
+//   }
+  
+//   .mat-stepper-horizontal,
+//   .mat-horizontal-stepper-header-container {
+//     background: transparent !important;
+//   }
+  
+//   .mat-horizontal-stepper-header-container {
+//     margin-bottom: 1rem;
+//   }
+  
+//   .credText {
+//     color: #1E1E2E;
+//   }
+  
+  
+//   .marginT {
+//     margin-top: 1.5rem;
+//   }
+  
+//   .signUp {
+//     justify-content: center;
+//     display: flex;
+//     align-items: center;
+//   }
+  
+
+//   .toggle-group {
+//     display: flex;
+//     justify-content: center;
+//     margin-bottom: 1.5rem;
+//   }
+  
+//   mat-button-toggle-group {
+//     background-color: #ff7d34;
+//     color: white;
+//     border-radius: 25px;
+//   }
+  
+//   mat-button-toggle {
+//     color: white;
+//     border: 1px solid white;
+//   }
+  
+//   mat-button-toggle-checked {
+//     background-color: #fff;
+//     color: #ff7d34;
+//   }
+
+
+
 .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  
-  .signup-card {
-    width: auto;
-    // max-width: 450px;
-    padding: 1rem;
-    border-radius: 24px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background: #FFFFFF;
-    color: #ff7d34;
-    z-index: 1;
-    margin: 1rem;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
+.signup-card {
+  max-width: 900px;
+  width: 90%;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+}
 
-  .logo {
-    justify-content: center;
-    display: flex;
-    img {
-      padding: 1rem;
+.logo img {
+  width: 150px;
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.responsive-tabs {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-field {
+  flex: 1;
+  min-width: calc(50% - 1rem);
+
+  @media screen and (max-width: 768px) {
+    min-width: 100%;
+  }
+}
+
+button {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #ff7d34;
+  color: white;
+}
+
+button:hover {
+  background-color: #ff5c1c;
+}
+
+.responsive-stepper {
+  margin-top: 2rem;
+}
+
+.mat-horizontal-stepper-header-container {
+  flex-wrap: wrap;
+
+  .mat-horizontal-stepper-header {
+    flex: 1;
+    min-width: calc(50% - 1rem);
+
+    @media screen and (max-width: 768px) {
+      min-width: 100%;
     }
   }
-  
-  .title {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    margin-bottom: 1rem;
-  }
-
-  .mat-slide-toggle {
-    display: flex;
-    justify-content: center;
-    margin: 1rem 0;
-  }
-
-  .signup-container {
-    margin-top: 1.5rem;
-  }
-  
-  .mat-form-field {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-
-  button {
-    width: 100%;
-    margin-top: 1rem;
-    background-color: #ff7d34;
-    color: white;
-  }
-  
-  button:hover {
-    background-color: #ff5c1c;
-  }
-  
-  .mat-stepper-horizontal,
-  .mat-horizontal-stepper-header-container {
-    background: transparent !important;
-  }
-  
-  .mat-horizontal-stepper-header-container {
-    margin-bottom: 1rem;
-  }
-  
-  .credText {
-    color: #1E1E2E;
-  }
-  
-  
-  .marginT {
-    margin-top: 1.5rem;
-  }
-  
-  .signUp {
-    justify-content: center;
-    display: flex;
-    align-items: center;
-  }
-  
-
-  .toggle-group {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  mat-button-toggle-group {
-    background-color: #ff7d34;
-    color: white;
-    border-radius: 25px;
-  }
-  
-  mat-button-toggle {
-    color: white;
-    border: 1px solid white;
-  }
-  
-  mat-button-toggle-checked {
-    background-color: #fff;
-    color: #ff7d34;
-  }
+}

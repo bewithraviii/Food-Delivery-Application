@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class SignUpPage implements OnInit {
   logo: string = 'assets/svg/logo.svg';
-  userType: string = 'user'; // Default value for toggle
+  selectedTab: number = 0; // Default tab
   signupForm!: FormGroup;
   adminFormGroup1!: FormGroup;
   adminFormGroup2!: FormGroup;
@@ -37,14 +37,14 @@ export class SignUpPage implements OnInit {
     });
   }
 
-  onUserTypeChange(value: string) {
-    this.userType = value;
+  onTabChange(index: number) {
+    this.selectedTab = index;
   }
 
   onSubmit() {
-    if (this.userType === 'user' && this.signupForm.valid) {
+    if (this.selectedTab === 0 && this.signupForm.valid) {
       console.log('User Form Submitted:', this.signupForm.value);
-    } else if (this.userType === 'admin') {
+    } else if (this.selectedTab === 1) {
       if (this.adminFormGroup1.valid && this.adminFormGroup2.valid) {
         const adminData = {
           ...this.adminFormGroup1.value,

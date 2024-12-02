@@ -16,7 +16,7 @@ import { SignUpPage } from '../sign-up/sign-up.page';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -33,7 +33,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatFormFieldModule,
     MatStepperModule,
     MatSlideToggleModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatTabsModule,
   ],
   declarations: [
     InitialPage,
