@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,13 +11,18 @@ import { Router } from '@angular/router';
 export class SignUpPage implements OnInit {
   logo: string = 'assets/svg/logo.svg';
   selectedTab: number = 0; // Default tab
+  isMobileView: boolean = false; // To track screen size
   signupForm!: FormGroup;
   adminFormGroup1!: FormGroup;
   adminFormGroup2!: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
+    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
+      this.isMobileView = result.matches;
+    });
+
     // User Signup Form
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],

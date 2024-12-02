@@ -6,8 +6,8 @@
 
     <!-- Responsive Tabs -->
     <mat-tab-group [(selectedIndex)]="selectedTab" class="responsive-tabs">
-      <mat-tab label="User">
-        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <mat-tab label="USER">
+        <form [formGroup]="signupForm"  style="margin-top: 0.5rem; padding: 1rem;" (ngSubmit)="onSubmit()">
           <div class="form-row">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Email</mat-label>
@@ -36,8 +36,55 @@
         </form>
       </mat-tab>
 
-      <mat-tab label="Admin">
-        <mat-horizontal-stepper class="responsive-stepper" [linear]="true">
+      <mat-tab label="ADMIN">
+        <!-- Conditionally applying horizontal or vertical stepper -->
+        <mat-horizontal-stepper *ngIf="!isMobileView" class="responsive-stepper" [linear]="true">
+          <mat-step [stepControl]="adminFormGroup1">
+            <form [formGroup]="adminFormGroup1">
+              <ng-template matStepLabel>Restaurant Details</ng-template>
+              <div class="form-row" style="padding-top: 1rem;">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Restaurant Name</mat-label>
+                  <input matInput formControlName="restaurantName" required />
+                </mat-form-field>
+
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Owner Name</mat-label>
+                  <input matInput formControlName="ownerName" required />
+                </mat-form-field>
+              </div>
+              <button mat-raised-button matStepperNext color="primary">Next</button>
+            </form>
+          </mat-step>
+
+          <mat-step [stepControl]="adminFormGroup2">
+            <form [formGroup]="adminFormGroup2">
+              <ng-template matStepLabel>Contact Details</ng-template>
+              <div class="form-row" style="padding-top: 1rem;">
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" type="email" required />
+                </mat-form-field>
+
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Phone Number</mat-label>
+                  <input matInput formControlName="phone" type="tel" required />
+                </mat-form-field>
+              </div>
+              <button mat-raised-button matStepperPrevious color="accent">Back</button>
+              <button mat-raised-button matStepperNext color="primary">Next</button>
+            </form>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Complete</ng-template>
+            <p style="margin-top: 1rem;">All steps completed. You're now ready to submit!</p>
+            <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+          </mat-step>
+        </mat-horizontal-stepper>
+
+        <!-- Vertical Stepper for Mobile -->
+        <mat-vertical-stepper *ngIf="isMobileView" class="responsive-stepper" [linear]="true">
           <mat-step [stepControl]="adminFormGroup1">
             <form [formGroup]="adminFormGroup1">
               <ng-template matStepLabel>Restaurant Details</ng-template>
@@ -80,7 +127,7 @@
             <p>All steps completed. You're now ready to submit!</p>
             <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
           </mat-step>
-        </mat-horizontal-stepper>
+        </mat-vertical-stepper>
       </mat-tab>
     </mat-tab-group>
 
