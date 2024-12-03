@@ -99,6 +99,7 @@ mat-form-field {
 	background-color: #FF7622;
 	color: white;
 	box-shadow: none;
+	border-radius: 12px;
 	&:disabled {
 		opacity: 0.8;
 		cursor: not-allowed;

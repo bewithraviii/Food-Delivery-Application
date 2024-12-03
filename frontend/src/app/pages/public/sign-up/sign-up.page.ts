@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import { MatStepper, StepperOrientation } from '@angular/material/stepper';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,20 +12,30 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 })
 export class SignUpPage implements OnInit {
   logo: string = 'assets/svg/logo.svg';
-  selectedTab: number = 0; // Default tab
-  isMobileView: boolean = false; // To track screen size
+  selectedTab: number = 0;
   signupForm!: FormGroup;
   adminFormGroup1!: FormGroup;
   adminFormGroup2!: FormGroup;
+  adminFormGroup3!: FormGroup;
+  stepperOrientation!: Observable<StepperOrientation>;
 
-  constructor(private fb: FormBuilder, private router: Router, private breakpointObserver: BreakpointObserver) {}
+  @ViewChild('adminStepper', { static: false }) adminStepper!: MatStepper;
+
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router,
+    breakpointObserver: BreakpointObserver,
+  ) {
+    this.stepperOrientation = breakpointObserver
+      // .observe('(min-width: 800px)')
+      // .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
+
+      .observe([Breakpoints.XSmall, Breakpoints.Small])
+      .pipe(map(({ matches }) => (matches ? 'vertical' : 'horizontal')));
+  }
 
   ngOnInit(): void {
-    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
-      this.isMobileView = result.matches;
-    });
 
-    // User Signup Form
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -31,20 +43,36 @@ export class SignUpPage implements OnInit {
       address: ['', Validators.required],
     });
 
-    // Admin Multi-Step Form Groups
     this.adminFormGroup1 = this.fb.group({
       restaurantName: ['', Validators.required],
-      ownerName: ['', Validators.required],
+      restaurantAddress: ['', Validators.required],
+      cuisineType: ['', Validators.required],
     });
 
     this.adminFormGroup2 = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      ownerName: ['', Validators.required],
+      ownerEmail: ['', [Validators.required, Validators.email]],
+      ownerPhone: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
     });
+
+    this.adminFormGroup3 = this.fb.group({
+      agreeTerms: [false, Validators.requiredTrue]
+    })
   }
 
-  onTabChange(index: number) {
+  onTabChange(index: number): void {
     this.selectedTab = index;
+    if (this.selectedTab === 1) {
+      this.resetAdminStepper();
+    }
+    this.resetUserForm();
+    this.resetAdminForm();
+  }
+
+  resetAdminStepper(): void {
+    if (this.selectedTab === 1 && this.adminStepper) {
+      this.adminStepper.reset();
+    }
   }
 
   onSubmit() {
@@ -55,6 +83,7 @@ export class SignUpPage implements OnInit {
         const adminData = {
           ...this.adminFormGroup1.value,
           ...this.adminFormGroup2.value,
+          ...this.adminFormGroup3.value,
         };
         console.log('Admin Form Submitted:', adminData);
       }
@@ -65,5 +94,14 @@ export class SignUpPage implements OnInit {
 
   goToSignIn() {
     this.router.navigate(['/public/login']);
+  }
+
+  resetUserForm() {
+    this.signupForm.reset();
+  }
+
+  resetAdminForm() {
+    this.adminFormGroup1.reset();
+    this.adminFormGroup2.reset(); 
   }
 }

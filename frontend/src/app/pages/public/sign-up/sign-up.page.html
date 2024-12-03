@@ -4,10 +4,10 @@
       <img [src]="logo" alt="Logo" />
     </div>
 
-    <!-- Responsive Tabs -->
-    <mat-tab-group [(selectedIndex)]="selectedTab" class="responsive-tabs">
+    <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="onTabChange($event)" class="responsive-tabs">
       <mat-tab label="USER">
         <form [formGroup]="signupForm"  style="margin-top: 0.5rem; padding: 1rem;" (ngSubmit)="onSubmit()">
+          
           <div class="form-row">
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Email</mat-label>
@@ -32,102 +32,103 @@
             </mat-form-field>
           </div>
 
-          <button mat-raised-button color="primary" type="submit">Sign Up</button>
+          <button mat-raised-button class="submitBtn" type="submit" [disabled]="!signupForm.valid">Sign Up</button>
+
         </form>
       </mat-tab>
 
       <mat-tab label="ADMIN">
-        <!-- Conditionally applying horizontal or vertical stepper -->
-        <mat-horizontal-stepper *ngIf="!isMobileView" class="responsive-stepper" [linear]="true">
+
+        <mat-stepper 
+        *ngIf="selectedTab === 1" 
+        [orientation]="(stepperOrientation | async)!" 
+        #adminStepper 
+        [linear]="true"
+        >
+
+          <!-- Restaurant Details -->
           <mat-step [stepControl]="adminFormGroup1">
             <form [formGroup]="adminFormGroup1">
-              <ng-template matStepLabel>Restaurant Details</ng-template>
+              <ng-template matStepLabel>{{"Restaurant Details" | uppercase }}</ng-template>
               <div class="form-row" style="padding-top: 1rem;">
+
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Restaurant Name</mat-label>
                   <input matInput formControlName="restaurantName" required />
                 </mat-form-field>
+      
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Restaurant Address</mat-label>
+                  <input matInput formControlName="restaurantAddress" required />
+                </mat-form-field>
+      
+                <mat-form-field class="form-field" appearance="outline">
+                  <mat-label>Cuisine Type</mat-label>
+                  <mat-select formControlName="cuisineType">
+                    <mat-option value="Italian">Italian</mat-option>
+                    <mat-option value="Indian">Indian</mat-option>
+                    <mat-option value="Chinese">Chinese</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+              <button mat-raised-button matStepperNext class="nextBtn" color="primary">Next</button>
+            </form>
+          </mat-step>
+
+          <!-- Owner Details -->
+          <mat-step [stepControl]="adminFormGroup2">
+            <form [formGroup]="adminFormGroup2">
+              <ng-template matStepLabel>{{"Ownership Details" | uppercase }}</ng-template>
+              <div class="form-row" style="padding-top: 1rem;">
 
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Owner Name</mat-label>
                   <input matInput formControlName="ownerName" required />
                 </mat-form-field>
-              </div>
-              <button mat-raised-button matStepperNext color="primary">Next</button>
-            </form>
-          </mat-step>
-
-          <mat-step [stepControl]="adminFormGroup2">
-            <form [formGroup]="adminFormGroup2">
-              <ng-template matStepLabel>Contact Details</ng-template>
-              <div class="form-row" style="padding-top: 1rem;">
+      
                 <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Email</mat-label>
-                  <input matInput formControlName="email" type="email" required />
+                  <mat-label>Email Address</mat-label>
+                  <input matInput formControlName="ownerEmail" type="email" required />
                 </mat-form-field>
-
+      
                 <mat-form-field class="form-field" appearance="outline">
                   <mat-label>Phone Number</mat-label>
-                  <input matInput formControlName="phone" type="tel" required />
+                  <input matInput formControlName="ownerPhone" type="tel" required />
                 </mat-form-field>
+
               </div>
-              <button mat-raised-button matStepperPrevious color="accent">Back</button>
-              <button mat-raised-button matStepperNext color="primary">Next</button>
+              <button mat-raised-button matStepperPrevious class="backBtn">Back</button>
+              <button mat-raised-button matStepperNext class="nextBtn" color="primary">Next</button>
             </form>
           </mat-step>
 
-          <mat-step>
-            <ng-template matStepLabel>Complete</ng-template>
-            <p style="margin-top: 1rem;">All steps completed. You're now ready to submit!</p>
-            <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-          </mat-step>
-        </mat-horizontal-stepper>
+          <!-- Terms and Regulations -->
+          <mat-step [stepControl]="adminFormGroup3">
+            <form [formGroup]="adminFormGroup3">
+              <ng-template matStepLabel>{{"Terms and Regulations" | uppercase}}</ng-template>
 
-        <!-- Vertical Stepper for Mobile -->
-        <mat-vertical-stepper *ngIf="isMobileView" class="responsive-stepper" [linear]="true">
-          <mat-step [stepControl]="adminFormGroup1">
-            <form [formGroup]="adminFormGroup1">
-              <ng-template matStepLabel>Restaurant Details</ng-template>
-              <div class="form-row">
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Restaurant Name</mat-label>
-                  <input matInput formControlName="restaurantName" required />
-                </mat-form-field>
-
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Owner Name</mat-label>
-                  <input matInput formControlName="ownerName" required />
-                </mat-form-field>
+              <div class="terms-content" style="margin: 1rem;">
+                <mat-label style="color: #32343E;">By signing up, you agree to our terms and conditions.</mat-label>
+                <mat-checkbox formControlName="agreeTerms" required color="primary">
+                  I agree to the terms and conditions
+                </mat-checkbox>
               </div>
-              <button mat-raised-button matStepperNext color="primary">Next</button>
+              
+              <div>
+                <div class="form-row">
+                  <button mat-raised-button matStepperPrevious class="backBtn">Back</button>
+                </div>
+                
+                <div class="form-row">
+                  <button mat-raised-button class="submitBtn" (click)="onSubmit()" [disabled]="!adminFormGroup1.valid || !adminFormGroup2.valid || !adminFormGroup3.valid">Submit</button>
+                </div>
+              </div>      
             </form>
           </mat-step>
 
-          <mat-step [stepControl]="adminFormGroup2">
-            <form [formGroup]="adminFormGroup2">
-              <ng-template matStepLabel>Contact Details</ng-template>
-              <div class="form-row">
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Email</mat-label>
-                  <input matInput formControlName="email" type="email" required />
-                </mat-form-field>
+        </mat-stepper>
 
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Phone Number</mat-label>
-                  <input matInput formControlName="phone" type="tel" required />
-                </mat-form-field>
-              </div>
-              <button mat-raised-button matStepperPrevious color="accent">Back</button>
-              <button mat-raised-button matStepperNext color="primary">Next</button>
-            </form>
-          </mat-step>
-
-          <mat-step>
-            <ng-template matStepLabel>Complete</ng-template>
-            <p>All steps completed. You're now ready to submit!</p>
-            <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-          </mat-step>
-        </mat-vertical-stepper>
       </mat-tab>
     </mat-tab-group>
 
@@ -139,5 +140,6 @@
         </span>
       </p>
     </div>
+
   </div>
 </div>

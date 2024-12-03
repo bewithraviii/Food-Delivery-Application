@@ -17,6 +17,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+
+
 
 
 @NgModule({
@@ -35,6 +40,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSlideToggleModule,
     MatButtonToggleModule,
     MatTabsModule,
+    MatListModule,
+    MatCardModule,
+    MatSelectModule
   ],
   declarations: [
     InitialPage,
