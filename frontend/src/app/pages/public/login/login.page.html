@@ -4,10 +4,10 @@
       <img [src]="logo" alt="Logo" />
     </div>
     <div class="title">
-      <p class="text-center mb-4 credText">Please sign in to your existing account</p>
+      <div class="text-center mb-2 mt-2 credText">Please sign in to your existing account</div>
     </div>
   
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="padding: 1rem;">
       <div style="margin-bottom: 1rem;">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label class="credText">Email</mat-label>
