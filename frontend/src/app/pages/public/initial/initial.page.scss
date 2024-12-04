@@ -24,7 +24,8 @@
 		&:nth-child(1) {
 			top: -11.5rem;
 			left: -11.5rem;
-			width: 29rem;
+			width: 28rem;
+			rotate: 120deg;
 		}
 		&:nth-child(2) {
 			top: 0rem;
@@ -50,8 +51,6 @@
 
 
 
-
-  /* login.page.scss or global styles */
 ion-router-outlet {
 	transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
 }
@@ -71,3 +70,12 @@ ion-router-outlet {
 	}
 }
   
+// To rotate dark ellipse
+// @keyframes rotate {
+// 	0% {
+// 	  transform: rotate(0deg);
+// 	}
+// 	100% {
+// 	  transform: rotate(360deg);
+// 	}
+// }

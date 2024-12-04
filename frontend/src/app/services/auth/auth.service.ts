@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
+import { loginRequest } from '../../models/api.interface'
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,7 @@ export class AuthService {
     private router: Router
   ) { }
 
-  processLogin(userName: string, password: string) {
-    const reqPayload = { userName: userName, password: password };
+  processLogin(reqPayload: loginRequest) {
     this.apiService.login(reqPayload).subscribe(
       (response: any) => {
         if(response){
