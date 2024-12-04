@@ -21,15 +21,17 @@ export class AuthInterceptor implements HttpInterceptor  {
         },
       });
       return next.handle(cloneReq);
-    } else {
-      return throwError(
-        new HttpErrorResponse({
-          status: 401,
-          statusText: 'Unauthorized',
-          error: { message: 'No token provided, Authorization require.' },
-        })
-      )
-    }
+    } 
+    return next.handle(req);
+    // else {
+    //   return throwError(
+    //     new HttpErrorResponse({
+    //       status: 401,
+    //       statusText: 'Unauthorized',
+    //       error: { message: 'No token provided, Authorization require.' },
+    //     })
+    //   )
+    // }
   }
 
 

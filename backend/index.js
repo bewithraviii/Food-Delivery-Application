@@ -1,14 +1,20 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const authRouter = require('./src/routes/authRoutes');
+
+
+dotenv.config();
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3005;
 
+app.use(cors());
 // Middleware to parse JSON bodies
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Example route
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+// Routes
+app.use('/api/auth', authRouter);
 
 
 app.listen(port, () => {

@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ResponseInterceptor } from './interceptor/response.interceptor';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -20,6 +21,7 @@ import { ResponseInterceptor } from './interceptor/response.interceptor';
     AppRoutingModule,
     IonicModule.forRoot({}),
     BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

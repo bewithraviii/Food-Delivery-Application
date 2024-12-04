@@ -16,7 +16,7 @@ export class ApiService {
   ) { }
 
   login(reqPayload: loginRequest): Observable<any> {
-    return this.http.post<{token: string}>(`${this.loginURL}/login`, reqPayload); 
+    return this.http.post(`${this.loginURL}/auth/login`, reqPayload); 
   }
 
 }

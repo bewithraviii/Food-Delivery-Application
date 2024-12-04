@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { loginRequest } from 'src/app/models/api.interface';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,8 @@ export class LoginPage implements OnInit {
   
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -33,12 +36,22 @@ export class LoginPage implements OnInit {
   
     
     onSubmit() {
-      if (this.loginForm.valid) {
-        console.log('Form Submitted:', this.loginForm.value);
-        // Perform additional actions, e.g., API call
-      } else {
+      if (!this.loginForm.valid) {
         console.log('Form is invalid');
       }
+      const reqPayload: loginRequest = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password,
+      }
+      console.log('Form Submitted:', reqPayload);
+
+      try {
+        this.authService.processLogin(reqPayload);
+        this.router.navigate(['/dashboard']);
+      } catch(err: any){
+        console.log("LOGIN ERROR: ", err.message);
+      }
+
     }
 
     goToForgotPassword() {
