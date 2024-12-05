@@ -1,6 +1,10 @@
+import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthGuard implements CanActivate {
 
   constructor(
@@ -14,6 +18,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
     else {
+      console.log("User not authorized, Please login again.")
       this.navigateToLogin();
       return false;
     }

@@ -3,12 +3,13 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authRouter = require('./src/routes/authRoutes');
-
+const connectDB = require('./src/config/db')
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3005;
 
+connectDB();
 app.use(cors());
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());

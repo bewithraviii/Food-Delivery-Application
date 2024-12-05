@@ -46,8 +46,12 @@ export class LoginPage implements OnInit {
       console.log('Form Submitted:', reqPayload);
 
       try {
-        this.authService.processLogin(reqPayload);
-        this.router.navigate(['/dashboard']);
+        this.authService.processLogin(reqPayload).subscribe(() => {
+            this.router.navigate(['/dashboard']);
+          }, error => {
+            console.error('Login failed', error);
+          }
+        );
       } catch(err: any){
         console.log("LOGIN ERROR: ", err.message);
       }

@@ -1,14 +1,13 @@
 const authService = require('../services/auth/auth');
 
 exports.login = async(req, res) => {
-    try {
-        const userCredentials = {
-            email: req.body.email,
-            password: req.body.password
-        };
-        const result = await authService.userLogin(userCredentials);
-        res.status(200).json(result);
-    } catch(err) {
-        res.status(400).json({ message: err.message });
-    }
+    return await authService.userLogin(req.body, res);
+}
+
+exports.signUpUser = async(req, res) => {
+    return await authService.userSignUp(req.body, res);
+}
+
+exports.signUpVendor = async(req, res) => {
+    return await authService.vendorSignUp(req.body, res);
 }

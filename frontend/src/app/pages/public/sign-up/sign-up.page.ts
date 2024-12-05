@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import { MatStepper, StepperOrientation } from '@angular/material/stepper';
@@ -37,9 +37,9 @@ export class SignUpPage implements OnInit {
   ngOnInit(): void {
 
     this.signupForm = this.fb.group({
+      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      mobile: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       address: ['', Validators.required],
     });
 
@@ -104,4 +104,5 @@ export class SignUpPage implements OnInit {
     this.adminFormGroup1.reset();
     this.adminFormGroup2.reset(); 
   }
+
 }
