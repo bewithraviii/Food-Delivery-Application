@@ -36,14 +36,15 @@ export class LoginPage implements OnInit {
   
     
     onSubmit() {
+      
       if (!this.loginForm.valid) {
         console.log('Form is invalid');
       }
+
       const reqPayload: loginRequest = {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password,
       }
-      console.log('Form Submitted:', reqPayload);
 
       try {
         this.authService.processLogin(reqPayload).subscribe(() => {

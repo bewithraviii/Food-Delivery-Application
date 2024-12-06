@@ -15,8 +15,12 @@ export class ApiService {
     private http: HttpClient,
   ) { }
 
+  // Login
   login(reqPayload: loginRequest): Observable<any> {
     return this.http.post(`${this.loginURL}/auth/login`, reqPayload); 
   }
+
+  // Sign-Up
+  
 
 }

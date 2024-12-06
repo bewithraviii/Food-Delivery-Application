@@ -9,10 +9,30 @@ export interface loginRequest {
 export interface userSignUpReqForm {
     name: string,
     email:string,
-    password: string,
+    phoneNumber: string,
     address: string
 }
 
 export interface adminSignUpReqForm {
-    
+    name: String,
+    description?: String,
+    address: String,
+    email: String,
+    cuisineType: String,
+    menu?: [],
+    website: String,
+    FSSAILicense: String,
+    tradeLicense: String,
+    restaurantLicense: String,
+    gstNo: String,
+    owner: {
+        fullName: String,
+        email: String,
+        phoneNo: String,
+        address: String,
+        bankDetails: String,
+        panCardNo: String,
+        aadharCardNo: String,
+    },
+    acceptTermsAndRegulations: Boolean
 }

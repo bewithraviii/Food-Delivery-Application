@@ -50,25 +50,26 @@
           <mat-step [stepControl]="adminFormGroup1">
             <form [formGroup]="adminFormGroup1">
               <ng-template matStepLabel>{{"Restaurant Details" | uppercase }}</ng-template>
-              <div class="form-row" style="padding-top: 1rem;">
+              <div class="form-row vendor-form-row" style="padding-top: 1rem;">
 
-                <mat-form-field class="form-field" appearance="outline">
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
                   <mat-label>Restaurant Name</mat-label>
                   <input matInput formControlName="restaurantName" required />
                 </mat-form-field>
-      
-                <mat-form-field class="form-field" appearance="outline">
+
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
                   <mat-label>Restaurant Address</mat-label>
                   <input matInput formControlName="restaurantAddress" required />
                 </mat-form-field>
-      
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Cuisine Type</mat-label>
-                  <mat-select formControlName="cuisineType">
-                    <mat-option value="Italian">Italian</mat-option>
-                    <mat-option value="Indian">Indian</mat-option>
-                    <mat-option value="Chinese">Chinese</mat-option>
-                  </mat-select>
+
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Restaurant Email</mat-label>
+                  <input matInput formControlName="restaurantEmail" type="email" required />
+                </mat-form-field>
+
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Restaurant Website</mat-label>
+                  <input matInput formControlName="restaurantWebsite" required />
                 </mat-form-field>
 
               </div>
@@ -80,37 +81,77 @@
           <mat-step [stepControl]="adminFormGroup2">
             <form [formGroup]="adminFormGroup2">
               <ng-template matStepLabel>{{"Ownership Details" | uppercase }}</ng-template>
-              <div class="form-row" style="padding-top: 1rem;">
+              <div class="form-row vendor-form-row" style="padding-top: 1rem;">
 
-                <mat-form-field class="form-field" appearance="outline">
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
                   <mat-label>Owner Name</mat-label>
                   <input matInput formControlName="ownerName" required />
                 </mat-form-field>
-      
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Email Address</mat-label>
+
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Owner Email</mat-label>
                   <input matInput formControlName="ownerEmail" type="email" required />
                 </mat-form-field>
-      
-                <mat-form-field class="form-field" appearance="outline">
-                  <mat-label>Phone Number</mat-label>
+
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Owner Phone</mat-label>
                   <input matInput formControlName="ownerPhone" type="tel" required />
                 </mat-form-field>
 
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Owner Address</mat-label>
+                  <input matInput formControlName="ownerAddress" required />
+                </mat-form-field>
+
               </div>
-              <button mat-raised-button matStepperPrevious class="backBtn">Back</button>
-              <button mat-raised-button matStepperNext class="nextBtn" color="primary">Next</button>
+              <div class="button-row">
+                <button mat-raised-button matStepperPrevious class="backBtn">Back</button>
+                <button mat-raised-button matStepperNext class="nextBtn">Next</button>
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- Owner's Documents -->
+          <mat-step [stepControl]="adminFormGroup3">
+            <form [formGroup]="adminFormGroup3">
+              <ng-template matStepLabel>{{ "Owner Documents" | uppercase }}</ng-template>
+              <div class="form-row vendor-form-row" style="padding-top: 1rem;">
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Aadhar Card Number</mat-label>
+                  <input matInput formControlName="ownerAadharCardNumber" required />
+                </mat-form-field>
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>PAN Card Number</mat-label>
+                  <input matInput formControlName="ownerPanCardNumber" required />
+                </mat-form-field>
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Bank Details</mat-label>
+                  <input matInput formControlName="ownerBankDetails" required />
+                </mat-form-field>
+              </div>
+              <div class="button-row">
+                <button mat-raised-button matStepperPrevious  class="backBtn">Back</button>
+                <button mat-raised-button matStepperNext class="nextBtn">Next</button>
+              </div>
             </form>
           </mat-step>
 
           <!-- Terms and Regulations -->
-          <mat-step [stepControl]="adminFormGroup3">
-            <form [formGroup]="adminFormGroup3">
+          <mat-step [stepControl]="adminFormGroup4">
+            <form [formGroup]="adminFormGroup4">
               <ng-template matStepLabel>{{"Terms and Regulations" | uppercase}}</ng-template>
 
-              <div class="terms-content" style="margin: 1rem;">
-                <mat-label style="color: #32343E;">By signing up, you agree to our terms and conditions.</mat-label>
-                <mat-checkbox formControlName="agreeTerms" required color="primary">
+              <div class="form-row vendor-form-row" style="padding-top: 1rem;">
+                <mat-form-field class="form-field vendor-form-field" appearance="outline">
+                  <mat-label>Cuisine Type</mat-label>
+                  <mat-select formControlName="cuisineType" required>
+                    <mat-option value="Italian">Italian</mat-option>
+                    <mat-option value="Indian">Indian</mat-option>
+                    <mat-option value="Chinese">Chinese</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-checkbox formControlName="agreeTerms" color="primary" required>
                   I agree to the terms and conditions
                 </mat-checkbox>
               </div>
@@ -121,7 +162,16 @@
                 </div>
                 
                 <div class="form-row">
-                  <button mat-raised-button class="submitBtn" (click)="onSubmit()" [disabled]="!adminFormGroup1.valid || !adminFormGroup2.valid || !adminFormGroup3.valid">Submit</button>
+                  <button 
+                  mat-raised-button 
+                  class="submitBtn" 
+                  (click)="onSubmit()" 
+                  [disabled]="
+                  !adminFormGroup1.valid || 
+                  !adminFormGroup2.valid || 
+                  !adminFormGroup3.valid ||
+                  !adminFormGroup4.valid"
+                  >Submit</button>
                 </div>
               </div>      
             </form>
