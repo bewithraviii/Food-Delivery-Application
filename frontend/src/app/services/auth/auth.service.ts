@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
-import { loginRequest } from '../../models/api.interface'
-import { Observable, tap } from 'rxjs';
+import { loginRequest, userSignUpReqForm, vendorSignUpReqForm } from '../../models/api.interface'
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,22 @@ export class AuthService {
       tap(response => {
         localStorage.setItem('token', response.token);
       })
+    );
+  }
+  
+  processUserRegistration(reqPayload: userSignUpReqForm): Observable<any> {
+    return this.apiService.userSignUp(reqPayload).pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token);
+      })
+    );
+  }  
+
+  processVendorRegistration(reqPayload: vendorSignUpReqForm): Observable<any> {
+    return this.apiService.vendorSignUp(reqPayload).pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token);
+      }),
     );
   }
 

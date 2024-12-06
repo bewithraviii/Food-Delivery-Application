@@ -8,6 +8,7 @@ const restaurantSchema = new mongoose.Schema(
       address: { type: String, required: true },
       email: { type: String, required: true },
       cuisineType: { type: String, required: true },
+      website: { type: String, required: true },
       menu:{ 
         type: [
           {
@@ -18,13 +19,12 @@ const restaurantSchema = new mongoose.Schema(
         ], 
         default: null
       },
-      website: { type: String, default: null },
-      FSSAILicense: { type: String, required: true },
-      tradeLicense: { type: String, required: true },
-      restaurantLicense: { type: String, required: true },
-      gstNo: { type: String, required: true },
+      FSSAILicense: { type: String, default: null },
+      tradeLicense: { type: String, default: null },
+      restaurantLicense: { type: String, default: null },
+      gstNo: { type: String, default: null },
       owner: {
-        fullName: { type: String, required: true },
+        name: { type: String, required: true },
         email: { type: String, required: true },
         phoneNo: { type: String, required: true },
         address: { type: String, required: true },

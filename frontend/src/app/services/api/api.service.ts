@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { loginRequest } from 'src/app/models/api.interface';
+import { loginRequest, userSignUpReqForm, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ApiService {
 
-  private loginURL = environment.baseApiUrl;
+  private baseURL = environment.baseApiUrl;
 
   constructor(
     private http: HttpClient,
@@ -17,10 +17,15 @@ export class ApiService {
 
   // Login
   login(reqPayload: loginRequest): Observable<any> {
-    return this.http.post(`${this.loginURL}/auth/login`, reqPayload); 
+    return this.http.post(`${this.baseURL}/auth/login`, reqPayload); 
   }
 
   // Sign-Up
-  
+  userSignUp(reqPayload: userSignUpReqForm): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/registerUser`, reqPayload);
+  }
+  vendorSignUp(reqPayload: vendorSignUpReqForm): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/registerVendor`, reqPayload);
+  }
 
 }

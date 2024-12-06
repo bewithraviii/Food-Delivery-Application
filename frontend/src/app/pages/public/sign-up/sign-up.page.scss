@@ -113,9 +113,25 @@ form {
   overflow: visible;
 }
 
-.mat-step-icon-selected {
+::ng-deep .mat-step-icon-selected {
   background-color: #FF7622 !important;
   color: white !important;
+}
+
+::ng-deep .mat-step-icon-state-edit {
+  background-color: #FF7622 !important;
+  color: white !important;
+}
+
+
+
+::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab-indicator__content--underline {
+  border-color: #FF7622 !important;
+}
+
+
+::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #FF7622 !important;
 }
 
 
@@ -131,6 +147,7 @@ mat-tab-group {
   margin-top: 1rem;
 }
 
+
 @media (min-width: 768px) {
   .button-row {
     display: grid;
@@ -140,7 +157,7 @@ mat-tab-group {
 }
 
 /* Scroll behavior */
-@media (max-height: 959px) {
+@media (max-height: 925px) {
   mat-tab-group {
     height: calc(100vh - 250px); 
     overflow: hidden;
@@ -176,5 +193,6 @@ mat-tab-group {
 }
 
 mat-stepper {
-  transition: all 3s ease-in-out; /* Smooth size and orientation change */
+  transition: all 0.3s ease-in-out;
 }
+

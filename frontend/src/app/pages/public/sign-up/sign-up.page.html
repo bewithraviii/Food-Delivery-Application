@@ -5,7 +5,7 @@
     </div>
 
     <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="onTabChange($event)" class="responsive-tabs">
-      <mat-tab label="USER">
+      <mat-tab label="USER" class="userTabContent">
         <form [formGroup]="signupForm"  style="margin-top: 0.5rem; padding: 1rem;" (ngSubmit)="onSubmit()">
           
           <div class="form-row">
@@ -37,7 +37,7 @@
         </form>
       </mat-tab>
 
-      <mat-tab label="VENDOR">
+      <mat-tab label="VENDOR" class="vendorTabContent">
 
         <mat-stepper 
         *ngIf="selectedTab === 1" 
@@ -182,13 +182,11 @@
       </mat-tab>
     </mat-tab-group>
 
-    <div class="marginT signUp">
-      <p style="color: #646982;">
-        Already have an account?
+    <div class="marginT signUp" style="color: #646982;">
+        Already have an account? &nbsp;
         <span>
           <a style="color: #ff7d34;" type="button" (click)="goToSignIn()">Sign In</a>
         </span>
-      </p>
     </div>
 
   </div>

@@ -42,7 +42,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatTabsModule,
     MatListModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   declarations: [
     InitialPage,

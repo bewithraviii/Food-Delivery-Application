@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import { MatStepper, StepperOrientation } from '@angular/material/stepper';
 import { map, Observable } from 'rxjs';
-import { adminSignUpReqForm, userSignUpReqForm } from 'src/app/models/api.interface';
+import { vendorSignUpReqForm, userSignUpReqForm } from 'src/app/models/api.interface';
+import { ApiService } from 'src/app/services/api/api.service';
+import { NotificationService } from 'src/app/services/snack-notification/notification.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -26,6 +29,8 @@ export class SignUpPage implements OnInit {
   constructor(
     private fb: FormBuilder, 
     private router: Router,
+    private authApiService: AuthService,
+    private notification: NotificationService,
     breakpointObserver: BreakpointObserver,
   ) {
     this.stepperOrientation = breakpointObserver
@@ -87,17 +92,28 @@ export class SignUpPage implements OnInit {
   }
 
   onSubmit() {
-
     if (this.selectedTab === 0 && this.signupForm.valid) {
-      const userForm = this.signupForm.value;
-      const payload: userSignUpReqForm = {
-        name: userForm.name,
-        email: userForm.email,
-        phoneNumber: userForm.phoneNumber,
-        address: userForm.address
+      const userData = this.signupForm.value;
+      const userForm: userSignUpReqForm = {
+        name: userData.name,
+        email: userData.email,
+        phoneNumber: userData.phoneNumber,
+        address: userData.address
       }
-
-      console.log('User Form Submitted:', this.signupForm.value);
+      console.log('User Form Submitted:', userForm);
+      this.authApiService.processUserRegistration(userForm).subscribe(
+        (Response) => {
+          if(!Response){
+            console.log("User not registered, Please try again.");
+          }
+          this.notification.notifyUser("successSnack", 'User successfully added.');
+          this.router.navigate(['/dashboard']);
+        },
+        (error) => {
+          console.log("Something went wrong while registering user.")
+          this.notification.notifyUser("errorSnack", error.message);
+        }
+      );
     } else if (this.selectedTab === 1) {
       if (this.adminFormGroup1.valid && this.adminFormGroup2.valid && this.adminFormGroup3.valid) {
         const adminData = {
@@ -106,18 +122,14 @@ export class SignUpPage implements OnInit {
           ...this.adminFormGroup3.value,
           ...this.adminFormGroup4.value,
         };
-        const vendorForm: adminSignUpReqForm = {
+        const vendorForm: vendorSignUpReqForm = {
           name: adminData.restaurantName,
           address: adminData.restaurantAddress,
           email: adminData.restaurantEmail,
           cuisineType: adminData.cuisineType,
           website: adminData.restaurantWebsite,
-          FSSAILicense: adminData.FSSAILicense,
-          tradeLicense: adminData.tradeLicense,
-          restaurantLicense: adminData.restaurantLicense,
-          gstNo: adminData.gstNumber,
           owner: {
-            fullName: adminData.ownerName,
+            name: adminData.ownerName,
             email: adminData.ownerEmail,
             phoneNo: adminData.ownerPhone,
             address: adminData.ownerAddress,
@@ -127,14 +139,24 @@ export class SignUpPage implements OnInit {
           },
           acceptTermsAndRegulations: adminData.agreeTerms,
         }
-
-
-        console.log('Admin Form Submitted:', adminData);
+        console.log('Vendor Form Submitted:', vendorForm);
+        this.authApiService.processVendorRegistration(vendorForm).subscribe(
+          (Response) => {
+            if(!Response){
+              console.log("Vendor not registered, Please try again.");
+            }
+            this.notification.notifyUser("successSnack", 'Vendor successfully added.');
+            this.router.navigate(['/dashboard']);
+          },
+          (error) => {
+            console.log("Something went wrong while registering vendor.")
+            this.notification.notifyUser("errorSnack", error.message);
+          }
+        );
       }
     } else {
-      console.log('Form is invalid');
+      this.notification.notifyUser("errorSnack", "Form is invalid, Please fill details correctly.");
     }
-
   }
 
   goToSignIn() {

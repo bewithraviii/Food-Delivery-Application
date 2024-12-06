@@ -13,7 +13,7 @@ export interface userSignUpReqForm {
     address: string
 }
 
-export interface adminSignUpReqForm {
+export interface vendorSignUpReqForm {
     name: String,
     description?: String,
     address: String,
@@ -21,12 +21,12 @@ export interface adminSignUpReqForm {
     cuisineType: String,
     menu?: [],
     website: String,
-    FSSAILicense: String,
-    tradeLicense: String,
-    restaurantLicense: String,
-    gstNo: String,
+    FSSAILicense?: String,
+    tradeLicense?: String,
+    restaurantLicense?: String,
+    gstNo?: String,
     owner: {
-        fullName: String,
+        name: String,
         email: String,
         phoneNo: String,
         address: String,
