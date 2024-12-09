@@ -5,12 +5,23 @@ dotenv.config();
 const sendMail = async(email, subject, content) => {
 
     const transporter = nodeMailer.createTransport({
+        // service: 'gmail',
+        // host: 'smtp.gmail.com',
+        // port: 465,
+        // secure: true,
+        // auth: {
+        //     user: 'tatvapca159@gmail.com',
+        //     pass: 'dckvkpaegiwfqwxl',
+        // },
+        // tls: {
+        //     rejectUnauthorized: false,
+        // },
         host: 'smtp.gmail.com',
         port: 587,
         secure: false,
         auth: {
             user: process.env.MAIL_ID || 'tatvapca159@gmail.com',
-            pass: process.env.MAIL_CRED || '',
+            pass: process.env.MAIL_CRED || 'dckvkpaegiwfqwxl',
         },
         tls: {
             ciphers: 'SSLv3', // Explicitly specify TLS configuration
