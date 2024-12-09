@@ -13,8 +13,11 @@ export class LoginPage implements OnInit {
   logo: string = 'assets/svg/logo.svg';
 
   loginForm!: FormGroup;
+  otpForm!: FormGroup;
 
   passwordVisible: boolean = false;
+  isOtpStage: boolean = false;
+  userEmail: string = '';
   
   constructor(
     private fb: FormBuilder,
@@ -28,6 +31,18 @@ export class LoginPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       rememberMe: [false]
     })
+
+    // this.otpForm = this.fb.group({
+    //   otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
+    // });
+    this.otpForm = this.fb.group({
+      otp1: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp2: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp3: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp4: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp5: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp6: ['', [Validators.required, Validators.pattern('^[0-9]$')]]
+    });
   }
 
     togglePasswordVisibility() {
@@ -46,18 +61,44 @@ export class LoginPage implements OnInit {
         password: this.loginForm.value.password,
       }
 
-      try {
-        this.authService.processLogin(reqPayload).subscribe(() => {
-            this.router.navigate(['/dashboard']);
-          }, error => {
-            console.error('Login failed', error);
-          }
-        );
-      } catch(err: any){
-        console.log("LOGIN ERROR: ", err.message);
-      }
+      this.isOtpStage = true;
+      this.userEmail = reqPayload.email;
+      // try {
+      //   this.authService.processLogin(reqPayload).subscribe(() => {
+      //       // this.router.navigate(['/dashboard']);
+      //     }, error => {
+      //       console.error('Login failed', error);
+      //     }
+      //   );
+      // } catch(err: any){
+      //   console.log("LOGIN ERROR: ", err.message);
+      // }
 
     }
+
+    onSubmitOtp() {
+      if (!this.otpForm.valid) {
+        console.log('Invalid OTP');
+        return;
+      }
+  
+      const otpPayload = {
+        email: this.userEmail,
+        otp: this.getOTPString()
+        // otp: this.otpForm.value.otp,
+      };
+  
+      // this.authService.verifyOtp(otpPayload).subscribe(
+      //   (response) => {
+      //     // Handle successful OTP verification
+      //     this.router.navigate(['/dashboard']);
+      //   },
+      //   (error) => {
+      //     console.error('OTP verification failed', error);
+      //   }
+      // );
+    }
+  
 
     goToForgotPassword() {
       this.router.navigate(["/public/forgot-password"]);
@@ -65,6 +106,24 @@ export class LoginPage implements OnInit {
 
     goToSignUp() {
       this.router.navigate(["/public/sign-up"]);
+    }
+
+    moveFocus(event: any, nextInputName: string) {
+      if (event.target.value.length === 1) {
+        const nextInput = document.getElementsByName(nextInputName)[0] as HTMLInputElement;
+        nextInput?.focus();
+      }
+    }
+    
+    getOTPString() {
+      return [
+        this.otpForm.value.otp1,
+        this.otpForm.value.otp2,
+        this.otpForm.value.otp3,
+        this.otpForm.value.otp4,
+        this.otpForm.value.otp5,
+        this.otpForm.value.otp6
+      ].join('');
     }
 
 }
