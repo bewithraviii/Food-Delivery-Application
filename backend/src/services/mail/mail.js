@@ -13,7 +13,6 @@ const sendOtpMail = async(data, res) => {
         const subject = 'Your OTP Code';
         const content = `Your OTP is  ${OTP}  . It will expire in 30 seconds.`;
         const otpExists = await findOTPWithMail(email);
-        console.log(otpExists);
         if(otpExists){
             otpExists.otp = OTP;
             await otpExists.save();

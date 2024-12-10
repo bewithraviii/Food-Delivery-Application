@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { loginRequest, otpSendRequest, otpVerifyRequest } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -29,7 +30,8 @@ export class LoginPage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -54,11 +56,13 @@ export class LoginPage implements OnInit {
     }
   
     
-    onSubmit() {
+    async onSubmit() {
       
       if (!this.loginForm.valid) {
         console.log('Form is invalid');
       }
+
+      await this.presentLoader('Sending OTP...');
 
       const reqPayload: loginRequest = {
         email: this.loginForm.value.email,
@@ -69,38 +73,50 @@ export class LoginPage implements OnInit {
         this.authService.processLogin(reqPayload).subscribe(() => {
           this.userEmail = reqPayload.email;
           this.sendOTPRequest();
+          this.dismissLoader();
           }, error => {
+            this.dismissLoader();
             console.error('Login failed', error);
           }
         );
       } catch(err: any){
+        this.dismissLoader();
         console.log("LOGIN ERROR: ", err.message);
       }
 
     }
 
-    sendOTPRequest(){
+    async sendOTPRequest(){
+
+      await this.presentLoader('Generating OTP...');
+
       const otpSendReq: otpSendRequest = {
         email: this.userEmail
       }
+
       try {
         this.apiService.sendOTP(otpSendReq).subscribe(() => {
           this.isOtpStage = true;
           this.startOtpTimer();
+          this.dismissLoader();
         }, error => {
+          this.dismissLoader();
           console.error('OTP send failed', error);
         });
       } catch(error: any){
+        this.dismissLoader();
         console.log("OTP ERROR: ", error.message);
       }
 
     }
 
-    onSubmitOtp() {
+    async onSubmitOtp() {
       if (!this.otpForm.valid) {
         console.log('Invalid OTP');
         return;
       }
+
+      await this.presentLoader('Logging in...');
   
       const otpPayload: otpVerifyRequest = {
         email: this.userEmail,
@@ -112,9 +128,11 @@ export class LoginPage implements OnInit {
       this.apiService.verifyOTP(otpPayload).subscribe(
         (response) => {
           if(response && response.verified){
+            this.dismissLoader();
             this.router.navigate(["/dashboard"]);
           }
           else {
+            this.dismissLoader();
             console.error('OTP verification failed', response.message);
           }
           clearInterval(this.timerInterval);
@@ -122,6 +140,7 @@ export class LoginPage implements OnInit {
           this.otpForm.reset();
         },
         (error) => {
+          this.dismissLoader();
           console.error('Something went wrong while verifying OTP', error);
         }
       );
@@ -179,5 +198,19 @@ export class LoginPage implements OnInit {
           }
       }, 1000);
     }
+
+    async presentLoader(message: string) {
+      const loader = await this.loadingController.create({
+        message: message,
+        spinner: 'lines',
+        backdropDismiss: false,
+      });
+      await loader.present();
+    }
+    
+    async dismissLoader() {
+      await this.loadingController.dismiss();
+    }
+    
 
 }
