@@ -3,7 +3,16 @@
 
 export interface loginRequest {
     email: string;
-    password: string;
+    phoneNumber: string;
+}
+
+export interface otpSendRequest {
+    email: string;
+}
+
+export interface otpVerifyRequest {
+    email: string;
+    otp: string;
 }
 
 export interface userSignUpReqForm {

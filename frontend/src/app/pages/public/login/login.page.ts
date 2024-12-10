@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { loginRequest } from 'src/app/models/api.interface';
+import { loginRequest, otpSendRequest, otpVerifyRequest } from 'src/app/models/api.interface';
+import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -16,25 +17,28 @@ export class LoginPage implements OnInit {
   otpForm!: FormGroup;
 
   passwordVisible: boolean = false;
-  isOtpStage: boolean = false;
   userEmail: string = '';
+  isOtpStage: boolean = false;
+  otpVerified: boolean = false;
+
+  resendDisabled: boolean = true;
+  timer: number = 60;
+  timerInterval: any;
   
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private apiService: ApiService
   ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       rememberMe: [false]
     })
 
-    // this.otpForm = this.fb.group({
-    //   otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-    // });
     this.otpForm = this.fb.group({
       otp1: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
       otp2: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
@@ -58,21 +62,37 @@ export class LoginPage implements OnInit {
 
       const reqPayload: loginRequest = {
         email: this.loginForm.value.email,
-        password: this.loginForm.value.password,
+        phoneNumber: this.loginForm.value.phoneNumber,
       }
 
-      this.isOtpStage = true;
-      this.userEmail = reqPayload.email;
-      // try {
-      //   this.authService.processLogin(reqPayload).subscribe(() => {
-      //       // this.router.navigate(['/dashboard']);
-      //     }, error => {
-      //       console.error('Login failed', error);
-      //     }
-      //   );
-      // } catch(err: any){
-      //   console.log("LOGIN ERROR: ", err.message);
-      // }
+      try {
+        this.authService.processLogin(reqPayload).subscribe(() => {
+          this.userEmail = reqPayload.email;
+          this.sendOTPRequest();
+          }, error => {
+            console.error('Login failed', error);
+          }
+        );
+      } catch(err: any){
+        console.log("LOGIN ERROR: ", err.message);
+      }
+
+    }
+
+    sendOTPRequest(){
+      const otpSendReq: otpSendRequest = {
+        email: this.userEmail
+      }
+      try {
+        this.apiService.sendOTP(otpSendReq).subscribe(() => {
+          this.isOtpStage = true;
+          this.startOtpTimer();
+        }, error => {
+          console.error('OTP send failed', error);
+        });
+      } catch(error: any){
+        console.log("OTP ERROR: ", error.message);
+      }
 
     }
 
@@ -82,21 +102,29 @@ export class LoginPage implements OnInit {
         return;
       }
   
-      const otpPayload = {
+      const otpPayload: otpVerifyRequest = {
         email: this.userEmail,
         otp: this.getOTPString()
-        // otp: this.otpForm.value.otp,
       };
+
+      console.log("otpPayload", otpPayload);
   
-      // this.authService.verifyOtp(otpPayload).subscribe(
-      //   (response) => {
-      //     // Handle successful OTP verification
-      //     this.router.navigate(['/dashboard']);
-      //   },
-      //   (error) => {
-      //     console.error('OTP verification failed', error);
-      //   }
-      // );
+      this.apiService.verifyOTP(otpPayload).subscribe(
+        (response) => {
+          if(response && response.verified){
+            this.router.navigate(["/dashboard"]);
+          }
+          else {
+            console.error('OTP verification failed', response.message);
+          }
+          clearInterval(this.timerInterval);
+          this.isOtpStage = false;
+          this.otpForm.reset();
+        },
+        (error) => {
+          console.error('Something went wrong while verifying OTP', error);
+        }
+      );
     }
   
 
@@ -124,6 +152,32 @@ export class LoginPage implements OnInit {
         this.otpForm.value.otp5,
         this.otpForm.value.otp6
       ].join('');
+    }
+
+    resendOtp() {
+      console.log('Resend OTP triggered for:', this.userEmail);
+      this.otpForm.reset();
+      this.startOtpTimer();
+
+      this.sendOTPRequest();
+    }
+
+    startOtpTimer() {
+
+      if (this.timerInterval) {
+        clearInterval(this.timerInterval);
+      }
+
+      this.resendDisabled = true;
+      this.timer = 60;
+  
+      this.timerInterval = setInterval(() => {
+          this.timer--;
+          if (this.timer <= 0) {
+            clearInterval(this.timerInterval);
+            this.resendDisabled = false;
+          }
+      }, 1000);
     }
 
 }

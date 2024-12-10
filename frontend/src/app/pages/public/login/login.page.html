@@ -22,13 +22,10 @@
       
         <div style="margin-bottom: 1rem;">
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label class="credText">Password</mat-label>
-            <input [type]="passwordVisible ? 'text' : 'password'" matInput formControlName="password" />
-            <button type="button" mat-icon-button matSuffix (click)="togglePasswordVisibility()">
-              <mat-icon color="primary">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
-            </button>
-            <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-              Password must be at least 6 characters long.
+            <mat-label class="credText">Phone Number</mat-label>
+            <input matInput formControlName="phoneNumber" type="tel" required />
+            <mat-error *ngIf="loginForm.get('phoneNumber')?.invalid && loginForm.get('phoneNumber')?.touched">
+              Phone Number must be at least 10 characters long.
             </mat-error>
           </mat-form-field>
         </div>
@@ -48,9 +45,9 @@
       </form>
     
     </div>
-    <div *ngIf="isOtpStage"> <!-- Only show this if OTP form is visible -->
+    <div *ngIf="isOtpStage">
       <div class="title">
-        <div class="text-center mb-2 mt-2 credText">Enter the OTP sent to your email</div>
+        <div class="text-center mt-2 credText">Enter the OTP sent to your email</div>
       </div>
 
       <form [formGroup]="otpForm" (ngSubmit)="onSubmitOtp()" style="padding: 1rem;">
@@ -78,34 +75,26 @@
         <mat-error *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched" style="padding: 0;">
           Please enter a valid 6-digit OTP.
         </mat-error>
-        <div class="marginT" style="padding-left: 1rem; padding-right: 1rem;">
+        <div class="otp-info text-center" style="color: #7E8A97; margin-top: 1rem; font-size: 13px;">
+          <p>Your OTP will be valid until {{ timer }} seconds 
+            <button 
+              class="resendBtn"
+              mat-button 
+              type="button"
+              (click)="resendOtp()" 
+              [disabled]="resendDisabled">
+              Resend
+            </button>
+          </p>
+        </div>
+        <div class="marginT" style="padding-left: 1rem; padding-right: 1rem; margin-top: 2rem;">
           <div class="ion-activatable ripple-parent rounded-rectangle">
-            <button mat-fab extended class="LoginBtn" style="box-shadow: none !important;" [disabled]="!otpForm.valid">
+            <button mat-fab extended class="LoginBtn" style="box-shadow: none !important;" [disabled]="!otpForm.valid || !resendDisabled">
               Verify OTP
             </button>
           </div>
         </div>
       </form>
-
-      <!-- <form [formGroup]="otpForm" (ngSubmit)="onSubmitOtp()" style="padding: 1rem;">
-        <div style="margin-bottom: 1rem;">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label class="credText">OTP</mat-label>
-            <input matInput formControlName="otp" type="text" placeholder="Enter 6-digit OTP" />
-            <mat-error *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched" style="padding: 0;">
-              Please enter a valid 6-digit OTP.
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="marginT">
-          <div class="ion-activatable ripple-parent rounded-rectangle">
-            <button mat-fab extended class="LoginBtn" style="box-shadow: none !important;" [disabled]="!otpForm.valid">
-              Verify OTP
-            </button>
-          </div>
-        </div>
-      </form> -->
     </div>
     
     <div class="marginT signUp">

@@ -10,11 +10,11 @@ const userLogin = async (data, res) => {
 
     try{
         const response = { token: '' };
-        const user = await User.findOne({ email : data.email });
-        if (!user) throw new Error('Invalid username or password');
+        const user = await User.findOne({ email : data.email, phoneNumber: data.phoneNumber });
+        if (!user) throw new Error('Invalid username or phone-number');
       
-        const isMatch = await comparePassword(data.password, user.password);
-        if (!isMatch) throw new Error('Invalid username or password');
+        // const isMatch = await comparePassword(data.password, user.password);
+        // if (!isMatch) throw new Error('Invalid username or password');
     
         const token = jwt.generateToken(user._id);
         if(!token) throw new Error('Something went wrong while creating token');
@@ -52,7 +52,7 @@ const vendorSignUp = async(data, res) => {
         return res.status(400).json({ message: 'Vendor detail is required' });
     }
     try{
-        const existingVendor = await Vendor.findOne({ restaurantLicense: data.restaurantLicense, FSSAILicense: data.FSSAILicense });
+        const existingVendor = await Vendor.findOne({ email: data.email });
         if (existingVendor || existingVendor  != null) return res.status(400).json({ message: 'Vendor already exists' });
 
         const newVendor = new Vendor(data);
@@ -67,13 +67,13 @@ const vendorSignUp = async(data, res) => {
     }
 }
 
-const hashPassword = async (password) => {
-    const salt = await bcrypt.genSalt(10);
-    return await bcrypt.hash(password, salt);
-};
+// const hashPassword = async (password) => {
+//     const salt = await bcrypt.genSalt(10);
+//     return await bcrypt.hash(password, salt);
+// };
   
-const comparePassword = async (enteredPassword, storedPassword) => {
-    return await bcrypt.compare(enteredPassword, storedPassword);
-};
+// const comparePassword = async (enteredPassword, storedPassword) => {
+//     return await bcrypt.compare(enteredPassword, storedPassword);
+// };
 
 module.exports = { userLogin, userSignUp, vendorSignUp }

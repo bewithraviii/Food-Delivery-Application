@@ -149,3 +149,13 @@ mat-form-field {
 	color: #1E1E2E;
 }
   
+.resendBtn {
+	color: #FF7622 !important;
+	font-size: 15px !important;
+    height: auto;
+    width: auto;
+	&:disabled {
+		opacity: 0.8;
+		cursor: not-allowed;
+	}
+}

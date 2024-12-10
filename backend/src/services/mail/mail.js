@@ -26,7 +26,7 @@ const sendOtpMail = async(data, res) => {
         }
     
         // Send Mail Logic
-        await sendMailService(email, subject, content);
+        // await sendMailService(email, subject, content);
         res.status(201).json({ message: 'OTP sent to user email', otp: true });
     } catch(err){
         console.log("Something went wrong during OTP generation, Please try again.", err);
