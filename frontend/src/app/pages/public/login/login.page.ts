@@ -129,7 +129,7 @@ export class LoginPage implements OnInit {
         (response) => {
           if(response && response.verified){
             this.dismissLoader();
-            this.router.navigate(["/dashboard"]);
+            this.router.navigate(["/user-dashboard"]);
           }
           else {
             this.dismissLoader();

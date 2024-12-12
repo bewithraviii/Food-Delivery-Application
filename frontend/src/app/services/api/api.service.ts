@@ -15,6 +15,8 @@ export class ApiService {
     private http: HttpClient,
   ) { }
 
+
+
   // Login
   login(reqPayload: loginRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/login`, reqPayload); 
@@ -22,6 +24,8 @@ export class ApiService {
   vendorLogin(reqPayload: vendorLoginRequest): Observable<any>{
     return this.http.post(`${this.baseURL}/auth/vendorLogin`, reqPayload);
   }
+
+
 
   // Sign-Up
   userSignUp(reqPayload: userSignUpReqForm): Observable<any> {
@@ -31,6 +35,8 @@ export class ApiService {
     return this.http.post(`${this.baseURL}/auth/registerVendor`, reqPayload);
   }
 
+
+
   // OTP
   sendOTP(reqPayload: otpSendRequest): Observable<any>{
     return this.http.post(`${this.baseURL}/auth/sendOtp`, reqPayload);
@@ -38,5 +44,13 @@ export class ApiService {
   verifyOTP(reqPayload: otpVerifyRequest): Observable<any>{
     return this.http.post(`${this.baseURL}/auth/verifyOtp`, reqPayload);
   }
+
+
+
+  // QR
+  generateQRCode(reqPayload: vendorLoginRequest): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/generateQrCode`, reqPayload);
+  }
+
 
 }

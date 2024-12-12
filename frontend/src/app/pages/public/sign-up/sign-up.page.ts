@@ -203,7 +203,7 @@ export class SignUpPage implements OnInit {
                 else {
                   this.notification.notifyUser("successSnack", 'User successfully added.');
                   this.dismissLoader();
-                  this.router.navigate(['/dashboard']);
+                  this.router.navigate(['/user-dashboard']);
                 }
               },
               (error) => {
@@ -250,7 +250,7 @@ export class SignUpPage implements OnInit {
                 else {
                   this.dismissLoader();
                   this.notification.notifyUser("successSnack", 'Vendor successfully added.');
-                  this.router.navigate(['/dashboard']);
+                  this.router.navigate(['/vendor-dashboard']);
                 }
               },
               (error) => {

@@ -24,6 +24,7 @@ export class VendorLoginPage implements OnInit {
   timer: number = 60;
   timerInterval: any;
   email: string = '';
+  qrCodeImage: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -108,7 +109,7 @@ export class VendorLoginPage implements OnInit {
       return;
     }
 
-    await this.presentLoader();
+    await this.presentLoader('Logging in...');
 
     const otpPayload: otpVerifyRequest = {
       otp: this.getOTPString(),
@@ -121,7 +122,7 @@ export class VendorLoginPage implements OnInit {
       (response) => {
         if(response && response.verified){
           this.dismissLoader();
-          this.router.navigate(["/dashboard"]);
+          this.router.navigate(["/vendor-dashboard"]);
         }
         else {
           this.dismissLoader();
@@ -136,9 +137,26 @@ export class VendorLoginPage implements OnInit {
   }
 
   onSubmitQR() {
-    this.qrVisible = true;
-    console.log('QR verification in progress...');
-    // QR verification logic goes here
+    this.presentLoader('Generating QR...');
+
+    
+    const vendorLoginForm: vendorLoginRequest = {
+      email: this.vendorLoginForm.value.email,
+      phoneNumber: this.vendorLoginForm.value.phoneNumber,
+    }
+    
+    
+    this.apiService.generateQRCode(vendorLoginForm).subscribe(
+      (response) => {
+        this.qrVisible = true;
+        this.dismissLoader();
+        this.qrCodeImage = response.qrCode;
+      },
+      (error: any) => {
+        this.dismissLoader();
+        console.error('QR Code generation failed:', error);
+      }
+    );
   }
 
 
@@ -176,6 +194,22 @@ export class VendorLoginPage implements OnInit {
 
     this.sendOTPRequest();
   }
+
+  onScanSuccess(qrData: string) {
+    const userData = JSON.parse(qrData); // Decode QR data
+  
+    // Display credentials for confirmation
+    const confirm = window.confirm(`Confirm Your Credentials:\nEmail: ${userData.email}\nPhoneNo: ${userData.phoneNumber}`);
+  
+    if (confirm) {
+      // On Yes, navigate to Dashboard
+      this.router.navigate(['/dashboard']);
+    } else {
+      // On No, navigate back to Login Page
+      this.router.navigate(['/login']);
+    }
+  }
+  
 
   startOtpTimer() {
 

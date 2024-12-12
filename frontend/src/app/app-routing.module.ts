@@ -12,11 +12,22 @@ const routes: Routes = [
     path: 'public',
     loadChildren: () => import('./pages/public/initial/initial.module').then( m => m.InitialPageModule)
   },
+  // {
+  //   path: 'dashboard',
+  //   canActivate: [AuthGuard],
+  //   loadChildren: () => import('./pages/member/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  // },
   {
-    path: 'dashboard',
+    path: 'vendor-dashboard',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/member/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    loadChildren: () => import('./pages/member/vendor/vendor-dashboard/vendor-dashboard.module').then( m => m.VendorDashboardPageModule)
   },
+  {
+    path: 'user-dashboard',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/member/user/user-dashboard/user-dashboard.module').then( m => m.UserDashboardPageModule)
+  },
+
 ];
 
 @NgModule({

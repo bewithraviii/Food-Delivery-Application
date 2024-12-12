@@ -1,5 +1,6 @@
 const authService = require('../services/auth/auth');
 const otpService = require('../services/mail/mail');
+const qrCodeService = require('../services/qr-code/qrCode')
 
 exports.login = async(req, res) => {
     return await authService.userLogin(req.body, res);
@@ -23,4 +24,8 @@ exports.sendOTP = async(req, res) => {
 
 exports.verifyOTP = async(req, res) => {
     return await otpService.verifyOtpMail(req.body, res);
+}
+
+exports.generateQR = async(req, res) => {
+    return await qrCodeService.generateQRCode(req.body, res);
 }
