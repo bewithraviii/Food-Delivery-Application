@@ -47,6 +47,27 @@ const userSignUp = async(data, res) => {
     }
 }
 
+const vendorLogin = async(data, res) => {
+    if(!data) {
+        return res.status(400).json({ message: 'Vendor credentials is required' });
+    }
+
+    try{
+        const response = { token: '' };
+        const vendor = await Vendor.findOne({ email: data.email, "owner.phoneNo": data.phoneNumber });
+        if (!vendor) throw new Error('Invalid email or phone-number');
+    
+        const token = jwt.generateToken(vendor._id);
+        if(!token) throw new Error('Something went wrong while creating token');
+    
+        response.token = token;
+    
+        res.status(200).json(response);
+    } catch(err) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
 const vendorSignUp = async(data, res) => {
     if(!data) {
         return res.status(400).json({ message: 'Vendor detail is required' });
@@ -76,4 +97,4 @@ const vendorSignUp = async(data, res) => {
 //     return await bcrypt.compare(enteredPassword, storedPassword);
 // };
 
-module.exports = { userLogin, userSignUp, vendorSignUp }
+module.exports = { userLogin, userSignUp, vendorLogin, vendorSignUp }

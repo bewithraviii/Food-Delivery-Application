@@ -1,0 +1,181 @@
+.center {
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+  height: 100vh;            /* Make the container take full viewport height */
+  width: 100%;              /* Ensure it takes full width */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+  
+  .resetPass-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 1rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #FFFFFF;
+    color: #ff7d34;
+    z-index: 1;
+    margin: 1rem;
+  }
+  
+  .logo img {
+    width: 8rem;
+    margin: 0 auto 1rem;
+    display: block;
+  }
+  
+  .title {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  
+  .mat-form-field {
+    width: 100%;  /* Ensure form fields take full width */
+  }
+  
+  .marginT {
+    margin-top: 1rem;
+  }
+  
+  .forgotBtn {
+    width: 100%;
+    margin-top: 1rem;
+    background-color: #FF7622;
+    color: white;
+    box-shadow: none;
+    border-radius: 12px;
+    &:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+  }
+  
+  .signUp {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .signUp a {
+    color: #ff7d34;
+    text-decoration: none;
+  }
+
+  .LoginBtn {
+    box-shadow: none !important; 
+    background-color: #FF7622;
+    width: 100%;
+    border-radius: 12px;
+    color: white;
+    &:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+  }
+
+  .sendOTPButton{
+    box-shadow: none !important; 
+    background-color: #FF7622;
+    border-radius: 12px;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+
+  .credText {
+    color: #1E1E2E;
+  }
+  
+  .method-toggle {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+  }
+  
+  .method-toggle button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    color: #1e1e2e;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .method-toggle button.active {
+    background-color: #ff7622;
+    color: white;
+  }
+
+  .otp-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+    
+  .otp-box {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 2px solid #ff7d34;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+  }
+    
+  .otp-box input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #1E1E2E;
+  }
+    
+  .resendBtn {
+    color: #FF7622 !important;
+    font-size: 15px !important;
+      height: auto;
+      width: auto;
+    &:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+  }
+  
+  .qr-container {
+    text-align: center;
+  }
+  
+  .qr-container img {
+    width: 200px; /* Adjust size as necessary */
+    margin-top: 1rem;
+  }
+  
+  .qr-code {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .qr-code img {
+    width: 200px; /* Adjust the size as needed */
+    margin-top: 1rem;
+  }
+
+  ::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab-indicator__content--underline {
+    border-color: #FF7622 !important;
+  }
+  
+  
+  ::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+    color: #FF7622 !important;
+  }

@@ -8,6 +8,7 @@ import { vendorSignUpReqForm, userSignUpReqForm, otpVerifyRequest, otpSendReques
 import { ApiService } from 'src/app/services/api/api.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-sign-up',
@@ -40,6 +41,7 @@ export class SignUpPage implements OnInit {
     private authApiService: AuthService,
     private apiService: ApiService,
     private notification: NotificationService,
+    private loadingController: LoadingController,
     breakpointObserver: BreakpointObserver,
   ) {
     this.stepperOrientation = breakpointObserver
@@ -109,21 +111,27 @@ export class SignUpPage implements OnInit {
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.selectedTab === 0 && this.signupForm.valid) {
+      await this.presentLoader();
       console.log('User Form Submitted:', this.signupForm.value);
       try{
         this.userEmail = this.signupForm.value.email;
         this.sendOTPRequest();
+        this.dismissLoader();
       } catch(err: any) {
+        this.dismissLoader();
         console.log("USER SIGN-UP ERROR: ", err.message);
       }
     } else if (this.selectedTab === 1) {
       if (this.adminFormGroup1.valid && this.adminFormGroup2.valid && this.adminFormGroup3.valid) {
+        await this.presentLoader();
         try{
           this.vendorEmail = this.adminFormGroup2.value.ownerEmail;
+          this.dismissLoader();
           this.sendOTPRequest();
         } catch(err: any){
+          this.dismissLoader();
           console.log("VENDOR SIGN-UP ERROR: ", err.message);
         }
       }
@@ -133,32 +141,39 @@ export class SignUpPage implements OnInit {
   }
 
   
-  sendOTPRequest(){
+  async sendOTPRequest() {
+    await this.presentLoader();
     const otpSendReq: otpSendRequest = {
       email: this.selectedTab === 0 ? this.userEmail : this.vendorEmail,
     }
     try {
       if(!otpSendReq.email){
         console.log("Email not found");
+        this.dismissLoader();
         return;
       }
       this.apiService.sendOTP(otpSendReq).subscribe(() => {
         this.isOtpStage = true;
         this.startOtpTimer();
+        this.dismissLoader();
       }, error => {
+        this.dismissLoader();
         console.error('OTP send failed', error);
       });
     } catch(error: any){
+      this.dismissLoader();
       console.log("OTP ERROR: ", error.message);
     }
 
   }
 
-  onSubmitOtp() {
+  async onSubmitOtp() {
     if (!this.otpForm.valid) {
       console.log('Invalid OTP');
       return;
     }
+
+    await this.presentLoader();
 
     const otpPayload: otpVerifyRequest = {
       email: this.selectedTab === 0 ? this.userEmail : this.vendorEmail,
@@ -182,15 +197,18 @@ export class SignUpPage implements OnInit {
               (Response) => {
                 if(!Response){
                   console.log("User not registered, Please try again.");
+                  this.dismissLoader();
                   this.notification.notifyUser("errorSnack", 'User not registered, Please try again.');
                 }
                 else {
                   this.notification.notifyUser("successSnack", 'User successfully added.');
+                  this.dismissLoader();
                   this.router.navigate(['/dashboard']);
                 }
               },
               (error) => {
                 console.log("Something went wrong while registering user.")
+                this.dismissLoader();
                 this.notification.notifyUser("errorSnack", error.message);
               }
             );
@@ -226,15 +244,18 @@ export class SignUpPage implements OnInit {
               (Response) => {
                 if(!Response){
                   console.log("Vendor not registered, Please try again.");
+                  this.dismissLoader();
                   this.notification.notifyUser("errorSnack", 'Vendor not registered, Please try again.');
                 }
                 else {
+                  this.dismissLoader();
                   this.notification.notifyUser("successSnack", 'Vendor successfully added.');
                   this.router.navigate(['/dashboard']);
                 }
               },
               (error) => {
                 console.log("Something went wrong while registering vendor.")
+                this.dismissLoader();
                 this.notification.notifyUser("errorSnack", error.message);
               }
             );
@@ -244,16 +265,18 @@ export class SignUpPage implements OnInit {
           }
         }
         else {
+          this.dismissLoader();
           console.error('OTP verification failed', response.message);
         }
       },
       (error) => {
+        this.dismissLoader();
         console.error('Something went wrong while verifying OTP', error);
       }
     );
   }
 
-  resendOtp() {
+  async resendOtp() {
     console.log('Resend OTP triggered for:', this.userEmail);
     this.otpForm.reset();
     this.startOtpTimer();
@@ -308,6 +331,19 @@ export class SignUpPage implements OnInit {
           this.resendDisabled = false;
         }
     }, 1000);
+  }
+
+  async presentLoader(message?: string) {
+    const loader = await this.loadingController.create({
+      message: message,
+      spinner: 'lines',
+      backdropDismiss: false,
+    });
+    await loader.present();
+  }
+  
+  async dismissLoader() {
+    await this.loadingController.dismiss();
   }
 
 }

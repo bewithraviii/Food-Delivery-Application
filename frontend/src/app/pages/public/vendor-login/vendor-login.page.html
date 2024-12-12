@@ -1,0 +1,131 @@
+<div class="center">
+  <div class="col-xs-12 col-md-12 resetPass-card">
+    <div class="logo">
+      <img [src]="logo" alt="Logo" />
+    </div>
+    <div class="title" style="margin-bottom: 1rem;">
+      <div class="text-center mb-2 mt-2 credText">Please sign in to your existing vendor account</div>
+    </div>
+  
+    <div *ngIf="!showVerificationOptions">
+      <form [formGroup]="vendorLoginForm" (ngSubmit)="onSubmit()" style="padding: 1rem;">
+        <div style="margin-bottom: 1rem;">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label class="credText">Restaurant Email</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="example@gmail.com" />
+            <mat-error *ngIf="vendorLoginForm.get('email')?.invalid && vendorLoginForm.get('email')?.touched" style="padding: 0;">
+              Please enter a valid email.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label class="credText">Owner Number</mat-label>
+            <input matInput formControlName="phoneNumber" type="tel" required />
+            <mat-error *ngIf="vendorLoginForm.get('phoneNumber')?.invalid && vendorLoginForm.get('phoneNumber')?.touched">
+              Phone Number must be at least 10 characters long.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      
+        <div class="marginT">
+          <div class="ion-activatable ripple-parent rounded-rectangle">
+            <button mat-fab extended class="forgotBtn" style="box-shadow: none !important;" [disabled]="!vendorLoginForm.valid">
+              Login
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Verification Options -->
+    <div *ngIf="showVerificationOptions">
+      <mat-tab-group [(selectedIndex)]="selectedMethodIndex" (selectedTabChange)="onTabChange($event)">
+
+        <mat-tab label="Verify with OTP">
+          <div *ngIf="!otpVisible" style="padding: 2rem;">
+            <div class="otp-info text-center" style="color: #7E8A97; margin-top: 1rem; font-size: 13px;">
+              <p>Click on below button to process with OTP verification
+              </p>
+              <button mat-fab extended class="sendOTPButton" (click)="onClickSendOTP()">
+                Send OTP
+              </button> 
+            </div>
+          </div>
+          <div *ngIf="otpVisible">
+            <form *ngIf="selectedMethod === 'OTP'" [formGroup]="otpForm" (ngSubmit)="onSubmitOTP()" style="padding: 2rem;">
+              <div class="otp-container" style="display: flex; justify-content: center;">
+                <!-- Create 6 separate input boxes for OTP digits -->
+                <div class="otp-box">
+                  <input matInput formControlName="otp1" maxlength="1" (input)="moveFocus($event, 'otp2')" />
+                </div>
+                <div class="otp-box">
+                  <input matInput formControlName="otp2" maxlength="1" (input)="moveFocus($event, 'otp3')" />
+                </div>
+                <div class="otp-box">
+                  <input matInput formControlName="otp3" maxlength="1" (input)="moveFocus($event, 'otp4')" />
+                </div>
+                <div class="otp-box">
+                  <input matInput formControlName="otp4" maxlength="1" (input)="moveFocus($event, 'otp5')" />
+                </div>
+                <div class="otp-box">
+                  <input matInput formControlName="otp5" maxlength="1" (input)="moveFocus($event, 'otp6')" />
+                </div>
+                <div class="otp-box">
+                  <input matInput formControlName="otp6" maxlength="1" />
+                </div>
+              </div>
+              <mat-error *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched" style="padding: 0;">
+                Please enter a valid 6-digit OTP.
+              </mat-error>
+              <div class="otp-info text-center" style="color: #7E8A97; margin-top: 1rem; font-size: 13px;">
+                <p>Your OTP will be valid until {{ timer }} seconds 
+                  <button 
+                    class="resendBtn"
+                    mat-button 
+                    type="button"
+                    (click)="resendOtp()" 
+                    [disabled]="resendDisabled">
+                    Resend
+                  </button>
+                </p>
+              </div>
+              <div class="marginT" style="padding-left: 1rem; padding-right: 1rem; margin-top: 2rem;">
+                <div class="ion-activatable ripple-parent rounded-rectangle">
+                  <button mat-fab extended class="LoginBtn" [disabled]="!otpForm.valid || !resendDisabled">
+                    Verify OTP
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Verify with QR">
+          <div *ngIf="selectedMethod === 'QR'" class="qr-container" style="padding: 2rem;">
+            <div *ngIf="!qrVisible">
+              <p class="credText" style="color: #7E8A97; margin-top: 1rem; font-size: 13px;">Scan the QR Code to verify</p>
+              <div>
+                <button mat-fab extended class="forgotBtn" (click)="onSubmitQR()">View QR</button>
+              </div>
+            </div>
+            <div style="margin-top: 2rem; margin-bottom: 2rem;" *ngIf="qrVisible">
+              <h3>Scan this QR code to verify:</h3>
+              <img src="assets/svg/qr-placeholder.svg" alt="QR Code Placeholder" />
+            </div>
+          </div>
+        </mat-tab>
+        
+      </mat-tab-group>
+    </div>
+
+    <div class="marginT signUp">
+      <p style="color: #646982;">
+        Login as a user?
+        <span>
+          <a style="color: #ff7d34;" (click)="backToLogin()" type="button">Back to Login</a>
+        </span>
+      </p>
+    </div>
+  </div>
+</div>

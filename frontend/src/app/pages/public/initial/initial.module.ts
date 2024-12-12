@@ -11,7 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoginPage } from '../login/login.page';
-import { ForgotPasswordPage } from '../forgot-password/forgot-password.page';
+import { VendorLoginPage } from '../vendor-login/vendor-login.page';
 import { SignUpPage } from '../sign-up/sign-up.page';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -47,7 +47,7 @@ import { MatSelectModule } from '@angular/material/select';
   declarations: [
     InitialPage,
     LoginPage,
-    ForgotPasswordPage,
+    VendorLoginPage,
     SignUpPage
   ]
 })

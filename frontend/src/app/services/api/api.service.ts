@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { loginRequest, otpSendRequest, otpVerifyRequest, userSignUpReqForm, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { loginRequest, otpSendRequest, otpVerifyRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -18,6 +18,9 @@ export class ApiService {
   // Login
   login(reqPayload: loginRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/login`, reqPayload); 
+  }
+  vendorLogin(reqPayload: vendorLoginRequest): Observable<any>{
+    return this.http.post(`${this.baseURL}/auth/vendorLogin`, reqPayload);
   }
 
   // Sign-Up

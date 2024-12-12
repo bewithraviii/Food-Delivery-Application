@@ -6,6 +6,11 @@ export interface loginRequest {
     phoneNumber: string;
 }
 
+export interface vendorLoginRequest {
+    email: string;
+    phoneNumber: string;
+}
+
 export interface otpSendRequest {
     email: string;
 }
@@ -21,6 +26,8 @@ export interface userSignUpReqForm {
     phoneNumber: string,
     address: string
 }
+
+
 
 export interface vendorSignUpReqForm {
     name: String,

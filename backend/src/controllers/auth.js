@@ -5,6 +5,10 @@ exports.login = async(req, res) => {
     return await authService.userLogin(req.body, res);
 }
 
+exports.vendorLogin = async(req, res) => {
+    return await authService.vendorLogin(req.body, res);
+}
+
 exports.signUpUser = async(req, res) => {
     return await authService.userSignUp(req.body, res);
 }

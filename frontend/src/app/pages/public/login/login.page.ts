@@ -62,7 +62,7 @@ export class LoginPage implements OnInit {
         console.log('Form is invalid');
       }
 
-      await this.presentLoader('Sending OTP...');
+      await this.presentLoader();
 
       const reqPayload: loginRequest = {
         email: this.loginForm.value.email,
@@ -88,7 +88,7 @@ export class LoginPage implements OnInit {
 
     async sendOTPRequest(){
 
-      await this.presentLoader('Generating OTP...');
+      await this.presentLoader();
 
       const otpSendReq: otpSendRequest = {
         email: this.userEmail
@@ -147,8 +147,8 @@ export class LoginPage implements OnInit {
     }
   
 
-    goToForgotPassword() {
-      this.router.navigate(["/public/forgot-password"]);
+    goToVendorLogin() {
+      this.router.navigate(["/public/vendor-login"]);
     }
 
     goToSignUp() {
@@ -199,7 +199,7 @@ export class LoginPage implements OnInit {
       }, 1000);
     }
 
-    async presentLoader(message: string) {
+    async presentLoader(message?: string) {
       const loader = await this.loadingController.create({
         message: message,
         spinner: 'lines',
