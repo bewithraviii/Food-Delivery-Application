@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { otpSendRequest, otpVerifyRequest, vendorLoginRequest } from 'src/app/models/api.interface';
+import { otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, vendorLoginRequest } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -15,6 +15,7 @@ export class VendorLoginPage implements OnInit {
   logo: string = 'assets/svg/logo.svg';
   vendorLoginForm!: FormGroup;
   otpForm!: FormGroup;
+  qrOtpForm!: FormGroup;
   showVerificationOptions = false;
   otpVisible: Boolean = false;
   selectedMethod: 'OTP' | 'QR' = 'OTP'; 
@@ -24,6 +25,7 @@ export class VendorLoginPage implements OnInit {
   timer: number = 60;
   timerInterval: any;
   email: string = '';
+  phoneNumber: string = '';
   qrCodeImage: any;
 
   constructor(
@@ -48,6 +50,15 @@ export class VendorLoginPage implements OnInit {
       otp5: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
       otp6: ['', [Validators.required, Validators.pattern('^[0-9]$')]]
     });
+
+    this.qrOtpForm = this.formBuilder.group({
+      otp1: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp2: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp3: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp4: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp5: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
+      otp6: ['', [Validators.required, Validators.pattern('^[0-9]$')]]
+    });
   }
 
   async onSubmit() {
@@ -62,6 +73,7 @@ export class VendorLoginPage implements OnInit {
       phoneNumber: this.vendorLoginForm.value.phoneNumber,
     }
     this.email = this.vendorLoginForm.value.email;
+    this.phoneNumber = this.vendorLoginForm.value.phoneNumber;
     console.log('Vendor-Login', vendorLoginForm);
     this.authService.processVendorLogin(vendorLoginForm).subscribe(
       () => { 
@@ -139,18 +151,17 @@ export class VendorLoginPage implements OnInit {
   onSubmitQR() {
     this.presentLoader('Generating QR...');
 
-    
     const vendorLoginForm: vendorLoginRequest = {
       email: this.vendorLoginForm.value.email,
       phoneNumber: this.vendorLoginForm.value.phoneNumber,
     }
     
-    
     this.apiService.generateQRCode(vendorLoginForm).subscribe(
       (response) => {
+        console.log("Generate QR : ", response);
         this.qrVisible = true;
-        this.dismissLoader();
         this.qrCodeImage = response.qrCode;
+        this.dismissLoader();
       },
       (error: any) => {
         this.dismissLoader();
@@ -159,6 +170,40 @@ export class VendorLoginPage implements OnInit {
     );
   }
 
+  async onSubmitQrOTP(){
+    if (!this.qrOtpForm.valid) {
+      console.log('QR OTP Form is invalid');
+      return;
+    }
+
+    await this.presentLoader('Logging in...');
+
+    const qrOtpPayload: qrOtpVerifyRequest = {
+      otp: this.getQrOTPString(),
+      email: this.email,
+      phoneNumber: this.phoneNumber,
+    };
+
+    console.log(qrOtpPayload);
+    
+    this.apiService.verifyQrCodeOtp(qrOtpPayload).subscribe(
+      (response) => {
+        this.dismissLoader();
+        if(response && response.verified){
+          this.dismissLoader();
+          this.router.navigate(["/vendor-dashboard"]);
+        }
+        else {
+          this.dismissLoader();
+          console.error('QR Code OTP verification failed', response.message);
+        }
+      },
+      (error: any) => {
+        this.dismissLoader();
+        console.error('Something went wrong while QR Code OTP verification :', error);
+      }
+    )
+  }
 
   onTabChange(event: any) {
     this.selectedMethodIndex = event.index;
@@ -187,6 +232,17 @@ export class VendorLoginPage implements OnInit {
     ].join('');
   }
 
+  getQrOTPString(){
+    return [
+      this.qrOtpForm.value.otp1,
+      this.qrOtpForm.value.otp2,
+      this.qrOtpForm.value.otp3,
+      this.qrOtpForm.value.otp4,
+      this.qrOtpForm.value.otp5,
+      this.qrOtpForm.value.otp6
+    ].join('');
+  }
+
   resendOtp() {
     console.log('Resend OTP triggered for:', this.email);
     this.otpForm.reset();
@@ -194,22 +250,6 @@ export class VendorLoginPage implements OnInit {
 
     this.sendOTPRequest();
   }
-
-  onScanSuccess(qrData: string) {
-    const userData = JSON.parse(qrData); // Decode QR data
-  
-    // Display credentials for confirmation
-    const confirm = window.confirm(`Confirm Your Credentials:\nEmail: ${userData.email}\nPhoneNo: ${userData.phoneNumber}`);
-  
-    if (confirm) {
-      // On Yes, navigate to Dashboard
-      this.router.navigate(['/dashboard']);
-    } else {
-      // On No, navigate back to Login Page
-      this.router.navigate(['/login']);
-    }
-  }
-  
 
   startOtpTimer() {
 

@@ -29,3 +29,7 @@ exports.verifyOTP = async(req, res) => {
 exports.generateQR = async(req, res) => {
     return await qrCodeService.generateQRCode(req.body, res);
 }
+
+exports.verifyQrOTP = async (req, res) => {
+    return await qrCodeService.verifyOTP(req.body, res);
+};

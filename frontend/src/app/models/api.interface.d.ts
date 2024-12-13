@@ -20,6 +20,13 @@ export interface otpVerifyRequest {
     otp: string;
 }
 
+export interface qrOtpVerifyRequest {
+    secret?:string;
+    email: string;
+    phoneNumber: string;
+    otp: string;
+}
+
 export interface userSignUpReqForm {
     name: string,
     email:string,

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { loginRequest, otpSendRequest, otpVerifyRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -50,6 +50,9 @@ export class ApiService {
   // QR
   generateQRCode(reqPayload: vendorLoginRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/generateQrCode`, reqPayload);
+  }
+  verifyQrCodeOtp(reqPayload: qrOtpVerifyRequest): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/verifyQrCodeOtp`, reqPayload);
   }
 
 

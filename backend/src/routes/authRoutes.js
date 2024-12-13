@@ -12,6 +12,7 @@ router.post('/registerVendor', authController.signUpVendor);
 router.post('/sendOtp', authController.sendOTP);
 router.post('/verifyOtp', authController.verifyOTP);
 router.post('/generateQrCode', authController.generateQR);
+router.post('/verifyQrCodeOtp', authController.verifyQrOTP);
 
 
 
