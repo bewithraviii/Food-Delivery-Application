@@ -163,3 +163,17 @@ mat-form-field {
 ion-spinner {
 	--color: #FF7622 !important;
 }	
+
+
+@media (max-height: 550px) {
+	.scrollable-form {
+	  max-height: calc(100vh - 270px); /* Adjust based on your layout */
+	  overflow-y: auto;
+	  padding-right: 1rem;
+	  scroll-behavior: smooth;
+	}
+}
+  
+form {
+	transition: all 0.1s ease-in-out;
+}

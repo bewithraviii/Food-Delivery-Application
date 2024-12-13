@@ -179,3 +179,26 @@
   ::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
     color: #FF7622 !important;
   }
+
+  /* Scroll behavior */
+@media (max-height: 920px) {
+  .scrollable-tab-group {
+    height: calc(100vh - 250px); /* Adjust based on your layout */
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+
+}
+
+@media (max-height: 550px) {
+  .scrollable-form {
+    max-height: calc(100vh - 270px); /* Adjust based on your layout */
+    overflow-y: auto;
+    padding-right: 1rem;
+    scroll-behavior: smooth;
+  }
+}
+
+mat-tab-group, form {
+  transition: all 0.1s ease-in-out;
+}

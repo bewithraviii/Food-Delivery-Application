@@ -9,7 +9,7 @@
         <div class="text-center mb-2 mt-2 credText">Please sign in to your existing account</div>
       </div>
     
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="padding: 1rem;">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" style="padding: 1rem;" class="scrollable-form">
         <div style="margin-bottom: 1rem;">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label class="credText">Email</mat-label>
@@ -50,7 +50,7 @@
         <div class="text-center mt-2 credText">Enter the OTP sent to your email</div>
       </div>
 
-      <form [formGroup]="otpForm" (ngSubmit)="onSubmitOtp()" style="padding: 1rem;">
+      <form [formGroup]="otpForm" (ngSubmit)="onSubmitOtp()" style="padding: 1rem;" class="scrollable-form">
         <div class="otp-container" style="display: flex; justify-content: center;">
           <!-- Create 6 separate input boxes for OTP digits -->
           <div class="otp-box">

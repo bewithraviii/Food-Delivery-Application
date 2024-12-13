@@ -8,7 +8,7 @@
     </div>
   
     <div *ngIf="!showVerificationOptions">
-      <form [formGroup]="vendorLoginForm" (ngSubmit)="onSubmit()" style="padding: 1rem;">
+      <form [formGroup]="vendorLoginForm" (ngSubmit)="onSubmit()" style="padding: 1rem;" [ngClass]="{ 'scrollable-form': !showVerificationOptions }">
         <div style="margin-bottom: 1rem;">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label class="credText">Restaurant Email</mat-label>
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Verification Options -->
-    <div *ngIf="showVerificationOptions">
+    <div *ngIf="showVerificationOptions" [ngClass]="qrVisible &&  selectedMethod === 'QR'? 'scrollable-tab-group' : 'scrollable-form'">
       <mat-tab-group [(selectedIndex)]="selectedMethodIndex" (selectedTabChange)="onTabChange($event)">
 
         <mat-tab label="Verify with OTP">
@@ -157,7 +157,7 @@
     </div>
 
     <div class="marginT signUp">
-      <p style="color: #646982;">
+      <p style="color: #646982; margin: 0 !important;">
         Login as a user?
         <span>
           <a style="color: #ff7d34;" (click)="backToLogin()" type="button">Back to Login</a>
