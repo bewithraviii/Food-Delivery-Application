@@ -81,15 +81,3 @@ ion-router-outlet {
 // }
 
 
-/* Success Notification */
-::ng-deep .successSnack {
-    background-color: #6ed672 !important;
-    font-weight: bold !important;
-    color: white !important;
-}
-/* Error Notification */
-::ng-deep .errorSnack {
-    background-color: #ff6257 !important;
-    font-weight: bold !important;
-    color: white !important;
-}

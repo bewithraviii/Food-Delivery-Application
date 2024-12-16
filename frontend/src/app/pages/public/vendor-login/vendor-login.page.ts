@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, vendorLoginRequest } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -33,13 +34,14 @@ export class VendorLoginPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     private authService: AuthService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private notification: NotificationService,
   ) {}
 
   ngOnInit() {
     this.vendorLoginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
     });
 
     this.otpForm = this.formBuilder.group({
@@ -76,13 +78,14 @@ export class VendorLoginPage implements OnInit {
     this.phoneNumber = this.vendorLoginForm.value.phoneNumber;
     console.log('Vendor-Login', vendorLoginForm);
     this.authService.processVendorLogin(vendorLoginForm).subscribe(
-      () => { 
+      (response) => { 
         this.dismissLoader();
         this.showVerificationOptions = true;
       },
       (error: any) => {
         this.dismissLoader();
-        console.error('Login failed', error);
+        this.notification.notifyUser("errorSnack", error.error.message);
+        console.error('Login failed', error.error.message);
       }
     );
   }
@@ -104,12 +107,15 @@ export class VendorLoginPage implements OnInit {
       this.apiService.sendOTP(otpSendReq).subscribe(() => {
         this.startOtpTimer();
         this.dismissLoader();
+        this.notification.notifyUser("successSnack", "OTP successfully sent.");
       }, error => {
         this.dismissLoader();
+        this.notification.notifyUser("errorSnack", error.error.message);
         console.error('OTP send failed', error);
       });
     } catch(error: any){
       this.dismissLoader();
+      this.notification.notifyUser("errorSnack", error.error.message);
       console.log("OTP ERROR: ", error.message);
     }
 
@@ -134,15 +140,18 @@ export class VendorLoginPage implements OnInit {
       (response) => {
         if(response && response.verified){
           this.dismissLoader();
+          this.notification.notifyUser("successSnack", "OTP successfully verified.");
           this.router.navigate(["/vendor-dashboard"]);
         }
         else {
           this.dismissLoader();
+          this.notification.notifyUser("errorSnack", response.message);
           console.error('OTP verification failed', response.message);
         }
       },
       (error) => {
         this.dismissLoader();
+        this.notification.notifyUser("errorSnack", error.error.message);
         console.error('Something went wrong while verifying OTP', error);
       }
     );
@@ -165,6 +174,7 @@ export class VendorLoginPage implements OnInit {
       },
       (error: any) => {
         this.dismissLoader();
+        this.notification.notifyUser("errorSnack", error.error.message);
         console.error('QR Code generation failed:', error);
       }
     );
@@ -189,17 +199,20 @@ export class VendorLoginPage implements OnInit {
     this.apiService.verifyQrCodeOtp(qrOtpPayload).subscribe(
       (response) => {
         this.dismissLoader();
-        if(response && response.verified){
+        if(response && response.verified) {
           this.dismissLoader();
           this.router.navigate(["/vendor-dashboard"]);
+          this.notification.notifyUser("successSnack", "QR Code OTP verification success.");
         }
         else {
           this.dismissLoader();
+          this.notification.notifyUser("errorSnack", "QR Code OTP verification failed.");
           console.error('QR Code OTP verification failed', response.message);
         }
       },
       (error: any) => {
         this.dismissLoader();
+        this.notification.notifyUser("errorSnack", error.error.message);
         console.error('Something went wrong while QR Code OTP verification :', error);
       }
     )

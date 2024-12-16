@@ -24,6 +24,7 @@ export class SignUpPage implements OnInit {
   adminFormGroup3!: FormGroup;
   adminFormGroup4!: FormGroup;
   stepperOrientation!: Observable<StepperOrientation>;
+  isVerticalStepper = false;
   logo: string = 'assets/svg/logo.svg';
   selectedTab: number = 0;
   isOtpStage: boolean = false;
@@ -50,14 +51,23 @@ export class SignUpPage implements OnInit {
 
       .observe([Breakpoints.XSmall, Breakpoints.Small])
       .pipe(map(({ matches }) => (matches ? 'vertical' : 'horizontal')));
-  }
+      
+      this.stepperOrientation.subscribe((orientation) => {
+        if(orientation === 'vertical'){
+          this.isVerticalStepper = true;
+        }
+        else {
+          this.isVerticalStepper = false;
+        }
+      });
+    }
 
   ngOnInit(): void {
 
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       address: ['', Validators.required],
     });
 
@@ -71,7 +81,7 @@ export class SignUpPage implements OnInit {
     this.adminFormGroup2 = this.fb.group({
       ownerName: ['', Validators.required],
       ownerEmail: ['', [Validators.required, Validators.email]],
-      ownerPhone: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      ownerPhone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       ownerAddress: ['', Validators.required],
     });
 
@@ -149,6 +159,7 @@ export class SignUpPage implements OnInit {
     try {
       if(!otpSendReq.email){
         console.log("Email not found");
+        this.notification.notifyUser("errorSnack", "Email not found, Please try again after sometime.");
         this.dismissLoader();
         return;
       }
@@ -158,10 +169,12 @@ export class SignUpPage implements OnInit {
         this.dismissLoader();
       }, error => {
         this.dismissLoader();
+        this.notification.notifyUser("errorSnack", error.error.message);
         console.error('OTP send failed', error);
       });
     } catch(error: any){
       this.dismissLoader();
+      this.notification.notifyUser("errorSnack", error.error.message);
       console.log("OTP ERROR: ", error.message);
     }
 
@@ -209,7 +222,7 @@ export class SignUpPage implements OnInit {
               (error) => {
                 console.log("Something went wrong while registering user.")
                 this.dismissLoader();
-                this.notification.notifyUser("errorSnack", error.message);
+                this.notification.notifyUser("errorSnack", error.error.message);
               }
             );
             this.otpForm.reset();
@@ -256,7 +269,7 @@ export class SignUpPage implements OnInit {
               (error) => {
                 console.log("Something went wrong while registering vendor.")
                 this.dismissLoader();
-                this.notification.notifyUser("errorSnack", error.message);
+                this.notification.notifyUser("errorSnack", error.error.message);
               }
             );
             this.otpForm.reset();
@@ -266,11 +279,13 @@ export class SignUpPage implements OnInit {
         }
         else {
           this.dismissLoader();
+          this.notification.notifyUser("errorSnack", response.message);
           console.error('OTP verification failed', response.message);
         }
       },
       (error) => {
         this.dismissLoader();
+        this.notification.notifyUser("errorSnack", error.error.message);
         console.error('Something went wrong while verifying OTP', error);
       }
     );

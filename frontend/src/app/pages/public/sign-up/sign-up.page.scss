@@ -84,6 +84,7 @@ button {
 	color: white !important;
 	box-shadow: none;
 	border-radius: 12px !important;
+  padding: 1.5rem !important;
 	&:disabled {
 		opacity: 0.8;
 		cursor: not-allowed;
@@ -160,13 +161,24 @@ mat-tab-group {
 
 /* Scroll behavior */
 @media (max-height: 925px) {
-  mat-tab-group {
+  // mat-tab-group {
+  //   height: calc(100vh - 250px); 
+  //   overflow: hidden;
+  //   scroll-behavior: smooth;
+  // }
+
+  .scrollable-tab-group {
     height: calc(100vh - 250px); 
-    overflow: hidden;
+    overflow-y: auto;
+    padding-right: 1rem;
     scroll-behavior: smooth;
   }
 
-  form {
+}
+
+@media (max-height: 660px) {
+  .scrollable-form {
+    max-height: calc(100vh - 270px);
     overflow-y: auto; 
     padding-right: 1rem;
     scroll-behavior: smooth;

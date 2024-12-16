@@ -7,7 +7,7 @@
     <div *ngIf="!isOtpStage">
       <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="onTabChange($event)" class="responsive-tabs">
         <mat-tab label="USER" class="userTabContent">
-          <form [formGroup]="signupForm"  style="margin-top: 0.5rem; padding: 1rem;" (ngSubmit)="onSubmit()">
+          <form [formGroup]="signupForm"  style="margin-top: 0.5rem; padding: 1rem;" (ngSubmit)="onSubmit()" [ngClass]="{ 'scrollable-form': selectedTab === 0 }">
             
             <div class="form-row">
               <mat-form-field class="form-field" appearance="outline">
@@ -33,7 +33,9 @@
               </mat-form-field>
             </div>
   
-            <button mat-raised-button class="submitBtn" type="submit" [disabled]="!signupForm.valid">Sign Up</button>
+            <div class="ion-activatable ripple-parent rounded-rectangle">
+              <button mat-raised-button class="submitBtn" type="submit" [disabled]="!signupForm.valid">Sign Up</button>
+            </div>
   
           </form>
         </mat-tab>
@@ -41,6 +43,10 @@
         <mat-tab label="VENDOR" class="vendorTabContent">
   
           <mat-stepper 
+          [ngClass]="{ 
+          'scrollable-tab-group': selectedTab === 1 && isVerticalStepper, 
+          'scrollable-form': selectedTab === 1 && !isVerticalStepper 
+          }"
           *ngIf="selectedTab === 1" 
           [orientation]="(stepperOrientation | async)!" 
           #adminStepper 
@@ -163,7 +169,8 @@
                   </div>
                   
                   <div class="form-row">
-                    <button 
+                    <button
+                    style="padding: 0 !important;" 
                     mat-raised-button 
                     class="submitBtn" 
                     (click)="onSubmit()" 
@@ -189,7 +196,7 @@
         <div class="text-center mt-4 credText">Enter the OTP sent to your email</div>
       </div>
 
-      <form [formGroup]="otpForm" (ngSubmit)="onSubmitOtp()" style="padding: 1rem;">
+      <form [formGroup]="otpForm" (ngSubmit)="onSubmitOtp()" style="padding: 1rem;" class="scrollable-form">
         <div class="otp-container" style="display: flex; justify-content: center;">
           <!-- Create 6 separate input boxes for OTP digits -->
           <div class="otp-box">
