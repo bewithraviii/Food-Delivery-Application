@@ -1,0 +1,48 @@
+<div class="home-page">
+    <div class="container desktop-dashboard">
+      <div class="dashboard-content">
+        <!-- Search Panel -->
+        <div class="row padding">
+          <div class="col-md-6">
+            <h4 style="color: #1E1D1D;">Hey Ravi, <span style="font-weight: bold;">Good Afternoon!</span></h4>
+            <input class="form-control" type="text" placeholder="Search dishes, restaurants">
+          </div>
+        </div>
+  
+        <!-- Featured Categories -->
+        <div class="row padding">
+          <div class="categories-section">
+            <h5>All Categories</h5>
+            <div class="category-cards">
+              <ion-card *ngFor="let category of categories" class="category-card">
+                <ion-img [src]="category.image"></ion-img>
+                <ion-card-header>
+                  <ion-card-title>{{ category.name }}</ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Featured Restaurants -->
+        <div class="row padding">
+          <div class="restaurants-section">
+            <h5>Open Restaurants</h5>
+            <div class="restaurant-cards">
+              <ion-card *ngFor="let restaurant of restaurants" class="restaurant-card">
+                <ion-img [src]="restaurant.image"></ion-img>
+                <ion-card-header>
+                  <ion-card-title>{{ restaurant.name }}</ion-card-title>
+                  <div class="restaurant-details">
+                    <ion-icon name="star-outline"></ion-icon>
+                    <span>{{ restaurant.rating }} | {{ restaurant.deliveryTime }} min</span>
+                  </div>
+                </ion-card-header>
+              </ion-card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div>

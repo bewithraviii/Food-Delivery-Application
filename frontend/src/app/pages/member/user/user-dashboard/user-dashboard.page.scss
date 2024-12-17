@@ -1,0 +1,35 @@
+
+
+ion-content {
+  --background: #F3F3F3 !important;
+}
+
+
+
+/* Header Styling */
+ion-toolbar {
+  --background: #F3F3F3;
+  --color: #32343E;
+}
+
+ion-tab-bar {
+  --background: #FFFFFF;
+}
+
+
+
+
+// /* Desktop Layout Adjustments */
+// .desktop-dashboard {
+//   padding: 20px;
+// }
+
+// .desktop-dashboard .category-cards {
+//   display: grid;
+//   grid-template-columns: repeat(4, 1fr);
+// }
+
+// .desktop-dashboard .restaurant-cards {
+//   display: grid;
+//   grid-template-columns: repeat(4, 1fr);
+// }

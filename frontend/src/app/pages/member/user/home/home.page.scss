@@ -1,0 +1,89 @@
+/* Text Color */
+h4, h5, ion-card-title, .restaurant-details span {
+    color: #32343E;
+    
+  }
+
+.toolbar-container {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+}
+
+.padding {
+    padding: 1rem;
+}
+
+.desktop-dashboard {
+    background-color: #F3F3F3 !important;
+    height: 100%;
+}
+
+.dashboard-content {
+    padding: 1rem;
+}
+  
+.welcome-section {
+    padding: 16px;
+    h4 {
+        font-size: 1.5rem;
+        color: #333;
+    }
+}
+
+.search-bar {
+    width: 100%;
+    margin-top: 16px;
+    }
+    .search-bar input {
+    color: #32343E;
+}
+
+.category-image-size {
+    width: 10rem !important;
+    height: 12rem !important;
+}
+
+/* Category Cards */
+.categories-section {
+    padding: 16px;
+    .category-cards {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+        ion-card {
+        width: 10rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+  
+/* Restaurant Cards */
+.restaurants-section {
+    padding: 16px;
+    .restaurant-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        ion-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
+.restaurant-details {
+    display: flex;
+    align-items: center;
+    ion-icon {
+        font-size: 16px;
+        color: #f39c12;
+    }
+    span {
+        margin-left: 8px;
+        font-size: 14px;
+        color: #32343E;
+    }
+}

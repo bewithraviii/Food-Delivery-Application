@@ -1,0 +1,42 @@
+ion-toolbar {
+    --background: #F3F3F3;
+    --color: #32343E; 
+}
+
+.headerPadding {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+}
+
+.iconButton {
+    justify-content: center; 
+    align-items: center; 
+    display: flex;
+    padding: 0.5rem;
+}
+
+.iconAndText {
+    justify-content: center; 
+    align-items: center; 
+    display: flex;
+    font-size: 1.4rem;
+    padding-right: 0.5rem;  
+}
+
+.deliveryAddressCenter {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.underlineAddressType {
+    color: #FC6E2A;
+    font-size: 16px;
+    border-bottom: 2px solid;
+    margin-right: 1rem;
+}
+
+.addressFont {
+    color: #676767;
+    font-size: 16px;
+}

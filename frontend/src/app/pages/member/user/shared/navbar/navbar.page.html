@@ -1,0 +1,78 @@
+<ion-header>
+  <div class="container">
+    <ion-toolbar>
+      <!-- <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons> -->
+      
+      <ion-title slot="start">
+        <div style="display: flex !important;">
+          <ion-img
+            style="width: 5rem;height: 3rem; margin-right: 2rem;"
+            [src]=logo
+            alt="logo"
+          ></ion-img>
+          <ion-text (click)="goToSearch()" class="deliveryAddressCenter">
+            <div class="iconButton">
+              <div class="iconAndText">
+                <ion-icon style="color: #FC6E2A;" name="location-sharp"></ion-icon>
+              </div>
+              <div style="display: flex;">
+                <div class="underlineAddressType">
+                  HOME
+                </div>
+                <div class="addressFont">
+                  Avalon-60, op.Sangath Pearl
+                </div>
+              </div>
+            </div>
+          </ion-text>
+        </div>
+      </ion-title>
+      
+  
+      <ion-buttons slot="end">
+        <ion-button (click)="goToHome()">
+          <div class="iconButton">
+            <div class="iconAndText">
+              <ion-icon name="home-outline"></ion-icon>
+            </div>
+            <div style="font-size: 17px;">
+              Home
+            </div>
+          </div>
+        </ion-button>
+        <ion-button (click)="goToSearch()">
+          <div class="iconButton">
+            <div class="iconAndText">
+              <ion-icon name="search-outline"></ion-icon>
+            </div>
+            <div style="font-size: 17px;">
+              Search
+            </div>
+          </div>
+        </ion-button>
+        <ion-button (click)="goToUser()">
+          <div class="iconButton">
+            <div class="iconAndText">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <div style="font-size: 17px;">
+              User
+            </div>
+          </div>
+        </ion-button>
+        <ion-button (click)="goToCart()">
+          <div class="iconButton">
+            <div class="iconAndText">
+              <ion-icon name="cart-outline"></ion-icon>
+            </div>
+            <div style="font-size: 17px;">
+              Cart
+            </div>
+          </div>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+</ion-header>
