@@ -1,18 +1,18 @@
-<ion-tabs>
+<ion-tabs *ngIf="isMobileView">
   <ion-tab-bar slot="bottom">
-    <ion-tab-button routerLink="/user-dashboard/home">
+    <ion-tab-button routerLink="/user-dashboard/home" routerLinkActive="active">
       <ion-icon name="home-outline"></ion-icon>
       <ion-label>Home</ion-label>
     </ion-tab-button>
-    <ion-tab-button routerLink="/user-dashboard/user">
+    <ion-tab-button routerLink="/user-dashboard/profile" routerLinkActive="active">
       <ion-icon name="person-outline"></ion-icon>
       <ion-label>User</ion-label>
     </ion-tab-button>
-    <ion-tab-button routerLink="/user-dashboard/cart">
+    <ion-tab-button routerLink="/user-dashboard/cart" routerLinkActive="active">
       <ion-icon name="cart-outline"></ion-icon>
       <ion-label>Cart</ion-label>
     </ion-tab-button>
-    <ion-tab-button routerLink="/user-dashboard/search">
+    <ion-tab-button routerLink="/user-dashboard/search" routerLinkActive="active">
       <ion-icon name="search-outline"></ion-icon>
       <ion-label>Search</ion-label>
     </ion-tab-button>

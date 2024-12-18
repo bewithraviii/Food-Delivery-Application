@@ -12,7 +12,7 @@
             [src]=logo
             alt="logo"
           ></ion-img>
-          <ion-text (click)="goToSearch()" class="deliveryAddressCenter">
+          <!-- <ion-text (click)="goToSearch()" class="deliveryAddressCenter">
             <div class="iconButton">
               <div class="iconAndText">
                 <ion-icon style="color: #FC6E2A;" name="location-sharp"></ion-icon>
@@ -26,13 +26,13 @@
                 </div>
               </div>
             </div>
-          </ion-text>
+          </ion-text> -->
         </div>
       </ion-title>
       
   
       <ion-buttons slot="end">
-        <ion-button (click)="goToHome()">
+        <ion-button routerLink="/user-dashboard/home" routerLinkActive="active">
           <div class="iconButton">
             <div class="iconAndText">
               <ion-icon name="home-outline"></ion-icon>
@@ -42,7 +42,7 @@
             </div>
           </div>
         </ion-button>
-        <ion-button (click)="goToSearch()">
+        <ion-button routerLink="/user-dashboard/search" routerLinkActive="active">
           <div class="iconButton">
             <div class="iconAndText">
               <ion-icon name="search-outline"></ion-icon>
@@ -52,7 +52,7 @@
             </div>
           </div>
         </ion-button>
-        <ion-button (click)="goToUser()">
+        <ion-button routerLink="/user-dashboard/profile" routerLinkActive="active">
           <div class="iconButton">
             <div class="iconAndText">
               <ion-icon name="person-outline"></ion-icon>
@@ -62,7 +62,7 @@
             </div>
           </div>
         </ion-button>
-        <ion-button (click)="goToCart()">
+        <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active">
           <div class="iconButton">
             <div class="iconAndText">
               <ion-icon name="cart-outline"></ion-icon>

@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserDashboardPage } from './user-dashboard.page';
 import { HomePage } from '../home/home.page';
 import { CartPage } from '../cart/cart.page';
+import { SearchPage } from '../search/search.page';
+import { ProfilePage } from '../profile/profile.page';
 
 const routes: Routes = [
   {
@@ -17,8 +19,8 @@ const routes: Routes = [
       },
       { path: 'home', component: HomePage },
       { path: 'cart', component: CartPage },
-      // { path: 'search', component: HomePageComponent },
-      // { path: 'user', component: HomePageComponent },
+      { path: 'search', component: SearchPage },
+      { path: 'profile', component: ProfilePage },
     ]
   }
 ];

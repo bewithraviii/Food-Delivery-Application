@@ -3,6 +3,10 @@ ion-toolbar {
     --color: #32343E; 
 }
 
+ion-button.active {
+    color: #FF7622 !important;
+}
+
 .headerPadding {
     padding-left: 3rem !important;
     padding-right: 3rem !important;

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { NavbarPage } from '../shared/navbar/navbar.page';
 import { TabsPage } from '../shared/tabs/tabs.page';
 import { CartPage } from '../cart/cart.page';
+import { SearchPage } from '../search/search.page';
+import { ProfilePage } from '../profile/profile.page';
 
 @NgModule({
   imports: [
@@ -29,6 +31,9 @@ import { CartPage } from '../cart/cart.page';
     TabsPage,
     HomePage,
     CartPage,
-  ]
+    SearchPage,
+    ProfilePage
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UserDashboardPageModule {}
