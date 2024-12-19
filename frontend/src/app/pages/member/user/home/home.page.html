@@ -12,14 +12,24 @@
         <!-- Featured Categories -->
         <div class="row padding">
           <div class="categories-section">
-            <h5>All Categories</h5>
-            <div class="category-cards">
-              <ion-card *ngFor="let category of categories" class="category-card">
-                <ion-img [src]="category.image"></ion-img>
-                <ion-card-header>
-                  <ion-card-title>{{ category.name }}</ion-card-title>
-                </ion-card-header>
-              </ion-card>
+            <div class="d-flex bd-highlight mb-3">
+              <div class="p-2 bd-highlight">
+                <h5>All Categories</h5>
+              </div>
+              <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
+                <ion-icon style="padding: 0.5rem;" (click)="scrollLeft()" class="scroll-btn prev-btn" name="arrow-back-outline"></ion-icon>
+                <ion-icon style="padding: 0.5rem;" (click)="scrollRight()" class="scroll-btn next-btn" name="arrow-forward-outline"></ion-icon>
+              </div>
+            </div>
+            <div class="category-cards-wrapper">
+              <div class="category-cards" #categoryCards>
+                <ion-card *ngFor="let category of categories" class="category-card">
+                  <ion-img [src]="category.image"></ion-img>
+                  <ion-card-header>
+                    <ion-card-title>{{ category.name }}</ion-card-title>
+                  </ion-card-header>
+                </ion-card>
+              </div>
             </div>
           </div>
         </div>
