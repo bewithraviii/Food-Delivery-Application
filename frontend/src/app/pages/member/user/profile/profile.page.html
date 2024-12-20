@@ -12,51 +12,57 @@
   </ion-header>
 </ion-content> -->
 
-<div class="profile-page">
+<div class="profile-page" style="padding-top: 2rem;">
   <div class="container">    
-    <!-- Desktop and Laptop View -->
-    <div *ngIf="isDesktop">
-      <div class="row padding">
-        <div class="user-profile d-flex bd-highlight mb-3">
-          <div class="p-2 bd-highlight">
-            <div>
-              <h2>{{ user.name | uppercase }}</h2>
+    <div class="row padding">
+      <div class="user-profile d-flex bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+          <div class="profile-intro">
+            <div class="profile-icon">
+              <img [src]="profileIcon" alt="profileIcon">
             </div>
-            <div class="user-detail">
-              <div class="user-detail-placement">
-                <div class="icon-style">
-                  <ion-icon name="person-outline" class="ion-icon-style" style="color: #FB6F3D;"></ion-icon>
-                </div>
-                <div style="margin-left: 1rem;">
-                  <h6 style="margin: 0; color: #32343E;">FULL NAME</h6>
-                  <p style="margin: 0; color: #6B6E82;">{{ user.name }}</p>
-                </div>
-              </div>
-              <div class="user-detail-placement">
-                <div class="icon-style">
-                  <ion-icon name="mail-outline" class="ion-icon-style" style="color: #413DFB;"></ion-icon>
-                </div>
-                <div style="margin-left: 1rem;">
-                  <h6 style="margin: 0; color: #32343E;">EMAIL</h6>
-                  <p style="margin: 0; color: #6B6E82;">{{ user.email }}</p>
-                </div>
-              </div>
-              <div class="user-detail-placement">
-                <div class="icon-style">
-                  <ion-icon name="call-outline" class="ion-icon-style" style="color: #369BFF;"></ion-icon>
-                </div>
-                <div style="margin-left: 1rem;">
-                  <h6 style="margin: 0; color: #32343E;">PHONE NUMBER</h6>
-                  <p style="margin: 0; color: #6B6E82;">{{ user.phoneNumber }}</p>
-                </div>
-              </div>
+            <div class="profile-text">
+              {{ user.name | uppercase }}
             </div>
           </div>
-          <div class="ms-auto p-2 bd-highlight">
-            <button class="edit-button" (click)="editUser()">Edit Profile</button>
+          <div class="user-detail">
+            <div class="user-detail-placement">
+              <div class="icon-style">
+                <ion-icon name="person-outline" class="ion-icon-style" style="color: #FB6F3D;"></ion-icon>
+              </div>
+              <div style="margin-left: 1rem;">
+                <h6 style="margin: 0; color: #32343E;">FULL NAME</h6>
+                <p style="margin: 0; color: #6B6E82;">{{ user.name }}</p>
+              </div>
+            </div>
+            <div class="user-detail-placement">
+              <div class="icon-style">
+                <ion-icon name="mail-outline" class="ion-icon-style" style="color: #413DFB;"></ion-icon>
+              </div>
+              <div style="margin-left: 1rem;">
+                <h6 style="margin: 0; color: #32343E;">EMAIL</h6>
+                <p style="margin: 0; color: #6B6E82;">{{ user.email }}</p>
+              </div>
+            </div>
+            <div class="user-detail-placement">
+              <div class="icon-style">
+                <ion-icon name="call-outline" class="ion-icon-style" style="color: #369BFF;"></ion-icon>
+              </div>
+              <div style="margin-left: 1rem;">
+                <h6 style="margin: 0; color: #32343E;">PHONE NUMBER</h6>
+                <p style="margin: 0; color: #6B6E82;">{{ user.phoneNumber }}</p>
+              </div>
+            </div>
           </div>
         </div>
+        <div class="ms-auto p-2 bd-highlight profile-edit">
+          <button class="edit-button profile-edit-btn" (click)="editUser()">Edit Profile</button>
+        </div>
       </div>
+    </div>
+    <!-- Desktop and Laptop View -->
+    <div *ngIf="isDesktop">
+
       <div class="row padding">
         <div class="desktop-dashboard">
           <div class="dashboard-sidebar">
@@ -81,8 +87,8 @@
                     <h4>{{ address.title }}</h4>
                     <p>{{ address.details }}</p>
                     <div class="actions">
-                      <button class="edit">Edit</button>
-                      <button class="delete">Delete</button>
+                      <button class="edit"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
+                      <button class="delete"><mat-icon fontIcon="delete_outline" class="delete"></mat-icon></button>
                     </div>
                   </div>
                 </div>
@@ -116,8 +122,8 @@
                     <h4>{{ address.title }}</h4>
                     <p>{{ address.details }}</p>
                     <div class="actions">
-                      <button class="edit">Edit</button>
-                      <button class="delete">Delete</button>
+                      <button class="edit"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
+                      <button class="delete"><mat-icon fontIcon="delete_sweep" class="delete"></mat-icon></button>
                     </div>
                   </div>
                 </div>

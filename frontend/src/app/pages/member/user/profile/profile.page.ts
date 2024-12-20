@@ -6,11 +6,12 @@ import { Component, HostListener, OnInit } from '@angular/core';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  profileIcon = 'assets/icons/personal-profile.png';
   isDesktop: boolean = true;
   selectedMenu: string = 'orders';
 
   user = {
-    name: 'Ravi',
+    name: 'Ravi Patel',
     phoneNumber: '8469563711',
     email: 'ravipateljigneshpatel137@gmail.com',
   };
