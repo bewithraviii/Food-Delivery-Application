@@ -1,0 +1,154 @@
+.container {
+    background-color: #F3F3F3 !important;
+    height: 100%;
+    color: #181C2E;
+}
+
+.padding {
+    padding: 1rem;
+}
+
+.profile-page {
+    background-color: #F3F3F3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-profile {
+    background: #F3F3F3;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-detail {
+    margin-top: 2rem;
+}
+
+.user-detail-placement{
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.icon-style {
+    background: #FFFFFF;
+    border-radius: 50%;
+    padding: 0.3rem;
+}
+
+.ion-icon-style {
+    font-size: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.desktop-dashboard {
+    display: flex !important;
+    padding: 0;
+}
+  
+.dashboard-sidebar {
+    width: 25%;
+    background-color: #F3F3F3;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+  
+.dashboard-sidebar h2 {
+    color: #32343e;
+    margin-bottom: 5px;
+}
+  
+.dashboard-sidebar p {
+    color: #646464;
+    margin-bottom: 20px;
+}
+  
+.dashboard-sidebar .edit-button {
+    background-color: #007bff !important;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+  
+.menu-list {
+    list-style: none;
+    padding: 0;
+}
+  
+.menu-list li {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #32343e;
+    transition: all 0.3s;
+    margin-top: 1rem;
+    border-radius: 12px;
+}
+  
+.menu-list li.active {
+    background-color: #FC6E2A;
+    color: white;
+}
+  
+.dashboard-content {
+    width: 75%;
+    flex: 1;
+    padding: 20px;
+}
+  
+.addresses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+  
+.address-card {
+    background: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    flex: 1 1 45%;
+}
+  
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+  
+.actions .edit {
+    color: #007bff;
+}
+  
+.actions .delete {
+    color: #ff0000;
+}
+  
+@media (max-width: 768px) {
+    .desktop-dashboard {
+    display: none;
+    }
+
+    .mobile-dashboard {
+    display: block;
+    }
+}
+  
+@media (min-width: 769px) {
+    .mobile-dashboard {
+      display: none;
+    }
+
+    .desktop-dashboard {
+        display: block;
+    }
+}
+  

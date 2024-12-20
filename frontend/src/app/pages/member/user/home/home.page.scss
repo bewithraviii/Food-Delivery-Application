@@ -2,7 +2,8 @@
 h4, h5, ion-card-title, .restaurant-details span {
     color: #32343E;
     
-  }
+}
+
 
 .toolbar-container {
     padding-left: 3rem !important;
@@ -37,6 +38,27 @@ h4, h5, ion-card-title, .restaurant-details span {
     .search-bar input {
     color: #32343E;
 }
+
+.iconAndText {
+    align-items: center; 
+    display: flex;
+    font-size: 1.4rem;
+    padding-right: 0.5rem;  
+}
+
+
+.underlineAddressType {
+    color: #FC6E2A;
+    font-size: 16px;
+    border-bottom: 2px solid;
+    margin-right: 1rem;
+}
+
+.addressFont {
+    color: #676767;
+    font-size: 16px;
+}
+
 
 // .category-image-size {
 //     width: 10rem !important;
@@ -93,15 +115,23 @@ h4, h5, ion-card-title, .restaurant-details span {
 /* Horizontal layout for category cards */
 .category-cards {
     display: flex;
-    gap: 16px; /* Gap between cards */
+    gap: 10px; /* Gap between cards */
     scroll-behavior: smooth; /* Smooth scrolling */
     overflow-x: auto; /* Enable horizontal scrolling */
-    padding: 16px 0; /* Add some padding around */
     -ms-overflow-style: none; /* For Internet Explorer and Edge */
     scrollbar-width: none; /* For Firefox */
     ion-img {
         width: fit-content;
-        height: 15rem;
+    };
+    ion-card-title {
+        font-size: 16px;
+        padding: 0;
+    };
+    ion-card-header {
+        background-color: transparent;
+        padding: 0.5rem;
+        justify-content: center;
+        align-items: center;
     }
 }
 
@@ -111,9 +141,10 @@ h4, h5, ion-card-title, .restaurant-details span {
   
 /* Category card styling */
 .category-card {
-    min-width: 200px; /* Minimum width for the cards */
-    background: white;
+    min-width: 8rem;
+    background: transparent;
     border-radius: 12px;
+    height: fit-content;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
   
@@ -136,8 +167,7 @@ h4, h5, ion-card-title, .restaurant-details span {
 }
 
 @media screen and (max-width: 768px) {
-    .prev-btn,
-    .next-btn {
+    .scroll-btn {
       display: none; /* Hide buttons on screens smaller than 768px (tablet and mobile) */
     }
 }
@@ -171,4 +201,74 @@ h4, h5, ion-card-title, .restaurant-details span {
         font-size: 14px;
         color: #32343E;
     }
+}
+
+
+.selected-address {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fc6e2a;
+}
+
+.selected-address mat-icon {
+    margin-right: 0.5rem;
+}
+  
+.address-item {
+    padding: 0.5rem 0;
+}
+  
+.address-item mat-icon {
+    margin-right: 1rem;
+    color: #fc6e2a;
+}
+  
+.saved-address {
+    padding: 0.5rem 0;
+}
+  
+.saved-address mat-icon {
+    margin-right: 0.5rem;
+    color: #000;
+}
+  
+.address-title {
+    font-weight: bold;
+}
+  
+.address-details {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.expansionRemoveBG {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+  
+::ng-deep .mat-expansion-panel-header {
+    background-color: transparent !important; /* Removes the background color */
+    box-shadow: none; /* Removes any box-shadow if present */
+}
+
+::ng-deep .mat-expansion-panel-content {
+    background: white;
+    border: 1px solid rgb(207, 207, 207);
+    box-shadow: rgba(28, 28, 28, 0.08) 0px 2px 8px;
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+::ng-deep .mat-expansion-panel-body {
+    padding: 0 !important;
+}
+
+.contentAlign{
+    display: flex;
+    align-items: center;
+
 }

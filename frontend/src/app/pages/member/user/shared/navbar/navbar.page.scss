@@ -19,6 +19,12 @@ ion-button.active {
     padding: 0.5rem;
 }
 
+.center {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
 .iconAndText {
     justify-content: center; 
     align-items: center; 

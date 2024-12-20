@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class ApiService {
 
   private baseURL = environment.baseApiUrl;
+  private openStreetMapURL = environment.openStreetMapUrl;
 
   constructor(
     private http: HttpClient,
@@ -53,6 +54,12 @@ export class ApiService {
   }
   verifyQrCodeOtp(reqPayload: qrOtpVerifyRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/verifyQrCodeOtp`, reqPayload);
+  }
+
+
+  // Location
+  getLocationFromLatAndLong(lat: number, lng: number): Observable<any> {
+    return this.http.get(`${this.openStreetMapURL}/reverse?format=json&lat=${lat}&lon=${lng}`)
   }
 
 
