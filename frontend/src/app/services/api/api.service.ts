@@ -62,5 +62,10 @@ export class ApiService {
     return this.http.get(`${this.openStreetMapURL}/reverse?format=json&lat=${lat}&lon=${lng}`)
   }
 
+  //
+  getUserDetails(): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/fetchUserDetails`);
+  }
+
 
 }

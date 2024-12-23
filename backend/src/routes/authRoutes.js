@@ -4,6 +4,9 @@ const router = express.Router();
 
 
 
+// GET
+router.get('/fetchUserDetails', authController.fetchUser);
+
 // POST
 router.post('/login', authController.login);
 router.post('/vendorLogin', authController.vendorLogin);

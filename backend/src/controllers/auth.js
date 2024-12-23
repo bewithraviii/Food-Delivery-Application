@@ -33,3 +33,9 @@ exports.generateQR = async(req, res) => {
 exports.verifyQrOTP = async (req, res) => {
     return await qrCodeService.verifyOTP(req.body, res);
 };
+
+exports.fetchUser = async (req, res) => {
+    return await authService.getUserDetails(req, res);
+};
+
+

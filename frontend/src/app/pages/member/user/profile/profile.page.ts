@@ -1,4 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+import { ApiService } from 'src/app/services/api/api.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,40 +13,44 @@ export class ProfilePage implements OnInit {
   profileIcon = 'assets/icons/personal-profile.png';
   isDesktop: boolean = true;
   selectedMenu: string = 'orders';
-
-  user = {
-    name: 'Ravi Patel',
-    phoneNumber: '8469563711',
-    email: 'ravipateljigneshpatel137@gmail.com',
+  user: any = {
+    name: '...',
+    phoneNumber: '...',
+    email: '...',
   };
-
-  addresses = [
-    {
-      title: 'Home',
-      details: 'A-701 AVALON-60, Opposite Sangath Pearl, Near Maniilal Party Plot, Motera, Ahmedabad, Gujarat 380005, India',
-    },
-    {
-      title: 'Work',
-      details: 'Tatvasoft house, PRL Colony, Thaltej, Ahmedabad, Gujarat, India',
-    },
-    {
-      title: 'Others',
-      details: 'M-7, Nirnay Nagar Sector VIII, Nirnay Nagar, Ahmedabad, Gujarat 380081, India',
-    },
-  ];
-
+  addresses: any = [];
   menuItems = [
-    { id: 'orders', title: 'Orders', icon: 'bi bi-bag' },
-    { id: 'addresses', title: 'Addresses', icon: 'bi bi-geo-alt' },
-    { id: 'favorites', title: 'Favorites', icon: 'bi bi-heart' },
-    { id: 'payments', title: 'Payments', icon: 'bi bi-credit-card' },
-    { id: 'settings', title: 'Settings', icon: 'bi bi-gear' },
-    { id: 'logout', title: 'Logout', icon: 'bi bi-box-arrow-right' },
+    { id: 'orders', title: 'Orders', icon: 'bag-check' },
+    { id: 'addresses', title: 'Addresses', icon: 'location' },
+    { id: 'favorites', title: 'Favorites', icon: 'bookmark' },
+    { id: 'payments', title: 'Payments', icon: 'card' },
+    { id: 'settings', title: 'Settings', icon: 'settings' },
   ];
-  constructor() { }
 
-  ngOnInit(): void {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private apiService: ApiService,
+    private loadingController: LoadingController,
+  ) { }
+
+  async ngOnInit() {
+    await this.presentLoader();
+    this.apiService.getUserDetails().subscribe((fetchedData: any) => {
+        const data = fetchedData.payload;
+        if(data){
+          this.user.name = data.name;
+          this.user.phoneNumber = data.phoneNumber;
+          this.user.email = data.email;
+          data.address.forEach((address: any) => {
+            const { title, details } = address;
+            this.addresses.push({ title, details });
+          });
+        }
+    });
+
     this.checkScreenSize();
+    await this.dismissLoader();
   }
 
   @HostListener('window:resize', [])
@@ -54,8 +62,29 @@ export class ProfilePage implements OnInit {
     this.selectedMenu = menuId;
   }
 
-  editUser(): void {
+  editUser() {
     alert('Edit User Profile');
+  }
+
+  userLogout() {
+    this.authService.logout();
+  }
+
+  addNewAddress() {
+
+  }
+
+  async presentLoader(message?: string) {
+    const loader = await this.loadingController.create({
+      message: message,
+      spinner: 'lines',
+      backdropDismiss: false,
+    });
+    await loader.present();
+  }
+  
+  async dismissLoader() {
+    await this.loadingController.dismiss();
   }
 
 }

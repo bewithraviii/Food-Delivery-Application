@@ -1,3 +1,4 @@
+const JWT = require('jsonwebtoken');
 const jwt = require('../../utils/jwt/jwt-creation');
 const bcrypt = require('bcryptjs');
 const User = require('../../models/userModel');
@@ -35,7 +36,11 @@ const userSignUp = async(data, res) => {
         const existingUser = await User.findOne({ email: data.email });
         if (existingUser || existingUser != null) return res.status(400).json({ message: 'User already exists' });
     
-        const newUser = new User(data);
+        const newUser = new User();
+        newUser.email = data.email;
+        newUser.name = data.name;
+        newUser.phoneNumber = data.phoneNumber;
+        newUser.address = { details: data.address };
         await newUser.save();
 
         const token = jwt.generateToken(newUser._id);
@@ -88,6 +93,45 @@ const vendorSignUp = async(data, res) => {
     }
 }
 
+const getUserDetails = async(req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'Authorization token is missing' });
+        }
+
+        const JWT_SECRET = 'FoodDeliveryApp';
+        const decoded = JWT.verify(token, JWT_SECRET);
+        
+        const userId = decoded.id;
+        if (!userId) {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.status(200).json({
+            message: 'User details fetched successfully',
+            payload: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                address: user.address,
+            },
+        });
+    } catch (err) {
+        console.error('Error fetching user details:', err);
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+        }
+        return res.status(500).json({ message: 'Server error', error: err.message });
+    }
+};
+
 // const hashPassword = async (password) => {
 //     const salt = await bcrypt.genSalt(10);
 //     return await bcrypt.hash(password, salt);
@@ -97,4 +141,4 @@ const vendorSignUp = async(data, res) => {
 //     return await bcrypt.compare(enteredPassword, storedPassword);
 // };
 
-module.exports = { userLogin, userSignUp, vendorLogin, vendorSignUp }
+module.exports = { userLogin, userSignUp, vendorLogin, vendorSignUp, getUserDetails }

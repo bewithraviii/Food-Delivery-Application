@@ -1,5 +1,5 @@
 .container {
-    background-color: #F3F3F3 !important;
+    background-color: #FFFFFF !important;
     height: 100%;
     color: #181C2E;
 }
@@ -9,7 +9,7 @@
 }
 
 .profile-page {
-    background-color: #F3F3F3;
+    background-color: #FFFFFF;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -35,20 +35,36 @@
 .profile-edit {
     display: flex;
     align-items: end;
+    justify-content: end;
 }
 
 .profile-edit-btn {
+    margin: 0.5rem;
     padding: 0.5rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     background-color: #FC6E2A;
     color: #F3F3F3;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.logout-btn {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #FC6E2A;
+    color: #F3F3F3;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 
 .user-profile {
-    background: #F3F3F3;
-    padding: 20px;
+    background: #FFFFFF;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -83,10 +99,11 @@
   
 .dashboard-sidebar {
     width: 25%;
-    background-color: #F3F3F3;
+    background-color: #FFFFFF;
     padding: 1rem;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd !important;
 }
   
 .dashboard-sidebar h2 {
@@ -140,13 +157,38 @@
     flex-wrap: wrap;
     gap: 20px;
 }
-  
+
 .address-card {
     background: white;
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
     flex: 1 1 45%;
+}
+
+.payment {
+    border-radius: 12px;
+    padding: 1rem;
+    background: white !important;
+    border: 1px solid #ddd;
+}
+
+.payments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+  
+.payments-cards {
+    --ion-card-background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    flex: 1 1 45%;
+}
+
+.custom-item {
+    --background: transparent;
+    --border-color: none;
 }
   
 .actions {
@@ -174,6 +216,10 @@
     align-items: center;
     display: flex;
 }
+
+.mobile-dashboard {
+    padding-bottom: 2rem;
+}
   
 @media (max-width: 768px) {
     .desktop-dashboard {
@@ -182,6 +228,12 @@
 
     .mobile-dashboard {
     display: block;
+    }
+
+    .profile-edit {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 }
   
@@ -194,4 +246,23 @@
         display: block;
     }
 }
+
+.add-address {
+    background-color: transparent !important;
+    transition: transform 0.3s ease;
+    &:hover {
+      transform: scale(1.2);
+    }
+}
   
+.manage-address {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deleteSavedCards {
+    background: #FC6E2A !important;
+    color: white !important;
+    border-radius: 5px;
+}
