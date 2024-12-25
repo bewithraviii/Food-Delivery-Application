@@ -1,0 +1,16 @@
+<div class="dialog-container">
+  <div class="content">
+    <div class="dialog-header">
+      <h2>{{ title }}</h2>
+      <button (click)="closeDialog()" class="close-btn"><ion-icon name="close"></ion-icon></button>
+    </div>
+    <div class="dialog-body">
+      <ng-container *ngTemplateOutlet="contentTemplate; context: contextData"></ng-container>
+      <div class="dialog-actions">
+        <button mat-button class="action-btn" (click)="closeDialog()">Cancel</button>
+        <button mat-raised-button class="action-btn" (click)="saveChanges()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+

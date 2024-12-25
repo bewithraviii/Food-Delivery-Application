@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -18,25 +18,29 @@ import { ProfilePage } from '../profile/profile.page';
 import {MatDividerModule} from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-
+import { DialogPage } from '../shared/dialog/dialog.page';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ReactiveFormsModule,
     UserDashboardPageRoutingModule,
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
     MatExpansionModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule
   ],
   declarations: [
     UserDashboardPage,
     NavbarPage,
     TabsPage,
     HomePage,
+    DialogPage,
     CartPage,
     SearchPage,
     ProfilePage
