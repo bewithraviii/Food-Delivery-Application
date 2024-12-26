@@ -83,8 +83,8 @@
                       <h4>{{ address?.title }}</h4>
                       <p>{{ address?.details }}</p>
                       <div class="actions">
-                        <button class="edit"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
-                        <button class="delete"><mat-icon fontIcon="delete_outline" class="delete"></mat-icon></button>
+                        <button class="edit" type="button"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
+                        <button class="delete" type="button"><mat-icon fontIcon="delete_outline" class="delete" (click)="deleteAddress(address)"></mat-icon></button>
                       </div>
                     </div>
                   </div>
@@ -172,49 +172,3 @@
     </div>
   </div>
 </div>
-
-<!-- Dialog Templates -->
-<!-- Edit Profile Template -->
-<ng-template #editProfileTemplate let-user="user">
-  <div class="dialog-container">
-    <form class="dialog-form">
-      <mat-form-field appearance="outline" class="full-width" style="width: 100%;">
-        <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="user.name" name="name" required />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width" style="width: 100%;">
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="user.email" name="email" type="email" required />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width" style="width: 100%;">
-        <mat-label>Phone Number</mat-label>
-        <input matInput [(ngModel)]="user.phoneNumber" name="phone" type="tel" required />
-      </mat-form-field>
-    </form>
-  </div>
-</ng-template>
-
-<!-- Add Address Template -->
-<ng-template #addAddressTemplate let-newAddress="newAddress">
-  <div class="dialog-container">
-    <form class="dialog-form">
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Address Title</mat-label>
-        <!-- <input matInput [(ngModel)]="newAddress.title" name="title" required /> -->
-        <mat-select [(ngModel)]="newAddress.title" name="title" required>
-          <mat-option value="Home">Home</mat-option>
-          <mat-option value="Work">Work</mat-option>
-          <mat-option value="Other">Other</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Address Details</mat-label>
-        <textarea matInput [(ngModel)]="newAddress.details" name="details" rows="3" required></textarea>
-      </mat-form-field>
-    </form>
-  </div>
-</ng-template>
-

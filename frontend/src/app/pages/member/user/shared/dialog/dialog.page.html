@@ -1,15 +1,47 @@
 <div class="dialog-container">
   <div class="content">
     <div class="dialog-header">
-      <h2>{{ title }}</h2>
+      <h2>{{ title | uppercase }}</h2>
       <button (click)="closeDialog()" class="close-btn"><ion-icon name="close"></ion-icon></button>
     </div>
     <div class="dialog-body">
-      <ng-container *ngTemplateOutlet="contentTemplate; context: contextData"></ng-container>
-      <div class="dialog-actions">
-        <button mat-button class="action-btn" (click)="closeDialog()">Cancel</button>
-        <button mat-raised-button class="action-btn" (click)="saveChanges()">Save</button>
+      <div *ngIf="isConfirmationDialog; else formTemplate">
+        <div class="row p-3" style="color: #525C67;">
+          <h5>{{ contextData?.message }}</h5>
+        </div>
+        <div class="row p-3">
+          <div class="dialog-actions">
+            <button mat-button class="action-btn" (click)="closeDialog()">NO</button>
+            <button mat-raised-button class="action-btn" (click)="grantPermission()" >YES</button>
+          </div>
+        </div>
       </div>
+      <ng-template #formTemplate>
+        <form [formGroup]="dialogForm" class="dialog-form">
+          <div *ngFor="let field of fields">
+            <mat-form-field appearance="outline" class="full-width" style="width: 100%;">
+              <mat-label>{{ field.label }}</mat-label>
+
+              <ng-container *ngIf="field.name === 'title'">
+                <mat-select [formControlName]="field.name" [placeholder]="field.placeholder">
+                  <mat-option *ngFor="let option of field.options" [value]="option">{{ option }}</mat-option>
+                </mat-select>
+              </ng-container>
+
+              <ng-container *ngIf="field.name !== 'title'">
+                <input matInput [formControlName]="field.name" [type]="field.type || 'text'" [placeholder]="field.placeholder" />
+              </ng-container>
+              <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
+                {{ field.label }} is required.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+        <div class="dialog-actions">
+          <button mat-button class="action-btn" (click)="closeDialog()">CANCEL</button>
+          <button mat-raised-button class="action-btn" (click)="saveChanges()"[disabled]="!dialogForm.valid">SAVE</button>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

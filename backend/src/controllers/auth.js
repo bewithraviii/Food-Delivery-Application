@@ -38,4 +38,18 @@ exports.fetchUser = async (req, res) => {
     return await authService.getUserDetails(req, res);
 };
 
+exports.updateUserProfileData = async (req, res) => {
+    return await authService.updateUserProfile(req.body, res);
+}
 
+exports.addNewUserAddress = async(req, res) => {
+    return await authService.addNewUserAddress(req.body, res);
+}
+
+exports.updateUserAddress = async(req, res) => {
+    return await authService.updateUserAddress(req.body, res);
+}
+
+exports.deleteUserAddress = async(req, res) => {
+    return await authService.deleteUserAddress(req.body, res);
+}

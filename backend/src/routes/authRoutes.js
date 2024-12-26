@@ -16,6 +16,11 @@ router.post('/sendOtp', authController.sendOTP);
 router.post('/verifyOtp', authController.verifyOTP);
 router.post('/generateQrCode', authController.generateQR);
 router.post('/verifyQrCodeOtp', authController.verifyQrOTP);
+router.post('/updateUserProfileData', authController.updateUserProfileData);
+router.post('/addNewUserAddress', authController.addNewUserAddress);
+router.post('/deleteUserAddress', authController.deleteUserAddress);
+router.post('/updateUserAddress', authController.updateUserAddress);
+
 
 
 

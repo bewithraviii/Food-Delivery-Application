@@ -34,7 +34,12 @@ export interface userSignUpReqForm {
     address: string
 }
 
-
+export interface updateUserProfileRequest {
+    userId: string,
+    name: string,
+    email:string,
+    phoneNumber: string | number,
+}
 
 export interface vendorSignUpReqForm {
     name: String,

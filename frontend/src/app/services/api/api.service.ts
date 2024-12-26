@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -62,10 +62,23 @@ export class ApiService {
     return this.http.get(`${this.openStreetMapURL}/reverse?format=json&lat=${lat}&lon=${lng}`)
   }
 
-  //
+  // Profile-Page
   getUserDetails(): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/fetchUserDetails`);
   }
+  updateProfileData(reqPayload: updateUserProfileRequest): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/updateUserProfileData`, reqPayload);
+  }
+  addNewAddress(reqPayload: any): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/addNewUserAddress`, reqPayload);
+  }
+  deleteAddress(reqPayload: any): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/deleteUserAddress`, reqPayload);
+  }
+  updateAddress(reqPayload: any): Observable<any> { 
+    return this.http.post(`${this.baseURL}/auth/updateUserAddress`, reqPayload);
+  }
 
+  
 
 }

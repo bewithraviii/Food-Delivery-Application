@@ -1,11 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { UserDashboardPageRoutingModule } from './user-dashboard-routing.module';
-
 import { UserDashboardPage } from './user-dashboard.page';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HomePage } from '../home/home.page';
@@ -20,6 +17,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogPage } from '../shared/dialog/dialog.page';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+
+
+
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     ReactiveFormsModule,
     UserDashboardPageRoutingModule,
     MatFormFieldModule,
+    MatSelectModule,
     MatInputModule,
     MatDividerModule,
     MatExpansionModule,

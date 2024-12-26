@@ -132,6 +132,82 @@ const getUserDetails = async(req, res) => {
     }
 };
 
+const updateUserProfile = async(data, res) => {
+    console.log('Profile-Data',data)
+    if(!data) {
+        return res.status(400).json({ message: 'User data is required' });
+    }
+
+    try {
+        const user = await User.findOne({ _id: data.userId });
+        if (!user) throw new Error('User not found');
+
+        user.name = data.name;
+        user.email = data.email;
+        user.phoneNumber = data.phoneNumber;
+        const updatedUser = await user.save();
+
+        const response = {
+            message: "User data updated successfully",
+            payload: {
+                id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                phoneNumber: updatedUser.phoneNumber,
+                address: updatedUser.address,
+            },
+        }
+
+        res.status(200).json(response);
+
+    } catch(err) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+const addNewUserAddress = async(data, res) => {
+    // const data = req.body;
+    // if(!data) {
+    //     return res.status(400).json({ message: 'User address is required' });
+    // }
+
+    // try {
+    //     const user = await User.findOne({ _id: data.id });
+    //     if (!user) throw new Error('User not found');
+    // } catch(err) {
+    //     res.status(400).json({ message: err.message });
+    // }
+}
+
+const updateUserAddress = async(data, res) => {
+    // const data = req.body;
+    // if(!data) {
+    //     return res.status(400).json({ message: 'User address is required' });
+    // }
+
+    // try {
+    //     const user = await User.findOne({ _id: data.id });
+    //     if (!user) throw new Error('User not found');
+    // } catch(err) {
+    //     res.status(400).json({ message: err.message });
+    // }
+}
+
+const deleteUserAddress = async(data, res) => {
+    // const data = req.body;
+    // if(!data) {
+    //     return res.status(400).json({ message: 'User details is required' });
+    // }
+
+    // try {
+    //     const user = await User.findOne({ _id: data.id });
+    //     if (!user) throw new Error('User not found');
+    // } catch(err) {
+    //     res.status(400).json({ message: err.message });
+    // }
+}
+
+
 // const hashPassword = async (password) => {
 //     const salt = await bcrypt.genSalt(10);
 //     return await bcrypt.hash(password, salt);
@@ -141,4 +217,14 @@ const getUserDetails = async(req, res) => {
 //     return await bcrypt.compare(enteredPassword, storedPassword);
 // };
 
-module.exports = { userLogin, userSignUp, vendorLogin, vendorSignUp, getUserDetails }
+module.exports = { 
+    userLogin, 
+    userSignUp, 
+    vendorLogin, 
+    vendorSignUp, 
+    getUserDetails,
+    updateUserProfile,
+    addNewUserAddress,
+    deleteUserAddress,
+    updateUserAddress
+}

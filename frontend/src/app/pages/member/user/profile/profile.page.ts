@@ -4,6 +4,8 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogPage } from '../shared/dialog/dialog.page';
+import { Validators } from '@angular/forms';
+import { updateUserProfileRequest } from 'src/app/models/api.interface';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +23,7 @@ export class ProfilePage implements OnInit {
     name: '...',
     phoneNumber: '...',
     email: '...',
+    id: ''
   };
   addresses: any = [];
   menuItems = [
@@ -40,16 +43,17 @@ export class ProfilePage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await this.presentLoader();
+    await this.presentLoader('Loading Profile...');
     this.apiService.getUserDetails().subscribe((fetchedData: any) => {
         const data = fetchedData.payload;
         if(data){
+          this.user.id = data.id,
           this.user.name = data.name;
           this.user.phoneNumber = data.phoneNumber;
           this.user.email = data.email;
           data.address.forEach((address: any) => {
-            const { title, details } = address;
-            this.addresses.push({ title, details });
+            const { title, details, _id } = address;
+            this.addresses.push({ title, details, _id });
           });
         }
     });
@@ -67,9 +71,9 @@ export class ProfilePage implements OnInit {
     this.selectedMenu = menuId;
   }
 
-  async openDialog(title: string, contentTemplate: any, contextData: any) {
+  async openDialog(title: string, contentTemplate: any, contextData: any, fields: any, isConfirmationDialog?: boolean) {
       const dialogRef = this.matDialog.open(DialogPage, {
-        data: { title, contentTemplate, contextData },
+        data: { title, contentTemplate, fields, contextData, isConfirmationDialog },
         width: '500px',
       });
       return dialogRef.afterClosed().toPromise();
@@ -78,32 +82,65 @@ export class ProfilePage implements OnInit {
 
   async editUser() {
     const userInfo = {...this.user};
+    const fields = [
+      { name: 'name', label: 'Name', type: 'text', value: this.user.name, validators: [Validators.required] },
+      { name: 'email', label: 'Email',type: 'text', value: this.user.email, validators: [Validators.required, Validators.email] },
+      { name: 'phone', label: 'Phone Number', type: 'tel', value: this.user.phoneNumber , validators: [Validators.required, Validators.pattern(/^[0-9]{10}$/)] },
+    ];
     const updatedUser = await this.openDialog(
       'Edit Profile',
       this.editProfileTemplate,
-      { user: userInfo }
+      { user: userInfo },
+      fields,
     );
 
     if(updatedUser) {
-      console.log(updatedUser);
-      // this.apiService.updateUserDetails(updatedUser).subscribe(
-      //   (response: any) => {
-      //     console.log('User details updated successfully', response);
-      //     this.user = { ...updatedUser };
-      //   },
-      //   (error: any) => {
-      //     console.error('Error updating user details', error);
-      //   }
-      // );
+      await this.presentLoader('Updating profile...');
+      const requestPayload: updateUserProfileRequest = {
+        userId: this.user.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phoneNumber: updatedUser.phone
+      }
+      this.apiService.updateProfileData(requestPayload).subscribe(
+        (response: any) => {
+          this.user = { ...response.payload };
+          this.dismissLoader();
+        },
+        (error: any) => {
+          console.error('Error updating user details', error);
+          this.dismissLoader();
+        }
+      );
     }
   }
 
   async addNewAddress() {
     console.log('Add Edit Address');
-    const addAddress = {title: '', details: ''}
-    const address = await this.openDialog('Add Address', this.addAddressTemplate, {address: addAddress});
-    if(address){
-      console.log(address);
+    const fields = [
+      { name: 'title', label: 'Title', value: '', options: ['Home', 'Work', 'Other'], validators: [Validators.required] },
+      { name: 'details', label: 'Details', type: 'text', value: '', validators: [Validators.required] },
+    ];
+    const addAddress = { title: '', details: '' }
+    const addedAddress = await this.openDialog(
+      "Add Address",
+      this.addAddressTemplate,
+      { newAddress: addAddress },
+      fields
+    );
+
+    if(addedAddress){
+      console.log(addedAddress);
+    }
+  }
+
+  async deleteAddress(address: any) {
+    console.log("Address to delete",address);
+    const message = "Are you sure? This action will permanently remove this address from your profile.";
+    const result = await this.openDialog("Delete Address", null, { message: message }, [], true);
+    if(result){
+      console.log('User want to delete Address', result);
+      console.log('User want to delete Address', address);
     }
   }
   
