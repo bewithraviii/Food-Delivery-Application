@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogPage } from '../shared/dialog/dialog.page';
 import { Validators } from '@angular/forms';
-import { updateUserProfileRequest } from 'src/app/models/api.interface';
+import { addNewAddressRequest, deleteAddressRequest, editAddressRequest, updateUserProfileRequest } from 'src/app/models/api.interface';
 
 @Component({
   selector: 'app-profile',
@@ -33,6 +33,19 @@ export class ProfilePage implements OnInit {
     { id: 'payments', title: 'Payments', icon: 'card' },
     { id: 'settings', title: 'Settings', icon: 'settings' },
   ];
+  ordersList: any = [];
+  favList: any = [];
+  paymentCards: any = [
+    {
+      cardNumber: "8765123498075643",
+      cardExpiry: "12/27",
+    },
+    {
+      cardNumber: "8654223498075654",
+      cardExpiry: "02/25",
+    }
+  ];
+  settingList: any = [];
 
   constructor(
     private authService: AuthService,
@@ -52,8 +65,7 @@ export class ProfilePage implements OnInit {
           this.user.phoneNumber = data.phoneNumber;
           this.user.email = data.email;
           data.address.forEach((address: any) => {
-            const { title, details, _id } = address;
-            this.addresses.push({ title, details, _id });
+            this.addresses.push(address);
           });
         }
     });
@@ -71,7 +83,7 @@ export class ProfilePage implements OnInit {
     this.selectedMenu = menuId;
   }
 
-  async openDialog(title: string, contentTemplate: any, contextData: any, fields: any, isConfirmationDialog?: boolean) {
+  async openDialog(title: string, contextData: any, fields: any, contentTemplate?: any, isConfirmationDialog?: boolean) {
       const dialogRef = this.matDialog.open(DialogPage, {
         data: { title, contentTemplate, fields, contextData, isConfirmationDialog },
         width: '500px',
@@ -89,9 +101,9 @@ export class ProfilePage implements OnInit {
     ];
     const updatedUser = await this.openDialog(
       'Edit Profile',
-      this.editProfileTemplate,
       { user: userInfo },
       fields,
+      this.editProfileTemplate,
     );
 
     if(updatedUser) {
@@ -116,7 +128,6 @@ export class ProfilePage implements OnInit {
   }
 
   async addNewAddress() {
-    console.log('Add Edit Address');
     const fields = [
       { name: 'title', label: 'Title', value: '', options: ['Home', 'Work', 'Other'], validators: [Validators.required] },
       { name: 'details', label: 'Details', type: 'text', value: '', validators: [Validators.required] },
@@ -124,23 +135,114 @@ export class ProfilePage implements OnInit {
     const addAddress = { title: '', details: '' }
     const addedAddress = await this.openDialog(
       "Add Address",
-      this.addAddressTemplate,
       { newAddress: addAddress },
-      fields
+      fields,
+      this.addAddressTemplate,
     );
 
     if(addedAddress){
-      console.log(addedAddress);
+      await this.presentLoader('Adding address...');
+      const requestPayload: addNewAddressRequest = {
+        userId: this.user.id,
+        title: addedAddress.title,
+        detail: addedAddress.details,
+      }
+      this.apiService.addNewAddress(requestPayload).subscribe(
+        (response: any) => {
+          this.addresses = [];
+          response.payload.address.forEach((address: any) => {
+            this.addresses.push(address);
+          });
+          this.dismissLoader();
+        },
+        (error: any) => {
+          console.error('Error adding new address', error);
+          this.dismissLoader();
+        }
+      );
+    }
+  }
+
+  async editAddress(address: any) {
+    const fields = [
+      { name: 'title', label: 'Title', value: address.title, options: ['Home', 'Work', 'Other'], validators: [Validators.required] },
+      { name: 'details', label: 'Details', type: 'text', value: address.details, validators: [Validators.required] },
+    ];
+    const editAddress = { title: address.title, details: address.details }
+    const editedAddress = await this.openDialog(
+      "Edit Address",
+      { editAddress: editAddress },
+      fields,
+      this.addAddressTemplate,
+    );
+
+    if(editedAddress){
+      await this.presentLoader('Updating address...');
+      const requestPayload: editAddressRequest = {
+        userId: this.user.id,
+        title: editedAddress.title,
+        detail: editedAddress.details,
+        addressId: address._id,
+      }
+      this.apiService.updateAddress(requestPayload).subscribe(
+        (response: any) => {
+          this.addresses = [];
+          response.payload.address.forEach((address: any) => {
+            this.addresses.push(address);
+          });
+          this.dismissLoader();
+        },
+        (error: any) => {
+          console.error('Error editing user address', error);
+          this.dismissLoader();
+        }
+      )
     }
   }
 
   async deleteAddress(address: any) {
-    console.log("Address to delete",address);
     const message = "Are you sure? This action will permanently remove this address from your profile.";
-    const result = await this.openDialog("Delete Address", null, { message: message }, [], true);
+    const result = await this.openDialog("Delete Address", { message: message }, [], null, true);
     if(result){
-      console.log('User want to delete Address', result);
-      console.log('User want to delete Address', address);
+      await this.presentLoader('Deleting address...');
+      const requestPayload: deleteAddressRequest = {
+        userId: this.user.id,
+        addressId: address._id,
+      }
+      this.apiService.deleteAddress(requestPayload).subscribe(
+        (response: any) => {
+          this.addresses = [];
+          response.payload.address.forEach((address: any) => {
+            this.addresses.push(address);
+          });
+          this.dismissLoader();
+        },
+        (error: any) => {
+          console.error('Error deleting user address', error);
+          this.dismissLoader();
+        }
+      );
+    }
+  }
+
+  async addNewPaymentCard() {
+    const fields = [
+      { name: 'name', label: 'Card Holder Name', type: 'text', value: '', validators: [Validators.required] },
+      { name: 'number', label: 'Card Number', type: 'text', value: '', validators: [Validators.required] },
+      { name: 'month', label: 'Card Expire Month', type: 'text', value: '', validators: [Validators.required] },
+      { name: 'year', label: 'Card Expire Year', type: 'text', value: '', validators: [Validators.required] },
+      { name: 'cvc', label: 'Card CVC', type: 'text', value: '', validators: [Validators.required] },
+    ];
+    const addCard = { name: '', number: '', month: '', year: '', cvc: '' }
+    const addedCard = await this.openDialog(
+      "Add Card",
+      { editAddress: addCard },
+      fields,
+      null,
+    );
+
+    if(addedCard){
+      console.log(addedCard);
     }
   }
   

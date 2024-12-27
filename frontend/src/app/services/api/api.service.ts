@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, deleteAddressRequest, editAddressRequest, loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -69,16 +69,15 @@ export class ApiService {
   updateProfileData(reqPayload: updateUserProfileRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/updateUserProfileData`, reqPayload);
   }
-  addNewAddress(reqPayload: any): Observable<any> {
+  addNewAddress(reqPayload: addNewAddressRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/addNewUserAddress`, reqPayload);
   }
-  deleteAddress(reqPayload: any): Observable<any> {
+  deleteAddress(reqPayload: deleteAddressRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/deleteUserAddress`, reqPayload);
   }
-  updateAddress(reqPayload: any): Observable<any> { 
+  updateAddress(reqPayload: editAddressRequest): Observable<any> { 
     return this.http.post(`${this.baseURL}/auth/updateUserAddress`, reqPayload);
   }
 
   
-
 }

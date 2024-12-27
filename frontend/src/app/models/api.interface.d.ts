@@ -41,6 +41,24 @@ export interface updateUserProfileRequest {
     phoneNumber: string | number,
 }
 
+export interface addNewAddressRequest {
+    userId: string,
+    title: string,
+    detail: string,
+}
+
+export interface editAddressRequest {
+    userId: string,
+    addressId: string,
+    title: string,
+    detail: string,
+}
+
+export interface deleteAddressRequest {
+    userId: string,
+    addressId: string,
+}
+
 export interface vendorSignUpReqForm {
     name: String,
     description?: String,

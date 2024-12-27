@@ -150,6 +150,7 @@
     width: 75%;
     flex: 1;
     padding: 20px;
+    padding-top: 0;
 }
   
 .addresses {
@@ -161,16 +162,15 @@
 .address-card {
     background: white;
     padding: 15px;
-    border: 1px solid #ddd;
+    // border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     flex: 1 1 45%;
 }
 
 .payment {
     border-radius: 12px;
-    padding: 1rem;
     background: white !important;
-    border: 1px solid #ddd;
 }
 
 .payments {
@@ -260,8 +260,48 @@
     align-items: center;
 }
 
+.add-payments {
+    background-color: transparent !important;
+    transition: transform 0.3s ease;
+    &:hover {
+      transform: scale(1.2);
+    } 
+}
+
+.manage-payments {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .deleteSavedCards {
     background: #FC6E2A !important;
     color: white !important;
     border-radius: 5px;
+}
+
+.manage-content {
+    border-radius: 12px;
+    padding: 1rem;
+    background: white !important;
+    border: 1px solid #ddd;
+}
+
+.no-data-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-data-img {
+    width: 20rem;
+    height: 20rem;
+}
+
+.manage-settings, 
+.manage-payments, 
+.manage-favorites, 
+.manage-address, 
+.manage-orders {
+    color: #FC6E2A;
 }

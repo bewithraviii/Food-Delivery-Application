@@ -133,7 +133,6 @@ const getUserDetails = async(req, res) => {
 };
 
 const updateUserProfile = async(data, res) => {
-    console.log('Profile-Data',data)
     if(!data) {
         return res.status(400).json({ message: 'User data is required' });
     }
@@ -166,45 +165,102 @@ const updateUserProfile = async(data, res) => {
 }
 
 const addNewUserAddress = async(data, res) => {
-    // const data = req.body;
-    // if(!data) {
-    //     return res.status(400).json({ message: 'User address is required' });
-    // }
+    if(!data) {
+        return res.status(400).json({ message: 'User address is required' });
+    }
 
-    // try {
-    //     const user = await User.findOne({ _id: data.id });
-    //     if (!user) throw new Error('User not found');
-    // } catch(err) {
-    //     res.status(400).json({ message: err.message });
-    // }
+    try {
+        const user = await User.findOne({ _id: data.userId });
+        if (!user) throw new Error('User not found');
+
+        const newAddress = {
+            title: data.title,
+            details: data.detail,
+        };
+        
+        user.address.push(newAddress);
+        const updatedUser = await user.save();
+
+        const response = {
+            message: "New address created successfully",
+            payload: {
+                id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                phoneNumber: updatedUser.phoneNumber,
+                address: updatedUser.address,
+            },
+        }
+
+        res.status(200).json(response);
+
+    } catch(err) {
+        res.status(400).json({ message: err.message });
+    }
 }
 
 const updateUserAddress = async(data, res) => {
-    // const data = req.body;
-    // if(!data) {
-    //     return res.status(400).json({ message: 'User address is required' });
-    // }
+    if(!data) {
+        return res.status(400).json({ message: 'User address is required' });
+    }
 
-    // try {
-    //     const user = await User.findOne({ _id: data.id });
-    //     if (!user) throw new Error('User not found');
-    // } catch(err) {
-    //     res.status(400).json({ message: err.message });
-    // }
+    try {
+        const user = await User.findOne({ _id: data.userId });
+        if (!user) throw new Error('User not found');
+
+        const address = user.address.find(addr => addr._id == data.addressId);
+        if (!address) throw new Error('Address not found for this user');
+
+        address.title = data.title;
+        address.details = data.detail;
+
+        const updatedUser = await user.save();
+
+        const response = {
+            message: "Address updated successfully",
+            payload: {
+                id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                phoneNumber: updatedUser.phoneNumber,
+                address: updatedUser.address,
+            },
+        }
+
+        res.status(200).json(response);
+
+    } catch(err) {
+        res.status(400).json({ message: err.message });
+    }
 }
 
 const deleteUserAddress = async(data, res) => {
-    // const data = req.body;
-    // if(!data) {
-    //     return res.status(400).json({ message: 'User details is required' });
-    // }
+    if(!data) {
+        return res.status(400).json({ message: 'User details is required' });
+    }
 
-    // try {
-    //     const user = await User.findOne({ _id: data.id });
-    //     if (!user) throw new Error('User not found');
-    // } catch(err) {
-    //     res.status(400).json({ message: err.message });
-    // }
+    try {
+        const user = await User.findOne({ _id: data.userId });
+        if (!user) throw new Error('User not found');
+
+        user.address = user.address.filter(address => address._id.toString() !== data.addressId);
+        const updatedUser = await user.save();
+
+        const response = {
+            message: "Address deleted successfully",
+            payload: {
+                id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                phoneNumber: updatedUser.phoneNumber,
+                address: updatedUser.address,
+            },
+        }
+
+        res.status(200).json(response);
+    } catch(err) {
+        res.status(400).json({ message: err.message });
+    }
 }
 
 
