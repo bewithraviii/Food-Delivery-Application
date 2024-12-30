@@ -1,31 +1,21 @@
-// import { Injectable } from '@angular/core';
-// import { MatDialog } from '@angular/material/dialog';
-// import { ModalController } from '@ionic/angular';
-// import { DialogPage } from 'src/app/pages/member/user/shared/dialog/dialog.page';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalController } from '@ionic/angular';
+import { DialogPage } from 'src/app/pages/member/user/shared/dialog/dialog.page';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class DialogService {
+@Injectable({ providedIn: 'root' })
+export class DialogService {
 
-//   constructor(
-//     private matDialog: MatDialog, 
-//     private modalController: ModalController
-//   ) { }
+    constructor(
+        private matDialog: MatDialog,
+    ) {}
 
-//   async openDialog(title: string, contentTemplate: any, contextData: any, isMobile: boolean) {
-//     if(isMobile){
-//       const modal = await this.modalController.create({
-//         component: DialogPage,
-//         componentProps: { title, contentTemplate, contextData }
-//       });
-//       return await modal.present();
-//     } else {
-//       const dialogRef = this.matDialog.open(DialogPage, {
-//         data: { title, contentTemplate, contextData },
-//         width: '400px',
-//       });
-//       return dialogRef.afterClosed();
-//     }
-//   }
-// }
+    async openDialog(title: string, contextData: any, fields: any, contentTemplate?: any, isConfirmationDialog?: boolean) {
+        const dialogRef = this.matDialog.open(DialogPage, {
+            data: { title, contentTemplate, fields, contextData, isConfirmationDialog },
+            width: '500px',
+        });
+        return dialogRef.afterClosed().toPromise();
+    }
+
+}

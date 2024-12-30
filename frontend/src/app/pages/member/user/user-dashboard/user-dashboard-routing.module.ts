@@ -6,6 +6,7 @@ import { HomePage } from '../home/home.page';
 import { CartPage } from '../cart/cart.page';
 import { SearchPage } from '../search/search.page';
 import { ProfilePage } from '../profile/profile.page';
+import { RestaurantPage } from '../restaurant/restaurant.page';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'cart', component: CartPage },
       { path: 'search', component: SearchPage },
       { path: 'profile', component: ProfilePage },
+      { path: 'restaurant/:id', component: RestaurantPage}
     ]
   }
 ];

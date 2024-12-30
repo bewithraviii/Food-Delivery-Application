@@ -1,0 +1,91 @@
+.container {
+    background-color: #FFFFFF !important;
+    height: 100%;
+    color: #181C2E;
+}
+
+.padding {
+    padding: 1rem;
+}
+
+.restaurant-page {
+    background-color: #FFFFFF;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+  
+.restaurant-title {
+font-size: 1.8rem;
+font-weight: bold;
+color: #181c2e;
+}
+
+.restaurant-info,
+.restaurant-meta {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.deals-section {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+.deal-card {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: nowrap;
+    background: #f9f9f9;
+}
+
+.search-bar {
+    margin: 1rem 0;
+}
+
+.menu-section {
+    margin: 1rem 0;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.menu-item .item-info {
+    max-width: 70%;
+}
+
+.price {
+    font-weight: bold;
+    color: #181c2e;
+}
+
+@media (max-width: 768px) {
+    .restaurant-info,
+    .restaurant-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .deal-card {
+        font-size: 0.8rem;
+    }
+
+    .menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

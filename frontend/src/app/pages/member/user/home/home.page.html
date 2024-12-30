@@ -5,7 +5,7 @@
         <div class="row padding">
           <div class="col-md-6 p-3">
             <div class="center">
-              <h4 style="color: #1E1D1D;">Hey {{userName}}, <span style="font-weight: bold;">{{greeting}}!</span></h4>
+              <h4 style="color: #1E1D1D;">Hello {{userName}}, <span style="font-weight: bold;">{{greeting}}!</span></h4>
             </div>
             <mat-divider></mat-divider>
             <div class="center">
@@ -23,10 +23,10 @@
                           <span 
                           class="underlineAddressType" 
                           style="margin-right: 0.5rem; font-weight: bold;">
-                            {{ selectedAddress.name }}
+                            {{ selectedAddress?.name || "" }}
                           </span>
                           <span style="color: #676767;">
-                            {{ selectedAddress.details }}
+                            {{ selectedAddress?.details }}
                           </span>
                         </mat-panel-title>
                       </mat-expansion-panel-header>
@@ -51,7 +51,9 @@
                       </div>
                       <div *ngFor="let address of savedAddresses" class="saved-address" (click)="selectAddress(address)" style="cursor: pointer;">
                         <div class="address contentAlign" style="display: flex;">
-                          <mat-icon style="color: #676767;">{{ getIconForAddressType(address.type)}}</mat-icon>
+                          <div>
+                            <mat-icon style="color: #676767;">{{ getIconForAddressType(address.type)}}</mat-icon>
+                          </div>
                           <div>
                             <div style="font-weight: bold;">
                               {{ address.name | uppercase }}
@@ -110,15 +112,33 @@
         <!-- Featured Restaurants -->
         <div class="row padding">
           <div class="restaurants-section">
-            <h5>Open Restaurants</h5>
+            <div class="restaurant-heading p-2 bd-highlight">
+              <h5>{{"Open Restaurants" | uppercase}}</h5>
+            </div>
             <div class="restaurant-cards">
-              <ion-card *ngFor="let restaurant of restaurants" class="restaurant-card">
+              <ion-card *ngFor="let restaurant of restaurants" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
                 <ion-img [src]="restaurant.image"></ion-img>
                 <ion-card-header>
-                  <ion-card-title>{{ restaurant.name }}</ion-card-title>
-                  <div class="restaurant-details">
-                    <ion-icon name="star-outline"></ion-icon>
-                    <span>{{ restaurant.rating }} | {{ restaurant.deliveryTime }} min</span>
+                  <div class="restaurant-details-row">
+                    <div>
+                      <ion-card-title>{{ restaurant.name }}</ion-card-title>
+                    </div>
+                    <div class="restaurant-details">
+                      <div class="rating-desing">
+                        {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
+                      </div>
+                      <div>
+                        <span>| {{ restaurant.deliveryTime }} min</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="restaurant-details-row">
+                    <ion-card-subtitle>{{restaurant.cuisine}}</ion-card-subtitle>
+                    <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
+                  </div>
+                  <div class="restaurant-details-row">
+                    <ion-card-subtitle>{{restaurant.address}}</ion-card-subtitle>
+                    <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
                   </div>
                 </ion-card-header>
               </ion-card>
@@ -126,6 +146,8 @@
           </div>
         </div>
       </div>
+      
+      <app-footer></app-footer>
 
     </div>
 </div>

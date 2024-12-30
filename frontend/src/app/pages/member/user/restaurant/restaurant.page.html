@@ -1,0 +1,73 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>restaurant</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">restaurant</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content> -->
+
+<div class="restaurant-page" style="padding-top: 2rem;">
+  <div class="container">   
+    <!-- Restaurant Name and Info -->
+    <h1 class="restaurant-title">{{ restaurantDetails.name }}</h1>
+    <div class="restaurant-info">
+      <span>
+        <mat-icon>star</mat-icon> {{ restaurantDetails.rating || 4.1}} ({{ restaurantDetails.ratingsCount || 2 }} ratings)
+      </span>
+      <span>• ₹{{ restaurantDetails.averageCost || 800 }} for two</span>
+      <span>
+        <a [href]="restaurantDetails.cuisinesLink">{{ restaurantDetails.cuisineType }}</a>
+      </span>
+    </div>
+
+    <!-- Delivery Time and Location -->
+    <div class="restaurant-meta">
+      <span>{{ restaurantDetails.location }}</span>
+      <span>{{ restaurantDetails.deliveryTime }} mins</span>
+    </div>
+
+    <!-- Deals Section -->
+    <div class="deals-section">
+      <div class="deal-card" *ngFor="let deal of restaurantDetails.deals">
+        <mat-icon>local_offer</mat-icon>
+        <span>{{ deal.title }}</span>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search for dishes</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (input)="filterMenu()" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- Menu Section -->
+    <div class="menu-section">
+      <mat-accordion multi>
+        <mat-expansion-panel *ngFor="let category of filteredMenu">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ category.name }} ({{ category.items.length }})
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="menu-item" *ngFor="let item of category.items">
+            <div class="item-info">
+              <span>{{ item.name }}</span>
+              <p>{{ item.description }}</p>
+              <span class="price">₹{{ item.price }}</span>
+            </div>
+            <button mat-raised-button color="primary">ADD</button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

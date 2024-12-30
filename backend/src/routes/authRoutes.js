@@ -6,6 +6,8 @@ const router = express.Router();
 
 // GET
 router.get('/fetchUserDetails', authController.fetchUser);
+router.get('/fetchRestaurantDetails', authController.fetchAllRestaurant);
+router.get('/getRestaurantDetails/:id', authController.fetchRestaurant);
 
 // POST
 router.post('/login', authController.login);

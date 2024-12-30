@@ -3,6 +3,7 @@ const jwt = require('../../utils/jwt/jwt-creation');
 const bcrypt = require('bcryptjs');
 const User = require('../../models/userModel');
 const Vendor = require('../../models/restaurantModel');
+const Restaurant = require('../../models/restaurantModel');
 
 const userLogin = async (data, res) => {
     if(!data) {
@@ -131,6 +132,108 @@ const getUserDetails = async(req, res) => {
         return res.status(500).json({ message: 'Server error', error: err.message });
     }
 };
+
+const getAllRestaurantDetails = async(req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'Authorization token is missing' });
+        }
+
+        const JWT_SECRET = 'FoodDeliveryApp';
+        const decoded = JWT.verify(token, JWT_SECRET);
+        
+        const userId = decoded.id;
+        if (!userId) {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+
+        const restaurantsData = await Restaurant.find();
+        if(!restaurantsData || restaurantsData.length == 0){
+            return res.status(404).json({ message: 'Restaurants not found' });
+        }
+
+        let restaurantsDetails = [];
+        restaurantsData.forEach(restaurant => {
+            restaurantsDetails.push({
+                name: restaurant.name,
+                description: restaurant?.description,
+                address: restaurant.address,
+                email: restaurant.email,
+                cuisineType: restaurant.cuisineType,
+                website: restaurant.website,
+                menu: restaurant.menu,
+                id: restaurant._id
+            });
+        });
+
+        return res.status(200).json({
+            message: 'Restaurants details fetched successfully',
+            payload: restaurantsDetails
+        });
+
+
+    } catch(error){
+        console.error('Error fetching user details:', error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+        }
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
+const getRestaurantDetails = async(req, res) => {
+    try {
+        
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'Authorization token is missing' });
+        }
+        
+        const JWT_SECRET = 'FoodDeliveryApp';
+        const decoded = JWT.verify(token, JWT_SECRET);
+        
+        const userId = decoded.id;
+        if (!userId) {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+        
+        const id = req.params.id;
+        if(!id){
+            return res.status(404).json({ message: 'Restaurants id not found' });
+        }
+
+        const restaurantsData = await Restaurant.findOne({
+            _id: id
+        });
+        if(!restaurantsData || restaurantsData.length == 0){
+            return res.status(404).json({ message: 'Restaurants not found' });
+        }
+
+        let restaurantsDetails = {
+            name: restaurantsData.name,
+            description: restaurantsData?.description,
+            address: restaurantsData.address,
+            email: restaurantsData.email,
+            cuisineType: restaurantsData.cuisineType,
+            website: restaurantsData.website,
+            menu: restaurantsData.menu,
+            id: restaurantsData._id
+        };
+
+        return res.status(200).json({
+            message: 'Restaurant details fetched successfully',
+            payload: restaurantsDetails
+        });
+
+    } catch(error) {
+        console.error('Error fetching user details:', error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+        }
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
 
 const updateUserProfile = async(data, res) => {
     if(!data) {
@@ -279,8 +382,10 @@ module.exports = {
     vendorLogin, 
     vendorSignUp, 
     getUserDetails,
+    getAllRestaurantDetails,
+    getRestaurantDetails,
     updateUserProfile,
     addNewUserAddress,
     deleteUserAddress,
-    updateUserAddress
+    updateUserAddress,
 }

@@ -62,10 +62,20 @@ export class ApiService {
     return this.http.get(`${this.openStreetMapURL}/reverse?format=json&lat=${lat}&lon=${lng}`)
   }
 
-  // Profile-Page
+  
+  // Common API
   getUserDetails(): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/fetchUserDetails`);
   }
+
+
+  // Home-Page
+  getAllRestaurantDetails(): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/fetchRestaurantDetails`);
+  }
+
+
+  // Profile-Page
   updateProfileData(reqPayload: updateUserProfileRequest): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/updateUserProfileData`, reqPayload);
   }
@@ -78,6 +88,12 @@ export class ApiService {
   updateAddress(reqPayload: editAddressRequest): Observable<any> { 
     return this.http.post(`${this.baseURL}/auth/updateUserAddress`, reqPayload);
   }
+
+  // Restaurant-Page
+  getRestaurantDetails(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getRestaurantDetails/${reqPayload}`);
+  }
+
 
   
 }

@@ -18,6 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { DialogPage } from '../shared/dialog/dialog.page';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { RestaurantPage } from '../restaurant/restaurant.page';
+import { FooterPage } from '../shared/footer/footer.page';
 
 
 
@@ -41,11 +43,13 @@ import { MatSelectModule } from '@angular/material/select';
     UserDashboardPage,
     NavbarPage,
     TabsPage,
+    FooterPage,
     HomePage,
     DialogPage,
     CartPage,
     SearchPage,
-    ProfilePage
+    ProfilePage,
+    RestaurantPage
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

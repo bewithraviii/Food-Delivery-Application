@@ -178,6 +178,7 @@ h4, h5, ion-card-title, .restaurant-details span {
 .restaurants-section {
     padding: 16px;
     .restaurant-cards {
+        cursor: pointer;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 16px;
@@ -189,15 +190,47 @@ h4, h5, ion-card-title, .restaurant-details span {
     }
 }
 
+
+@media screen and (max-width: 1024px) {
+    .restaurant-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+
+@media screen and (max-width: 576px) {
+    .restaurant-cards {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.restaurant-details-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rating-desing {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding-left: 0.2rem;
+    background-color: #FC6E2A;
+    border-radius: 10px;
+    color: white;
+    padding-right: 0.2rem;
+}
+
 .restaurant-details {
     display: flex;
     align-items: center;
     ion-icon {
-        font-size: 16px;
-        color: #f39c12;
+        font-size: 13px;
+        color: white;
     }
     span {
-        margin-left: 8px;
+        margin-left: 6px;
         font-size: 14px;
         color: #32343E;
     }

@@ -38,6 +38,14 @@ exports.fetchUser = async (req, res) => {
     return await authService.getUserDetails(req, res);
 };
 
+exports.fetchAllRestaurant = async (req, res) => {
+    return await authService.getAllRestaurantDetails(req, res);
+};
+
+exports.fetchRestaurant = async (req, res) => {
+    return await authService.getRestaurantDetails(req, res);
+}
+
 exports.updateUserProfileData = async (req, res) => {
     return await authService.updateUserProfile(req.body, res);
 }

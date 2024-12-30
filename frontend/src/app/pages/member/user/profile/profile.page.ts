@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogPage } from '../shared/dialog/dialog.page';
 import { Validators } from '@angular/forms';
 import { addNewAddressRequest, deleteAddressRequest, editAddressRequest, updateUserProfileRequest } from 'src/app/models/api.interface';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-profile',
@@ -52,7 +53,7 @@ export class ProfilePage implements OnInit {
     private apiService: ApiService,
     private loadingController: LoadingController,
     private matDialog: MatDialog,
-    // private dialogService: DialogService,
+    private dialogService: DialogService,
   ) { }
 
   async ngOnInit() {
@@ -83,13 +84,13 @@ export class ProfilePage implements OnInit {
     this.selectedMenu = menuId;
   }
 
-  async openDialog(title: string, contextData: any, fields: any, contentTemplate?: any, isConfirmationDialog?: boolean) {
-      const dialogRef = this.matDialog.open(DialogPage, {
-        data: { title, contentTemplate, fields, contextData, isConfirmationDialog },
-        width: '500px',
-      });
-      return dialogRef.afterClosed().toPromise();
-  }
+  // async openDialog(title: string, contextData: any, fields: any, contentTemplate?: any, isConfirmationDialog?: boolean) {
+  //     const dialogRef = this.matDialog.open(DialogPage, {
+  //       data: { title, contentTemplate, fields, contextData, isConfirmationDialog },
+  //       width: '500px',
+  //     });
+  //     return dialogRef.afterClosed().toPromise();
+  // }
 
 
   async editUser() {
@@ -99,7 +100,7 @@ export class ProfilePage implements OnInit {
       { name: 'email', label: 'Email',type: 'text', value: this.user.email, validators: [Validators.required, Validators.email] },
       { name: 'phone', label: 'Phone Number', type: 'tel', value: this.user.phoneNumber , validators: [Validators.required, Validators.pattern(/^[0-9]{10}$/)] },
     ];
-    const updatedUser = await this.openDialog(
+    const updatedUser = await this.dialogService.openDialog(
       'Edit Profile',
       { user: userInfo },
       fields,
@@ -133,7 +134,7 @@ export class ProfilePage implements OnInit {
       { name: 'details', label: 'Details', type: 'text', value: '', validators: [Validators.required] },
     ];
     const addAddress = { title: '', details: '' }
-    const addedAddress = await this.openDialog(
+    const addedAddress = await this.dialogService.openDialog(
       "Add Address",
       { newAddress: addAddress },
       fields,
@@ -169,7 +170,7 @@ export class ProfilePage implements OnInit {
       { name: 'details', label: 'Details', type: 'text', value: address.details, validators: [Validators.required] },
     ];
     const editAddress = { title: address.title, details: address.details }
-    const editedAddress = await this.openDialog(
+    const editedAddress = await this.dialogService.openDialog(
       "Edit Address",
       { editAddress: editAddress },
       fields,
@@ -202,7 +203,7 @@ export class ProfilePage implements OnInit {
 
   async deleteAddress(address: any) {
     const message = "Are you sure? This action will permanently remove this address from your profile.";
-    const result = await this.openDialog("Delete Address", { message: message }, [], null, true);
+    const result = await this.dialogService.openDialog("Delete Address", { message: message }, [], null, true);
     if(result){
       await this.presentLoader('Deleting address...');
       const requestPayload: deleteAddressRequest = {
@@ -234,7 +235,7 @@ export class ProfilePage implements OnInit {
       { name: 'cvc', label: 'Card CVC', type: 'text', value: '', validators: [Validators.required] },
     ];
     const addCard = { name: '', number: '', month: '', year: '', cvc: '' }
-    const addedCard = await this.openDialog(
+    const addedCard = await this.dialogService.openDialog(
       "Add Card",
       { editAddress: addCard },
       fields,
