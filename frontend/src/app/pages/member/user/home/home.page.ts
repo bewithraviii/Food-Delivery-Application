@@ -6,6 +6,7 @@ import { LoadingController } from '@ionic/angular';
 import { addNewAddressRequest } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
+import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
 
 @Component({
   selector: 'app-home',
@@ -53,6 +54,7 @@ export class HomePage implements OnInit {
     private dialogService: DialogService,
     private cd: ChangeDetectorRef,
     private loadingController: LoadingController,
+    private addressExtractionService: AddressExtractionService,
   ) { }
 
 
@@ -266,6 +268,7 @@ export class HomePage implements OnInit {
         const data = fetchedData.payload;
         if(data) {
           data.forEach((details: any) => {
+            const extractedAddress = this.addressExtractionService.extractAddressDetails(details.address);
             this.restaurants.push(
               { 
                 id: details.id,
@@ -275,11 +278,12 @@ export class HomePage implements OnInit {
                 deliveryTime: '20', 
                 priceForTwo: '800',
                 cuisine: details.cuisineType,
-                address: details.address,
+                address: extractedAddress,
                 distance: '0.8',
               }
             );
           });
+          console.log(this.restaurants);
         }
       }
     );

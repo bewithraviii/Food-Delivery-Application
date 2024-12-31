@@ -137,8 +137,12 @@
                     <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
                   </div>
                   <div class="restaurant-details-row">
-                    <ion-card-subtitle>{{restaurant.address}}</ion-card-subtitle>
-                    <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
+                    <div class="col-md-8">
+                      <ion-card-subtitle>{{restaurant.address.landmark}}, {{restaurant.address.city}}</ion-card-subtitle>
+                    </div>
+                    <div class="col-md-4" style="justify-content: end; display: flex;">
+                      <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
+                    </div>
                   </div>
                 </ion-card-header>
               </ion-card>

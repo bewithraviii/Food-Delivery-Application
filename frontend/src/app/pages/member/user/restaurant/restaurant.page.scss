@@ -15,16 +15,20 @@
     flex-direction: column;
 }
 
+.restaurant {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    border-radius: 12px;
+}
 
   
 .restaurant-title {
-font-size: 1.8rem;
-font-weight: bold;
-color: #181c2e;
+    font-size: 20px;
+    font-weight: bold;
+    color: #181C2E;
 }
 
-.restaurant-info,
-.restaurant-meta {
+.restaurant-info {
     display: flex;
     justify-content: space-between;
     margin: 0.5rem 0;
@@ -32,23 +36,90 @@ color: #181c2e;
     color: #555;
 }
 
-.deals-section {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
-    overflow-x: auto;
+.restaurant-address {
+    font-size: 14px;
+    color: #A0A5BA;
 }
 
-.deal-card {
+.ratingsCornerCenter {
     display: flex;
     align-items: center;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    white-space: nowrap;
-    background: #f9f9f9;
+    justify-content: end;
 }
 
+.ratingsCorner,
+.averageCostCorner {
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ratings {
+    color: white;
+    border-radius: 10px;
+    background-color: #059C6A;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    margin-right: 0.1rem;
+}
+
+.restaurant-cuisine {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px; 
+    color: #646982;
+    align-items: center;
+}
+
+.restaurant-meta {
+    margin-top: 1rem;
+    width: fit-content;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+} 
+
+.restaurant-time {
+    font-size: 14px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    padding: 0.3rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.restaurant-time-info {
+    margin-left: 0.3rem;
+    font-size: 18px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+// .restaurant-time-info-content {
+//     justify-content: center;
+//     display: flex;
+//     align-items: center;
+//     padding: 0.5rem !important;
+//     background-color: #FFC6AE !important;
+// }
+
+
+.center {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.padding {
+    padding: 1rem;
+}
 .search-bar {
     margin: 1rem 0;
 }
@@ -80,12 +151,146 @@ color: #181c2e;
         gap: 0.5rem;
     }
 
-    .deal-card {
-        font-size: 0.8rem;
-    }
-
     .menu-item {
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+
+
+
+/* Deal Cards */
+.deals-section {
+    position: relative;
+    padding: 1rem !important;
+}
+  
+/* Wrapper for scrolling */
+.deal-cards-wrapper {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+}
+  
+/* Horizontal layout for deal cards */
+.deal-cards {
+    display: flex;
+    gap: 10px;
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    ion-img {
+        opacity: 0.9;
+        width: 3rem;
+    };
+    ion-card-title {
+        color: #FF7622;
+        font-size: 16px;
+        padding: 0;
+        font-weight: bold;
+    };
+    ion-card-subtitle {
+        font-size: 14px;
+        margin: 0;
+    };
+    ion-card-header {
+        background-color: transparent;
+        padding: 0.5rem;
+    }
+}
+
+.deal-cards::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Deal card styling */
+.deal-card {
+    min-width: 18rem;
+    background-color: transparent !important;
+    display: flex !important;
+    border-radius: 12px;
+    height: fit-content;
+    box-shadow: 0 0 0 2px #FFC6AE;
+}
+
+
+
+
+// .deals-section {
+//     padding: 16px;
+//     position: relative;
+//     padding: 0 !important;
+// }
+
+// .deal-cards-wrapper {
+//     overflow-x: hidden;
+//     position: relative;
+//     width: 100%;
+// }
+
+// .deal-cards {
+//     display: flex;
+//     gap: 10px;
+//     scroll-behavior: smooth;
+//     overflow-x: auto;
+//     -ms-overflow-style: none;
+//     scrollbar-width: none; 
+
+
+//     ion-img {
+//         opacity: 0.9;
+//         width: 3rem;
+//     };
+//     ion-card-title {
+//         color: #FF7622;
+//         font-size: 16px;
+//         padding: 0;
+//         font-weight: bold;
+//     };
+//     ion-card-subtitle {
+//         font-size: 14px;
+//         margin: 0;
+//     };
+//     ion-card-header {
+//         background-color: transparent;
+//         padding: 0.5rem;
+//     }
+// }
+
+// .deal-cards::-webkit-scrollbar {
+//     display: none;
+// }
+
+    
+// .deal-card {
+//     background-color: transparent !important;
+//     display: flex !important;
+//     padding: 0.5rem;
+//     border-radius: 12px;
+//     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+//     width: 350px;
+// };
+
+.scroll-btn {
+    color: #181C2E;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+  
+.prev-btn {
+    transform: translateY(-50%);
+}
+  
+.next-btn {
+    transform: translateY(-50%);
+}
+
+@media screen and (max-width: 768px) {
+    .scroll-btn {
+      display: none; /* Hide buttons on screens smaller than 768px (tablet and mobile) */
     }
 }

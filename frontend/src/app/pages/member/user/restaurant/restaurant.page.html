@@ -1,42 +1,92 @@
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>restaurant</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">restaurant</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content> -->
-
 <div class="restaurant-page" style="padding-top: 2rem;">
-  <div class="container">   
+  <div class="container">
     <!-- Restaurant Name and Info -->
-    <h1 class="restaurant-title">{{ restaurantDetails.name }}</h1>
-    <div class="restaurant-info">
-      <span>
-        <mat-icon>star</mat-icon> {{ restaurantDetails.rating || 4.1}} ({{ restaurantDetails.ratingsCount || 2 }} ratings)
-      </span>
-      <span>• ₹{{ restaurantDetails.averageCost || 800 }} for two</span>
-      <span>
-        <a [href]="restaurantDetails.cuisinesLink">{{ restaurantDetails.cuisineType }}</a>
-      </span>
-    </div>
-
-    <!-- Delivery Time and Location -->
-    <div class="restaurant-meta">
-      <span>{{ restaurantDetails.location }}</span>
-      <span>{{ restaurantDetails.deliveryTime }} mins</span>
+    <div class="row padding">      
+      <div class="restaurant">
+        <div class="restaurant-title">
+          <h1>{{ restaurantDetails.name }}</h1>
+        </div>
+        <div class="restaurant-info">
+          <div class="restaurant-address col-md-6">
+            <div>{{restaurantDetails.address}}</div>
+          </div>
+          <div class="ratingsCornerCenter  col-md-6">
+            <div class="ratingsCorner">
+              <div class="ratings">
+                <mat-icon style="font-size: 18px;height: fit-content; width: fit-content; margin-right: 0.2rem;">star</mat-icon> {{ restaurantDetails.rating || 4.1}} 
+              </div>
+              <div>
+                ({{ restaurantDetails.ratingsCount || 2 }} ratings)
+              </div>
+            </div>
+            <div class="averageCostCorner">
+              <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> ₹{{ restaurantDetails.averageCost || 800 }} for two
+            </div>
+          </div>
+        </div>
+        <div class="restaurant-cuisine">
+          <div>{{"Cuisine" | uppercase}}<span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> 
+            <span>{{ restaurantDetails.cuisineType }}</span>
+          </div>
+          <div style="font-size: 16px;font-weight: 500;">
+            <span>Delivery In: </span>
+            <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
+          </div>
+        </div>
+        <div class="restaurant-meta">
+          <div class="restaurant-time">
+            <span style="color: #FC6E2A; font-weight: 500;">{{"Open now" | uppercase}}</span>
+            <span style="margin-left: 0.5rem; margin-right: 0.5rem; color: #646982;">•</span>
+            <span style="color: #646982; display: flex;">
+              <div>
+                12midnight - 2am, 11am – 12midnight (Today)
+              </div>
+              <div class="restaurant-time-info">
+                <ion-icon id="addressInfo-hover-trigger" name="information-circle"></ion-icon>
+                <ion-popover trigger="addressInfo-hover-trigger" triggerAction="hover">
+                  <ng-template>
+                    <ion-title class="restaurant-time-info-content">{{"Opening Hours" | uppercase}}</ion-title>
+                    <ion-content class="restaurant-time-info-content ion-padding">Mon-Sun: 12midnight - 2am, 11am – 12midnight</ion-content>
+                  </ng-template>
+                </ion-popover>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Deals Section -->
-    <div class="deals-section">
-      <div class="deal-card" *ngFor="let deal of restaurantDetails.deals">
-        <mat-icon>local_offer</mat-icon>
-        <span>{{ deal.title }}</span>
+    <div class="row padding">
+      <div class="deals-section">
+        <div class="d-flex bd-highlight">
+          <div class="p-2 bd-highlight">
+            <h5 style="margin: 0;">{{"Deals for you" | uppercase}}</h5>
+          </div>
+          <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
+            <div style="padding: 0.5rem;" class="center">
+              <ion-icon  (click)="scrollLeft()" class="scroll-btn prev-btn" [disabled]="isPrevDisabled" name="arrow-back-outline"></ion-icon>
+            </div>
+            <div style="padding: 0.5rem;" class="center">
+              <ion-icon (click)="scrollRight()" class="scroll-btn next-btn" [disabled]="isNextDisabled" name="arrow-forward-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+        <div class="deal-cards-wrapper">
+          <div class="deal-cards" #dealCards>
+            <ion-card *ngFor="let deal of offersAndDeals" class="deal-card">
+              <div style="display: flex; padding: 0.3rem;">
+                <ion-img src="assets/icons/offer.png"></ion-img>
+              </div>
+              <div style="width: 100%;">
+                <ion-card-header style="background-color: transparent; padding: 0.5rem; width: 100%;">
+                  <ion-card-title>{{ deal.title }}</ion-card-title>
+                  <ion-card-subtitle>USE {{ deal.code }}</ion-card-subtitle>
+                </ion-card-header>
+              </div>
+            </ion-card>
+          </div>
+        </div>
       </div>
     </div>
 
