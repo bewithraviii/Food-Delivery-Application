@@ -20,7 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { RestaurantPage } from '../restaurant/restaurant.page';
 import { FooterPage } from '../shared/footer/footer.page';
-
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 
 
@@ -37,7 +37,8 @@ import { FooterPage } from '../shared/footer/footer.page';
     MatDividerModule,
     MatExpansionModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    ClipboardModule,
   ],
   declarations: [
     UserDashboardPage,

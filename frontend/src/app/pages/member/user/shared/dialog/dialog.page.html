@@ -7,19 +7,27 @@
     <div class="dialog-body">
       <div *ngIf="isConfirmationDialog && contextData.identity == 'deals'">
         <div class="row p-3" style="color: #525C67;">
-          <h3>{{ contextData?.title }}</h3>
-          <h5>{{ contextData?.desc }}</h5>
+          <div class="couponContainer" (click)="copyCouponToClipBoard(contextData.code)">
+            <div class="couponImg">
+              <img src="assets/icons/coupon-code.png" alt="{{contextData.code}}">
+            </div>
+            <div class="coupon">
+              <span style="padding: 0; font-size: 16px; font-weight: 500;">{{contextData.code}}</span>
+            </div>
+          </div>
+          <p style="padding: 0; font-size: 18px; font-weight: 500; margin-top: 0.5rem;">Get {{ contextData?.title }}</p>
+          <p style="padding: 0;">{{ contextData?.desc }}</p>
         </div>
         <div class="row p-3" style="color: #525C67;">
-          <hr>
+          <p style="padding: 0; font-size: 16px; font-weight: 500;">Terms and Conditions</p>
           <ul *ngIf="contextData?.termsAndCondition?.length">
-            <li *ngFor="let term of contextData.termsAndCondition">
+            <li *ngFor="let term of contextData.termsAndCondition" style="font-size: 14px;">
               {{ term.describe }}
             </li>
           </ul>
         </div>
       </div>
-      <div *ngIf="isConfirmationDialog && contextData.identity == 'confirmation'; else formTemplate">
+      <div *ngIf="isConfirmationDialog && contextData.identity == 'confirmation'">
         <div class="row p-3" style="color: #525C67;">
           <h5>{{ contextData?.message }}</h5>
         </div>
@@ -30,7 +38,7 @@
           </div>
         </div>
       </div>
-      <ng-template #formTemplate>
+      <div *ngIf="!isConfirmationDialog && contextData.identity == 'form'">
         <form [formGroup]="dialogForm" class="dialog-form">
           <div *ngFor="let field of fields">
             <mat-form-field appearance="outline" class="full-width" style="width: 100%;">
@@ -55,7 +63,7 @@
           <button mat-button class="action-btn" (click)="closeDialog()">CANCEL</button>
           <button mat-raised-button class="action-btn" (click)="saveChanges()"[disabled]="!dialogForm.valid">SAVE</button>
         </div>
-      </ng-template>
+      </div>
     </div>
   </div>
 </div>

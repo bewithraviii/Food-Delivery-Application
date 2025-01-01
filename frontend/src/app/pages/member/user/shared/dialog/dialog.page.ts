@@ -1,6 +1,8 @@
 import { Component, Inject, Injector, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 
 @Component({
   selector: 'app-dialog',
@@ -19,6 +21,8 @@ export class DialogPage implements OnInit {
     private matDialogRef: MatDialogRef<DialogPage>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
+    private clipboard: Clipboard,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -65,6 +69,14 @@ export class DialogPage implements OnInit {
     this.contextData = {};
     if(this.dialogForm) {
       this.dialogForm.reset();
+    }
+  }
+
+  copyCouponToClipBoard(code: string) {
+    const couponCode = code;
+    if (couponCode) {
+      this.clipboard.copy(couponCode);
+      this.notificationService.notifyUser("successSnack", "Coupon code copied to clipboard!");
     }
   }
 }

@@ -102,7 +102,7 @@ export class ProfilePage implements OnInit {
     ];
     const updatedUser = await this.dialogService.openDialog(
       'Edit Profile',
-      { user: userInfo },
+      { user: userInfo, identity: 'form' },
       fields,
       this.editProfileTemplate,
     );
@@ -136,7 +136,7 @@ export class ProfilePage implements OnInit {
     const addAddress = { title: '', details: '' }
     const addedAddress = await this.dialogService.openDialog(
       "Add Address",
-      { newAddress: addAddress },
+      { newAddress: addAddress, identity: 'form' },
       fields,
       this.addAddressTemplate,
     );
@@ -172,7 +172,7 @@ export class ProfilePage implements OnInit {
     const editAddress = { title: address.title, details: address.details }
     const editedAddress = await this.dialogService.openDialog(
       "Edit Address",
-      { editAddress: editAddress },
+      { editAddress: editAddress, identity: 'form' },
       fields,
       this.addAddressTemplate,
     );
@@ -240,7 +240,7 @@ export class ProfilePage implements OnInit {
     const addCard = { name: '', number: '', month: '', year: '', cvc: '' }
     const addedCard = await this.dialogService.openDialog(
       "Add Card",
-      { editAddress: addCard },
+      { editAddress: addCard, identity: 'form' },
       fields,
       null,
     );

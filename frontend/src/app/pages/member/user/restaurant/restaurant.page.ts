@@ -134,10 +134,6 @@ export class RestaurantPage implements OnInit {
       behavior: 'smooth'
     });
     this.updateButtonStates();
-    // scrollContainer.scrollBy({
-    //   left: -300, // Adjust this value to control how far to scroll
-    //   behavior: 'smooth'
-    // });
   }
 
   scrollRight() {
@@ -148,10 +144,6 @@ export class RestaurantPage implements OnInit {
       behavior: 'smooth'
     });
     this.updateButtonStates();
-    // scrollContainer.scrollBy({
-    //   left: 300, // Adjust this value to control how far to scroll
-    //   behavior: 'smooth'
-    // });
   }
 
   updateButtonStates() {
@@ -171,7 +163,7 @@ export class RestaurantPage implements OnInit {
         termsAndCondition: deal.termsAndCondition
       };
 
-      this.dialogService.openDialog("Offer", contextData, null, null, true);
+      this.dialogService.openDialog("Offer Details", contextData, null, null, true);
   }
 
 }

@@ -86,7 +86,7 @@
 
 .restaurant-time {
     font-size: 14px;
-    border-radius: 20px;
+    border-radius: 8px;
     border: 1px solid #ddd;
     padding: 0.3rem;
     justify-content: center;
@@ -123,8 +123,23 @@
 .padding {
     padding: 1rem;
 }
-.search-bar {
-    margin: 1rem 0;
+
+.search-bar-section {
+    padding: 1rem;
+}
+
+.search-details {
+    
+    font-weight: 500;
+}
+
+.search-menu {
+    display: flex;
+    align-items: center;
+}  
+
+.search-field {
+    width: 100%;
 }
 
 .menu-section {

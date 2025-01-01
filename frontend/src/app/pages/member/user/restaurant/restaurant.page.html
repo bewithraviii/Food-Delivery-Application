@@ -19,19 +19,22 @@
                 ({{ restaurantDetails.ratingsCount || 2 }} ratings)
               </div>
             </div>
-            <div class="averageCostCorner">
+            <!-- <div class="averageCostCorner">
               <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> ₹{{ restaurantDetails.averageCost || 800 }} for two
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="restaurant-cuisine">
           <div>{{"Cuisine" | uppercase}}<span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> 
             <span>{{ restaurantDetails.cuisineType }}</span>
           </div>
-          <div style="font-size: 16px;font-weight: 500;">
+          <div class="averageCostCorner">
+            ₹{{ restaurantDetails.averageCost || 800 }} for two
+          </div>
+          <!-- <div style="font-size: 16px;font-weight: 500;">
             <span>Delivery In: </span>
             <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
-          </div>
+          </div> -->
         </div>
         <div class="restaurant-meta">
           <div class="restaurant-time">
@@ -99,12 +102,29 @@
     </div>
 
     <!-- Search Bar -->
-    <div class="search-bar">
-      <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Search for dishes</mat-label>
-        <input matInput [(ngModel)]="searchQuery" (input)="filterMenu()" />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+    <div class="row padding">
+      <div class="search-bar-section">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="search-details p-2 bd-highlight">
+              <span class="bd-highlight"  style="font-size: 18px;">{{"Order Online" | uppercase}}</span>
+              <div style="color: #A0A5BA; font-size: 14px;">
+                <span>Delivery in: </span>
+                <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="search-menu">
+              <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search within menu</mat-label>
+                <input matInput [(ngModel)]="searchQuery" (input)="filterMenu()" />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Menu Section -->

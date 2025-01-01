@@ -204,7 +204,7 @@ export class HomePage implements OnInit {
     const addressData = { title: '', details: '' }
     const addedAddress = await this.dialogService.openDialog(
       "Add Address",
-      { newAddress: addressData },
+      { newAddress: addressData, identity: "form" },
       fields,
       null,
     );
@@ -283,7 +283,6 @@ export class HomePage implements OnInit {
               }
             );
           });
-          console.log(this.restaurants);
         }
       }
     );

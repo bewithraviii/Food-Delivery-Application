@@ -68,3 +68,32 @@
 		cursor: not-allowed;
 	}
 }
+
+.couponContainer {
+    display: flex;
+    // margin-bottom: 0.5rem;
+    height: fit-content;
+    padding: 0;
+    width: fit-content;
+    border-radius: 5px;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    background: #FFF2ED;
+    border: 1px solid #FF956D;
+    font-family: 'Roboto';
+    cursor: pointer;
+}
+
+
+.couponImg {
+    width: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.coupon {
+    letter-spacing: 1px;
+    color: #FF956D;
+
+}
