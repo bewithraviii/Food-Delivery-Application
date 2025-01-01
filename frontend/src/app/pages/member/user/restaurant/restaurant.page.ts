@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -69,7 +70,7 @@ export class RestaurantPage implements OnInit {
     private route: ActivatedRoute,
     private apiService: ApiService,
     private cd: ChangeDetectorRef,
-
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -82,16 +83,6 @@ export class RestaurantPage implements OnInit {
     }
   }
 
-  // ngAfterViewInit() {
-  //   if (this.dealCards) {
-  //     this.updateVisibleCards();
-  //     this.updateButtonStates();
-  
-  //     // Add scroll event listener
-  //     this.dealCards.nativeElement.addEventListener('scroll', () => this.updateButtonStates());
-  //     window.addEventListener('resize', () => this.updateVisibleCards());
-  //   }
-  // }
   ngAfterViewInit() {
     if (this.dealCards) {
       this.updateVisibleCards();
@@ -135,42 +126,11 @@ export class RestaurantPage implements OnInit {
     );
   }
 
-  // scrollLeft() {
-  //   const scrollContainer = this.dealCards.nativeElement;
-  //   const cardWidth = scrollContainer.querySelector('ion-card').offsetWidth;
-  //   scrollContainer.scrollBy({
-  //     left: -(cardWidth * this.visibleCardsCount), // Scroll by visible cards
-  //     behavior: 'smooth'
-  //   });
-  //   setTimeout(() => this.updateButtonStates(), 300);
-  // }
-
-  // scrollRight() {
-  //   const scrollContainer = this.dealCards.nativeElement;
-  //   const cardWidth = scrollContainer.querySelector('ion-card').offsetWidth;
-  //   scrollContainer.scrollBy({
-  //     left: cardWidth * this.visibleCardsCount, // Scroll by visible cards
-  //     behavior: 'smooth'
-  //   });
-  
-  //   setTimeout(() => this.updateButtonStates(), 300); // Update after the scroll is done
-  // }
-
-  // updateButtonStates() {
-  //   const scrollContainer = this.dealCards.nativeElement;
-  //   const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-  
-  //   this.isPrevDisabled = scrollContainer.scrollLeft <= 0;
-  //   this.isNextDisabled = scrollContainer.scrollLeft >= maxScrollLeft;
-  
-  //   this.cd.detectChanges();
-  // }
-
   scrollLeft() {
     const scrollContainer = this.dealCards.nativeElement;
     const cardWidth = scrollContainer.querySelector('ion-card').offsetWidth;
     scrollContainer.scrollBy({
-      left: -(cardWidth * this.visibleCardsCount), // Scroll by visible cards
+      left: -(cardWidth * this.visibleCardsCount),
       behavior: 'smooth'
     });
     this.updateButtonStates();
@@ -184,7 +144,7 @@ export class RestaurantPage implements OnInit {
     const scrollContainer = this.dealCards.nativeElement;
     const cardWidth = scrollContainer.querySelector('ion-card').offsetWidth;
     scrollContainer.scrollBy({
-      left: cardWidth * this.visibleCardsCount, // Scroll by visible cards
+      left: cardWidth * this.visibleCardsCount,
       behavior: 'smooth'
     });
     this.updateButtonStates();
@@ -200,6 +160,18 @@ export class RestaurantPage implements OnInit {
      this.isPrevDisabled = scrollContainer.scrollLeft === 0;
      this.isNextDisabled = scrollContainer.scrollLeft >= maxScrollLeft;
     this.cd.detectChanges();
+  }
+
+  openDealDialog(deal: any){
+      const contextData = {
+        identity: "deals",
+        code: deal.code,
+        title: deal.title, 
+        desc: deal.desc, 
+        termsAndCondition: deal.termsAndCondition
+      };
+
+      this.dialogService.openDialog("Offer", contextData, null, null, true);
   }
 
 }

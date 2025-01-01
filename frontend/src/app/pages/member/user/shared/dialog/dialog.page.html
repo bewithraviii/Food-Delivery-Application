@@ -5,7 +5,21 @@
       <button (click)="closeDialog()" class="close-btn"><ion-icon name="close"></ion-icon></button>
     </div>
     <div class="dialog-body">
-      <div *ngIf="isConfirmationDialog; else formTemplate">
+      <div *ngIf="isConfirmationDialog && contextData.identity == 'deals'">
+        <div class="row p-3" style="color: #525C67;">
+          <h3>{{ contextData?.title }}</h3>
+          <h5>{{ contextData?.desc }}</h5>
+        </div>
+        <div class="row p-3" style="color: #525C67;">
+          <hr>
+          <ul *ngIf="contextData?.termsAndCondition?.length">
+            <li *ngFor="let term of contextData.termsAndCondition">
+              {{ term.describe }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="isConfirmationDialog && contextData.identity == 'confirmation'; else formTemplate">
         <div class="row p-3" style="color: #525C67;">
           <h5>{{ contextData?.message }}</h5>
         </div>

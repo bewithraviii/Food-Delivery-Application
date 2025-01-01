@@ -44,9 +44,17 @@
               <div class="restaurant-time-info">
                 <ion-icon id="addressInfo-hover-trigger" name="information-circle"></ion-icon>
                 <ion-popover trigger="addressInfo-hover-trigger" triggerAction="hover">
-                  <ng-template>
-                    <ion-title class="restaurant-time-info-content">{{"Opening Hours" | uppercase}}</ion-title>
-                    <ion-content class="restaurant-time-info-content ion-padding">Mon-Sun: 12midnight - 2am, 11am – 12midnight</ion-content>
+                  <ng-template class="timing-info-popup">
+                    <ion-title class="restaurant-time-info-content">
+                      {{"Opening Hours" | uppercase}}
+                    </ion-title>
+                    <ion-content
+                    style="
+                    --padding-bottom: 1rem;
+                    --padding-start: 1rem;
+                    --padding-end: 1rem;
+                    --color: #646982;
+                    --background: white !important;"><span style="font-weight: 500;">Mon-Sun:</span> 12midnight - 2am, 11am – 12midnight</ion-content>
                   </ng-template>
                 </ion-popover>
               </div>
@@ -74,7 +82,7 @@
         </div>
         <div class="deal-cards-wrapper">
           <div class="deal-cards" #dealCards>
-            <ion-card *ngFor="let deal of offersAndDeals" class="deal-card">
+            <ion-card *ngFor="let deal of offersAndDeals" class="deal-card" (click)="openDealDialog(deal)">
               <div style="display: flex; padding: 0.3rem;">
                 <ion-img src="assets/icons/offer.png"></ion-img>
               </div>

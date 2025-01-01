@@ -46,7 +46,7 @@ export class AddressExtractionService {
   }
 
   private extractState(address: string): string {
-    return 'Gujarat'; // Assuming it's always in Gujarat as per your examples
+    return 'Gujarat';
   }
 
   private extractPincode(address: string): string | null {

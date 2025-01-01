@@ -202,8 +202,11 @@ export class ProfilePage implements OnInit {
   }
 
   async deleteAddress(address: any) {
-    const message = "Are you sure? This action will permanently remove this address from your profile.";
-    const result = await this.dialogService.openDialog("Delete Address", { message: message }, [], null, true);
+    const contextData = {
+      message: "Are you sure? This action will permanently remove this address from your profile.",
+      identity: "confirmation",
+    } 
+    const result = await this.dialogService.openDialog("Delete Address", contextData, [], null, true);
     if(result){
       await this.presentLoader('Deleting address...');
       const requestPayload: deleteAddressRequest = {
