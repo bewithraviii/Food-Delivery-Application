@@ -16,13 +16,13 @@
             </div>
           </div>
           <p style="padding: 0; font-size: 18px; font-weight: 500; margin-top: 0.5rem;">Get {{ contextData?.title }}</p>
-          <p style="padding: 0;">{{ contextData?.desc }}</p>
+          <p style="padding: 0;">{{ contextData?.description }}</p>
         </div>
         <div class="row p-3" style="color: #525C67;">
           <p style="padding: 0; font-size: 16px; font-weight: 500;">Terms and Conditions</p>
           <ul *ngIf="contextData?.termsAndCondition?.length">
             <li *ngFor="let term of contextData.termsAndCondition" style="font-size: 14px;">
-              {{ term.describe }}
+              {{ term.terms }}
             </li>
           </ul>
         </div>

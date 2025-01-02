@@ -6,18 +6,41 @@ const restaurantSchema = new mongoose.Schema(
       name: { type: String, required: true },
       description: { type: String, default: null },
       address: { type: String, required: true },
+      contactNumber: { type: String, default: null },
       email: { type: String, required: true },
       cuisineType: { type: String, required: true },
       website: { type: String, required: true },
-      menu:{ 
+      restaurantRatings: { type: Number, default: 0 },
+      restaurantRatingsCount: { type: Number, default: 0 },
+      menu: {
         type: [
           {
-            itemName: { type: String, required: true },
-            price: { type: Number, required: true },
-            description: { type: String },
+            categoryName: { type: String, required: true },
+            items: [
+              {
+                name: { type: String, required: true },
+                price: { type: String, required: true },
+                description: { type: String, default: true },
+                ratings: { type: Number, required: true },
+                ratingsCount: { type: Number, required: true },
+              },
+            ],
           },
-        ], 
-        default: null
+        ], default: null,
+      },
+      offers: {
+        type: [
+          {
+            code: { type: String, required: true },
+            title: { type: String, required: true },
+            description: { type: String, required: true },
+            termsAndCondition: [
+              {
+                terms: { type: String, required: true }
+              }
+            ]
+          }
+        ], default: null,
       },
       FSSAILicense: { type: String, default: null },
       tradeLicense: { type: String, default: null },

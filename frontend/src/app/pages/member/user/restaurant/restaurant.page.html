@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <!-- Deals Section -->
+    <!-- Deals -->
     <div class="row padding">
       <div class="deals-section">
         <div class="d-flex bd-highlight">
@@ -101,51 +101,76 @@
       </div>
     </div>
 
-    <!-- Search Bar -->
+
+    <!-- Menu -->
     <div class="row padding">
-      <div class="search-bar-section">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="search-details p-2 bd-highlight">
-              <span class="bd-highlight"  style="font-size: 18px;">{{"Order Online" | uppercase}}</span>
-              <div style="color: #A0A5BA; font-size: 14px;">
-                <span>Delivery in: </span>
-                <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
+      <div class="menu-main">
+
+        <!-- Menu Header Section-->
+        <div class="menu-header">
+          <span class="line-left"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
+          <span class="menu-header-text">MENU</span>
+          <span class="line-right"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
+        </div>
+  
+        <!-- Search Section-->
+        <div class="search-bar-section">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="search-details p-2 bd-highlight">
+                <span class="bd-highlight"  style="font-size: 18px;">{{"Order Online" | uppercase}}</span>
+                <div style="color: #A0A5BA; font-size: 14px;">
+                  <span>Delivery in: </span>
+                  <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="search-menu">
+                <mat-form-field appearance="outline" class="search-field">
+                  <mat-label>Search within menu</mat-label>
+                  <input matInput [(ngModel)]="searchQuery" (input)="filterMenu()" />
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="search-menu">
-              <mat-form-field appearance="outline" class="search-field">
-                <mat-label>Search within menu</mat-label>
-                <input matInput [(ngModel)]="searchQuery" (input)="filterMenu()" />
-                <mat-icon matSuffix>search</mat-icon>
-              </mat-form-field>
-            </div>
-          </div>
         </div>
+  
+        <!-- Menu Section -->
+        <div class="menu-section">
+          <mat-divider></mat-divider>
+          <mat-accordion multi>
+            <mat-expansion-panel *ngFor="let category of filteredMenu" class="menu-list" expanded="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="menu-title">
+                  {{ category.categoryName | uppercase }} ({{ category.items.length }})
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="menu-item" *ngFor="let item of category.items">
+                <div class="item-info">
+                  <span class="menu-item-title">{{ item.name }}</span>
+                  <p class="menu-item-desc">{{ item.description }}</p>
+                  <span class="price">₹{{ item.price }}</span>
+                  <div class="menu-item-add-to-cart">
+                    <button mat-raised-button class="add-btn">ADD</button>
+                  </div>
+                </div>
+                <div class="item-image">
+                  <img src="assets/images/theka-coffee.jfif">
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+
       </div>
     </div>
 
-    <!-- Menu Section -->
-    <div class="menu-section">
-      <mat-accordion multi>
-        <mat-expansion-panel *ngFor="let category of filteredMenu">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{ category.name }} ({{ category.items.length }})
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="menu-item" *ngFor="let item of category.items">
-            <div class="item-info">
-              <span>{{ item.name }}</span>
-              <p>{{ item.description }}</p>
-              <span class="price">₹{{ item.price }}</span>
-            </div>
-            <button mat-raised-button color="primary">ADD</button>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
+
+
+
+
+
   </div>
 </div>

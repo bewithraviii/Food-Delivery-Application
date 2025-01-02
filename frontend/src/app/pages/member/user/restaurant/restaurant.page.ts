@@ -18,50 +18,138 @@ export class RestaurantPage implements OnInit {
   restaurantId?: string;
   restaurantDetails: any = {};
   searchQuery: string = '';
-  filteredMenu: any[] = [];
+  filteredMenu: any[] = [
+    {
+      categoryName: "Signature Coffee",
+      items: [
+        {
+          id: 1,
+          name: 'Next Level Coffee',
+          description: "Serves 1. It is a special blend which is a level above normal coffee created specially for ahmedabad signature taste.",
+          price: "155",
+          ratings: 4.2,
+          ratingsCount: '45',
+        },
+        {
+          id: 2,
+          name: 'Kadak Coffee',
+          description: "Serves 1. Strong & dark to keep you Kadak day & night.",
+          price: "155",
+          ratings: 4,
+          ratingsCount: '18',
+        }
+      ],
+    },
+    {
+      categoryName: "Flavour Coffee",
+      items: [
+        {
+          id: 3,
+          name: 'Nut-khatt Coffee',
+          description: "Serves 1. Hazelnut flavoured coffee. Pee kar dekho pyaar ho jayega.",
+          price: "190",
+          ratings: 4.2,
+          ratingsCount: '45',
+        },
+        {
+          id: 4,
+          name: 'Pataka Coffee',
+          description: "Serves 1. Popcorn flavoured coffee. Take it to your next corner seat.",
+          price: "190",
+          ratings: 4,
+          ratingsCount: '18',
+        },
+        {
+          id: 5,
+          name: 'Minto - Rani Coffee',
+          description: "Serves 1. Pepper mint flavour, Coffee made using high quality indian origin cocoa beans.",
+          price: "190",
+          ratings: 4,
+          ratingsCount: '18',
+        }
+      ],
+    },
+    {
+      categoryName: "Milk Shakes",
+      items: [
+        {
+          id: 6,
+          name: 'Boom Boom Shake',
+          description: "Serves 1. Bubble gum flavoured shake. It will cherish your childhood memories.",
+          price: "175",
+          ratings: 4.2,
+          ratingsCount: '45',
+        },
+        {
+          id: 7,
+          name: 'Popeye Shake',
+          description: "Serves 1. Banana shake. Did too many reps today. Have some old school banana shake.",
+          price: "160",
+          ratings: 4,
+          ratingsCount: '18',
+        },
+        {
+          id: 8,
+          name: 'Berry -piya Shake',
+          description: "Serves 1. Its pink & sweet, to satisfy your sweet tooth.",
+          price: "120",
+          ratings: 4,
+          ratingsCount: '18',
+        },
+        {
+          id: 9,
+          name: 'Chocolatey Patola Shake',
+          description: "Serves 1. Its sweet & known to make you happy.",
+          price: "190",
+          ratings: 4,
+          ratingsCount: '18',
+        }
+      ],
+    }
+  ];
   offersAndDeals: any[] = [
     {
       code: "STEALDEAL",
       title: '60% Off Upto ₹120', 
-      desc: 'Use code STEALDEAL & get 60% off on orders above ₹189. Maximum discount: ₹120.', 
+      description: 'Use code STEALDEAL & get 60% off on orders above ₹189. Maximum discount: ₹120.', 
       termsAndCondition: [
-        { describe: 'Offer is valid only on select restaurants' },
-        { describe: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { describe: 'Other T&Cs may apply' },
-        { describe: 'Offer valid till Dec 31, 2025 11:59 PM' },
+        { terms: 'Offer is valid only on select restaurants' },
+        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
+        { terms: 'Other T&Cs may apply' },
+        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
       ]
     },
     {
       code: "FLATDEAL",
       title: 'Get Flat Rs.125 off', 
-      desc: 'Use code FLATDEAL & get FLAT ₹125 Off on orders above ₹399', 
+      description: 'Use code FLATDEAL & get FLAT ₹125 Off on orders above ₹399', 
       termsAndCondition: [
-        { describe: 'Offer is valid only on select restaurants' },
-        { describe: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { describe: 'Other T&Cs may apply' },
-        { describe: 'Offer valid till Dec 31, 2025 11:59 PM' },
+        { terms: 'Offer is valid only on select restaurants' },
+        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
+        { terms: 'Other T&Cs may apply' },
+        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
       ]
     },
     {
       code: "FLAT150",
       title: 'Get Flat Rs. 150 off', 
-      desc: 'Use code FLAT150 & get flat ₹150 off orders above ₹549.', 
+      description: 'Use code FLAT150 & get flat ₹150 off orders above ₹549.', 
       termsAndCondition: [
-        { describe: 'Offer is valid only on select restaurants' },
-        { describe: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { describe: 'Other T&Cs may apply' },
-        { describe: 'Offer valid till Dec 31, 2025 11:59 PM' },
+        { terms: 'Offer is valid only on select restaurants' },
+        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
+        { terms: 'Other T&Cs may apply' },
+        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
       ]
     },
     {
       code: "STEALDEAL",
       title: '60% Off Upto ₹120', 
-      desc: 'Use code STEALDEAL & get 60% off on orders above ₹189. Maximum discount: ₹120.', 
+      description: 'Use code STEALDEAL & get 60% off on orders above ₹189. Maximum discount: ₹120.', 
       termsAndCondition: [
-        { describe: 'Offer is valid only on select restaurants' },
-        { describe: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { describe: 'Other T&Cs may apply' },
-        { describe: 'Offer valid till Dec 31, 2025 11:59 PM' },
+        { terms: 'Offer is valid only on select restaurants' },
+        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
+        { terms: 'Other T&Cs may apply' },
+        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
       ]
     },
   ];
@@ -159,7 +247,7 @@ export class RestaurantPage implements OnInit {
         identity: "deals",
         code: deal.code,
         title: deal.title, 
-        desc: deal.desc, 
+        description: deal.description, 
         termsAndCondition: deal.termsAndCondition
       };
 

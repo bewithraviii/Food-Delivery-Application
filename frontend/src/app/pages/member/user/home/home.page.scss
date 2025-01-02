@@ -288,7 +288,7 @@ h4, h5, ion-card-title, .restaurant-details span {
     box-shadow: none; /* Removes any box-shadow if present */
 }
 
-::ng-deep .mat-expansion-panel-content {
+::ng-deep .address-section .mat-expansion-panel-content {
     background: white;
     border: 1px solid rgb(207, 207, 207);
     box-shadow: rgba(28, 28, 28, 0.08) 0px 2px 8px;
@@ -296,7 +296,7 @@ h4, h5, ion-card-title, .restaurant-details span {
     padding: 0.5rem;
 }
 
-::ng-deep .mat-expansion-panel-body {
+::ng-deep .address-section .mat-expansion-panel-body {
     padding: 0 !important;
 }
 
