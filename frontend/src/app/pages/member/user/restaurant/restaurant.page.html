@@ -72,7 +72,7 @@
       <div class="deals-section">
         <div class="d-flex bd-highlight">
           <div class="p-2 bd-highlight">
-            <h5 style="margin: 0;">{{"Deals for you" | uppercase}}</h5>
+            <h5 style="margin: 0; color: #555;">{{"Deals for you" | uppercase}}</h5>
           </div>
           <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
             <div style="padding: 0.5rem;" class="center">
@@ -109,7 +109,7 @@
         <!-- Menu Header Section-->
         <div class="menu-header">
           <span class="line-left"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
-          <span class="menu-header-text">MENU</span>
+          <span class="menu-header-text" style="color: #555;">MENU</span>
           <span class="line-right"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
         </div>
   
@@ -118,7 +118,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="search-details p-2 bd-highlight">
-                <span class="bd-highlight"  style="font-size: 18px;">{{"Order Online" | uppercase}}</span>
+                <span class="bd-highlight"  style="font-size: 18px; color: #555;">{{"Order Online" | uppercase}}</span>
                 <div style="color: #A0A5BA; font-size: 14px;">
                   <span>Delivery in: </span>
                   <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
@@ -149,9 +149,9 @@
               </mat-expansion-panel-header>
               <div class="menu-item" *ngFor="let item of category.items">
                 <div class="item-info">
-                  <span class="menu-item-title">{{ item.name }}</span>
+                  <span class="menu-item-title" style="color: #555;">{{ item.name }}</span>
                   <p class="menu-item-desc">{{ item.description }}</p>
-                  <span class="price">₹{{ item.price }}</span>
+                  <span class="price" style="color: #555; margin-left: 0.2rem;">₹{{ item.price }}</span>
                   <div class="menu-item-add-to-cart">
                     <button mat-raised-button class="add-btn">ADD</button>
                   </div>
@@ -168,8 +168,55 @@
     </div>
 
 
-
-
+    <!-- Footer -->
+    <div>
+      <footer class="footer-container">
+        <div class="footer-details">
+          <div class="footer-details-content">
+            <div style="width: 4rem;">
+              <img src="assets/images/fssai-seeklogo.png">
+            </div>
+            <p style="margin-top: 1rem;">License No. {{ restaurantDetails.FSSAILicense || 10717026000111}}</p>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="footer-details-content">
+            <h5>Fundamentals</h5>
+            <p>{{ restaurantDetails.name }} <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> {{ restaurantDetails.description || "Descriptions of the restaurant and about it." }}</p>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+        <div class="footer-content" style="padding: 2rem;">
+          <div class="footer-section">
+            <h3>{{"Company" | uppercase}}</h3>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>{{"Support" | uppercase}}</h3>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Support Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>{{"Social" | uppercase}}</h3>
+            <ul class="social-links">
+              <li><a href="#"><ion-icon name="logo-instagram"></ion-icon></a></li>
+              <li><a href="#"><ion-icon name="logo-facebook"></ion-icon></a></li>
+              <li><a href="#"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+              <li><a href="#"><ion-icon name="logo-pinterest"></ion-icon></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <img src='assets/svg/logo.svg'> <p>&copy; 2024 Food Delivery Application. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
 
 
   </div>
