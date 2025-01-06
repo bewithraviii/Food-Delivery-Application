@@ -1,0 +1,104 @@
+
+.container {
+    background-color: #FFFFFF !important;
+    height: 100%;
+    color: #181C2E;
+}
+
+.padding {
+    padding: 1rem;
+}
+.cart-page {
+    background-color: #FFFFFF;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .address-section {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 1rem;
+
+        .addresses {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .address-card {
+            flex: 1 1 45%;
+            .card {
+                .select-address-btn {
+                    background-color: #059C6A;
+                    color: white;
+                }
+                button {
+                    margin-top: 10px;
+                }
+            }
+        }
+        .add-address-card {
+            .add-address-btn {
+                width: fit-content;
+                background-color: transparent;
+                border: 1px solid #059C6A;
+                color: #059C6A;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    }
+  
+    #order-summary {
+      .order-details {
+        background: #f8f8f8;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+  
+        .order-item,
+        .bill-item {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
+        .non-contact-option,
+        .coupon-section {
+          margin-top: 20px;
+        }
+        .total {
+          font-weight: bold;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+  
+      .cancellation-notice {
+        padding: 10px;
+        background-color: #fffbe6;
+        border: 1px solid #ffd966;
+        margin-top: 20px;
+        text-align: center;
+        border-radius: 12px;
+      }
+    }
+}
+  
+@media (max-width: 768px) {
+    .cart-page {
+      padding: 10px;
+  
+      #address-section,
+      #order-summary {
+        width: 100%;
+      }
+  
+      #address-section {
+        .address-card,
+        .add-address-card {
+          width: 100%;
+        }
+      }
+    }
+}
+  

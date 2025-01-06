@@ -7,6 +7,7 @@ import { DialogPage } from '../shared/dialog/dialog.page';
 import { Validators } from '@angular/forms';
 import { addNewAddressRequest, deleteAddressRequest, editAddressRequest, updateUserProfileRequest } from 'src/app/models/api.interface';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
+import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -54,6 +55,7 @@ export class ProfilePage implements OnInit {
     private loadingController: LoadingController,
     private matDialog: MatDialog,
     private dialogService: DialogService,
+    private notificationService: NotificationService
   ) { }
 
   async ngOnInit() {
@@ -119,10 +121,12 @@ export class ProfilePage implements OnInit {
         (response: any) => {
           this.user = { ...response.payload };
           this.dismissLoader();
+          this.notificationService.notifyUser("successSnack", "User details successfully updated.");
         },
         (error: any) => {
           console.error('Error updating user details', error);
           this.dismissLoader();
+          this.notificationService.notifyUser("errorSnack", error.error.message || "Error updating user details");
         }
       );
     }
@@ -155,10 +159,12 @@ export class ProfilePage implements OnInit {
             this.addresses.push(address);
           });
           this.dismissLoader();
+          this.notificationService.notifyUser("successSnack", "New address successfully added.");
         },
         (error: any) => {
           console.error('Error adding new address', error);
           this.dismissLoader();
+          this.notificationService.notifyUser("errorSnack", error.error.message || "Error adding new address.");
         }
       );
     }
@@ -192,10 +198,12 @@ export class ProfilePage implements OnInit {
             this.addresses.push(address);
           });
           this.dismissLoader();
+          this.notificationService.notifyUser("successSnack", "User address successfully updated.");
         },
         (error: any) => {
           console.error('Error editing user address', error);
           this.dismissLoader();
+          this.notificationService.notifyUser("errorSnack", error.error.message || "Error updating user address.");
         }
       )
     }
@@ -220,10 +228,12 @@ export class ProfilePage implements OnInit {
             this.addresses.push(address);
           });
           this.dismissLoader();
+          this.notificationService.notifyUser("successSnack", "User address successfully deleted.");
         },
         (error: any) => {
           console.error('Error deleting user address', error);
           this.dismissLoader();
+          this.notificationService.notifyUser("errorSnack", error.error.message || "Error deleting user address.");
         }
       );
     }

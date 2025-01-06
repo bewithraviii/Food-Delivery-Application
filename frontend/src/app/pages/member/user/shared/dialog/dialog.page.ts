@@ -31,7 +31,7 @@ export class DialogPage implements OnInit {
     this.contextData = this.data.contextData;
     this.fields = this.data.fields || [];
     this.isConfirmationDialog = this.data.isConfirmationDialog || false;
-    if(!this.isConfirmationDialog){
+    if(!this.isConfirmationDialog && this.contextData.identity == 'form'){
       this.dialogForm = this.buildForm(this.fields);
     }
   }

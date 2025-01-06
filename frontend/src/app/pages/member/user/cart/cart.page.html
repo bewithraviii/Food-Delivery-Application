@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>cart</ion-title>
   </ion-toolbar>
@@ -10,4 +10,69 @@
       <ion-title size="large">cart</ion-title>
     </ion-toolbar>
   </ion-header>
-</ion-content>
+</ion-content> -->
+
+<div class="cart-page" style="padding-top: 2rem;">
+  <div class="container">    
+    <div class="padding">
+      <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : ''">
+        <!-- Left Section - Addresses -->
+        <div class="col-md-7 address-section" *ngIf="isDesktop">
+          <h4>Choose a delivery address</h4>
+          <p>Multiple addresses in this location</p>
+          <div class="addresses">
+            <div class="address-card" *ngFor="let address of addresses">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ address.title }}</h5>
+                  <p>{{ address.details }}</p>
+                  <button class="btn select-address-btn">Deliver Here</button>
+                </div>
+              </div>
+            </div>
+            <div class="card add-address-card">
+              <div class="card-body">
+                <h5 class="card-title">Add new Address</h5>
+                <p>Add new address based on your location.</p>
+                <button class="btn add-address-btn">Add New</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Right Section - Order Summary -->
+        <div class="col-md-5" id="order-summary">
+          <div class="order-details">
+            <h5>{{ restaurantName }}</h5>
+            <div class="order-item">
+              <span>{{ orderItem.name }}</span>
+              <span>{{ orderItem.price }}</span>
+            </div>
+            <div class="non-contact-option">
+              <label>
+                <input type="checkbox" /> Opt for No-contact Delivery
+              </label>
+            </div>
+            <div class="coupon-section">
+              <button class="btn btn-outline-primary">Apply Coupon</button>
+            </div>
+            <div class="bill-details">
+              <p>Bill Details</p>
+              <div class="bill-item" *ngFor="let item of billDetails">
+                <span>{{ item.label }}</span>
+                <span>{{ item.amount }}</span>
+              </div>
+              <div class="total">
+                <h5>To Pay</h5>
+                <h5>{{ totalAmount }}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="cancellation-notice">
+            <p style="margin: 0;">Review your order and address details to avoid cancellations</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../api/api.service';
 import { loginRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from '../../models/api.interface'
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,6 @@ export class AuthService {
     this.apiService.getUserDetails().subscribe(
       (user) => {
         this.setUser(user.payload);
-        console.log("userData",this.userData)
       },
       (error: any) => {
         console.log('Something went wrong while fetching user-details', error);
@@ -87,6 +87,18 @@ export class AuthService {
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  getRole(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    const decoded: any = jwtDecode(token);
+    return decoded.role || null;
+  }
+
+  hasRole(expectedRoles: string[]): boolean {
+    const userRole = this.getRole();
+    return userRole ? expectedRoles.includes(userRole) : false;
   }
 
   isLoggedIn() {

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { RoleGuard } from './guards/role/role.guard';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'public', pathMatch: 'full'},
@@ -19,12 +20,14 @@ const routes: Routes = [
   // },
   {
     path: 'vendor-dashboard',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['VENDOR'] },
     loadChildren: () => import('./pages/member/vendor/vendor-dashboard/vendor-dashboard.module').then( m => m.VendorDashboardPageModule)
   },
   {
     path: 'user-dashboard',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['USER'] },
     loadChildren: () => import('./pages/member/user/user-dashboard/user-dashboard.module').then( m => m.UserDashboardPageModule)
   },
 

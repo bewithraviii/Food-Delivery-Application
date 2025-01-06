@@ -1,5 +1,6 @@
 const JWT = require('jsonwebtoken');
 const jwt = require('../../utils/jwt/jwt-creation');
+const roles = require('../../utils/enums/roles');
 const bcrypt = require('bcryptjs');
 const User = require('../../models/userModel');
 const Vendor = require('../../models/restaurantModel');
@@ -18,7 +19,7 @@ const userLogin = async (data, res) => {
         // const isMatch = await comparePassword(data.password, user.password);
         // if (!isMatch) throw new Error('Invalid username or password');
     
-        const token = jwt.generateToken(user._id);
+        const token = jwt.generateToken(user._id, roles.USER);
         if(!token) throw new Error('Something went wrong while creating token');
     
         response.token = token;
@@ -35,7 +36,10 @@ const userSignUp = async(data, res) => {
     }
     try{
         const existingUser = await User.findOne({ email: data.email });
-        if (existingUser || existingUser != null) return res.status(400).json({ message: 'User already exists' });
+        if (existingUser || existingUser != null) return res.status(400).json({ message: 'User with this email already exists.' });
+
+        const existingUserWithPhone = await User.findOne({ phoneNumber: data.phoneNumber });
+        if (existingUserWithPhone || existingUserWithPhone != null) return res.status(400).json({ message: 'User with this phone number already exists.' });
     
         const newUser = new User();
         newUser.email = data.email;
@@ -44,7 +48,7 @@ const userSignUp = async(data, res) => {
         newUser.address = { details: data.address };
         await newUser.save();
 
-        const token = jwt.generateToken(newUser._id);
+        const token = jwt.generateToken(newUser._id, roles.USER);
 
         res.status(201).json({ message: 'User registered', token });
     } catch(err){
@@ -63,7 +67,7 @@ const vendorLogin = async(data, res) => {
         const vendor = await Vendor.findOne({ email: data.email, "owner.phoneNo": data.phoneNumber });
         if (!vendor) throw new Error('Invalid email or phone-number');
     
-        const token = jwt.generateToken(vendor._id);
+        const token = jwt.generateToken(vendor._id, roles.VENDOR);
         if(!token) throw new Error('Something went wrong while creating token');
     
         response.token = token;
@@ -85,7 +89,7 @@ const vendorSignUp = async(data, res) => {
         const newVendor = new Vendor(data);
         await newVendor.save();
 
-        const token = jwt.generateToken(newVendor._id);
+        const token = jwt.generateToken(newVendor._id, roles.VENDOR);
 
         res.status(201).json({ message: 'Vendor registered', token });
     } catch(err){
@@ -243,6 +247,12 @@ const updateUserProfile = async(data, res) => {
     try {
         const user = await User.findOne({ _id: data.userId });
         if (!user) throw new Error('User not found');
+
+        const emailAlreadyExisted = await User.findOne({ email: data.email, _id: { $ne: data.userId } });
+        if (emailAlreadyExisted) return res.status(400).json({ message: 'Email already exists, please use a different email.' });
+
+        const phoneNumberAlreadyExisted = await User.findOne({ phoneNumber: data.phoneNumber, _id: { $ne: data.userId } });
+        if (phoneNumberAlreadyExisted) return res.status(400).json({ message: 'Phone number already exists, please use a different number.' });
 
         user.name = data.name;
         user.email = data.email;

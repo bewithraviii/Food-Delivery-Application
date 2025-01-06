@@ -195,7 +195,6 @@ export class HomePage implements OnInit {
   }
 
   async addNewAddress() {
-    console.log('Add new address clicked');
     this.addressPanel.close();
     const fields = [
       { name: 'title', label: 'Title', value: '', options: ['Home', 'Work', 'Other'], validators: [Validators.required] },
