@@ -11,6 +11,7 @@ export class ApiService {
 
   private baseURL = environment.baseApiUrl;
   private openStreetMapURL = environment.openStreetMapUrl;
+  private openRouteServices = environment.openRouteServices;
 
   constructor(
     private http: HttpClient,
@@ -60,6 +61,10 @@ export class ApiService {
   // Location
   getLocationFromLatAndLong(lat: number, lng: number): Observable<any> {
     return this.http.get(`${this.openStreetMapURL}/reverse?format=json&lat=${lat}&lon=${lng}`)
+  }
+  // Distance
+  getDistanceTrackTime(restaurantAddress: string, destinationAddress: string): Observable<any> {
+    return this.http.get(`${this.openRouteServices}&start=${encodeURIComponent(restaurantAddress)}&end=${encodeURIComponent(destinationAddress)}`);
   }
 
   

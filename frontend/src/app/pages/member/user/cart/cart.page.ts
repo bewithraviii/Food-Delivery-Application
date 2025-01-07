@@ -1,4 +1,11 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { LoadingController } from '@ionic/angular';
+import { addNewAddressRequest } from 'src/app/models/api.interface';
+import { ApiService } from 'src/app/services/api/api.service';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
+import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 
 @Component({
   selector: 'app-cart',
@@ -8,21 +15,33 @@ import { Component, HostListener, OnInit } from '@angular/core';
 export class CartPage implements OnInit {
 
   isDesktop: boolean = true;
+  user: any = {
+    id: '677ccd7737961190f527050d'
+  };
   addresses = [
-    { title: 'Home', details: 'A-701 Avalon-60, Motera, Gujarat' },
-    { title: 'Work', details: 'Tatvasoft house, PRL Colony, Gujarat' },
-    { title: 'Friends And Family', details: 'M-7, Nirnay Nagar, Gujarat' }
+    { title: 'Home', details: 'A-701 Avalon-60, Motera, Gujarat', time: this.onAddressSelected('A-701 Avalon-60, Motera, Gujarat')},
+    { title: 'Work', details: 'Tatvasoft house, PRL Colony, Gujarat', time: this.onAddressSelected('Tatvasoft house, PRL Colony, Gujarat') },
+    { title: 'Friends And Family', details: 'M-7, Nirnay Nagar, Gujarat', time: this.onAddressSelected('M-7, Nirnay Nagar, Gujarat')}
   ];
-  restaurantName = "La Pino'z Pizza";
+  restaurant = {
+   name: "La Pino'z Pizza",
+   address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
+  };
   orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414' };
   billDetails = [
     { label: 'Item Total', amount: '₹414' },
     { label: 'Delivery Fee', amount: '₹41' },
-    { label: 'GST', amount: '₹48.57' },
+    { label: 'Platform Fee', amount: '₹9' },
+    { label: 'GST and Restaurant Charges', amount: '₹48.57' },
   ];
   totalAmount = '₹513';
 
-  constructor() { }
+  constructor(
+    private apiService: ApiService,
+    private loadingController: LoadingController,
+    private dialogService: DialogService,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit(): void {
     this.checkScreenSize();
@@ -31,6 +50,78 @@ export class CartPage implements OnInit {
   @HostListener('window:resize', [])
   checkScreenSize(): void {
     this.isDesktop = window.innerWidth > 768;
+  }
+
+  async addNewAddress() {
+    const fields = [
+      { name: 'title', label: 'Title', value: '', options: ['Home', 'Work', 'Other'], validators: [Validators.required] },
+      { name: 'details', label: 'Details', type: 'text', value: '', validators: [Validators.required] },
+    ];
+    const addAddress = { title: '', details: '' }
+    const addedAddress = await this.dialogService.openDialog(
+      "Add Address",
+      { newAddress: addAddress, identity: 'form' },
+      fields,
+      null,
+    );
+
+    if(addedAddress){
+      await this.presentLoader('Adding address...');
+      const requestPayload: addNewAddressRequest = {
+        userId: this.user.id,
+        title: addedAddress.title,
+        detail: addedAddress.details,
+      }
+      this.apiService.addNewAddress(requestPayload).subscribe(
+        (response: any) => {
+          this.addresses = [];
+          response.payload.address.forEach((address: any) => {
+            this.addresses.push(address);
+          });
+          this.dismissLoader();
+          this.notificationService.notifyUser("successSnack", "New address successfully added.");
+        },
+        (error: any) => {
+          console.error('Error adding new address', error);
+          this.dismissLoader();
+          this.notificationService.notifyUser("errorSnack", error.error.message || "Error adding new address.");
+        }
+      );
+    }
+  }
+
+  async presentLoader(message?: string) {
+    const loader = await this.loadingController.create({
+      message: message,
+      spinner: 'lines',
+      backdropDismiss: false,
+    });
+    await loader.present();
+  }
+  
+  async dismissLoader() {
+    await this.loadingController.dismiss();
+  }
+
+  async calculateTravelTime(destination: string) {
+    // const apiKey = '5b3ce3597851110001cf624820376c39f5644adba7c74081a60bbd22';
+
+    this.apiService.getDistanceTrackTime(this.restaurant.address, destination).subscribe(
+      (response: any) => {
+        const travelTime = response.routes[0].summary.duration / 60;
+        console.log('Travel Time (minutes):', travelTime);
+        this.notificationService.notifyUser("infoSnack", `Estimated travel time: ${travelTime.toFixed(2)} minutes`);
+        return travelTime.toFixed(2);
+      },
+      (error: any) => {
+        console.error('Error calculating travel time', error);
+        this.notificationService.notifyUser("errorSnack", "Error calculating travel time.");
+      }
+    );
+  }
+
+  async onAddressSelected(address: string) {
+    await this.calculateTravelTime(address);
   }
 
 }

@@ -18,6 +18,20 @@
         border: 1px solid #ddd;
         border-radius: 12px;
         padding: 1rem;
+        margin: 0.5rem;
+
+        .add-address-btn-container {
+          justify-content: center;
+          align-items: center;
+          display: flex;
+        }
+
+        .add-address-btn {
+          justify-content: center;
+          align-items: center;
+          display: flex;
+          background: transparent !important;
+        }
 
         .addresses {
             display: flex;
@@ -26,27 +40,35 @@
         }
         .address-card {
             flex: 1 1 45%;
+            font-size: 14px;
             .card {
                 .select-address-btn {
-                    background-color: #059C6A;
+                    background-color: #FB6D3A;
                     color: white;
+                    font-size: 14px;
+                    padding-left: 0.5rem;
+                    padding-right: 0.5rem;
+                    padding-top: 0.3rem;
+                    padding-bottom: 0.3rem;
+                    margin: 0;
                 }
                 button {
                     margin-top: 10px;
                 }
             }
         }
-        .add-address-card {
-            .add-address-btn {
-                width: fit-content;
-                background-color: transparent;
-                border: 1px solid #059C6A;
-                color: #059C6A;
-            }
-            button {
-                width: 100%;
-            }
+        .card-title {
+          margin: 0 !important;
         }
+
+        // .add-address-card {
+        //     font-size: 14px;
+
+
+        //     button {
+        //         width: 100%;
+        //     }
+        // }
     }
   
     #order-summary {
@@ -55,12 +77,16 @@
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 20px;
+        margin: 0.5rem;
+        font-family: roboto;
+        font-size: 16px;
   
         .order-item,
         .bill-item {
           display: flex;
           justify-content: space-between;
           margin-bottom: 10px;
+          font-size: 14px;
         }
         .non-contact-option,
         .coupon-section {
@@ -75,11 +101,20 @@
   
       .cancellation-notice {
         padding: 10px;
-        background-color: #fffbe6;
-        border: 1px solid #ffd966;
+        background-color: #FFF5F0;
+        border: 1px solid #FF8F60;
+        color: #FF8F60;
         margin-top: 20px;
-        text-align: center;
         border-radius: 12px;
+        margin: 0.5rem;
+        a, a:visited, a:active {
+          text-decoration: none;
+          color: #FF8F60;
+          border-bottom: 1px #FF8F60 dotted;
+        }
+        a:hover {
+          transform: scale(1.03);
+        }
       }
     }
 }
