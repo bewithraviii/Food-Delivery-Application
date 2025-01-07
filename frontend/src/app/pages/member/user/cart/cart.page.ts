@@ -19,9 +19,9 @@ export class CartPage implements OnInit {
     id: '677ccd7737961190f527050d'
   };
   addresses = [
-    { title: 'Home', details: 'A-701 Avalon-60, Motera, Gujarat', time: this.onAddressSelected('A-701 Avalon-60, Motera, Gujarat')},
-    { title: 'Work', details: 'Tatvasoft house, PRL Colony, Gujarat', time: this.onAddressSelected('Tatvasoft house, PRL Colony, Gujarat') },
-    { title: 'Friends And Family', details: 'M-7, Nirnay Nagar, Gujarat', time: this.onAddressSelected('M-7, Nirnay Nagar, Gujarat')}
+    { title: 'Home', details: 'A-701 Avalon-60, Motera, Gujarat'},
+    { title: 'Work', details: 'Tatvasoft house, PRL Colony, Gujarat'},
+    { title: 'Friends And Family', details: 'M-7, Nirnay Nagar, Gujarat'}
   ];
   restaurant = {
    name: "La Pino'z Pizza",
@@ -43,7 +43,7 @@ export class CartPage implements OnInit {
     private notificationService: NotificationService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.checkScreenSize();
   }
 
@@ -104,24 +104,53 @@ export class CartPage implements OnInit {
   }
 
   async calculateTravelTime(destination: string) {
-    // const apiKey = '5b3ce3597851110001cf624820376c39f5644adba7c74081a60bbd22';
 
-    this.apiService.getDistanceTrackTime(this.restaurant.address, destination).subscribe(
-      (response: any) => {
-        const travelTime = response.routes[0].summary.duration / 60;
-        console.log('Travel Time (minutes):', travelTime);
-        this.notificationService.notifyUser("infoSnack", `Estimated travel time: ${travelTime.toFixed(2)} minutes`);
-        return travelTime.toFixed(2);
-      },
-      (error: any) => {
-        console.error('Error calculating travel time', error);
-        this.notificationService.notifyUser("errorSnack", "Error calculating travel time.");
-      }
-    );
+    debugger
+    let restaurantCoords: any;  
+    let destinationCoords: any;
+
+    restaurantCoords = await this.getCoordsOfAddress(this.restaurant.address);
+    destinationCoords = await this.getCoordsOfAddress(destination);
+    console.log("restaurantCoords", restaurantCoords)
+    console.log("destinationCoords", destinationCoords)
+
+    if(restaurantCoords !== null || undefined && destinationCoords !== null || undefined) {
+      const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
+      const end = `${destinationCoords.lon},${destinationCoords.lat}`;
+      this.apiService.getDistanceTrackTime(start, end).subscribe(
+        (response: any) => {
+          console.log(response);
+          const travelTimeInSeconds = response.features[0].properties.summary.duration;
+          const travelTimeInMinutes = travelTimeInSeconds / 60; // Convert to minutes
+  
+          console.log('Travel Time (minutes):', travelTimeInMinutes.toFixed(0));
+          // this.notificationService.notifyUser("successSnack", `Estimated travel time: ${travelTimeInMinutes.toFixed(2)} minutes`);
+          // return travelTimeInMinutes.toFixed(2);
+        },
+        (error: any) => {
+          console.error('Error calculating travel time', error);
+          this.notificationService.notifyUser("errorSnack", "Error calculating travel time.");
+        }
+      );
+    }
   }
 
   async onAddressSelected(address: string) {
     await this.calculateTravelTime(address);
+  }
+
+  async getCoordsOfAddress(address: string): Promise<{ lat: number, lon: number } | null> {
+    try {
+      const response = await this.apiService.getAddressLatAndLong(address).toPromise();
+      if (response && response.features && response.features.length > 0) {
+        const coordinates = response.features[0].geometry.coordinates;
+        return { lat: coordinates[1], lon: coordinates[0] }; // [lng, lat]
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching coordinates from address', error);
+      return null;
+    }
   }
 
 }
