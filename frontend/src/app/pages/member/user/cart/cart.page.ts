@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { LoadingController } from '@ionic/angular';
 import { addNewAddressRequest } from 'src/app/models/api.interface';
@@ -15,6 +15,7 @@ import { NotificationService } from 'src/app/services/snack-notification/notific
 export class CartPage implements OnInit {
 
   isDesktop: boolean = true;
+  selectedAddress: any;
   user: any = {
     id: '677ccd7737961190f527050d'
   };
@@ -27,7 +28,7 @@ export class CartPage implements OnInit {
    name: "La Pino'z Pizza",
    address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
   };
-  orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414' };
+  orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414', quantity: 1 };
   billDetails = [
     { label: 'Item Total', amount: '₹414' },
     { label: 'Delivery Fee', amount: '₹41' },
@@ -36,7 +37,11 @@ export class CartPage implements OnInit {
   ];
   totalAmount = '₹513';
 
+  addressFormGroup!: FormGroup;
+  paymentFormGroup!: FormGroup;
+
   constructor(
+    private fb: FormBuilder,
     private apiService: ApiService,
     private loadingController: LoadingController,
     private dialogService: DialogService,
@@ -45,6 +50,16 @@ export class CartPage implements OnInit {
 
   async ngOnInit() {
     this.checkScreenSize();
+    this.initializeForms();
+  }
+
+  initializeForms() {
+    this.addressFormGroup = this.fb.group({
+      address: ['', Validators.required]
+    });
+    this.paymentFormGroup = this.fb.group({
+      paymentMethod: ['', Validators.required]
+    });
   }
 
   @HostListener('window:resize', [])
@@ -90,6 +105,21 @@ export class CartPage implements OnInit {
     }
   }
 
+  increaseQuantity() {
+    this.orderItem.quantity++;
+  }
+
+  decreaseQuantity() {
+    if (this.orderItem.quantity > 1) {
+      this.orderItem.quantity--;
+    }
+  }
+
+  selectAddress(address: any, stepper: any) {
+    this.selectedAddress = address;
+    stepper.next(); // Move to the next step (Payment Section)
+  }
+
   async presentLoader(message?: string) {
     const loader = await this.loadingController.create({
       message: message,
@@ -104,15 +134,11 @@ export class CartPage implements OnInit {
   }
 
   async calculateTravelTime(destination: string) {
-
-    debugger
     let restaurantCoords: any;  
     let destinationCoords: any;
 
     restaurantCoords = await this.getCoordsOfAddress(this.restaurant.address);
     destinationCoords = await this.getCoordsOfAddress(destination);
-    console.log("restaurantCoords", restaurantCoords)
-    console.log("destinationCoords", destinationCoords)
 
     if(restaurantCoords !== null || undefined && destinationCoords !== null || undefined) {
       const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
@@ -121,7 +147,7 @@ export class CartPage implements OnInit {
         (response: any) => {
           console.log(response);
           const travelTimeInSeconds = response.features[0].properties.summary.duration;
-          const travelTimeInMinutes = travelTimeInSeconds / 60; // Convert to minutes
+          const travelTimeInMinutes = travelTimeInSeconds / 60;
   
           console.log('Travel Time (minutes):', travelTimeInMinutes.toFixed(0));
           // this.notificationService.notifyUser("successSnack", `Estimated travel time: ${travelTimeInMinutes.toFixed(2)} minutes`);
@@ -144,7 +170,7 @@ export class CartPage implements OnInit {
       const response = await this.apiService.getAddressLatAndLong(address).toPromise();
       if (response && response.features && response.features.length > 0) {
         const coordinates = response.features[0].geometry.coordinates;
-        return { lat: coordinates[1], lon: coordinates[0] }; // [lng, lat]
+        return { lat: coordinates[1], lon: coordinates[0] };
       }
       return null;
     } catch (error) {

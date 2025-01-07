@@ -19,29 +19,44 @@
       <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : 'd-flex flex-column-reverse justify-content-center'">
         <!-- Left Section - Addresses -->
         <div class="col-md-7">
-          <div class="address-section">
-            <div class="d-flex justify-content-between">
-              <div>
-                <h4>{{"Choose a delivery address" | uppercase}}</h4>
-                <p>Multiple addresses in this location</p>
-              </div>
-              <div class="add-address-btn-container">
-                <button class="add-address-btn" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
-              </div>
-            </div>
-            <div class="addresses">
-              <div class="address-card" *ngFor="let address of addresses">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ address.title }}</h5>
-                    <p>{{ address.details }}</p>
-                    <!-- <p>{{}} MIN</p> -->
-                    <button class="btn select-address-btn">Deliver Here</button>
+          <mat-vertical-stepper #stepper [linear]="true">
+
+            <mat-step [stepControl]="addressFormGroup">
+              <form [formGroup]="addressFormGroup">
+                <div class="address-section">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h4>{{"Choose a delivery address" | uppercase}}</h4>
+                      <p>Multiple addresses in this location</p>
+                    </div>
+                    <div class="add-address-btn-container">
+                      <button class="add-address-btn" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
+                    </div>
+                  </div>
+                  <div class="addresses">
+                    <div class="address-card" *ngFor="let address of addresses">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">{{ address.title }}</h5>
+                          <p>{{ address.details }}</p>
+                          <button class="btn select-address-btn">Deliver Here</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              </form>
+            </mat-step>
+
+            <mat-step [stepControl]="paymentFormGroup">
+              <form [formGroup]="paymentFormGroup">
+                <div class="payment-section">
+                  <h1>Payment will be handled here</h1>
+                </div>
+              </form>
+            </mat-step>
+
+          </mat-vertical-stepper>
         </div>
     
         <!-- Right Section - Order Summary -->
@@ -51,6 +66,11 @@
             <div class="order-item">
               <span>{{ orderItem.name }}</span>
               <span>{{ orderItem.price }}</span>
+              <div class="quantity-controls">
+                <button (click)="decreaseQuantity()">-</button>
+                <span>{{ orderItem.quantity }}</span>
+                <button (click)="increaseQuantity()">+</button>
+              </div>
             </div>
             <div class="non-contact-option">
               <label>

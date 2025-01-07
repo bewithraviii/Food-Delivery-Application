@@ -60,15 +60,13 @@
         .card-title {
           margin: 0 !important;
         }
+    }
 
-        // .add-address-card {
-        //     font-size: 14px;
-
-
-        //     button {
-        //         width: 100%;
-        //     }
-        // }
+    .payment-section {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 0.5rem;
     }
   
     #order-summary {
@@ -137,3 +135,18 @@
     }
 }
   
+mat-vertical-stepper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+mat-step {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+mat-step button {
+  margin-top: 20px;
+}
