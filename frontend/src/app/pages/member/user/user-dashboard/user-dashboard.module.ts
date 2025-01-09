@@ -22,6 +22,7 @@ import { RestaurantPage } from '../restaurant/restaurant.page';
 import { FooterPage } from '../shared/footer/footer.page';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatBadgeModule } from '@angular/material/badge';
 
 
 
@@ -40,7 +41,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatIconModule,
     MatDialogModule,
     ClipboardModule,
-    MatStepperModule
+    MatStepperModule,
+    MatBadgeModule
   ],
   declarations: [
     UserDashboardPage,

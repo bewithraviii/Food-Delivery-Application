@@ -8,7 +8,7 @@ const authorizeRoles = (...roles) => {
         if (!token) return res.status(401).json({ message: "Access denied" });
 
         jwt.verify(token, JWT_SECRET, (err, decoded) => {
-            if (err) return res.status(400).json({ message: "Invalid token" });
+            if (err) return res.status(401).json({ message: "Invalid token" });
             if (!roles.includes(decoded.role)) {
                 return res.status(403).json({ message: "Insufficient permissions" });
             }

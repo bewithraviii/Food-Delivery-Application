@@ -44,18 +44,18 @@ const addToCart = async (req, res) => {
             return res.status(201).json({ message: 'Cart created successfully', payload: newCart });
         }
 
-        console.log("data",data.cartItems);
-        console.log("existing-data",existingCart.cartItems);
-        if(existingCart.cartItems.length > 0){ 
+        if(existingCart.cartItems.length > 0 && Array.isArray(data.cartItems)){ 
             data.cartItems.forEach(cartItem => {
                 const existingCartItem = existingCart.cartItems.find(item => item.restaurant.restaurantId.toString() === cartItem.restaurant.restaurantId.toString());
                 if(existingCartItem) {
+                    console.log("existingCartItem", existingCartItem.restaurant.orderItem);
                     cartItem.restaurant.orderItem.forEach(newOrderItem => {
-                        const existingOrderItem = existingCartItem.orderItem.find(item => item.itemId === newOrderItem.itemId);
+                        console.log("newOrderItem", newOrderItem);
+                        const existingOrderItem = existingCartItem.restaurant.orderItem.find(item => item.itemId === newOrderItem.itemId);
                         if(existingOrderItem) {
                             existingOrderItem.quantity += newOrderItem.quantity;
                         } else {
-                            existingCartItem.orderItem.push(newOrderItem);
+                            existingCartItem.restaurant.orderItem.push(newOrderItem);
                         }
                     });
                 } else {

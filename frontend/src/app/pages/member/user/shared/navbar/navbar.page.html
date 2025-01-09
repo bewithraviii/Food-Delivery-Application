@@ -47,7 +47,7 @@
             </div>
           </div>
         </ion-button>
-        <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active">
+        <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems" matBadgeSize="small" matBadgePosition="below after" [matBadgeHidden]="hidden">
           <div class="iconButton">
             <div class="iconAndText">
               <ion-icon name="cart-outline"></ion-icon>

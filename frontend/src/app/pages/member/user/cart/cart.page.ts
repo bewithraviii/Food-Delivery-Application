@@ -17,6 +17,7 @@ import { NotificationService } from 'src/app/services/snack-notification/notific
 export class CartPage implements OnInit {
   @ViewChild('stepper') stepper!: MatStepper;
   cartExists: boolean = false;
+  cartDataLoaded: boolean = false;
   isDesktop: boolean = true;
   selectedAddress: string = '';
   isPayment: boolean = false;
@@ -28,17 +29,17 @@ export class CartPage implements OnInit {
   ];
   cartDetails: any[] = [];
   billDetails = [
-    { label: 'Item Total', amount: '₹414' },
-    { label: 'Delivery Fee', amount: '₹41' },
-    { label: 'Platform Fee', amount: '₹9' },
-    { label: 'GST and Restaurant Charges', amount: '₹48.57' },
+    { label: 'Item Total', amount: 0 },
+    { label: 'Delivery Fee', amount: 30 },
+    { label: 'Platform Fee', amount: 9 },
+    { label: 'GST and Restaurant Charges', amount: 0 },
   ]
   restaurant: any = {
    name: "La Pino'z Pizza",
    address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
   };
   orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414', quantity: 1 };
-  totalAmount = '₹513';
+  totalAmount = 0;
 
   addressFormGroup!: FormGroup;
   paymentFormGroup!: FormGroup;
@@ -53,20 +54,36 @@ export class CartPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.populateData();
     this.checkScreenSize();
     this.initializeForms();
+    await this.populateData();
   }
 
-  populateData() {
+  async populateData() {
     this.user = this.authService.getUserId();
     this.apiService.getUserCartData(this.user).subscribe(
       (data: any) => {
         if(data){
-          console.log(data);
           this.cartExists = true;
-
-          // this.cartDetails.push = data.payload.cartItems;
+          data.payload.cartItems.forEach((element: any) => {
+            this.cartDetails.push(element);
+          });
+        }
+        if (this.cartDetails.length > 0) {
+          this.cartDetails.forEach((cartDetail: any) => {
+            cartDetail.restaurant.orderItem.forEach((item: any) => {
+              const itemTotal = item.price * item.quantity;
+              const gst = itemTotal * 5 / 100;
+              const restaurantCharge = cartDetail.restaurant.restaurantCharges;
+              const gstOnPlatformFee = +(this.billDetails[2].amount * 18 / 100).toFixed(2);
+              this.billDetails[0].amount = this.billDetails[0].amount + itemTotal;
+              this.billDetails[3].amount = this.billDetails[3].amount + +(gst + restaurantCharge + gstOnPlatformFee).toFixed(2);
+            });
+          })
+          this.billDetails.forEach(billDetail => {
+            this.totalAmount = this.totalAmount + billDetail.amount;
+          });
+          this.cartDataLoaded = true;
         }
       },
       (error: any) => {
@@ -128,13 +145,13 @@ export class CartPage implements OnInit {
   }
 
   increaseQuantity() {
-    this.orderItem.quantity++;
+    // this.orderItem.quantity++;
   }
 
   decreaseQuantity() {
-    if (this.orderItem.quantity > 1) {
-      this.orderItem.quantity--;
-    }
+    // if (this.orderItem.quantity > 1) {
+    //   this.orderItem.quantity--;
+    // }
   }
 
   selectAddress(address: string) {
