@@ -1,102 +1,99 @@
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>cart</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">cart</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content> -->
-
 <div class="cart-page" style="padding-top: 2rem;">
   <div class="container">    
     <div class="padding">
-
-      <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : 'd-flex flex-column-reverse justify-content-center'">
-        <!-- Left Section - Addresses -->
-        <div class="col-md-7">
-          <mat-vertical-stepper #stepper [linear]="true">
-
-            <mat-step [stepControl]="addressFormGroup">
-              <form [formGroup]="addressFormGroup">
-                <div class="address-section">
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <h4>{{"Choose a delivery address" | uppercase}}</h4>
-                      <p>Multiple addresses in this location</p>
+      <div *ngIf="!cartExists">
+        <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+      </div>
+      <div *ngIf="cartExists">
+        <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : 'd-flex flex-column-reverse justify-content-center'">
+          <!-- Left Section - Addresses -->
+          <div class="col-md-7 p-0">
+            <mat-vertical-stepper #stepper [linear]="true">
+  
+              <mat-step [stepControl]="addressFormGroup">
+                <form [formGroup]="addressFormGroup">
+                  <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Delivery address" | uppercase}}</h4></ng-template>
+                  <div class="address-section">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h5 style="margin: 0; font-size: 16px;">{{"Choose a delivery address" | uppercase}}</h5>
+                        <p style="font-size: 14px;">Multiple addresses in this location</p>
+                      </div>
+                      <div class="add-address-btn-container">
+                        <button class="add-address-btn" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
+                      </div>
                     </div>
-                    <div class="add-address-btn-container">
-                      <button class="add-address-btn" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
-                    </div>
-                  </div>
-                  <div class="addresses">
-                    <div class="address-card" *ngFor="let address of addresses">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title">{{ address.title }}</h5>
-                          <p>{{ address.details }}</p>
-                          <button class="btn select-address-btn">Deliver Here</button>
+                    <div class="addresses">
+                      <div class="address-card" *ngFor="let address of addresses">
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ address.title }}</h5>
+                            <p>{{ address.details }}</p>
+                            <button class="btn select-address-btn" matStepperNext (click)="selectAddress(address.details)">Deliver Here</button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
-            </mat-step>
-
-            <mat-step [stepControl]="paymentFormGroup">
-              <form [formGroup]="paymentFormGroup">
-                <div class="payment-section">
-                  <h1>Payment will be handled here</h1>
-                </div>
-              </form>
-            </mat-step>
-
-          </mat-vertical-stepper>
-        </div>
-    
-        <!-- Right Section - Order Summary -->
-        <div class="col-md-5" id="order-summary">
-          <div class="order-details">
-            <h5>{{ restaurant.name }}</h5>
-            <div class="order-item">
-              <span>{{ orderItem.name }}</span>
-              <span>{{ orderItem.price }}</span>
-              <div class="quantity-controls">
-                <button (click)="decreaseQuantity()">-</button>
-                <span>{{ orderItem.quantity }}</span>
-                <button (click)="increaseQuantity()">+</button>
-              </div>
-            </div>
-            <div class="non-contact-option">
-              <label>
-                <input type="checkbox" /> Opt for No-contact Delivery
-              </label>
-            </div>
-            <div class="coupon-section">
-              <button class="btn btn-outline-primary">Apply Coupon</button>
-            </div>
-            <div class="bill-details">
-              <h6>{{"Bill Details" | uppercase}}</h6>
-              <div class="bill-item" *ngFor="let item of billDetails">
-                <span>{{ item.label }}</span>
-                <span>{{ item.amount }}</span>
-              </div>
-              <mat-divider></mat-divider>
-              <div class="total">
-                <h5>To Pay</h5>
-                <h5>{{ totalAmount }}</h5>
-              </div>
-            </div>
+                </form>
+              </mat-step>
+  
+              <mat-step [stepControl]="paymentFormGroup">
+                <form [formGroup]="paymentFormGroup">
+                  <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Payment" | uppercase}}</h4></ng-template>
+                  <div class="payment-section">
+                    <h5 style="margin: 0; font-size: 16px;">Choose payment method</h5>
+                    <div class="pay-btn" *ngIf="!isPayment; else processPayment">
+                      <button class="payment-btn-design" type="button" (click)="processPaymentPage()">{{"Proceed to pay" | uppercase}}</button>
+                    </div>
+                    <ng-template #processPayment>
+                      <h3>Stripe Payment</h3>
+                    </ng-template>
+                  </div>
+                </form>
+              </mat-step>
+  
+            </mat-vertical-stepper>
           </div>
-          <div class="cancellation-notice">
-            <h6>Review your order and address details to avoid cancellations</h6>
-            <p style="font-size: 12px;">Note: Please ensure your address and order details are correct. This order, if cancelled, is non-refundable.</p>
-            <a type="button">Read policy</a>
+      
+          <!-- Right Section - Order Summary -->
+          <div class="col-md-5 p-0" id="order-summary">
+            <div class="order-details">
+              <div class="order-items" *ngFor="let cartItem of cartDetails">
+                <h5>{{ cartItem.restaurant.name }}</h5>
+                <div>
+                  <div class="order-item">
+                    <span>{{ cartItem.restaurant.orderItem.name }}</span>
+                    <span>{{ cartItem.restaurant.orderItem.price }}</span>
+                  </div>
+                  <div class="quantity-controls">
+                    <button (click)="decreaseQuantity()" class="quantity-manager">-</button>
+                    <span>{{ cartItem.orderItem.quantity }}</span>
+                    <button (click)="increaseQuantity()" class="quantity-manager">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="coupon-section">
+                <button class="btn coupon-btn">Apply Coupon</button>
+              </div>
+              <div class="bill-details">
+                <h6>{{"Bill Details" | uppercase}}</h6>
+                <div class="bill-item" *ngFor="let item of billDetails">
+                  <span>{{ item.label }}</span>
+                  <span>{{ item.amount }}</span>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="total">
+                  <h5>To Pay</h5>
+                  <h5>{{ totalAmount }}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="cancellation-notice">
+              <h6>Review your order and address details to avoid cancellations</h6>
+              <p style="font-size: 12px;">Note: Please ensure your address and order details are correct. This order, if cancelled, is non-refundable.</p>
+              <a type="button">Read policy</a>
+            </div>
           </div>
         </div>
       </div>

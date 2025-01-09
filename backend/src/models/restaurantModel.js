@@ -46,6 +46,7 @@ const restaurantSchema = new mongoose.Schema(
       tradeLicense: { type: String, default: null },
       restaurantLicense: { type: String, default: null },
       gstNo: { type: String, default: null },
+      restaurantCharges: { type: Number, default: 0},
       owner: {
         name: { type: String, required: true },
         email: { type: String, required: true },

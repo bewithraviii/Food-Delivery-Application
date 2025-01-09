@@ -1,9 +1,11 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
 import { LoadingController } from '@ionic/angular';
 import { addNewAddressRequest } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 
@@ -13,28 +15,29 @@ import { NotificationService } from 'src/app/services/snack-notification/notific
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-
+  @ViewChild('stepper') stepper!: MatStepper;
+  cartExists: boolean = false;
   isDesktop: boolean = true;
-  selectedAddress: any;
-  user: any = {
-    id: '677ccd7737961190f527050d'
-  };
+  selectedAddress: string = '';
+  isPayment: boolean = false;
+  user: any;
   addresses = [
     { title: 'Home', details: 'A-701 Avalon-60, Motera, Gujarat'},
     { title: 'Work', details: 'Tatvasoft house, PRL Colony, Gujarat'},
     { title: 'Friends And Family', details: 'M-7, Nirnay Nagar, Gujarat'}
   ];
-  restaurant = {
-   name: "La Pino'z Pizza",
-   address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
-  };
-  orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414', quantity: 1 };
+  cartDetails: any[] = [];
   billDetails = [
     { label: 'Item Total', amount: '₹414' },
     { label: 'Delivery Fee', amount: '₹41' },
     { label: 'Platform Fee', amount: '₹9' },
     { label: 'GST and Restaurant Charges', amount: '₹48.57' },
-  ];
+  ]
+  restaurant: any = {
+   name: "La Pino'z Pizza",
+   address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
+  };
+  orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414', quantity: 1 };
   totalAmount = '₹513';
 
   addressFormGroup!: FormGroup;
@@ -43,14 +46,33 @@ export class CartPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
+    private authService: AuthService,
     private loadingController: LoadingController,
     private dialogService: DialogService,
     private notificationService: NotificationService
   ) { }
 
   async ngOnInit() {
+    this.populateData();
     this.checkScreenSize();
     this.initializeForms();
+  }
+
+  populateData() {
+    this.user = this.authService.getUserId();
+    this.apiService.getUserCartData(this.user).subscribe(
+      (data: any) => {
+        if(data){
+          console.log(data);
+          this.cartExists = true;
+
+          // this.cartDetails.push = data.payload.cartItems;
+        }
+      },
+      (error: any) => {
+        console.log(error.message);
+      }
+    );
   }
 
   initializeForms() {
@@ -115,9 +137,14 @@ export class CartPage implements OnInit {
     }
   }
 
-  selectAddress(address: any, stepper: any) {
+  selectAddress(address: string) {
     this.selectedAddress = address;
-    stepper.next(); // Move to the next step (Payment Section)
+    this.addressFormGroup.patchValue({ address: this.selectedAddress });
+    this.stepper.next();
+  }
+
+  processPaymentPage() {
+    this.isPayment = !this.isPayment;
   }
 
   async presentLoader(message?: string) {

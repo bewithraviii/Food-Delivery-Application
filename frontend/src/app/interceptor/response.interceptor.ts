@@ -18,7 +18,7 @@ export class ResponseInterceptor implements HttpInterceptor {
       //   // Success logic
       // }),
       catchError((err: HttpErrorResponse) => {
-          if(err.status === 401 || 403) {
+          if(err.status === 401 || err.status === 403) {
             this.authService.logout();
           } 
           return throwError(err);

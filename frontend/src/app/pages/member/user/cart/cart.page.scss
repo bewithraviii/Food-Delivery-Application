@@ -2,7 +2,7 @@
 .container {
     background-color: #FFFFFF !important;
     height: 100%;
-    color: #181C2E;
+    color: #555;
 }
 
 .padding {
@@ -19,6 +19,7 @@
         border-radius: 12px;
         padding: 1rem;
         margin: 0.5rem;
+
 
         .add-address-btn-container {
           justify-content: center;
@@ -41,7 +42,10 @@
         .address-card {
             flex: 1 1 45%;
             font-size: 14px;
+
             .card {
+                color: #555 !important;
+
                 .select-address-btn {
                     background-color: #FB6D3A;
                     color: white;
@@ -71,7 +75,9 @@
   
     #order-summary {
       .order-details {
-        background: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        background: transparent;
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 20px;
@@ -89,6 +95,7 @@
         .non-contact-option,
         .coupon-section {
           margin-top: 20px;
+          width: 100%;
         }
         .total {
           font-weight: bold;
@@ -149,4 +156,48 @@ mat-step {
 
 mat-step button {
   margin-top: 20px;
+}
+
+.quantity-controls{
+  border: 1px solid #FB6D3A;
+  width: fit-content;
+  border-radius: 5px;
+}
+
+.quantity-manager {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: transparent;
+  color: #FB6D3A;
+  font-size: 1rem;
+}
+
+.coupon-btn {
+  width: 100%;
+  border: 1px dotted !important;
+}
+
+mat-stepper {
+  transition: all 0.3s ease-in-out;
+}
+
+::ng-deep .mat-step-icon-selected {
+  background-color: #FB6D3A !important;
+  color: white !important;
+}
+
+::ng-deep .mat-step-icon-state-edit {
+  background-color: #FB6D3A !important;
+  color: white !important;
+}
+
+.pay-btn {
+  margin-top: 2rem;
+}
+
+.payment-btn-design {
+  width: 100%;
+  padding: 1rem;
+  background-color: #FB6D3A;
+  color: white;
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { addNewAddressRequest, deleteAddressRequest, editAddressRequest, loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm, deleteAddressRequest, editAddressRequest, loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -102,7 +102,12 @@ export class ApiService {
   getRestaurantDetails(reqPayload: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getRestaurantDetails/${reqPayload}`);
   }
+  addToCart(reqPayload: addToCartReqForm): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/addToCart`, reqPayload);
+  }
 
-
-  
+  // Cart-Page
+  getUserCartData(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getCartByUserId/${reqPayload}`);
+  }
 }

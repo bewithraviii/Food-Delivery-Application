@@ -82,3 +82,25 @@ export interface vendorSignUpReqForm {
     },
     acceptTermsAndRegulations: Boolean
 }
+
+export interface addToCartReqForm {
+    userId: string,
+    cartItems: [
+        {
+            restaurant: {
+            restaurantId: string,
+            name: string,
+            address: string,
+            restaurantCharges: number,
+            orderItem: [
+                {
+                    itemId: string,
+                    name: string,
+                    price: number,
+                    quantity: number,
+                }
+            ]
+            },
+        }
+    ]
+}

@@ -106,5 +106,12 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    const decoded: any = jwtDecode(token);
+    return decoded.id || null;
+  }
+
 
 }
