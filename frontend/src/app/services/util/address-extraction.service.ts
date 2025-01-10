@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddressExtractionService {
 
+  addresses = signal<any[]>([]);
+  
   constructor() { }
+
 
   extractAddressDetails(address: string) {
     const addressDetails = {
@@ -52,6 +55,14 @@ export class AddressExtractionService {
   private extractPincode(address: string): string | null {
     const pincodeMatch = address.match(/\b\d{6}\b/);
     return pincodeMatch ? pincodeMatch[0] : null;
+  }
+
+  setAddresses(newAddresses: any) {
+    this.addresses.set(newAddresses);
+  }
+
+  getAddresses() {
+    return this.addresses();
   }
 
 }

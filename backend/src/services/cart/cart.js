@@ -59,7 +59,8 @@ const addToCart = async (req, res) => {
                         }
                     });
                 } else {
-                    existingCart.cartItems.push(cartItem);
+                    // existingCart.cartItems.push(cartItem);
+                    return res.status(400).json({ message: 'Your cart already contains other restaurant order, Please continue or empty cart.' });
                 }
             });  
         }

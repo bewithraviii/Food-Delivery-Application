@@ -21,8 +21,8 @@ export class NavbarPage implements OnInit {
     private authService: AuthService
   ) { }
 
-  ngOnInit() {
-    const userID = this.authService.getUserId() || '';
+  async ngOnInit() {
+    const userID = await this.authService.getUserId() || '';
     this.apiService.getUserCartData(userID).subscribe(
       (data: any) => {
         if(data){

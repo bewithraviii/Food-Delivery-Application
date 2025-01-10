@@ -88,6 +88,7 @@ export class HomePage implements OnInit {
   async selectAddress(address: any) {
     await this.presentLoader();
     this.selectedAddress = address;
+    this.addressExtractionService.setAddresses([this.selectedAddress]);
     this.addressPanel.close();
     await this.dismissLoader()
   }
@@ -111,7 +112,9 @@ export class HomePage implements OnInit {
     await this.presentLoader();
     this.apiService.getLocationFromLatAndLong(lat,lng).subscribe((response: any) => {
       this.detectedAddress = response.display_name;
-      this.selectedAddress = { name: 'location', details: this.detectedAddress, type: 'location' };
+      const currentLocation = { name: 'location', details: this.detectedAddress, type: 'location' };
+      this.selectedAddress = currentLocation;
+      this.addressExtractionService.setAddresses([this.selectedAddress]);
       this.addressPanel.close();
       this.dismissLoader();
     }, error => {
@@ -222,6 +225,7 @@ export class HomePage implements OnInit {
             this.savedAddresses.push({ name: address.title, details: address.details, type: address.title });;
           });
           this.selectedAddress = { name: requestPayload.title, details: requestPayload.detail, type: requestPayload.title };
+          this.addressExtractionService.setAddresses([this.selectedAddress]);
           this.dismissLoader();
         },
         (error: any) => {
@@ -257,6 +261,7 @@ export class HomePage implements OnInit {
           this.savedAddresses.push({ name: address.title, details: address.details, type: address.title });
         });
         this.selectedAddress = this.savedAddresses[0] || { name: '', details: 'Please Select Address', type: '' };
+        this.addressExtractionService.setAddresses([this.selectedAddress]);
       }
     });
   }

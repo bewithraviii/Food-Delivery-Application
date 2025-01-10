@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
+import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
 
 @Component({
   selector: 'app-cart',
@@ -22,11 +23,7 @@ export class CartPage implements OnInit {
   selectedAddress: string = '';
   isPayment: boolean = false;
   user: any;
-  addresses = [
-    { title: 'Home', details: 'A-701 Avalon-60, Motera, Gujarat'},
-    { title: 'Work', details: 'Tatvasoft house, PRL Colony, Gujarat'},
-    { title: 'Friends And Family', details: 'M-7, Nirnay Nagar, Gujarat'}
-  ];
+  addresses: any[] = [];
   cartDetails: any[] = [];
   billDetails = [
     { label: 'Item Total', amount: 0 },
@@ -48,15 +45,25 @@ export class CartPage implements OnInit {
     private fb: FormBuilder,
     private apiService: ApiService,
     private authService: AuthService,
+    private addressExtractionService: AddressExtractionService,
     private loadingController: LoadingController,
     private dialogService: DialogService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) { }
 
   async ngOnInit() {
     this.checkScreenSize();
     this.initializeForms();
     await this.populateData();
+    this.fetchSelectedAddress();
+  }
+
+  fetchSelectedAddress() {
+    const addresses = this.addressExtractionService.getAddresses();
+    if(addresses.length > 0){
+      this.selectedAddress = addresses[0].details
+      console.log(this.selectedAddress);
+    }
   }
 
   async populateData() {
@@ -88,6 +95,16 @@ export class CartPage implements OnInit {
       },
       (error: any) => {
         console.log(error.message);
+      }
+    );
+    this.apiService.getUserDetails().subscribe(
+      (data: any) => {
+        data.payload.address.forEach((address: any) => {
+          this.addresses.push(address);
+        });
+      },
+      (error: any) => {
+        console.log(error.message || "Something went wrong while adding address from user data.");
       }
     );
   }
@@ -221,6 +238,21 @@ export class CartPage implements OnInit {
       console.error('Error fetching coordinates from address', error);
       return null;
     }
+  }
+
+  doesSelectedAddressExist(): boolean {
+    if (!this.selectedAddress) {
+      return false;
+    } else {
+
+      const result = this.addresses.some(addr => addr.details === this.selectedAddress);
+      if(result){
+        return true;
+      } else {
+        return false;
+      }
+    }
+    
   }
 
 }
