@@ -94,9 +94,9 @@
                       <span>{{ '₹' + orderItem.price }}</span>
                     </div>
                     <div class="quantity-controls">
-                      <button (click)="decreaseQuantity()" class="quantity-manager"><ion-icon name="remove-sharp"></ion-icon></button>
+                      <button (click)="decreaseQuantity(orderItem)" class="quantity-manager" ><ion-icon name="remove-sharp"></ion-icon></button>
                       <span style="font-size: 14px;">{{ orderItem.quantity }}</span>
-                      <button (click)="increaseQuantity()" class="quantity-manager"><ion-icon name="add-sharp"></ion-icon></button>
+                      <button (click)="increaseQuantity(orderItem)" class="quantity-manager"><ion-icon name="add-sharp"></ion-icon></button>
                     </div>
                   </div>
                   <div class="order-item-image-section">

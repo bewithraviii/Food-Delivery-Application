@@ -11,6 +11,10 @@ router.get('/fetchUserDetails', authorizeRoles(Roles.USER), authController.fetch
 router.get('/fetchRestaurantDetails', authorizeRoles(Roles.USER, Roles.VENDOR), authController.fetchAllRestaurant);
 router.get('/getRestaurantDetails/:id', authorizeRoles(Roles.USER, Roles.VENDOR), authController.fetchRestaurant);
 router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.geUserCart);
+router.get('/getAllCuisineCategory', authController.getCuisineCategory);
+router.get('/getAllCuisineCategoryName', authController.getCuisineCategoryName);
+router.get('/getCuisineCategoryRestaurantDetails', authController.getCuisineCategoryRestaurantDetails);
+
 
 // POST
 router.post('/login', authController.login);
@@ -26,7 +30,7 @@ router.post('/addNewUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), auth
 router.post('/deleteUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), authController.deleteUserAddress);
 router.post('/updateUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), authController.updateUserAddress);
 router.post('/addToCart', authorizeRoles(Roles.USER), cartController.addToCart)
-
+router.post('/addCategory', authController.addCuisineCategory);
 
 
 

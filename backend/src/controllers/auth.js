@@ -61,3 +61,19 @@ exports.updateUserAddress = async(req, res) => {
 exports.deleteUserAddress = async(req, res) => {
     return await authService.deleteUserAddress(req.body, res);
 }
+
+exports.getCuisineCategory = async(req, res) => {
+    return await authService.getCuisineCategory(req, res);
+}
+
+exports.getCuisineCategoryName = async(req, res) => {
+    return await authService.getCuisineCategoryName(req, res);
+}
+
+exports.getCuisineCategoryRestaurantDetails = async(req, res) => {
+    return await authService.getCuisineCategoryRestaurantDetails(req.body, res);
+}
+
+exports.addCuisineCategory = async(req, res) => {
+    return await authService.addCuisineCategory(req.body, res);
+}

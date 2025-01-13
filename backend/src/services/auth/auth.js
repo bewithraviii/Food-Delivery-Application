@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../../models/userModel');
 const Vendor = require('../../models/restaurantModel');
 const Restaurant = require('../../models/restaurantModel');
+const Category = require('../../models/categoryModel');
+
 
 const userLogin = async (data, res) => {
     if(!data) {
@@ -376,6 +378,102 @@ const deleteUserAddress = async(data, res) => {
     }
 }
 
+const getCuisineCategory = async(req, res) => {
+
+    try {
+        const categoryLists = await Category.find();
+        if(!categoryLists) return res.status(404).json({ message: 'Cuisine category not found' });
+
+        const restaurantsData = [];
+        // categoryLists.restaurantId.forEach(element => {
+        //     restaurantsData.push(element);
+        // });
+
+        const response = {
+            message: 'Cuisine category details fetched successfully',
+            payload: categoryLists
+        }
+
+        return res.status(200).json(response);
+
+    } catch(err){
+        res.status(400).json({ message: err.message });
+    }
+
+}
+
+const getCuisineCategoryName = async(req, res) => {
+    try {
+        const categoryLists = await Category.find();
+        if(!categoryLists) return res.status(404).json({ message: 'Cuisine category not found' });
+
+        const categoryNameData = [];
+        categoryLists.forEach(element => {
+            categoryNameData.push(element.categoryName);
+        });
+
+        const response = {
+            message: 'Cuisine category name fetched successfully',
+            payload: categoryNameData
+        }
+
+        return res.status(200).json(response);
+
+    } catch(err){
+        res.status(400).json({ message: err.message });
+    }
+}
+
+const getCuisineCategoryRestaurantDetails = async(body, res) => {
+    if(!body){
+        return res.status(400).json({ message: 'Cuisine category name is required' });
+    }
+
+    try {
+        const categoryLists = await Category.find({ categoryName: body.categoryName });
+        if(!categoryLists) return res.status(404).json({ message: 'Cuisine category not found' });
+
+        const restaurantsData = [];
+        categoryLists.forEach(category => {
+            if(category.restaurant !== null){
+                category.restaurant.forEach(element => {
+                    restaurantsData.push(element.restaurantId);
+                });
+            }
+        });
+
+        const response = {
+            message: 'Cuisine category details for restaurant fetched successfully',
+            payload: restaurantsData
+        }
+
+        return res.status(200).json(response);
+
+    } catch(err){
+        res.status(400).json({ message: err.message });
+    }
+}
+
+const addCuisineCategory = async(data, res) => {
+    if(!data) {
+        return res.status(400).json({ message: 'Cuisine data is required' });
+    }
+
+    try {
+        const categoryExists = await Category.findOne({ categoryName: data.categoryName });
+        if(categoryExists) return res.status(400).json({ message: 'Cuisine category already exists' });
+
+        const newCategory = new Category();
+        newCategory.categoryName = data.categoryName;
+
+        const updatedCuisineCategory = await newCategory.save();
+        res.status(201).json({ message: 'New cuisine category added successfully', payload: updatedCuisineCategory });
+
+    } catch(error) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
 
 // const hashPassword = async (password) => {
 //     const salt = await bcrypt.genSalt(10);
@@ -398,4 +496,8 @@ module.exports = {
     addNewUserAddress,
     deleteUserAddress,
     updateUserAddress,
+    getCuisineCategory,
+    getCuisineCategoryName,
+    getCuisineCategoryRestaurantDetails,
+    addCuisineCategory,
 }

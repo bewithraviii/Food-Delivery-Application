@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { LoadingController } from '@ionic/angular';
-import { addNewAddressRequest } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
@@ -31,11 +31,11 @@ export class CartPage implements OnInit {
     { label: 'Platform Fee', amount: 9 },
     { label: 'GST and Restaurant Charges', amount: 0 },
   ]
-  restaurant: any = {
-   name: "La Pino'z Pizza",
-   address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
-  };
-  orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414', quantity: 1 };
+  // restaurant: any = {
+  //  name: "La Pino'z Pizza",
+  //  address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
+  // };
+  // orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414', quantity: 1 };
   totalAmount = 0;
 
   addressFormGroup!: FormGroup;
@@ -56,6 +56,7 @@ export class CartPage implements OnInit {
     this.initializeForms();
     await this.populateData();
     this.fetchSelectedAddress();
+    console.log(this.cartDetails);
   }
 
   fetchSelectedAddress() {
@@ -161,11 +162,47 @@ export class CartPage implements OnInit {
     }
   }
 
-  increaseQuantity() {
-    // this.orderItem.quantity++;
+  async increaseQuantity(orderItem: any) {
+    await this.presentLoader('Updating Cart...');
+    const payload: addToCartReqForm = {
+      userId: this.user,
+      cartItems: [
+        {
+          restaurant: {
+            restaurantId: this.cartDetails[0].restaurant.restaurantId,
+            name: this.cartDetails[0].restaurant.name,
+            address: this.cartDetails[0].restaurant.address,
+            restaurantCharges: this.cartDetails[0].restaurant.restaurantCharges || 0,
+            orderItem: [{
+              itemId: orderItem.itemId,
+              name: orderItem.name,
+              price: orderItem.price,
+              quantity: 1,
+            }]
+          },
+        }
+      ]
+    }
+    console.log(payload)
+    
+    this.apiService.addToCart(payload).subscribe(
+      (response: any) => {
+        console.log(response);
+        // console.log('Item added to cart:', response);
+        this.dismissLoader();
+      },
+      (error: any) => {
+        console.error('Error adding item to cart:', error);
+        this.dismissLoader();
+      }
+    );
   }
 
-  decreaseQuantity() {
+  decreaseQuantity(orderItem: any) {
+    console.log(orderItem);
+
+
+
     // if (this.orderItem.quantity > 1) {
     //   this.orderItem.quantity--;
     // }
@@ -198,7 +235,7 @@ export class CartPage implements OnInit {
     let restaurantCoords: any;  
     let destinationCoords: any;
 
-    restaurantCoords = await this.getCoordsOfAddress(this.restaurant.address);
+    restaurantCoords = await this.getCoordsOfAddress(this.cartDetails[0].restaurant?.address);
     destinationCoords = await this.getCoordsOfAddress(destination);
 
     if(restaurantCoords !== null || undefined && destinationCoords !== null || undefined) {

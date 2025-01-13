@@ -197,6 +197,10 @@ mat-vertical-stepper {
   margin: 0 auto;
 }
 
+::ng-deep .mat-vertical-content {
+  padding: 0 !important;
+}
+
 mat-step {
   display: flex;
   flex-direction: column;
@@ -224,6 +228,11 @@ mat-step button {
   display: flex;
   justify-content: center;
   align-items: center;
+  &:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+    color: #555;
+  }
 }
 
 .coupon-btn {
