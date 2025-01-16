@@ -14,9 +14,31 @@ const getCartData = async (req, res) => {
         if(!existingCart){
             return res.status(400).json({ message: 'Cart not found' });
         }
+        const billDetails = [
+            { label: 'Item Total', amount: 0 },
+            { label: 'Delivery Fee', amount: 30 },
+            { label: 'Platform Fee', amount: 9 },
+            { label: 'GST and Restaurant Charges', amount: 0 },
+        ]
+        let totalAmount = 0;
+
+        existingCart.cartItems.forEach((cartDetail) => {
+            cartDetail.restaurant.orderItem.forEach((item) => {
+            const itemTotal = item.price * item.quantity;
+            const gst = itemTotal * 5 / 100;
+            const restaurantCharge = cartDetail.restaurant.restaurantCharges;
+            const gstOnPlatformFee = +(billDetails[2].amount * 18 / 100).toFixed(2);
+            billDetails[0].amount = billDetails[0].amount + itemTotal;
+            billDetails[3].amount = billDetails[3].amount + +(gst + restaurantCharge + gstOnPlatformFee).toFixed(2);
+            });
+        })
+        billDetails.forEach(billDetail => {
+            totalAmount = totalAmount + billDetail.amount;
+        });
+
         return res.status(200).json({
             message: 'Cart fetched successfully',
-            payload: existingCart
+            payload: {...existingCart._doc, billDetails, totalAmount}
         });
 
     } catch(err) {
@@ -31,16 +53,23 @@ const addToCart = async (req, res) => {
     if(!data || !data.userId) {
         return res.status(400).json({ message: 'Cart data is required' });
     }
-    try{      
+    try{   
+        const billDetails = [
+            { label: 'Item Total', amount: 0 },
+            { label: 'Delivery Fee', amount: 30 },
+            { label: 'Platform Fee', amount: 9 },
+            { label: 'GST and Restaurant Charges', amount: 0 },
+        ]
+        let totalAmount = 0;
+
         const userId = data.userId;
         const existingCart = await Cart.findOne({ userId: userId});
-        if(!existingCart || existingCart == null){
+        if(!existingCart){
             const newCart = new Cart();
             newCart.userId = userId;
             newCart.cartItems = data.cartItems;
             newCart.status = cartStatus.PENDING
             await newCart.save();
-
             return res.status(201).json({ message: 'Cart created successfully', payload: newCart });
         }
 
@@ -48,9 +77,7 @@ const addToCart = async (req, res) => {
             data.cartItems.forEach(cartItem => {
                 const existingCartItem = existingCart.cartItems.find(item => item.restaurant.restaurantId.toString() === cartItem.restaurant.restaurantId.toString());
                 if(existingCartItem) {
-                    console.log("existingCartItem", existingCartItem.restaurant.orderItem);
                     cartItem.restaurant.orderItem.forEach(newOrderItem => {
-                        console.log("newOrderItem", newOrderItem);
                         const existingOrderItem = existingCartItem.restaurant.orderItem.find(item => item.itemId === newOrderItem.itemId);
                         if(existingOrderItem) {
                             existingOrderItem.quantity += newOrderItem.quantity;
@@ -59,13 +86,32 @@ const addToCart = async (req, res) => {
                         }
                     });
                 } else {
+                    // Commented - One Cart = OrderItems from only one Restaurant
                     // existingCart.cartItems.push(cartItem);
                     return res.status(400).json({ message: 'Your cart already contains other restaurant order, Please continue or empty cart.' });
                 }
             });  
         }
+
+        existingCart.cartItems.forEach((cartDetail) => {
+            cartDetail.restaurant.orderItem.forEach((item) => {
+            const itemTotal = item.price * item.quantity;
+            const gst = itemTotal * 5 / 100;
+            const restaurantCharge = cartDetail.restaurant.restaurantCharges;
+            const gstOnPlatformFee = +(billDetails[2].amount * 18 / 100).toFixed(2);
+            billDetails[0].amount = billDetails[0].amount + itemTotal;
+            billDetails[3].amount = billDetails[3].amount + +(gst + restaurantCharge + gstOnPlatformFee).toFixed(2);
+            });
+        })
+        billDetails.forEach(billDetail => {
+            totalAmount = totalAmount + billDetail.amount;
+        });
+
         await existingCart.save();
-        return res.status(200).json({ message: 'Cart updated successfully', payload: existingCart });
+        return res.status(200).json({ 
+            message: 'Cart updated successfully',
+            payload: {...existingCart._doc, billDetails, totalAmount} 
+        });
 
     } catch(err) {
         console.log("Add to cart failed due to: ", err);
@@ -73,80 +119,77 @@ const addToCart = async (req, res) => {
     }
 }
 
-const updateCart = async (data, res) => {
+const removeFromCart = async(req, res) => {
+    const data = req.body;
     if (!data || !data.userId) {
         return res.status(400).json({ message: 'User id and cart data are required' });
     }
 
     try {
-        // Fetch the existing cart for the user
-        const existingCart = await Cart.findOne({ userId: data.userId });
+        const billDetails = [
+            { label: 'Item Total', amount: 0 },
+            { label: 'Delivery Fee', amount: 30 },
+            { label: 'Platform Fee', amount: 9 },
+            { label: 'GST and Restaurant Charges', amount: 0 },
+        ]
+        let totalAmount = 0;
 
-        if (!existingCart) {
+        const userId = data.userId;
+        const existingCart = await Cart.findOne({ userId: userId});
+        if(!existingCart){
             return res.status(404).json({ message: 'Cart not found' });
         }
 
-        // Handle case 1: Update quantity of an existing orderItem
-        if (data.cartItems) {
-            data.cartItems.forEach(cartItem => {
-                // Check if this cartItem exists in the existing cart
+        if(existingCart.cartItems.length > 0 && Array.isArray(data.cartItems)){
+            data.cartItems.forEach(cartItem => { 
                 const existingCartItem = existingCart.cartItems.find(item => item.restaurant.restaurantId.toString() === cartItem.restaurant.restaurantId.toString());
-
-                if (existingCartItem) {
-                    cartItem.orderItem.forEach(newOrderItem => {
-                        const existingOrderItem = existingCartItem.orderItem.find(item => item.itemId === newOrderItem.itemId);
-
-                        if (existingOrderItem) {
-                            // If the orderItem already exists, increment the quantity
-                            existingOrderItem.quantity += newOrderItem.quantity;
-                        } else {
-                            // If the orderItem does not exist, add it
-                            existingCartItem.orderItem.push(newOrderItem);
+                if(existingCartItem) {
+                    cartItem.restaurant.orderItem.forEach(newOrderItem => {
+                        const existingOrderItem = existingCartItem.restaurant.orderItem.find(item => item.itemId === newOrderItem.itemId);
+                        if(existingOrderItem && existingOrderItem.quantity > 1) {
+                            existingOrderItem.quantity -= newOrderItem.quantity;
+                        } else if(existingOrderItem && existingOrderItem.quantity == 1){
+                            existingCartItem.restaurant.orderItem = existingCartItem.restaurant.orderItem.filter(item => item.itemId !== newOrderItem.itemId);
                         }
                     });
-
-                    // Remove orderItems that are no longer in the new data (cleanup)
-                    existingCartItem.orderItem = existingCartItem.orderItem.filter(orderItem => 
-                        cartItem.orderItem.some(newItem => newItem.itemId === orderItem.itemId)
-                    );
-                } else {
-                    // If no matching cartItem found, add the new cartItem with the new orderItems
-                    existingCart.cartItems.push(cartItem);
+                    if (existingCartItem.restaurant.orderItem.length === 0) {
+                        existingCart.cartItems = existingCart.cartItems.filter(item => item.restaurant.restaurantId.toString() !== cartItem.restaurant.restaurantId.toString());
+                    }
                 }
             });
         }
-
-        // Handle case 2: Add or remove entire cartItems (restaurant level)
-        if (data.addCartItems) {
-            data.addCartItems.forEach(newCartItem => {
-                const existingCartItem = existingCart.cartItems.find(item => item.restaurant.restaurantId.toString() === newCartItem.restaurant.restaurantId.toString());
-                
-                if (!existingCartItem) {
-                    // Add new cartItem if it doesn't exist
-                    existingCart.cartItems.push(newCartItem);
-                }
-            });
-        }
-
-        if (data.removeCartItems) {
-            existingCart.cartItems = existingCart.cartItems.filter(item => 
-                !data.removeCartItems.includes(item.restaurant.restaurantId.toString())
-            );
-        }
-
-        // Save the updated cart
-        await existingCart.save();
-
-        return res.status(200).json({
-            message: 'Cart updated successfully',
-            payload: existingCart
-        });
         
-    } catch (err) {
-        console.log("Cart update failed due to: ", err);
+        if(existingCart.cartItems.length == 0) {
+            await existingCart.deleteOne({ userId: userId});
+            return res.status(200).json({ message: 'Cart successfully cleared', payload: null });
+        } else {
+            existingCart.cartItems.forEach((cartDetail) => {
+                cartDetail.restaurant.orderItem.forEach((item) => {
+                const itemTotal = item.price * item.quantity;
+                const gst = itemTotal * 5 / 100;
+                const restaurantCharge = cartDetail.restaurant.restaurantCharges;
+                const gstOnPlatformFee = parseFloat((billDetails[2].amount * 18 / 100).toFixed(2));
+                billDetails[0].amount = billDetails[0].amount + itemTotal;
+                billDetails[3].amount = billDetails[3].amount + parseFloat((gst + restaurantCharge + gstOnPlatformFee).toFixed(2));
+                });
+            })
+            billDetails.forEach(billDetail => {
+                totalAmount = totalAmount + billDetail.amount;
+            });
+
+            await existingCart.save();
+            return res.status(200).json({ 
+                message: 'Cart updated successfully', 
+                payload: {...existingCart._doc, billDetails, totalAmount}
+            });
+        }
+    } catch(err) {
+        console.log("Add to cart failed due to: ", err);
         res.status(500).json({ message: 'Server error', error: err.message });
     }
-};
+}
+
+
 // {
 //     "userId": "USER_ID",
 //     "cartItems": [
@@ -191,4 +234,4 @@ const updateCart = async (data, res) => {
   
 
 
-module.exports = { getCartData, addToCart, updateCart }
+module.exports = { getCartData, addToCart, removeFromCart }

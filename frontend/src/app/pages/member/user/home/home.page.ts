@@ -30,6 +30,7 @@ export class HomePage implements OnInit {
     {name: 'Burger', image: 'assets/images/burger.jfif'},
     {name: 'Rolls', image: 'assets/images/rolls.jfif'},
     {name: 'Salads', image: 'assets/images/salads.jfif'},
+    {name: 'Coffee', image: 'assets/images/coffee.jfif'},
     {name: 'Shakes', image: 'assets/images/shakes.jfif'},
     {name: 'Chinese', image: 'assets/images/chinese.jfif'},
     {name: 'North Indian', image: 'assets/images/north-indian.jfif'},

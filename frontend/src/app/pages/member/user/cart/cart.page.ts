@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
+import { Route, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { addNewAddressRequest, addToCartReqForm } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -27,15 +28,10 @@ export class CartPage implements OnInit {
   cartDetails: any[] = [];
   billDetails = [
     { label: 'Item Total', amount: 0 },
-    { label: 'Delivery Fee', amount: 30 },
-    { label: 'Platform Fee', amount: 9 },
+    { label: 'Delivery Fee', amount: 0 },
+    { label: 'Platform Fee', amount: 0 },
     { label: 'GST and Restaurant Charges', amount: 0 },
   ]
-  // restaurant: any = {
-  //  name: "La Pino'z Pizza",
-  //  address: "Shop No. 113, 1st floor, Aditya Avenue, opp. Krishna Bunglows, Havmore Circle, Ahmedabad, Gujarat 380005",
-  // };
-  // orderItem = { name: 'Pesto & Basil Special Pizza', price: '₹414', quantity: 1 };
   totalAmount = 0;
 
   addressFormGroup!: FormGroup;
@@ -49,6 +45,7 @@ export class CartPage implements OnInit {
     private loadingController: LoadingController,
     private dialogService: DialogService,
     private notificationService: NotificationService,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -56,14 +53,12 @@ export class CartPage implements OnInit {
     this.initializeForms();
     await this.populateData();
     this.fetchSelectedAddress();
-    console.log(this.cartDetails);
   }
 
   fetchSelectedAddress() {
     const addresses = this.addressExtractionService.getAddresses();
     if(addresses.length > 0){
       this.selectedAddress = addresses[0].details
-      console.log(this.selectedAddress);
     }
   }
 
@@ -76,22 +71,11 @@ export class CartPage implements OnInit {
           data.payload.cartItems.forEach((element: any) => {
             this.cartDetails.push(element);
           });
-        }
-        if (this.cartDetails.length > 0) {
-          this.cartDetails.forEach((cartDetail: any) => {
-            cartDetail.restaurant.orderItem.forEach((item: any) => {
-              const itemTotal = item.price * item.quantity;
-              const gst = itemTotal * 5 / 100;
-              const restaurantCharge = cartDetail.restaurant.restaurantCharges;
-              const gstOnPlatformFee = +(this.billDetails[2].amount * 18 / 100).toFixed(2);
-              this.billDetails[0].amount = this.billDetails[0].amount + itemTotal;
-              this.billDetails[3].amount = this.billDetails[3].amount + +(gst + restaurantCharge + gstOnPlatformFee).toFixed(2);
-            });
-          })
-          this.billDetails.forEach(billDetail => {
-            this.totalAmount = this.totalAmount + billDetail.amount;
-          });
-          this.cartDataLoaded = true;
+          if(data.payload.billDetails && data.payload.totalAmount){
+            this.billDetails = data.payload.billDetails;
+            this.totalAmount = data.payload.totalAmount;
+            this.cartDataLoaded = true;
+          }
         }
       },
       (error: any) => {
@@ -183,12 +167,18 @@ export class CartPage implements OnInit {
         }
       ]
     }
-    console.log(payload)
-    
     this.apiService.addToCart(payload).subscribe(
       (response: any) => {
-        console.log(response);
-        // console.log('Item added to cart:', response);
+        if(response){
+          this.cartDetails = [];
+          response.payload.cartItems.forEach((element: any) => {
+            this.cartDetails.push(element);
+          });
+          if(response.payload.billDetails && response.payload.totalAmount){
+            this.billDetails = response.payload.billDetails;
+            this.totalAmount = response.payload.totalAmount;
+          }
+        }
         this.dismissLoader();
       },
       (error: any) => {
@@ -198,14 +188,52 @@ export class CartPage implements OnInit {
     );
   }
 
-  decreaseQuantity(orderItem: any) {
-    console.log(orderItem);
-
-
-
-    // if (this.orderItem.quantity > 1) {
-    //   this.orderItem.quantity--;
-    // }
+  async decreaseQuantity(orderItem: any) {
+    await this.presentLoader('Updating Cart...');
+    const payload: addToCartReqForm = {
+      userId: this.user,
+      cartItems: [
+        {
+          restaurant: {
+            restaurantId: this.cartDetails[0].restaurant.restaurantId,
+            name: this.cartDetails[0].restaurant.name,
+            address: this.cartDetails[0].restaurant.address,
+            restaurantCharges: this.cartDetails[0].restaurant.restaurantCharges || 0,
+            orderItem: [{
+              itemId: orderItem.itemId,
+              name: orderItem.name,
+              price: orderItem.price,
+              quantity: 1,
+            }]
+          },
+        }
+      ]
+    }
+    this.apiService.removeFromCart(payload).subscribe(
+      (response: any) => {
+        if(response){
+          if(response.payload == null){
+            this.cartDataLoaded = false;
+            this.cartExists = false;
+            this.router.navigate(['/user-dashboard/home'])
+          } else {
+            this.cartDetails = [];
+            response.payload.cartItems.forEach((element: any) => {
+              this.cartDetails.push(element);
+            });
+            if(response.payload.billDetails && response.payload.totalAmount){
+              this.billDetails = response.payload.billDetails;
+              this.totalAmount = response.payload.totalAmount;
+            }
+          }
+        }
+        this.dismissLoader();
+      },
+      (error: any) => {
+        console.error('Error removing item from cart:', error);
+        this.dismissLoader();
+      }
+    );
   }
 
   selectAddress(address: string) {

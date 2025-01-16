@@ -102,12 +102,15 @@ export class ApiService {
   getRestaurantDetails(reqPayload: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getRestaurantDetails/${reqPayload}`);
   }
+  
+  // Cart-Page
   addToCart(reqPayload: addToCartReqForm): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/addToCart`, reqPayload);
   }
-
-  // Cart-Page
   getUserCartData(reqPayload: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getCartByUserId/${reqPayload}`);
+  }
+  removeFromCart(reqPayload: addToCartReqForm): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/removeFromCart`, reqPayload);
   }
 }

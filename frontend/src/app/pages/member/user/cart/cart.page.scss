@@ -228,6 +228,9 @@ mat-step button {
   display: flex;
   justify-content: center;
   align-items: center;
+  &:hover {
+    transform: scale(1.17);
+  }
   &:disabled {
     opacity: 0.8;
     cursor: not-allowed;
@@ -299,4 +302,20 @@ mat-stepper {
         margin-top: 10px;
     }
   }
+}
+
+.timing-info-popup {
+  padding: 1rem !important;
+  background-color: #FFC6AE !important;
+}
+
+.restaurant-time-info-content {
+  background-color: white !important;
+  padding: 1rem !important;
+  color: #FC6E2A;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+
+
 }
