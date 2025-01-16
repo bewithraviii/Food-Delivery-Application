@@ -214,8 +214,8 @@ export class CartPage implements OnInit {
         if(response){
           if(response.payload == null){
             this.cartDataLoaded = false;
-            this.cartExists = false;
-            this.router.navigate(['/user-dashboard/home'])
+            this.dismissLoader();
+            window.location.reload();
           } else {
             this.cartDetails = [];
             response.payload.cartItems.forEach((element: any) => {
@@ -225,9 +225,9 @@ export class CartPage implements OnInit {
               this.billDetails = response.payload.billDetails;
               this.totalAmount = response.payload.totalAmount;
             }
+            this.dismissLoader();
           }
         }
-        this.dismissLoader();
       },
       (error: any) => {
         console.error('Error removing item from cart:', error);

@@ -141,7 +141,7 @@
         <div class="menu-section">
           <mat-divider></mat-divider>
           <mat-accordion multi>
-            <mat-expansion-panel *ngFor="let category of filteredMenu" class="menu-list" expanded="true">
+            <mat-expansion-panel *ngFor="let category of restaurantDetails.menu" class="menu-list" expanded="true">
               <mat-expansion-panel-header>
                 <mat-panel-title class="menu-title">
                   {{ category.categoryName | uppercase }} ({{ category.items.length }})
