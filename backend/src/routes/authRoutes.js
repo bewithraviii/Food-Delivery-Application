@@ -1,6 +1,7 @@
 const express = require('express');
 const authController = require('../controllers/auth');
-const cartController = require('../controllers/cart')
+const cartController = require('../controllers/cart');
+const vendorController = require('../controllers/vendor');
 const router = express.Router();
 const { authorizeRoles } = require('../middleware/auth');
 const Roles = require('../utils/enums/roles');
@@ -46,6 +47,15 @@ router.post('/addCategory', authController.addCuisineCategory);
 router.post('/addToCart', authorizeRoles(Roles.USER), cartController.addToCart);
 router.post('/removeFromCart', authorizeRoles(Roles.USER), cartController.removeFromCart);
 
+
+
+
+
+
+
+
+// Vendor API's
+router.post('/addRestaurantMenu', vendorController.addRestaurantMenu);
 
 
 

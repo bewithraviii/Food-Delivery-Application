@@ -15,23 +15,24 @@ const restaurantSchema = new mongoose.Schema(
       menu: {
         type: [
           {
-            categoryName: { type: String, required: true },
+            categoryId: { 
+              type: mongoose.Schema.Types.ObjectId, 
+              ref: 'Category', 
+              required: true 
+            },
+            subCategoryName: { type: String, required: true },
             items: [
               {
-                categoryId: { 
-                  type: mongoose.Schema.Types.ObjectId, 
-                  ref: 'Category', 
-                  required: true 
-                },
                 name: { type: String, required: true },
                 price: { type: String, required: true },
-                description: { type: String, default: true },
+                description: { type: String, required: true },
                 ratings: { type: Number, required: true },
                 ratingsCount: { type: Number, required: true },
+                available: { type: Boolean, default: true },
               },
             ],
           },
-        ], default: null,
+        ], default: [],
       },
       offers: {
         type: [

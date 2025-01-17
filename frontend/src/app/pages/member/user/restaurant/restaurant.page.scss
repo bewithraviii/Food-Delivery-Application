@@ -223,7 +223,7 @@
   
 /* Deal card styling */
 .deal-card {
-    min-width: 18rem;
+    min-width: 17rem;
     background-color: transparent !important;
     display: flex !important;
     border-radius: 12px;
@@ -406,9 +406,9 @@ ion-delegate-host.popover-viewport {
     padding: 0;
 }
   
-.footer-section ul li {
-    margin-bottom: 8px;
-}
+// .footer-section ul li {
+//     margin-bottom: 8px;
+// }
   
 .footer-section ul li a {
     color: black;
@@ -429,12 +429,15 @@ ion-delegate-host.popover-viewport {
 }
   
 .social-links li {
-    margin-right: 15px;
+    padding: 8px;
 }
   
 .social-links li a {
     color: black;
     font-size: 18px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
 
 .footer-details-content {
@@ -458,17 +461,17 @@ ion-delegate-host.popover-viewport {
       width: 100%;
     }
   
-    .footer-section h3 {
-      font-size: 16px;
-    }
+    // .footer-section h3 {
+    //   font-size: 16px;
+    // }
   
-    .footer-section ul li a {
-      font-size: 14px;
-    }
+    // .footer-section ul li a {
+    //   font-size: 14px;
+    // }
   
-    .social-links li {
-      margin-right: 10px;
-    }
+    // .social-links li {
+    //   margin-right: 10px;
+    // }
 }
   
   /* Responsive for mobile devices */
@@ -477,19 +480,19 @@ ion-delegate-host.popover-viewport {
       padding: 15px;
     }
   
-    .footer-section h3 {
-      font-size: 14px;
-    }
+    // .footer-section h3 {
+    //   font-size: 14px;
+    // }
   
-    .footer-section ul li a {
-      font-size: 12px;
-    }
+    // .footer-section ul li a {
+    //   font-size: 12px;
+    // }
   
-    .footer-bottom {
-      font-size: 12px;
-    }
+    // .footer-bottom {
+    //   font-size: 12px;
+    // }
   
-    .social-links li a {
-      font-size: 16px;
-    }
+    // .social-links li a {
+    //   font-size: 16px;
+    // }
 }
