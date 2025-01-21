@@ -5,6 +5,7 @@ import { addToCartReqForm } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
+import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -77,6 +78,7 @@ export class RestaurantPage implements OnInit {
     private cd: ChangeDetectorRef,
     private dialogService: DialogService,
     private toastController: ToastController,
+    private notificationService: NotificationService,
     private router: Router
   ) { }
 
@@ -208,6 +210,7 @@ export class RestaurantPage implements OnInit {
       },
       (error: any) => {
         console.error('Error adding item to cart:', error);
+        this.notificationService.notifyUser("errorSnack", error.error.message || 'Your cart already contains other restaurant order, Please continue or empty cart.');
       }
     );
   }
@@ -215,7 +218,7 @@ export class RestaurantPage implements OnInit {
   async addedToCartNotify(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 5000,
+      duration: 50000,
       position: 'bottom',
       cssClass: 'custom-cart-notification',
       buttons: [
