@@ -3,3 +3,9 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.custom-cart-notification {
+    --background: #059C6A !important;
+    --color: white !important;
+
+
+}

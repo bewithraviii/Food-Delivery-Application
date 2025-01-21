@@ -94,7 +94,7 @@ export interface addToCartReqForm {
             restaurantCharges: number,
             orderItem: [
                 {
-                    itemId: string,
+                    itemId: number,
                     name: string,
                     price: number,
                     quantity: number,

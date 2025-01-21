@@ -56,6 +56,8 @@ router.post('/removeFromCart', authorizeRoles(Roles.USER), cartController.remove
 
 // Vendor API's
 router.post('/addRestaurantMenu', vendorController.addRestaurantMenu);
+router.post('/editRestaurantMenu', vendorController.editRestaurantMenu);
+router.post('/removeItemFromRestaurantMenu', vendorController.removeItemFromRestaurantMenu);
 
 
 
