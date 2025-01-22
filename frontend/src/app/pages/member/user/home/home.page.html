@@ -73,9 +73,9 @@
           </div>
           <div class="col-md-6 p-3">
             <h4 style="color: #1E1D1D;">What's on your mind?</h4>
-            <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-form-field appearance="outline" style="width: 100%;" (click)="navigateToSearch()">
               <mat-label>Search dishes, restaurants etc..</mat-label>
-              <input matInput (click)="navigateToSearch()">
+              <input matInput>
             </mat-form-field>
           </div>
         </div>

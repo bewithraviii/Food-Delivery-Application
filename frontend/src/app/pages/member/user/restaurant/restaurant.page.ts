@@ -1,3 +1,4 @@
+import { Element } from '@angular/compiler';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -135,11 +136,18 @@ export class RestaurantPage implements OnInit {
 
   filterMenu() {
     const query = this.searchQuery.toLowerCase();
-    this.filteredMenu = this.restaurantDetails.menu.filter((category: any) =>
-      category.items.some((item: any) =>
-        item.name.toLowerCase().includes(query)
-      )
-    );
+    if(query){
+      let filteredMenu = this.restaurantDetails.menu.map((category: any) => {
+        const filteredItems = category.items.filter((item: any) => 
+          item.name.toLowerCase().includes(query)
+        );
+        return filteredItems;
+      });
+      filteredMenu = filteredMenu.filter((itemArray: any[]) => itemArray.length > 0);
+      this.filteredMenu = filteredMenu;
+    } else {
+      this.filteredMenu = [];
+    }
   }
 
   scrollLeft() {
