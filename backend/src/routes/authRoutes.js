@@ -20,7 +20,8 @@ router.get('/getAllCuisineCategoryName', authController.getCuisineCategoryName);
 router.get('/getCuisineCategoryRestaurantDetails', authController.getCuisineCategoryRestaurantDetails);
 // Cart
 router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.getUserCart);
-
+// Deals
+router.get('/getDealsForRestaurant/:id', authController.getRestaurantDeal);
 
 
 
@@ -43,13 +44,13 @@ router.post('/addNewUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), auth
 router.post('/deleteUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), authController.deleteUserAddress);
 router.post('/updateUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), authController.updateUserAddress);
 // Cart
-router.post('/addCategory', authController.addCuisineCategory);
 router.post('/addToCart', authorizeRoles(Roles.USER), cartController.addToCart);
 router.post('/removeFromCart', authorizeRoles(Roles.USER), cartController.removeFromCart);
+router.post('/applyDealsToCart', authorizeRoles(Roles.USER), cartController.applyDealsToCart)
 
-
-
-
+// ADMIN
+router.post('/addCategory', authController.addCuisineCategory);
+router.post('/addDeal', authController.addNewDeal);
 
 
 

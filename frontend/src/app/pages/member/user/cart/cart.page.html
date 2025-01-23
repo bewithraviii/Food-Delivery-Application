@@ -20,9 +20,6 @@
                         <h5 style="margin: 0; font-size: 16px;">{{"Choose a delivery address" | uppercase}}</h5>
                         <p style="margin: 0;font-size: 14px;">Multiple addresses in this location</p>
                       </div>
-                      <div class="add-address-btn-container">
-                        <button class="add-address-btn" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
-                      </div>
                     </div>
                     <div class="addresses">
                       <div class="address-card" *ngFor="let address of addresses">
@@ -94,7 +91,7 @@
                       <span>{{ '₹' + orderItem.price }}</span>
                     </div>
                     <div class="quantity-controls">
-                      <button (click)="decreaseQuantity(orderItem)" class="quantity-manager" ><ion-icon name="remove-sharp"></ion-icon></button>
+                      <button (click)="decreaseQuantity(orderItem)" class="quantity-manager"><ion-icon name="remove-sharp"></ion-icon></button>
                       <span style="font-size: 14px;">{{ orderItem.quantity }}</span>
                       <button (click)="increaseQuantity(orderItem)" class="quantity-manager"><ion-icon name="add-sharp"></ion-icon></button>
                     </div>
@@ -105,7 +102,7 @@
                 </div>
               </div>
               <div class="coupon-section">
-                <button class="btn coupon-btn">Apply Coupon</button>
+                <button class="btn coupon-btn" (click)="applyCouponSection()">Apply Coupon</button>
               </div>
               <div class="bill-details">
                 <h6>{{"Bill Details" | uppercase}}</h6>

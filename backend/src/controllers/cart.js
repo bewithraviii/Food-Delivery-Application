@@ -11,3 +11,7 @@ exports.addToCart = async(req, res) => {
 exports.removeFromCart = async(req, res) => {
     return await cartService.removeFromCart(req, res);
 }
+
+exports.applyDealsToCart = async(req, res) => {
+    return await cartService.applyDealsToCart(req.body, res);
+}

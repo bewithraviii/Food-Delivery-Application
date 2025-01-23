@@ -77,3 +77,11 @@ exports.getCuisineCategoryRestaurantDetails = async(req, res) => {
 exports.addCuisineCategory = async(req, res) => {
     return await authService.addCuisineCategory(req.body, res);
 }
+
+exports.addNewDeal = async(req, res) => {
+    return await authService.addNewDeal(req.body, res);
+}
+
+exports.getRestaurantDeal = async(req, res) => {
+    return await authService.getRestaurantDeal(req, res);
+}

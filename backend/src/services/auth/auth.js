@@ -6,6 +6,7 @@ const User = require('../../models/userModel');
 const Vendor = require('../../models/restaurantModel');
 const Restaurant = require('../../models/restaurantModel');
 const Category = require('../../models/categoryModel');
+const Deals = require('../../models/dealsModel');
 
 
 const userLogin = async (data, res) => {
@@ -474,6 +475,61 @@ const addCuisineCategory = async(data, res) => {
     }
 }
 
+const addNewDeal = async(data, res) => {
+    if(!data) {
+        return res.status(400).json({ message: 'Cuisine data is required' });
+    }
+
+    try {
+        const dealExists = await Deals.findOne({ code: data.code });
+        if(dealExists) return res.status(400).json({ message: 'Deal already exists, Please add new one.' });
+
+        const newDeal = new Deals();
+        newDeal.code = data.code;
+        newDeal.title = data.title;
+        newDeal.description = data.description;
+        newDeal.maxDiscount = data.maxDiscount;
+        newDeal.minOrderValue = data.minOrderValue;
+        newDeal.discountPercent = data.discountPercent;
+        newDeal.discountType = data.discountType;
+
+        if(data.termsAndCondition && data.termsAndCondition.length > 0) {
+            let termsAndConditionList = [];
+            data.termsAndCondition.forEach(term => {
+                termsAndConditionList.push({ terms: term.terms });
+            })
+            newDeal.termsAndCondition = termsAndConditionList;
+        }
+
+        const updatedDealsData = await newDeal.save();
+        res.status(201).json({ message: 'New deal added successfully', payload: updatedDealsData });
+
+    } catch(error) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+const getRestaurantDeal = async(req, res) => {
+    const id = req.params.id;
+    if(!id){
+        return res.status(404).json({ message: 'Restaurants id not found' });
+    }
+
+    try {
+        const dealsData = await Deals.find();
+        if(!dealsData || dealsData.length == 0){
+            return res.status(404).json({ message: 'Deals not found' });
+        }
+    
+        const restaurantDeals = dealsData.filter((deal) => deal.restaurant.some(restaurant => restaurant.restaurantId.toString() === id));
+        console.log(restaurantDeals);
+    
+        res.status(200).json({ message: 'Deal data fetched successfully', payload: restaurantDeals });
+    } catch(err){
+        res.status(400).json({ message: err.message });
+    }
+}
+
 
 // const hashPassword = async (password) => {
 //     const salt = await bcrypt.genSalt(10);
@@ -500,4 +556,6 @@ module.exports = {
     getCuisineCategoryName,
     getCuisineCategoryRestaurantDetails,
     addCuisineCategory,
+    addNewDeal,
+    getRestaurantDeal,
 }

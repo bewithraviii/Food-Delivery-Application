@@ -1,0 +1,49 @@
+<div class="dialog-container">
+  <div class="content">
+    <div class="dialog-header">
+      <h2>{{"Deals" | uppercase}}</h2>
+      <button (click)="closeDialog()" class="close-btn"><ion-icon name="close"></ion-icon></button>
+    </div>
+    <div class="dialog-body">
+      <div *ngIf="!data.deals; else presentDeals">
+        <div class="row p-3" style="color: #525C67;">
+          <h5>No deals available for this restaurant at a moment, please try again after sometime.</h5>
+        </div>
+      </div>
+      <ng-template #presentDeals>
+        <div *ngFor="let deal of data.deals" class="deal">
+          <div class="row p-3" style="color: #525C67;" >
+            <div>
+              <div class="couponContainer">
+                <div class="couponImg">
+                  <img src="assets/icons/coupon-code.png" alt="{{deal.code}}">
+                </div>
+                <div class="coupon">
+                  <span style="padding: 0; font-size: 16px; font-weight: 500;">{{deal.code}}</span>
+                </div>
+              </div>
+              <p style="padding: 0; font-size: 16px; font-weight: 500; margin-top: 0.5rem; margin-bottom: 0.2rem;">Get {{ deal?.title }}</p>
+              <p style="padding: 0; font-size: 14px;">{{ deal?.description }}</p>
+            </div>
+            <div>
+              <div *ngIf="deal.showTerms; else showMore">
+                <p style="padding: 0; font-size: 15px; font-weight: 500;">Terms and Conditions</p>
+                <ul *ngIf="deal?.termsAndCondition?.length">
+                  <li *ngFor="let term of deal.termsAndCondition" style="font-size: 13px;">
+                    {{ term.terms }}
+                  </li>
+                </ul>
+              </div>
+              <ng-template #showMore>
+                <p style="padding: 0; font-size: 13px; font-weight: 500; cursor: pointer; color: #5d8ed5;" (click)="toggleVisible(deal)"> + {{"More" | uppercase}}</p>
+              </ng-template>
+            </div>
+            <div>
+              <button mat-button class="applyDealBtn" (click)="applyDeal(deal)">{{"Apply Coupon" | uppercase}}</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

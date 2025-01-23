@@ -1,0 +1,105 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF !important;
+    color: black;
+    padding: 16px;
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #FF7622;
+}
+  
+.dialog-body {
+    padding: 1rem;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.dialog-body::-webkit-scrollbar {
+    width: 8px;
+}
+.dialog-body::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+.dialog-body::-webkit-scrollbar-thumb {
+    background-color: #FF956D;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+}
+.dialog-body::-webkit-scrollbar-thumb:hover {
+    background-color: #FF7622;
+}
+  
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF7622;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.couponContainer {
+    display: flex;
+    height: fit-content;
+    padding: 0;
+    width: fit-content;
+    border-radius: 5px;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    background: #FFF2ED;
+    border: 1px solid #FF956D;
+    font-family: 'Roboto';
+    cursor: pointer;
+}
+
+
+.couponImg {
+    width: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.coupon {
+    letter-spacing: 1px;
+    color: #FF956D;
+    display: flex;
+    align-items: center;
+}
+
+.deal {
+    margin-bottom: 2rem;
+    border: 1px dashed #FF956D;
+    border-radius: 12px;
+}
+
+.applyDealBtn {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    border: 1px solid;
+    background: transparent;
+    color: #FF956D;
+    font-weight: 500;
+}

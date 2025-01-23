@@ -113,4 +113,9 @@ export class ApiService {
   removeFromCart(reqPayload: addToCartReqForm): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/removeFromCart`, reqPayload);
   }
+  getRestaurantDeals(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getDealsForRestaurant/${reqPayload}`);
+  }
+  
+  // applyCoupon(reqPayload: )
 }

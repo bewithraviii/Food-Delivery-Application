@@ -11,6 +11,8 @@ import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
 
+
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -45,7 +47,6 @@ export class CartPage implements OnInit {
     private loadingController: LoadingController,
     private dialogService: DialogService,
     private notificationService: NotificationService,
-    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -106,44 +107,6 @@ export class CartPage implements OnInit {
   @HostListener('window:resize', [])
   checkScreenSize(): void {
     this.isDesktop = window.innerWidth > 768;
-  }
-
-  async addNewAddress() {
-    const fields = [
-      { name: 'title', label: 'Title', value: '', options: ['Home', 'Work', 'Other'], validators: [Validators.required] },
-      { name: 'details', label: 'Details', type: 'text', value: '', validators: [Validators.required] },
-    ];
-    const addAddress = { title: '', details: '' }
-    const addedAddress = await this.dialogService.openDialog(
-      "Add Address",
-      { newAddress: addAddress, identity: 'form' },
-      fields,
-      null,
-    );
-
-    if(addedAddress){
-      await this.presentLoader('Adding address...');
-      const requestPayload: addNewAddressRequest = {
-        userId: this.user.id,
-        title: addedAddress.title,
-        detail: addedAddress.details,
-      }
-      this.apiService.addNewAddress(requestPayload).subscribe(
-        (response: any) => {
-          this.addresses = [];
-          response.payload.address.forEach((address: any) => {
-            this.addresses.push(address);
-          });
-          this.dismissLoader();
-          this.notificationService.notifyUser("successSnack", "New address successfully added.");
-        },
-        (error: any) => {
-          console.error('Error adding new address', error);
-          this.dismissLoader();
-          this.notificationService.notifyUser("errorSnack", error.error.message || "Error adding new address.");
-        }
-      );
-    }
   }
 
   async increaseQuantity(orderItem: any) {
@@ -239,6 +202,7 @@ export class CartPage implements OnInit {
   selectAddress(address: string) {
     this.selectedAddress = address;
     this.addressFormGroup.patchValue({ address: this.selectedAddress });
+    this.addressExtractionService.setAddresses([{details: this.selectedAddress}]);
     this.stepper.next();
   }
 
@@ -318,6 +282,45 @@ export class CartPage implements OnInit {
       }
     }
     
+  }
+
+  async applyCouponSection() {
+    const restaurantDeals = await this.getRestaurantDeals();
+
+    const dealSelected = await this.dialogService.dealsDialog(restaurantDeals);
+    if(dealSelected){ 
+      console.log(dealSelected);
+      
+      // api/applyDealsToCart
+
+      
+
+      // const contextData = {
+      //   message: "Are you sure? This action will permanently remove this address from your profile.",
+      //   identity: "confirmation",
+      // }
+      // const result = await this.dialogService.openDialog("Deal Applied", contextData, [], null, true);
+    }
+  }
+
+  async getRestaurantDeals(): Promise<any[]> {
+    await this.presentLoader('Loading...');
+    
+    try {
+      let responseDealData: any[] = [];
+      const restaurantId = this.cartDetails[0].restaurant.restaurantId;
+      const response = await this.apiService.getRestaurantDeals(restaurantId).toPromise();
+      if(response && response.payload) {
+          responseDealData = response.payload;
+      }
+      await this.dismissLoader();
+      return responseDealData;
+
+    } catch (error: any) {
+      console.log(error.message || "Something went wrong while fetching restaurant deals.");
+      this.dismissLoader();
+      return [];
+    }
   }
 
 }

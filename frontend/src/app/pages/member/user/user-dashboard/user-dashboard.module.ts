@@ -23,6 +23,7 @@ import { FooterPage } from '../shared/footer/footer.page';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatBadgeModule } from '@angular/material/badge';
+import { CustomDealDialogPage } from '../shared/custom-deal-dialog/custom-deal-dialog.page';
 
 
 
@@ -51,6 +52,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     FooterPage,
     HomePage,
     DialogPage,
+    CustomDealDialogPage,
     CartPage,
     SearchPage,
     ProfilePage,

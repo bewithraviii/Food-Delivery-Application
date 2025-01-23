@@ -4,8 +4,8 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class AddressExtractionService {
-
-  addresses = signal<any[]>([]);
+  private readonly ADDRESSES_KEY = 'savedAddresses';
+  addresses = signal<any[]>(this.getAddresses());
   
   constructor() { }
 
@@ -59,10 +59,13 @@ export class AddressExtractionService {
 
   setAddresses(newAddresses: any) {
     this.addresses.set(newAddresses);
+    localStorage.setItem(this.ADDRESSES_KEY, JSON.stringify(newAddresses));
   }
 
-  getAddresses() {
-    return this.addresses();
+  getAddresses(): any[] {
+    const saved = localStorage.getItem(this.ADDRESSES_KEY);
+    return saved ? JSON.parse(saved) : [];
+    // return this.addresses();
   }
 
 }

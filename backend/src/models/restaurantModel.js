@@ -38,16 +38,9 @@ const restaurantSchema = new mongoose.Schema(
       offers: {
         type: [
           {
-            code: { type: String, required: true },
-            title: { type: String, required: true },
-            description: { type: String, required: true },
-            termsAndCondition: [
-              {
-                terms: { type: String, required: true }
-              }
-            ]
+            dealId: { type: String, required: true }
           }
-        ], default: null,
+        ], default: [],
       },
       FSSAILicense: { type: String, default: null },
       tradeLicense: { type: String, default: null },

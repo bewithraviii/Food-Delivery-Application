@@ -189,49 +189,19 @@ const removeFromCart = async(req, res) => {
     }
 }
 
+const applyDealsToCart = async(body, res) => {
+    if (!body || !body.userId) {
+        return res.status(400).json({ message: 'deal Id and cart Id is required' });
+    }
 
-// {
-//     "userId": "USER_ID",
-//     "cartItems": [
-//       {
-//         "restaurant": {
-//           "restaurantId": "RESTAURANT_ID",
-//           "name": "Restaurant Name",
-//           "address": "Restaurant Address",
-//           "restaurantCharges": 50
-//         },
-//         "orderItem": [
-//           {
-//             "itemId": "ITEM_ID_1",
-//             "name": "Item 1",
-//             "price": 10,
-//             "quantity": 2
-//           }
-//         ]
-//       }
-//     ],
-//     "addCartItems": [
-//       {
-//         "restaurant": {
-//           "restaurantId": "NEW_RESTAURANT_ID",
-//           "name": "New Restaurant",
-//           "address": "New Address",
-//           "restaurantCharges": 100
-//         },
-//         "orderItem": [
-//           {
-//             "itemId": "NEW_ITEM_ID",
-//             "name": "New Item",
-//             "price": 20,
-//             "quantity": 1
-//           }
-//         ]
-//       }
-//     ],
-//     "removeCartItems": ["RESTAURANT_ID_TO_REMOVE"]
-// }
-  
-  
+    try {
+    // body.dealId
+    // body.cartId
+    } catch(err) {
+        console.log("Coupon application failed due to: ", err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
 
 
-module.exports = { getCartData, addToCart, removeFromCart }
+module.exports = { getCartData, addToCart, removeFromCart, applyDealsToCart }
