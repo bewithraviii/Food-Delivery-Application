@@ -1,16 +1,33 @@
 <div class="dialog-container">
   <div class="content">
-    <div class="dialog-header">
-      <h2>{{"Deals" | uppercase}}</h2>
-      <button (click)="closeDialog()" class="close-btn"><ion-icon name="close"></ion-icon></button>
-    </div>
-    <div class="dialog-body">
-      <div *ngIf="!data.deals; else presentDeals">
-        <div class="row p-3" style="color: #525C67;">
-          <h5>No deals available for this restaurant at a moment, please try again after sometime.</h5>
+    <div *ngIf="data.couponApplied; else presentDeals">
+      <div class="coupon-applied-dialog-header">
+        <ion-img src="assets/icons/offer.png" style="width: 4rem;"></ion-img>
+      </div>
+      <div class="coupon-applied-container">
+        <div class="message-section">
+          <h3 style="margin-bottom: 1.5rem;">'{{selectedDeal?.code}}' APPLIED</h3>
+          <h2 class="savings-amount">{{ selectedDeal?.discountedPrice | currency: 'INR' }}</h2>
+          <p class="savings-description">savings with this coupon</p>
+          <hr class="divider">
+          <p class="message">Happy to see you reconnect with your favorite. Enjoy!</p>
+        </div>
+        <div class="action-section">
+          <button mat-button class="yay-btn" (click)="closeDialog()">YAY!</button>
         </div>
       </div>
-      <ng-template #presentDeals>
+    </div>
+    <ng-template #presentDeals>
+      <div class="dialog-header">
+        <h2>{{"Deals" | uppercase}}</h2>
+        <button (click)="closeDialog()" class="close-btn"><ion-icon name="close"></ion-icon></button>
+      </div>
+      <div class="dialog-body">
+        <div *ngIf="!data.deals.length;">
+          <div class="row" style="color: #525C67;">
+            <h5 style="font-size: 16px;">No coupon available for this restaurant at a moment, Please try again after sometime.</h5>
+          </div>
+        </div>
         <div *ngFor="let deal of data.deals" class="deal">
           <div class="row p-3" style="color: #525C67;" >
             <div>
@@ -43,7 +60,7 @@
             </div>
           </div>
         </div>
-      </ng-template>
-    </div>
+      </div>
+    </ng-template>
   </div>
 </div>

@@ -522,7 +522,6 @@ const getRestaurantDeal = async(req, res) => {
         }
     
         const restaurantDeals = dealsData.filter((deal) => deal.restaurant.some(restaurant => restaurant.restaurantId.toString() === id));
-        console.log(restaurantDeals);
     
         res.status(200).json({ message: 'Deal data fetched successfully', payload: restaurantDeals });
     } catch(err){

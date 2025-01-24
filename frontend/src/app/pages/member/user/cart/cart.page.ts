@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Route, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { addNewAddressRequest, addToCartReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm, applyCouponReqForm, removeCouponReqForm } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
@@ -27,15 +27,18 @@ export class CartPage implements OnInit {
   isPayment: boolean = false;
   user: any;
   addresses: any[] = [];
+  cartId: string = '';
   cartDetails: any[] = [];
-  billDetails = [
+  billDetails: any[] = [
     { label: 'Item Total', amount: 0 },
     { label: 'Delivery Fee', amount: 0 },
     { label: 'Platform Fee', amount: 0 },
     { label: 'GST and Restaurant Charges', amount: 0 },
   ]
-  totalAmount = 0;
-
+  totalAmount: number = 0;
+  discountedPrice: number = 0;
+  discountApplied: boolean = false;
+  selectedDeal: any = {};
   addressFormGroup!: FormGroup;
   paymentFormGroup!: FormGroup;
 
@@ -68,6 +71,7 @@ export class CartPage implements OnInit {
     this.apiService.getUserCartData(this.user).subscribe(
       (data: any) => {
         if(data){
+          this.cartId = data.payload._id;
           this.cartExists = true;
           data.payload.cartItems.forEach((element: any) => {
             this.cartDetails.push(element);
@@ -141,6 +145,9 @@ export class CartPage implements OnInit {
             this.billDetails = response.payload.billDetails;
             this.totalAmount = response.payload.totalAmount;
           }
+          this.discountedPrice = 0;
+          this.discountApplied = false;
+          this.selectedDeal = {};
         }
         this.dismissLoader();
       },
@@ -188,6 +195,9 @@ export class CartPage implements OnInit {
               this.billDetails = response.payload.billDetails;
               this.totalAmount = response.payload.totalAmount;
             }
+            this.discountedPrice = 0;
+            this.discountApplied = false;
+            this.selectedDeal = {};
             this.dismissLoader();
           }
         }
@@ -284,23 +294,83 @@ export class CartPage implements OnInit {
     
   }
 
-  async applyCouponSection() {
+  async removeAppliedCoupon(deal: any) {
+    await this.presentLoader('Removing Coupon...');
+    const removeCouponReqPayload: removeCouponReqForm = {
+      userId: this.user,
+    }
+    this.apiService.removeCoupon(removeCouponReqPayload).subscribe(
+      (response: any) => {
+        if(response) {
+          this.cartDetails = [];
+          response.payload.cartItems.forEach((element: any) => {
+            this.cartDetails.push(element);
+          });
+          this.billDetails = response.payload.billDetails;
+          this.totalAmount = response.payload.totalAmount;
+          this.discountedPrice = 0;
+          this.discountApplied = false;
+          this.selectedDeal = {};
+          this.dismissLoader();
+        }
+      },
+      (error: any) => {
+        this.dismissLoader();
+        console.log(error.error.message || "Something went wrong while removing coupon.");
+        this.notificationService.notifyUser("errorSnack", error.error.message);
+      }
+    )
+  }
+
+  async applyCoupon() {
     const restaurantDeals = await this.getRestaurantDeals();
 
     const dealSelected = await this.dialogService.dealsDialog(restaurantDeals);
     if(dealSelected){ 
-      console.log(dealSelected);
-      
-      // api/applyDealsToCart
+      await this.presentLoader('Applying Coupon...');
 
-      
+      const applyCouponReqPayload: applyCouponReqForm = {
+        restaurantId: this.cartDetails[0].restaurant.restaurantId,
+        cartId: this.cartId,
+        dealId: dealSelected._id
+      }
 
-      // const contextData = {
-      //   message: "Are you sure? This action will permanently remove this address from your profile.",
-      //   identity: "confirmation",
-      // }
-      // const result = await this.dialogService.openDialog("Deal Applied", contextData, [], null, true);
+      this.apiService.applyCoupon(applyCouponReqPayload).subscribe(
+        (response: any) => {
+
+          if(response.dealApplied) {
+            this.cartDetails = [];
+            response.payload.cartItems.forEach((element: any) => {
+              this.cartDetails.push(element);
+            });
+            this.billDetails = response.payload.billDetails;
+            this.totalAmount = response.payload.totalAmount;
+            this.discountedPrice = response.discountedPrice;
+            this.discountApplied = response.dealApplied;
+            this.selectedDeal = dealSelected;
+            this.dismissLoader();
+            this.showCouponAppliedModal(this.discountedPrice, this.selectedDeal);
+          } else {
+            this.notificationService.notifyUser("successSnack", response.message);
+            this.discountApplied = response.dealApplied;
+            this.dismissLoader();
+          }
+        },
+        (error: any) => {
+          this.dismissLoader();
+          console.log(error.message || "Something went wrong while applying coupon.");
+          this.notificationService.notifyUser("errorSnack", error.error.message);
+        }
+      )
     }
+  }
+
+  async showCouponAppliedModal(discountedPrice: number, selectedDeal: any){
+      const deal = {
+        ...selectedDeal,
+        discountedPrice: discountedPrice,
+      }
+      await this.dialogService.dealsDialog(deal, true);
   }
 
   async getRestaurantDeals(): Promise<any[]> {

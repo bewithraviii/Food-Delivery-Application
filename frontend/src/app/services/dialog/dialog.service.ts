@@ -19,10 +19,10 @@ export class DialogService {
         return dialogRef.afterClosed().toPromise();
     }
 
-    async dealsDialog(deals: any){
+    async dealsDialog(deals: any, couponApplied?: boolean){
         const dialogRef = this.matDialog.open(CustomDealDialogPage, {
             width: '500px',
-            data: { deals: deals}
+            data: { deals: deals, couponApplied: couponApplied }
         });
         return dialogRef.afterClosed().toPromise();
     }

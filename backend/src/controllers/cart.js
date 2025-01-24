@@ -15,3 +15,7 @@ exports.removeFromCart = async(req, res) => {
 exports.applyDealsToCart = async(req, res) => {
     return await cartService.applyDealsToCart(req.body, res);
 }
+
+exports.removeDealsFromCart = async(req, res) => {
+    return await cartService.removeDealsFromCart(req.body, res);
+}

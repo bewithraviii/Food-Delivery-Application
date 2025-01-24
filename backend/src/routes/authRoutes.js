@@ -47,6 +47,9 @@ router.post('/updateUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), auth
 router.post('/addToCart', authorizeRoles(Roles.USER), cartController.addToCart);
 router.post('/removeFromCart', authorizeRoles(Roles.USER), cartController.removeFromCart);
 router.post('/applyDealsToCart', authorizeRoles(Roles.USER), cartController.applyDealsToCart)
+router.post('/removeDealsFromCart', authorizeRoles(Roles.USER), cartController.removeDealsFromCart)
+
+
 
 // ADMIN
 router.post('/addCategory', authController.addCuisineCategory);

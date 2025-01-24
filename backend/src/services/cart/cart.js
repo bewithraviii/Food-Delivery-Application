@@ -1,4 +1,5 @@
 const Cart = require('../../models/cartModel');
+const Deals = require('../../models/dealsModel');
 const Restaurant = require('../../models/restaurantModel');
 const User = require('../../models/userModel');
 const cartStatus = require('../../utils/enums/cartStatus');
@@ -107,6 +108,9 @@ const addToCart = async (req, res) => {
             totalAmount = totalAmount + billDetail.amount;
         });
 
+        if(existingCart.couponApplied){
+            existingCart.couponApplied = null;
+        }
         await existingCart.save();
         return res.status(200).json({ 
             message: 'Cart updated successfully',
@@ -177,6 +181,9 @@ const removeFromCart = async(req, res) => {
                 totalAmount = totalAmount + billDetail.amount;
             });
 
+            if(existingCart.couponApplied){
+                existingCart.couponApplied = null;
+            }
             await existingCart.save();
             return res.status(200).json({ 
                 message: 'Cart updated successfully', 
@@ -190,18 +197,143 @@ const removeFromCart = async(req, res) => {
 }
 
 const applyDealsToCart = async(body, res) => {
-    if (!body || !body.userId) {
-        return res.status(400).json({ message: 'deal Id and cart Id is required' });
+    if (!body) {
+        return res.status(400).json({ message: 'Deal related data is required' });
     }
 
     try {
-    // body.dealId
-    // body.cartId
+        let restaurantDataPresent = false;
+        let totalAmount = 0;
+        let discountedPrice = 0;
+        const billDetails = [
+            { label: 'Item Total', amount: 0 },
+            { label: 'Delivery Fee', amount: 30 },
+            { label: 'Platform Fee', amount: 9 },
+            { label: 'GST and Restaurant Charges', amount: 0 },
+            { label: 'Item Discount', amount: 0},
+        ]
+        
+        const { dealId, cartId, restaurantId } = body;
+        
+        const deal = await Deals.findOne({ _id: dealId });
+        if(!deal) return res.status(400).json({ message: 'Deal not found' });
+
+        const existingCart = await Cart.findOne({ _id: cartId });
+        if(!existingCart) return res.status(400).json({ message: 'Cart not found' });
+
+        if(existingCart.cartItems.length > 0){
+            restaurantDataPresent = existingCart.cartItems.some(cartItem => {
+                return cartItem.restaurant.restaurantId.toString() === restaurantId.toString()
+            });
+        }
+
+        if(!restaurantDataPresent) {
+            return res.status(400).json({ message: 'Restaurant data not found in cart' });
+        }
+
+        existingCart.cartItems.forEach((cartDetail) => {
+            cartDetail.restaurant.orderItem.forEach((item) => {
+            const itemTotal = item.price * item.quantity;
+            const gst = itemTotal * 5 / 100;
+            const restaurantCharge = cartDetail.restaurant.restaurantCharges;
+            const gstOnPlatformFee = parseFloat((billDetails[2].amount * 18 / 100).toFixed(2));
+            billDetails[0].amount = billDetails[0].amount + itemTotal;
+            billDetails[3].amount = billDetails[3].amount + parseFloat((gst + restaurantCharge + gstOnPlatformFee).toFixed(2));
+            });
+        })
+
+        if(billDetails[0].amount > deal.minOrderValue) {
+            if(deal.discountType == 'PERCENT'){
+                discountedPrice = billDetails[0].amount * deal.discountPercent / 100;
+                if(deal.maxDiscount != 0 && discountedPrice >= deal.maxDiscount){
+                    discountedPrice = deal.maxDiscount;
+                }
+                billDetails[4].amount = billDetails[4].amount +  parseFloat((discountedPrice).toFixed(2));
+            } else {
+                discountedPrice = deal.maxDiscount;
+                billDetails[4].amount = billDetails[4].amount + parseFloat((discountedPrice).toFixed(2));
+            }
+        } else {
+            return res.status(200).json({ 
+                message: `Please add item value more than Rs.${deal.minOrderValue}`,
+                dealApplied: false
+            }); 
+        }
+
+        billDetails.forEach(billDetail => {
+            if(billDetail.label == 'Item Discount'){
+                totalAmount = totalAmount - billDetail.amount;
+            } else {
+                totalAmount = totalAmount + billDetail.amount;
+            }
+        });
+
+        existingCart.couponApplied = deal._id;
+        await existingCart.save();
+
+        return res.status(200).json({ 
+            message: 'Cart updated successfully', 
+            dealApplied: true,
+            discountedPrice: discountedPrice,
+            payload: {...existingCart._doc, billDetails, totalAmount}
+        });
+
     } catch(err) {
         console.log("Coupon application failed due to: ", err);
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 }
 
+const removeDealsFromCart = async(body, res) => { 
+    if (!body) {
+        return res.status(400).json({ message: 'Deal related data is required' });
+    }
 
-module.exports = { getCartData, addToCart, removeFromCart, applyDealsToCart }
+    try {
+        let totalAmount = 0;
+        const { userId } = body;
+        const billDetails = [
+            { label: 'Item Total', amount: 0 },
+            { label: 'Delivery Fee', amount: 30 },
+            { label: 'Platform Fee', amount: 9 },
+            { label: 'GST and Restaurant Charges', amount: 0 },
+        ]
+    
+        const existingCart = await Cart.findOne({ userId: userId});
+        if(!existingCart){
+            return res.status(400).json({ message: 'Cart not found' });
+        }
+
+        existingCart.cartItems.forEach((cartDetail) => {
+            cartDetail.restaurant.orderItem.forEach((item) => {
+            const itemTotal = item.price * item.quantity;
+            const gst = itemTotal * 5 / 100;
+            const restaurantCharge = cartDetail.restaurant.restaurantCharges;
+            const gstOnPlatformFee = +(billDetails[2].amount * 18 / 100).toFixed(2);
+            billDetails[0].amount = billDetails[0].amount + itemTotal;
+            billDetails[3].amount = billDetails[3].amount + +(gst + restaurantCharge + gstOnPlatformFee).toFixed(2);
+            });
+        })
+        billDetails.forEach(billDetail => {
+            totalAmount = totalAmount + billDetail.amount;
+        });
+
+            
+        if(existingCart.couponApplied){
+            existingCart.couponApplied = null;
+        }
+        await existingCart.save();
+    
+        return res.status(200).json({
+            message: 'Coupon successfully removed',
+            payload: {...existingCart._doc, billDetails, totalAmount}
+        });
+
+    } catch(err) {
+        console.log("Fetch cart failed due to: ", err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+
+
+module.exports = { getCartData, addToCart, removeFromCart, applyDealsToCart, removeDealsFromCart }

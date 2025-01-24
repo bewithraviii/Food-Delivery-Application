@@ -12,7 +12,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ccc;
     padding: 1rem;
     margin-bottom: 1rem;
     color: #FF7622;
@@ -102,4 +101,83 @@
     background: transparent;
     color: #FF956D;
     font-weight: 500;
+}
+
+
+.coupon-applied-dialog-header {
+    display: flex;
+    justify-content: center;
+}
+
+.coupon-applied-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.coupon-icon {
+    width: 50px;
+    height: 50px;
+}
+.icon-section {
+    margin-bottom: 10px;
+}
+
+.message-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    h3 {
+        font-size: 22px;
+        color: #FF7622;
+        font-weight: 500;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+
+    }
+}
+
+
+
+.savings-amount {
+    font-size: 35px;
+    color: #525C67;
+    margin: 0;
+}
+
+.savings-description {
+    font-size: 14px;
+    color: #525C67;
+    margin: 0;
+}
+  
+.divider {
+    width: 15%;
+    border-top: 2px solid #FF7622;
+    margin: 15px auto;
+    border-radius: 12px;
+    opacity: 1;
+}
+
+.message {
+    font-size: 14px;
+    color: #525C67;
+}
+
+.action-section {
+    width: 100%;
+    border-top: 1px solid #ccc;
+    justify-content: center;
+    display: flex;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+    .yay-btn {
+        width: fit-content;
+        background-color: transparent !important;
+        color: #FF7622;
+        font-weight: 500;
+    }
 }

@@ -243,6 +243,24 @@ mat-step button {
   border: 1px dotted !important;
 }
 
+.remove-coupon-container {
+  display: flex;
+  border: 1px dashed #FF8F60;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.remove-coupon-content {
+  display: flex; 
+  flex-direction: column;
+}
+
+.remove-coupon-btn {
+  color: #FF8F60 !important;
+  width: fit-content;
+}
+
 mat-stepper {
   transition: all 0.3s ease-in-out;
 }
@@ -302,4 +320,8 @@ mat-stepper {
         margin-top: 10px;
     }
   }
+}
+
+.billItemColor {
+  color: #FF8F60;
 }

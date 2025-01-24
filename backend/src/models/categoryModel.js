@@ -6,6 +6,7 @@ const categorySchema = new mongoose.Schema(
         restaurant: {
             type: [
                 { 
+                    _id: false,
                     restaurantId: {
                         type: mongoose.Schema.Types.ObjectId, 
                         ref: 'Restaurant'

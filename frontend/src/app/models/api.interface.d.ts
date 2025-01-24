@@ -104,3 +104,13 @@ export interface addToCartReqForm {
         }
     ]
 }
+
+export interface applyCouponReqForm {
+    restaurantId: string,
+    cartId: string,
+    dealId: string
+}
+
+export interface removeCouponReqForm {
+    userId: string
+}

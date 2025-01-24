@@ -102,13 +102,24 @@
                 </div>
               </div>
               <div class="coupon-section">
-                <button class="btn coupon-btn" (click)="applyCouponSection()">Apply Coupon</button>
+                <button class="btn coupon-btn" *ngIf="!discountApplied; else removeCoupon" (click)="applyCoupon()">Apply Coupon</button>
+                <ng-template #removeCoupon>
+                  <div class="remove-coupon-container">
+                    <div class="remove-coupon-content">
+                      <span style="font-size: 14px; color: #FF8F60">{{selectedDeal.code}}</span>
+                      <span style="font-size: 13px; color: #FF8F60">Offer applied on the bill</span>
+                    </div>
+                    <div>
+                      <button class="btn remove-coupon-btn" (click)="removeAppliedCoupon(selectedDeal)">{{ "Remove" | uppercase }}</button>
+                    </div>
+                  </div>
+                </ng-template>
               </div>
               <div class="bill-details">
                 <h6>{{"Bill Details" | uppercase}}</h6>
-                <div class="bill-item" *ngFor="let item of billDetails">
+                <div class="bill-item" *ngFor="let item of billDetails" [ngClass]="{'billItemColor': item.label == 'Item Discount'}">
                   <span>{{ item.label }}</span>
-                  <span>{{ '₹' + item.amount }}</span>
+                  <span><span *ngIf="item.label == 'Item Discount'">-</span>{{ '₹' + item.amount }}</span>
                 </div>
                 <mat-divider></mat-divider>
                 <div class="total">

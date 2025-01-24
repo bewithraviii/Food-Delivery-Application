@@ -29,6 +29,11 @@ const cartSchema = new mongoose.Schema({
             },
         }
     ],
+    couponApplied:  { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Deal',
+        default: null
+    },
     status: { type: String, enum: cartStatus, default: cartStatus.PENDING },
 });
 

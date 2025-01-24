@@ -14,10 +14,12 @@ export class CustomDealDialogPage implements OnInit {
   ) { }
 
   deals: any;
+  selectedDeal: any;
 
   ngOnInit() {
     if(this.data){
       this.deals = {...this.data.deals, showTerms: false};
+      this.selectedDeal = this.data.couponApplied ? this.deals : null;
     } else {
       this.deals = [];
     }
