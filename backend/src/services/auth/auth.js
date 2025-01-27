@@ -129,6 +129,8 @@ const getUserDetails = async(req, res) => {
                 email: user.email,
                 phoneNumber: user.phoneNumber,
                 address: user.address,
+                favorites: user.favorites,
+                cards: user.cards
             },
         });
     } catch (err) {
@@ -529,6 +531,40 @@ const getRestaurantDeal = async(req, res) => {
     }
 }
 
+const addToFavorite = async(body, res) => {
+    if(!body) {
+        return res.status(400).json({ message: 'Favorite processing data is required' });
+    }
+
+    try {
+        const { userId, restaurantId } = body;
+
+        const existingUser = await User.findOne({ _id: userId });
+        if (!existingUser) return res.status(400).json({ message: 'User not found, Please try again.' });
+
+        const restaurantsData = await Restaurant.findOne({ _id: restaurantId });
+        if(!restaurantsData) return res.status(400).json({ message: 'Restaurants not found, Please try again.' });
+
+        const alreadyAddedToFavorite = existingUser.favorites.find(fav => fav.restaurantId.toString() === restaurantId.toString());
+        if(alreadyAddedToFavorite){
+            existingUser.favorites = existingUser.favorites.filter(fav => fav.restaurantId.toString() !== restaurantId.toString());
+            await existingUser.save();
+            return res.status(200).json({ message: "Removed from favorite", payload: { isSaved: false }});
+        } else {
+            existingUser.favorites.push({
+                restaurantId: restaurantId
+            });
+            await existingUser.save();
+            return res.status(200).json({ message: "Added to favorite", payload: { isSaved: true}});
+        }
+
+    } catch(error) {
+        return res.status(400).json({ message: error.message });
+    }
+}
+
+
+
 
 // const hashPassword = async (password) => {
 //     const salt = await bcrypt.genSalt(10);
@@ -557,4 +593,5 @@ module.exports = {
     addCuisineCategory,
     addNewDeal,
     getRestaurantDeal,
+    addToFavorite
 }

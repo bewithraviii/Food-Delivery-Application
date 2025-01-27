@@ -1,8 +1,8 @@
 import { Element } from '@angular/compiler';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
-import { addToCartReqForm } from 'src/app/models/api.interface';
+import { LoadingController, ToastController } from '@ionic/angular';
+import { addToCartReqForm, addToFavorite } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
@@ -70,6 +70,7 @@ export class RestaurantPage implements OnInit {
       ]
     },
   ];
+  isFavorite: boolean = false;
   userId: any = '';
 
   constructor(
@@ -80,6 +81,7 @@ export class RestaurantPage implements OnInit {
     private dialogService: DialogService,
     private toastController: ToastController,
     private notificationService: NotificationService,
+    private loadingController: LoadingController,
     private router: Router
   ) { }
 
@@ -97,7 +99,7 @@ export class RestaurantPage implements OnInit {
       this.authService.logout();
     }
     this.userId = user;
-
+    this.validateIsFavorite();
   }
 
   ngAfterViewInit() {
@@ -240,6 +242,55 @@ export class RestaurantPage implements OnInit {
       ]
     });
     toast.present();
+  }
+
+  async presentLoader(message?: string) {
+    const loader = await this.loadingController.create({
+      message: message,
+      spinner: 'lines',
+      backdropDismiss: false,
+    });
+    await loader.present();
+  }
+  
+  async dismissLoader() {
+    await this.loadingController.dismiss();
+  }
+
+  async addToFavorite(restaurantId: string) {
+    await this.presentLoader("Loading...");
+    const requestPayload: addToFavorite = {
+      userId: this.userId,
+      restaurantId: restaurantId
+    }
+    this.apiService.addToFavorite(requestPayload).subscribe(
+      (data: any) => {
+        if (data && data.payload) {
+          this.isFavorite = data.payload.isSaved;
+          this.notificationService.notifyUser("successSnack", data.message);
+        }
+        this.dismissLoader();
+      },
+      (error: any) => {
+        console.error(error);
+        this.dismissLoader();
+        this.notificationService.notifyUser("errorSnack", error.error.message || 'Add or Remove from favorite is failed.');
+      }
+    );
+  }
+
+  validateIsFavorite() {
+    this.apiService.getUserDetails().subscribe(
+      (data: any) => {
+        if (data && data.payload.favorites.length > 0) {
+          const checkFavorites = data.payload.favorites.find((fav: any) => fav.restaurantId.toString() === this.restaurantId.toString());
+          this.isFavorite = !!checkFavorites;
+        }
+      },
+      (error: any) => {
+        this.notificationService.notifyUser("errorSnack", error.error.message || 'Users Favorite not found');
+      }
+    );
   }
 
 }

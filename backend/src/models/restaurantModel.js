@@ -8,7 +8,18 @@ const restaurantSchema = new mongoose.Schema(
       address: { type: String, required: true },
       contactNumber: { type: String, default: null },
       email: { type: String, required: true },
-      cuisineType: { type: String, required: true },
+      cuisineType: {
+        type: [
+          {
+            _id: false,
+            categoryId: { 
+              type: mongoose.Schema.Types.ObjectId, 
+              ref: 'Category',
+            },
+            categoryName: { type: String }
+          }
+        ], default: null
+      },
       website: { type: String, required: true },
       restaurantRatings: { type: Number, default: 0 },
       restaurantRatingsCount: { type: Number, default: 0 },

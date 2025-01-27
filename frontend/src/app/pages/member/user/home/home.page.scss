@@ -146,6 +146,7 @@ h4, h5, ion-card-title, .restaurant-details span {
     border-radius: 12px;
     height: fit-content;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
   
 /* Scroll Button Styling */
@@ -304,4 +305,20 @@ h4, h5, ion-card-title, .restaurant-details span {
     display: flex;
     align-items: center;
 
+}
+
+
+.selected-category {
+    background-color: #FC6E2A;
+}
+  
+.selected-category ion-card-title {
+    color: white;
+}
+
+.noRestaurantFound {
+    font-size: 0.85rem;
+    color: #555;
+    margin: 0;
+    padding: 1rem;
 }

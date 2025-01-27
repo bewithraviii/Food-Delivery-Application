@@ -85,3 +85,7 @@ exports.addNewDeal = async(req, res) => {
 exports.getRestaurantDeal = async(req, res) => {
     return await authService.getRestaurantDeal(req, res);
 }
+
+exports.addToFavorite = async(req, res) => {
+    return await authService.addToFavorite(req.body, res);
+}

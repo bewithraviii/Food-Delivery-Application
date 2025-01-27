@@ -24,22 +24,9 @@ export class HomePage implements OnInit {
   visibleCardsCount = 1;
   detectedAddress: string = ''; 
   selectedAddress: any;
-
-  categories = [
-    {name: 'Pizza', image: 'assets/images/pizza.jfif'},
-    {name: 'Burger', image: 'assets/images/burger.jfif'},
-    {name: 'Rolls', image: 'assets/images/rolls.jfif'},
-    {name: 'Salads', image: 'assets/images/salads.jfif'},
-    {name: 'Coffee', image: 'assets/images/coffee.jfif'},
-    {name: 'Shakes', image: 'assets/images/shakes.jfif'},
-    {name: 'Chinese', image: 'assets/images/chinese.jfif'},
-    {name: 'North Indian', image: 'assets/images/north-indian.jfif'},
-    {name: 'South Indian', image: 'assets/images/south-indian.jfif'},
-    {name: 'Sandwhich', image: 'assets/images/sandwhich.jfif'},
-    {name: 'Tea', image: 'assets/images/tea.jfif'},
-    {name: 'Cake', image: 'assets/images/cake.jfif'},
-  ]
-
+  selectedCategory: string = '';
+  categories: any[] = []
+  filteredRestaurants: any[] = [];
   restaurants: any[] = [];
   user: any = {
     name: '...',
@@ -62,6 +49,7 @@ export class HomePage implements OnInit {
   async ngOnInit() {
     await this.getUserData();
     await this.getRestaurantData();
+    await this.getCategories();
     this.setGreeting();
   }
 
@@ -288,6 +276,7 @@ export class HomePage implements OnInit {
               }
             );
           });
+          this.filteredRestaurants = [...this.restaurants];
         }
       }
     );
@@ -295,6 +284,50 @@ export class HomePage implements OnInit {
 
   async restaurantDetails(restaurantId: string){
     this.router.navigate(["/user-dashboard/restaurant", restaurantId]);
+  }
+
+  async getCategories() {
+    this.apiService.getAllCategories().subscribe(
+      (data: any) => {
+        const categoryImageMap: { [key: string]: string } = {
+          'Pizza': 'assets/images/pizza.jfif',
+          'Burger': 'assets/images/burger.jfif',
+          'Rolls': 'assets/images/rolls.jfif',
+          'Salads': 'assets/images/salads.jfif',
+          'Coffee': 'assets/images/coffee.jfif',
+          'Shakes': 'assets/images/shakes.jfif',
+          'Chinese': 'assets/images/chinese.jfif',
+          'North Indian': 'assets/images/north-indian.jfif',
+          'South Indian': 'assets/images/south-indian.jfif',
+          'Sandwhich': 'assets/images/sandwhich.jfif',
+          'Tea': 'assets/images/tea.jfif',
+          'Cake': 'assets/images/cake.jfif'
+        };
+
+        data.payload.forEach((categoryName: string) => {
+          const imagePath = categoryImageMap[categoryName]
+          this.categories.push({ name: categoryName, image: imagePath });
+        });
+      },
+      (error: any) => {
+        console.error(error.error.message);
+      }
+    );
+  }
+
+  async applyCategory(category: any) {
+    console.log(this.restaurants);
+    if (this.selectedCategory === category.name) {
+      this.selectedCategory = '';
+      this.filteredRestaurants = [...this.restaurants];
+    } else {
+      this.selectedCategory = category.name;
+      this.filteredRestaurants = this.restaurants.filter(restaurant =>
+        restaurant.cuisine?.some((cuisine: any) => 
+          cuisine?.categoryName?.toLowerCase() == this.selectedCategory.toLowerCase()
+        )
+      );
+    }
   }
 
 }

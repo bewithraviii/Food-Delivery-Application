@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { addNewAddressRequest, addToCartReqForm, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm, addToFavorite, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -82,6 +82,9 @@ export class ApiService {
   getAllRestaurantDetails(): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/fetchRestaurantDetails`);
   }
+  getAllCategories(): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getAllCuisineCategoryName`);
+  }
 
 
   // Profile-Page
@@ -102,6 +105,9 @@ export class ApiService {
   getRestaurantDetails(reqPayload: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getRestaurantDetails/${reqPayload}`);
   }
+  addToFavorite(reqPayload: addToFavorite): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/addToFavorite`, reqPayload);
+  }
   
   // Cart-Page
   addToCart(reqPayload: addToCartReqForm): Observable<any> {
@@ -116,11 +122,9 @@ export class ApiService {
   getRestaurantDeals(reqPayload: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getDealsForRestaurant/${reqPayload}`);
   }
-  
   applyCoupon(reqPayload: applyCouponReqForm): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/applyDealsToCart`, reqPayload);
   }
-
   removeCoupon(reqPayload: removeCouponReqForm): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/removeDealsFromCart`, reqPayload);
   }

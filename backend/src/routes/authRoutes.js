@@ -43,6 +43,8 @@ router.post('/updateUserProfileData', authorizeRoles(Roles.USER, Roles.VENDOR), 
 router.post('/addNewUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), authController.addNewUserAddress);
 router.post('/deleteUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), authController.deleteUserAddress);
 router.post('/updateUserAddress', authorizeRoles(Roles.USER, Roles.VENDOR), authController.updateUserAddress);
+// Restaurant
+router.post('/addToFavorite', authorizeRoles(Roles.USER), authController.addToFavorite);
 // Cart
 router.post('/addToCart', authorizeRoles(Roles.USER), cartController.addToCart);
 router.post('/removeFromCart', authorizeRoles(Roles.USER), cartController.removeFromCart);

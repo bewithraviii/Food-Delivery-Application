@@ -114,3 +114,8 @@ export interface applyCouponReqForm {
 export interface removeCouponReqForm {
     userId: string
 }
+
+export interface addToFavorite {
+    restaurantId: string,
+    userId: string,
+}

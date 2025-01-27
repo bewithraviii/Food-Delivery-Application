@@ -23,9 +23,15 @@
 
   
 .restaurant-title {
+    display: flex;
+    justify-content: space-between;
     font-size: 20px;
     font-weight: bold;
     color: #555;
+
+    h1 {
+        margin: 0;
+    }
 }
 
 .restaurant-info {
@@ -495,4 +501,31 @@ ion-delegate-host.popover-viewport {
     // .social-links li a {
     //   font-size: 16px;
     // }
+}
+
+
+.favorite-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #FF7622;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    background: aliceblue;
+    border-radius: 50%;
+    padding: 0.3rem;
+    background-color: #FFEDE6;
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+  
+// .favorite-button:hover {
+//     color: #FFC6AE;
+// }
+  
+.favorite-button mat-icon {
+    font-size: 24px;
 }

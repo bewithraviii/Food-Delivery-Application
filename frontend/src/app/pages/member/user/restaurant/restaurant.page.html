@@ -5,6 +5,11 @@
       <div class="restaurant">
         <div class="restaurant-title">
           <h1>{{ restaurantDetails.name }}</h1>
+          <div>
+            <button (click)="addToFavorite(restaurantId)" class="favorite-button">
+              <mat-icon class="favorite-icon">{{ isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
+          </div>
         </div>
         <div class="restaurant-info">
           <div class="restaurant-address col-md-6">
@@ -25,8 +30,8 @@
           </div>
         </div>
         <div class="restaurant-cuisine">
-          <div>{{"Cuisine" | uppercase}}<span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> 
-            <span>{{ restaurantDetails.cuisineType }}</span>
+          <div>{{"Cuisine" | uppercase}}: 
+            <span *ngFor="let cuisine of restaurantDetails.cuisineType; let i = index; let last = last">{{ cuisine.categoryName }} <span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> </span>
           </div>
           <div class="averageCostCorner">
             ₹{{ restaurantDetails.averageCost || 800 }} for two

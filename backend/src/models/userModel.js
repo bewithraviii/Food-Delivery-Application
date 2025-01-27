@@ -22,6 +22,17 @@ const userSchema = new mongoose.Schema(
                 cvc: { type: String}
             }
         ],
+        favorites: {
+            type: [
+                {
+                    _id: false,
+                    restaurantId: {
+                        type: mongoose.Schema.Types.ObjectId, 
+                        ref: 'Restaurant'
+                    }
+                }
+            ], default: [],
+        },
         phoneNumber: { type: Number, required: true },
     },
     { timestamps: true }
