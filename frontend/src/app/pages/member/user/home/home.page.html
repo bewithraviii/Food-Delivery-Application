@@ -114,11 +114,19 @@
           <div class="restaurants-section">
             <div class="restaurant-heading p-2 bd-highlight">
               <h5>{{"Restaurants" | uppercase}}</h5>
+              <!-- <div>
+                <button (click)="applyFavorite(true)">Favorite</button>
+              </div> -->
             </div>
             <div *ngIf="filteredRestaurants.length > 0; else noRestaurantDataFound">
               <div class="restaurant-cards">
                 <ion-card *ngFor="let restaurant of filteredRestaurants" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
-                  <ion-img [src]="restaurant.image"></ion-img>
+                  <div class="image-container">
+                    <ion-img [src]="restaurant.image"></ion-img>
+                    <div *ngIf="restaurant.favorite" class="favorite-icon-main">
+                      <ion-icon class="favorite-icon" name="heart"></ion-icon>
+                    </div>
+                  </div>
                   <ion-card-header>
                     <div class="restaurant-details-row">
                       <div>
@@ -154,7 +162,9 @@
               </div>
             </div>
             <ng-template #noRestaurantDataFound>
-              <h4 style="font-size: 0.85rem; color: #555;" class="noRestaurantFound">No restaurant found</h4>
+              <div style="background-color: #F6F8FA; border-radius: 12px;">
+                <h4 style="font-size: 0.85rem; color: #555;" class="noRestaurantFound">No restaurant found</h4>
+              </div>
             </ng-template>
           </div>
         </div>

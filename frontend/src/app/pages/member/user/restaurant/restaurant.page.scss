@@ -389,6 +389,8 @@ ion-delegate-host.popover-viewport {
     color: black;
     padding: 20px;
     text-align: center;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
 }
   
 .footer-content {
@@ -465,6 +467,16 @@ ion-delegate-host.popover-viewport {
     .footer-section {
       margin-bottom: 20px;
       width: 100%;
+    }
+
+    .search-details-main {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-field {
+        width: 100%;
     }
   
     // .footer-section h3 {

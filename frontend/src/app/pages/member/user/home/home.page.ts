@@ -34,6 +34,7 @@ export class HomePage implements OnInit {
     email: '...',
     id: ''
   };
+  favoriteList: any[] = [];
   savedAddresses: { name: string, details: string, type: string }[] = [];
 
   constructor(
@@ -251,6 +252,7 @@ export class HomePage implements OnInit {
         });
         this.selectedAddress = this.savedAddresses[0] || { name: '', details: 'Please Select Address', type: '' };
         this.addressExtractionService.setAddresses([this.selectedAddress]);
+        this.favoriteList = data.favorites;
       }
     });
   }
@@ -262,6 +264,7 @@ export class HomePage implements OnInit {
         if(data) {
           data.forEach((details: any) => {
             const extractedAddress = this.addressExtractionService.extractAddressDetails(details.address);
+            const isFavorite = this.favoriteList.some((favorite: any) => favorite.restaurantId === details.id);
             this.restaurants.push(
               { 
                 id: details.id,
@@ -273,6 +276,7 @@ export class HomePage implements OnInit {
                 cuisine: details.cuisineType,
                 address: extractedAddress,
                 distance: '0.8',
+                favorite: isFavorite
               }
             );
           });
@@ -315,8 +319,14 @@ export class HomePage implements OnInit {
     );
   }
 
+  async applyFavorite(favorite: boolean) {
+    await this.presentLoader();
+    this.filteredRestaurants = this.filteredRestaurants.filter((restaurants: any) => restaurants.favorite == favorite);
+    this.dismissLoader();
+  }
+
   async applyCategory(category: any) {
-    console.log(this.restaurants);
+    await this.presentLoader();
     if (this.selectedCategory === category.name) {
       this.selectedCategory = '';
       this.filteredRestaurants = [...this.restaurants];
@@ -328,6 +338,7 @@ export class HomePage implements OnInit {
         )
       );
     }
+    this.dismissLoader();
   }
 
 }

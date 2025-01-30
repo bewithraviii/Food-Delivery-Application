@@ -34,8 +34,17 @@ const addRestaurantMenu = async (data, res) => {
             data.items.forEach(item => {
                 menuCategoryDetails.items.push(item);
             });
+
+
             
             existingRestaurant.menu.push(menuCategoryDetails);
+            
+            if (!existingRestaurant.cuisineType.some(cuisineType => cuisineType.categoryId == data.categoryId)) {
+                existingRestaurant.cuisineType.push({
+                    categoryId: data.categoryId,
+                    categoryName: data.categoryName,
+                });
+            }
             
             await existingRestaurant.save();
             return res.status(200).json({ message: 'Restaurant menu added successfully!' });    
@@ -86,13 +95,15 @@ const removeItemFromRestaurantMenu = async (data, res) => {
         const existingRestaurant = await Restaurant.findOne({ _id: data.restaurantId });
         if(!existingRestaurant) return res.status(400).json({ message: 'Restaurant not found please try again.' });
 
-        const selectedMenu = existingRestaurant.menu.find(menu => menu.subCategoryName === data.subCategoryName);
+        const selectedMenu = existingRestaurant.menu.find(menu => menu.subCategoryName.toLowerCase() === data.subCategoryName.toLowerCase());
         if(!selectedMenu) return res.status(400).json({ message: 'Restaurant menu with this Sub Category not found.' });
 
         selectedMenu.items = selectedMenu.items.filter(item => item.itemId !== data.itemId);
 
         if(selectedMenu.items.length == 0){
-            existingRestaurant.menu = existingRestaurant.menu.filter(menu => menu.subCategoryName !== data.subCategoryName);
+            console.log(existingRestaurant.cuisineType, selectedMenu.categoryId);
+            existingRestaurant.cuisineType = existingRestaurant.cuisineType.filter(cuisine => !cuisine.categoryId.equals(selectedMenu.categoryId));
+            existingRestaurant.menu = existingRestaurant.menu.filter(menu => menu.subCategoryName.toLowerCase() !== data.subCategoryName.toLowerCase());
         }
 
         const updatedRestaurantData = await existingRestaurant.save();

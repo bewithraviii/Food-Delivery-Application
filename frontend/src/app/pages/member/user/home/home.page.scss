@@ -322,3 +322,25 @@ h4, h5, ion-card-title, .restaurant-details span {
     margin: 0;
     padding: 1rem;
 }
+
+.image-container {
+    position: relative;
+}
+  
+.favorite-icon-main {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    z-index: 10;
+    font-size: 1.5rem; 
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #FFEDE6;
+    border-radius: 50%;
+    padding: 0.2rem;
+    .favorite-icon {
+        color: #FC6E2A;
+        box-shadow: rgba(28, 28, 28, 0.08) 0px 2px 8px;
+    }
+}
