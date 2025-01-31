@@ -60,3 +60,72 @@ ion-tab-bar {
 //   display: grid;
 //   grid-template-columns: repeat(4, 1fr);
 // }
+
+
+ion-toolbar {
+  --background: #FFFFFF;
+  --color: #32343E; 
+}
+
+ion-button.active {
+  color: #FF7622 !important;
+}
+
+.headerPadding {
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+.iconButton {
+  justify-content: center; 
+  align-items: center; 
+  display: flex;
+  padding: 0.5rem;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.iconAndText {
+  justify-content: center; 
+  align-items: center; 
+  display: flex;
+  font-size: 1.4rem;
+  padding-right: 0.5rem;  
+}
+
+.deliveryAddressCenter {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.underlineAddressType {
+  color: #FC6E2A;
+  font-size: 16px;
+  border-bottom: 2px solid;
+  margin-right: 1rem;
+}
+
+.addressFont {
+  color: #676767;
+  font-size: 16px;
+}
+
+::ng-deep .mat-badge-content {
+  top: -2px ;
+  right: -4px ;
+  width: 1rem ;
+  height: 1rem ;
+  justify-content: center ;
+  align-items: center ;
+  display: flex ;
+  background-color: #FC6E2A;
+}
+
+// ::ng-deep .mat-badge-hidden .mat-badge-content{
+//     display: none;
+// }

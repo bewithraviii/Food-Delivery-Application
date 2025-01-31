@@ -8,6 +8,8 @@ import { Validators } from '@angular/forms';
 import { addNewAddressRequest, deleteAddressRequest, editAddressRequest, updateUserProfileRequest } from 'src/app/models/api.interface';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
+import { Router } from '@angular/router';
+import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
 
 @Component({
   selector: 'app-profile',
@@ -48,6 +50,7 @@ export class ProfilePage implements OnInit {
     }
   ];
   settingList: any = [];
+  restaurant: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -55,26 +58,66 @@ export class ProfilePage implements OnInit {
     private loadingController: LoadingController,
     private matDialog: MatDialog,
     private dialogService: DialogService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router,
+    private addressExtractionService: AddressExtractionService,
   ) { }
 
   async ngOnInit() {
     await this.presentLoader('Loading Profile...');
-    this.apiService.getUserDetails().subscribe((fetchedData: any) => {
-        const data = fetchedData.payload;
-        if(data){
-          this.user.id = data.id,
-          this.user.name = data.name;
-          this.user.phoneNumber = data.phoneNumber;
-          this.user.email = data.email;
-          data.address.forEach((address: any) => {
-            this.addresses.push(address);
-          });
-        }
-    });
-
     this.checkScreenSize();
+    await this.populateRestaurantData();
+    await this.populateUserData();
     await this.dismissLoader();
+  }
+
+  async populateRestaurantData() {
+    this.apiService.getAllRestaurantDetails().subscribe(
+      (response: any) => { 
+        if(response) {
+          response.payload.forEach((details: any) => {    
+            const extractedAddress = this.addressExtractionService.extractAddressDetails(details.address);        
+            this.restaurant.push(
+              { 
+                id: details.id,
+                name: details.name,  
+                image: 'assets/images/restaurant-interior.jpg', 
+                rating: '4.7', 
+                deliveryTime: '20', 
+                priceForTwo: '800',
+                cuisine: details.cuisineType,
+                address: extractedAddress,
+                distance: '0.8',
+              }
+            );
+          });
+        } 
+      },
+      (error: any) => { console.log(error.error.message) }, 
+    )
+  }
+
+  async populateUserData() {
+    this.apiService.getUserDetails().subscribe((fetchedData: any) => {
+      const data = fetchedData.payload;
+      if(data){
+        this.user.id = data.id,
+        this.user.name = data.name;
+        this.user.phoneNumber = data.phoneNumber;
+        this.user.email = data.email;
+        data.address.forEach((address: any) => {
+          this.addresses.push(address);
+        });
+        if(data.favorites.length > 0){
+          data.favorites.forEach((fav: any) => {
+            const restaurant = this.restaurant.find((restaurant: any) => restaurant.id === fav.restaurantId);
+            if(restaurant) {
+              this.favList.push(restaurant);
+            }
+          })
+        }
+      }
+    });
   }
 
   @HostListener('window:resize', [])
@@ -275,6 +318,10 @@ export class ProfilePage implements OnInit {
   
   async dismissLoader() {
     await this.loadingController.dismiss();
+  }
+
+  async restaurantDetails(restaurantId: string){
+    this.router.navigate(["/user-dashboard/restaurant", restaurantId]);
   }
 
 }

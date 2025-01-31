@@ -254,7 +254,8 @@
     }
 }
   
-.manage-address {
+.manage-address,
+.manage-address-mobile {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -268,7 +269,8 @@
     } 
 }
 
-.manage-payments {
+.manage-payments,
+.manage-payments-mobile {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -304,4 +306,64 @@
 .manage-address, 
 .manage-orders {
     color: #FC6E2A;
+}
+
+.favorite-cards {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    ion-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .restaurant-details-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .restaurant-details {
+        display: flex;
+        align-items: center;
+        span {
+            color: #32343E;
+        }
+        ion-icon {
+            font-size: 13px;
+            color: white;
+        }
+        span {
+            margin-left: 6px;
+            font-size: 14px;
+            color: #32343E;
+        }
+
+        .rating-design {
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            padding-left: 0.2rem;
+            background-color: #FC6E2A;
+            border-radius: 10px;
+            color: white;
+            padding-right: 0.2rem;
+        }
+    }
+
+}
+
+@media screen and (max-width: 1024px) {
+    .favorite-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+
+@media screen and (max-width: 576px) {
+    .favorite-cards {
+        grid-template-columns: 1fr !important;
+    }
 }

@@ -1,13 +1,18 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>search</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="search-page" style="padding-top: 2rem;">
+  <div class="container">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">search</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+    <!-- Search Section -->
+    <div class="row padding">
+      <div class="col-md-12 search-menu-main">
+        <div class="search-menu">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search for restaurants</mat-label>
+            <input matInput/>
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

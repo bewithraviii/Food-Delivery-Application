@@ -1,0 +1,26 @@
+.container {
+    background-color: #FFFFFF !important;
+    height: 100%;
+    color: #181C2E;
+}
+
+.padding {
+    padding: 1rem;
+}
+
+.search-page {
+    background-color: #FFFFFF;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-menu {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}  
+
+.search-field {
+    width: 100%;
+}

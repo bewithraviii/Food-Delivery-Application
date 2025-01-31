@@ -5,14 +5,77 @@
 
 
     <!-- Navbar for Desktop -->
-    <app-navbar *ngIf="!isMobileView"></app-navbar>
+    <!-- <app-navbar *ngIf="!isMobileView"></app-navbar> -->
+    <ion-header *ngIf="!isMobileView">
+        <div class="container">
+          <ion-toolbar>
+            <!-- <ion-buttons slot="start">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons> -->
+            
+            <ion-title slot="start">
+              <div style="display: flex !important;">
+                <ion-img
+                  style="width: 5rem;height: 3rem; margin-right: 2rem;"
+                  [src]=logo
+                  alt="logo"
+                ></ion-img>
+              </div>
+            </ion-title>
+            
+        
+            <ion-buttons slot="end">
+              <ion-button routerLink="/user-dashboard/home" routerLinkActive="active">
+                <div class="iconButton">
+                  <div class="iconAndText">
+                    <ion-icon name="home-outline"></ion-icon>
+                  </div>
+                  <div style="font-size: 17px;">
+                    Home
+                  </div>
+                </div>
+              </ion-button>
+              <ion-button routerLink="/user-dashboard/search" routerLinkActive="active">
+                <div class="iconButton">
+                  <div class="iconAndText">
+                    <ion-icon name="search-outline"></ion-icon>
+                  </div>
+                  <div style="font-size: 17px;">
+                    Search
+                  </div>
+                </div>
+              </ion-button>
+              <ion-button routerLink="/user-dashboard/profile" routerLinkActive="active">
+                <div class="iconButton">
+                  <div class="iconAndText">
+                    <ion-icon name="person-outline"></ion-icon>
+                  </div>
+                  <div style="font-size: 17px;">
+                    User
+                  </div>
+                </div>
+              </ion-button>
+              <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems" matBadgeSize="small" matBadgePosition="below after" [matBadgeHidden]="hidden">
+                <div class="iconButton">
+                  <div class="iconAndText">
+                    <ion-icon name="cart-outline"></ion-icon>
+                  </div>
+                  <div style="font-size: 17px;">
+                    Cart
+                  </div>
+                </div>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </div>
+    </ion-header>
 
     <!-- Main Content -->
     <router-outlet></router-outlet>
+</ion-content>
   
     <!-- Tabs for Mobile -->
     <!-- <app-tabs *ngIf="isMobileView"></app-tabs> -->
 
-</ion-content>
 
 
