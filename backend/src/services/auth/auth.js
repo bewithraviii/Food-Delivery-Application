@@ -172,7 +172,9 @@ const getAllRestaurantDetails = async(req, res) => {
                 cuisineType: restaurant.cuisineType,
                 website: restaurant.website,
                 menu: restaurant.menu,
-                id: restaurant._id
+                id: restaurant._id,
+                ratings: restaurant.restaurantRatings,
+                priceForTwo: restaurant.priceForTwo
             });
         });
 

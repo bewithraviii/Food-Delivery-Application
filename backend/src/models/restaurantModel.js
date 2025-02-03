@@ -8,6 +8,7 @@ const restaurantSchema = new mongoose.Schema(
       address: { type: String, required: true },
       contactNumber: { type: String, default: null },
       email: { type: String, required: true },
+      priceForTwo: { type: Number, default: 400 },
       cuisineType: {
         type: [
           {

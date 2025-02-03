@@ -128,4 +128,9 @@ export class ApiService {
   removeCoupon(reqPayload: removeCouponReqForm): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/removeDealsFromCart`, reqPayload);
   }
+
+  // Search Page
+  searchRestaurants(query: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/searchRestaurant?query=${encodeURIComponent(query)}`);
+  }
 }

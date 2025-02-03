@@ -4,12 +4,67 @@
     <!-- Search Section -->
     <div class="row padding">
       <div class="col-md-12 search-menu-main">
+        <h4 style="color: #1E1D1D; padding-bottom: 0.5rem;">Search for restaurants and cuisine</h4>
         <div class="search-menu">
           <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search for restaurants</mat-label>
-            <input matInput/>
-            <mat-icon matSuffix>search</mat-icon>
+            <mat-label>What would you like to eat?</mat-label>
+            <input matInput [(ngModel)]="searchQuery" (keyup.enter)="search()"/>
+            <mat-icon matSuffix (click)="search()" style="cursor: pointer;">search</mat-icon>
           </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display search results -->
+    <div class="row padding">
+      <div class="col-md-12">
+        <div *ngIf="!dataProcessing">
+          <div *ngIf="restaurants.length > 0">
+            <div class="manage-search">
+              <h4 style="color: #1E1D1D;">{{"Your Result" | uppercase}}</h4>
+            </div>
+            <div class="manage-search">
+              <div class="search-cards">
+                <ion-card *ngFor="let restaurant of restaurants" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
+                  <div class="image-container">
+                    <ion-img src="assets/images/restaurant-interior.jpg"></ion-img>
+                    <div *ngIf="restaurant.favorite" class="favorite-icon-main">
+                      <ion-icon class="favorite-icon" name="heart"></ion-icon>
+                    </div>
+                  </div>
+                  <ion-card-header>
+                    <div class="search-details-row">
+                      <div>
+                        <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
+                      </div>
+                      <div class="search-details">
+                        <div class="search-design">
+                          {{ restaurant.restaurantRatings }} <ion-icon name="star"></ion-icon>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="search-details-row">
+                      <div style="display: flex;">
+                        <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisineType; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
+                      </div>
+                      <div>
+                        <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
+                      </div>
+                    </div>
+                    <div class="search-details-row">
+                      <div class="col-md-7">
+                        <ion-card-subtitle style="font-size: 12px;">{{restaurant.address.landmark}}, {{restaurant.address.city}}</ion-card-subtitle>
+                      </div>
+                    </div>
+                  </ion-card-header>
+                </ion-card>
+              </div>
+            </div>
+            <p *ngIf="restaurants.length === 0 && searchQuery">No restaurants found.</p>
+          </div>
+        </div>
+        <div style="justify-content: center; display: flex;" *ngIf="dataProcessing">
+          <ion-spinner name="dots" style="color: #FB6D3A !important;"></ion-spinner>
         </div>
       </div>
     </div>

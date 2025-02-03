@@ -1,6 +1,7 @@
 const express = require('express');
 const authController = require('../controllers/auth');
 const cartController = require('../controllers/cart');
+const searchController = require('../controllers/search');
 const vendorController = require('../controllers/vendor');
 const router = express.Router();
 const { authorizeRoles } = require('../middleware/auth');
@@ -22,6 +23,8 @@ router.get('/getCuisineCategoryRestaurantDetails', authController.getCuisineCate
 router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.getUserCart);
 // Deals
 router.get('/getDealsForRestaurant/:id', authController.getRestaurantDeal);
+// Search
+router.get('/searchRestaurant', authorizeRoles(Roles.USER), searchController.searchRestaurant);
 
 
 
