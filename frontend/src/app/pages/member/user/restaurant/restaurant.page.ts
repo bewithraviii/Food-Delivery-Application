@@ -24,52 +24,7 @@ export class RestaurantPage implements OnInit {
   restaurantDetails: any = {};
   searchQuery: string = '';
   filteredMenu: any[] = [];
-  offersAndDeals: any[] = [
-    {
-      code: "STEALDEAL",
-      title: '60% Off Upto ₹120', 
-      description: 'Use code STEALDEAL & get 60% off on orders above ₹189. Maximum discount: ₹120.', 
-      termsAndCondition: [
-        { terms: 'Offer is valid only on select restaurants' },
-        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { terms: 'Other T&Cs may apply' },
-        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
-      ]
-    },
-    {
-      code: "FLATDEAL",
-      title: 'Get Flat Rs.125 off', 
-      description: 'Use code FLATDEAL & get FLAT ₹125 Off on orders above ₹399', 
-      termsAndCondition: [
-        { terms: 'Offer is valid only on select restaurants' },
-        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { terms: 'Other T&Cs may apply' },
-        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
-      ]
-    },
-    {
-      code: "FLAT150",
-      title: 'Get Flat Rs. 150 off', 
-      description: 'Use code FLAT150 & get flat ₹150 off orders above ₹549.', 
-      termsAndCondition: [
-        { terms: 'Offer is valid only on select restaurants' },
-        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { terms: 'Other T&Cs may apply' },
-        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
-      ]
-    },
-    {
-      code: "STEALDEAL",
-      title: '60% Off Upto ₹120', 
-      description: 'Use code STEALDEAL & get 60% off on orders above ₹189. Maximum discount: ₹120.', 
-      termsAndCondition: [
-        { terms: 'Offer is valid only on select restaurants' },
-        { terms: 'Coupon code can be applied only once in 2 hrs on this restaurant' },
-        { terms: 'Other T&Cs may apply' },
-        { terms: 'Offer valid till Dec 31, 2025 11:59 PM' },
-      ]
-    },
-  ];
+  offersAndDeals: any[] = [];
   isFavorite: boolean = false;
   userId: any = '';
 
@@ -85,7 +40,7 @@ export class RestaurantPage implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.route.params.subscribe(params => {
       this.restaurantId = params['id'];
     });
@@ -100,6 +55,7 @@ export class RestaurantPage implements OnInit {
     }
     this.userId = user;
     this.validateIsFavorite();
+    this.offersAndDeals = await this.getRestaurantDeals();
   }
 
   ngAfterViewInit() {
@@ -228,7 +184,7 @@ export class RestaurantPage implements OnInit {
   async addedToCartNotify(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 50000,
+      duration: 5000,
       position: 'bottom',
       cssClass: 'custom-cart-notification',
       buttons: [
@@ -291,6 +247,22 @@ export class RestaurantPage implements OnInit {
         this.notificationService.notifyUser("errorSnack", error.error.message || 'Users Favorite not found');
       }
     );
+  }
+
+  async getRestaurantDeals(): Promise<any[]> {
+    try {
+      let responseDealData: any[] = [];
+      const restaurantId = this.restaurantId;
+      const response = await this.apiService.getRestaurantDeals(restaurantId).toPromise();
+      if(response && response.payload) {
+          responseDealData = response.payload;
+      }
+      return responseDealData;
+
+    } catch (error: any) {
+      console.log(error.message || "Something went wrong while fetching restaurant deals.");
+      return [];
+    }
   }
 
 }

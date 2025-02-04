@@ -57,12 +57,12 @@
 }
   
 .action-btn {
-    color: white;
+    color: white !important;
     border: 1px solid #ddd;
     padding: 0.5rem;
     background: #FF7622;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 14px;
 	&:disabled {
 		opacity: 0.8;
 		cursor: not-allowed;

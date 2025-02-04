@@ -18,10 +18,10 @@
           <div class="ratingsCornerCenter  col-md-6">
             <div class="ratingsCorner">
               <div class="ratings">
-                <mat-icon style="font-size: 18px;height: fit-content; width: fit-content; margin-right: 0.2rem;">star</mat-icon> {{ restaurantDetails.rating || 4.1}} 
+                <mat-icon style="font-size: 18px;height: fit-content; width: fit-content; margin-right: 0.2rem;">star</mat-icon> {{ restaurantDetails.restaurantRatings }} 
               </div>
-              <div>
-                ({{ restaurantDetails.ratingsCount || 2 }} ratings)
+              <div *ngIf="restaurantDetails.restaurantRatingsCount > 0">
+                ({{ restaurantDetails.restaurantRatingsCount }} ratings)
               </div>
             </div>
             <!-- <div class="averageCostCorner">
@@ -34,7 +34,7 @@
             <span *ngFor="let cuisine of restaurantDetails.cuisineType; let i = index; let last = last">{{ cuisine.categoryName }} <span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> </span>
           </div>
           <div class="averageCostCorner">
-            ₹{{ restaurantDetails.averageCost || 800 }} for two
+            ₹{{ restaurantDetails.priceForTwo }} for two
           </div>
           <!-- <div style="font-size: 16px;font-weight: 500;">
             <span>Delivery In: </span>
@@ -73,7 +73,7 @@
     </div>
 
     <!-- Deals -->
-    <div class="row padding">
+    <div class="row padding" *ngIf="offersAndDeals.length > 0">
       <div class="deals-section">
         <div class="d-flex bd-highlight">
           <div class="p-2 bd-highlight">

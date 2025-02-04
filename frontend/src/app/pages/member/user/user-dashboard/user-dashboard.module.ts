@@ -24,7 +24,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CustomDealDialogPage } from '../shared/custom-deal-dialog/custom-deal-dialog.page';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -43,7 +45,10 @@ import { CustomDealDialogPage } from '../shared/custom-deal-dialog/custom-deal-d
     MatDialogModule,
     ClipboardModule,
     MatStepperModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatButtonModule
   ],
   declarations: [
     UserDashboardPage,

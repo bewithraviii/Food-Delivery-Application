@@ -343,7 +343,7 @@ ion-delegate-host.popover-viewport {
     font-family: 'Roboto';
     background: transparent;
     width: 100%;
-    color: #059C6A;
+    color: #059C6A !important;
     font-size: 16px;
     font-weight: 500;
     width: 100px;
@@ -352,12 +352,11 @@ ion-delegate-host.popover-viewport {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     margin-top: 1rem;
-    border: 1px solid #ddd;
     border-radius: 8px;
     letter-spacing: 1px;
     &:hover{
         background: #059C6A;
-        color: white;
+        color: white !important;
     }
 }
 

@@ -229,7 +229,10 @@ const getRestaurantDetails = async(req, res) => {
             cuisineType: restaurantsData.cuisineType,
             website: restaurantsData.website,
             menu: restaurantsData.menu,
-            id: restaurantsData._id
+            id: restaurantsData._id,
+            restaurantRatings: restaurantsData.restaurantRatings,
+            restaurantRatingsCount: restaurantsData.restaurantRatingsCount,
+            priceForTwo: restaurantsData.priceForTwo
         };
 
         return res.status(200).json({

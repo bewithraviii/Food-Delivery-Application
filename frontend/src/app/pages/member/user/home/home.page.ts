@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
   detectedAddress: string = ''; 
   selectedAddress: any;
   selectedCategory: string = '';
-  categories: any[] = []
+  categories: any[] = [];
   filteredRestaurants: any[] = [];
   restaurants: any[] = [];
   user: any = {

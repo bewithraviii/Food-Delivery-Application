@@ -32,7 +32,7 @@ const searchRestaurant = async (req, res) => {
         });
         
         if (filteredRestaurants.length === 0) {
-            return res.status(404).json({ message: 'No matching restaurants found' });
+            return res.status(200).json({ message: 'No matching restaurants found', payload: [] });
         }
 
         const restaurantsDetails = filteredRestaurants.map(restaurant => ({

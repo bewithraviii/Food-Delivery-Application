@@ -60,72 +60,33 @@ h4, h5, ion-card-title, .restaurant-details span {
 }
 
 
-// .category-image-size {
-//     width: 10rem !important;
-//     height: 12rem !important;
-// }
 
-// /* Category Cards */
-// .categories-section {
-//     padding: 16px;
-//     .category-cards {
-//         display: grid;
-//         grid-template-columns: repeat(6, 1fr);
-//         gap: 16px;
-//         ion-card {
-//         width: 10rem;
-//         background: white;
-//         border-radius: 12px;
-//         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-//         }
-//     }
-// }
-
-
-  
-  
-  
-//   @media screen and (max-width: 768px) {
-//     .horizontal-slider {
-//       height: 180px; /* Smaller height for mobile */
-//     }
-  
-//     .category-card {
-//       height: 120px; /* Smaller height for mobile cards */
-//     }
-  
-//     .category-card-image {
-//       height: 80px; /* Adjust image size on mobile */
-//     }
-//   }
-  
 /* Category Cards */
 .categories-section {
     padding: 16px;
     position: relative;
 }
   
-/* Wrapper for scrolling */
 .category-cards-wrapper {
-    overflow-x: hidden; /* Hide overflow initially */
+    overflow-x: hidden;
     position: relative;
-    width: 100%; /* Ensure it takes full width */
+    width: 100%;
 }
   
-/* Horizontal layout for category cards */
 .category-cards {
     display: flex;
-    gap: 10px; /* Gap between cards */
-    scroll-behavior: smooth; /* Smooth scrolling */
-    overflow-x: auto; /* Enable horizontal scrolling */
-    -ms-overflow-style: none; /* For Internet Explorer and Edge */
-    scrollbar-width: none; /* For Firefox */
+    gap: 10px;
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     ion-img {
         width: fit-content;
     };
     ion-card-title {
         font-size: 16px;
         padding: 0;
+        color: #32343E;
     };
     ion-card-header {
         background-color: transparent;
@@ -136,10 +97,9 @@ h4, h5, ion-card-title, .restaurant-details span {
 }
 
 .category-cards::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
+    display: none;
 }
   
-/* Category card styling */
 .category-card {
     min-width: 7rem;
     background: transparent;
@@ -149,7 +109,6 @@ h4, h5, ion-card-title, .restaurant-details span {
     cursor: pointer;
 }
   
-/* Scroll Button Styling */
 .scroll-btn {
     color: #181C2E;
     border: none;
@@ -169,7 +128,7 @@ h4, h5, ion-card-title, .restaurant-details span {
 
 @media screen and (max-width: 768px) {
     .scroll-btn {
-      display: none; /* Hide buttons on screens smaller than 768px (tablet and mobile) */
+      display: none;
     }
 }
   
