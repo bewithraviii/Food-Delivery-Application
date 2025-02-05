@@ -174,7 +174,8 @@ const getAllRestaurantDetails = async(req, res) => {
                 menu: restaurant.menu,
                 id: restaurant._id,
                 ratings: restaurant.restaurantRatings,
-                priceForTwo: restaurant.priceForTwo
+                priceForTwo: restaurant.priceForTwo,
+                profileImage: restaurant.profileImage
             });
         });
 

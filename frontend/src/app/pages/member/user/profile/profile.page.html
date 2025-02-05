@@ -125,7 +125,7 @@
                       <div class="favorite-cards">
                         <ion-card *ngFor="let restaurant of favList" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
                           <div class="image-container">
-                            <ion-img [src]="restaurant.image"></ion-img>
+                            <ion-img src="{{'data:image/jpg;base64,' + restaurant.image}}"></ion-img>
                           </div>
                           <ion-card-header>
                             <div class="restaurant-details-row">
@@ -286,7 +286,7 @@
                     <div class="favorite-cards">
                       <ion-card *ngFor="let restaurant of favList" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
                         <div class="image-container">
-                          <ion-img [src]="restaurant.image"></ion-img>
+                          <ion-img src="{{'data:image/jpg;base64,' + restaurant.image}}"></ion-img>
                         </div>
                         <ion-card-header>
                           <div class="restaurant-details-row">
@@ -356,7 +356,6 @@
                 </div>
               </div>
               <div *ngSwitchCase="'settings'">Settings Content</div>
-              <div *ngSwitchCase="'logout'">Logout Content</div>
             </ng-container>
           </div>
         </mat-expansion-panel>

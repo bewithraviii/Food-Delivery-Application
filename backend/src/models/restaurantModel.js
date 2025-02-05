@@ -6,6 +6,7 @@ const restaurantSchema = new mongoose.Schema(
       name: { type: String, required: true },
       description: { type: String, default: null },
       address: { type: String, required: true },
+      profileImage: {type: String, default: null},
       contactNumber: { type: String, default: null },
       email: { type: String, required: true },
       priceForTwo: { type: Number, default: 400 },

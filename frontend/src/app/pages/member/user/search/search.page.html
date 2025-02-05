@@ -54,7 +54,6 @@
                 <h4 style="margin: 0; color: #1E1D1D;">{{"Your Result" | uppercase}}</h4>
               </div>
             </div>
-            <mat-divider></mat-divider>
             <div *ngIf="filteredData.length > 0; else noResults">
               <div class="manage-search">
                 <div class="filter-section" *ngIf="filteredData.length > 0">
@@ -72,10 +71,11 @@
                     <button mat-button (click)="clearFilters()" [disabled]="!this.filterRating4Plus && !this.filterHighToLow">clear</button>
                   </div>
                 </div>
+                <mat-divider></mat-divider>
                 <div class="search-cards">
                   <ion-card *ngFor="let restaurant of filteredData" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
                     <div class="image-container">
-                      <ion-img src="assets/images/restaurant-interior.jpg"></ion-img>
+                      <ion-img src="{{'data:image/jpg;base64,' + restaurant.profileImage}}"></ion-img>
                       <div *ngIf="restaurant.favorite" class="favorite-icon-main">
                         <ion-icon class="favorite-icon" name="heart"></ion-icon>
                       </div>

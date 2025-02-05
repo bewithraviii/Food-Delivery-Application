@@ -43,7 +43,8 @@ const searchRestaurant = async (req, res) => {
             restaurantRatings: restaurant.restaurantRatings,
             restaurantRatingsCount: restaurant.restaurantRatingsCount,
             address: restaurant.address,
-            priceForTwo: restaurant.priceForTwo
+            priceForTwo: restaurant.priceForTwo,
+            profileImage: restaurant.profileImage
         }));
 
         return res.status(200).json({

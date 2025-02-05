@@ -122,7 +122,7 @@
               <div class="restaurant-cards">
                 <ion-card *ngFor="let restaurant of filteredRestaurants" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
                   <div class="image-container">
-                    <ion-img [src]="restaurant.image"></ion-img>
+                    <ion-img src="{{'data:image/jpg;base64,' + restaurant.image}}"></ion-img>
                     <div *ngIf="restaurant.favorite" class="favorite-icon-main">
                       <ion-icon class="favorite-icon" name="heart"></ion-icon>
                     </div>
