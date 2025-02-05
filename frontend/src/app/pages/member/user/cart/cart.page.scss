@@ -13,6 +13,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding-top: 2rem; 
+    padding-bottom: 2rem;
 
     .address-section {
         border: 1px solid #ddd;
@@ -324,4 +326,10 @@ mat-stepper {
 
 .billItemColor {
   color: #FF8F60;
+}
+
+
+.process {
+  padding: 0;
+  padding-bottom: 2rem;
 }

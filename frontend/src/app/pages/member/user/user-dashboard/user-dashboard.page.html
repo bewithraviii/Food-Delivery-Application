@@ -1,81 +1,106 @@
-
-
+<ion-menu *ngIf="isMobileView" contentId="main-content" menuId="mobileMenu" side="end">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list style="background: transparent;">
+      <ion-item
+        routerLink="/user-dashboard/home"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+        >
+        HOME</ion-item>
+      <ion-item
+        routerLink="/user-dashboard/search"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >SEARCH</ion-item>
+      <ion-item
+        routerLink="/user-dashboard/profile"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >USER</ion-item>
+      <ion-item
+        routerLink="/user-dashboard/cart"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        <div class="item-content" style="display: flex; justify-content: space-between; width: 100%;">
+          <span>CART</span>
+          <!-- Display badge only if there are items -->
+          <ion-badge *ngIf="!hidden">{{ cartItems }}</ion-badge>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
 
 <ion-content id="main-content" [fullscreen]="true">
 
-
-    <!-- Navbar for Desktop -->
-    <!-- <app-navbar *ngIf="!isMobileView"></app-navbar> -->
-    <ion-header *ngIf="!isMobileView">
-        <div class="container">
-          <ion-toolbar>
-            <!-- <ion-buttons slot="start">
-              <ion-menu-button></ion-menu-button>
-            </ion-buttons> -->
-            
-            <ion-title slot="start">
-              <div style="display: flex !important;">
-                <ion-img
-                  style="width: 5rem;height: 3rem; margin-right: 2rem;"
-                  [src]=logo
-                  alt="logo"
-                ></ion-img>
+  <!-- Desktop Header -->
+  <ion-header *ngIf="!isMobileView">
+    <div class="container p-0">
+      <ion-toolbar>
+        <ion-title><ion-img [src]="logo" alt="logo"></ion-img></ion-title>
+        <ion-buttons slot="end">
+          <ion-button routerLink="/user-dashboard/home" routerLinkActive="active">
+            <div class="iconButton">
+              <div class="iconAndText">
+                <ion-icon name="home-outline"></ion-icon>
               </div>
-            </ion-title>
-            
-        
-            <ion-buttons slot="end">
-              <ion-button routerLink="/user-dashboard/home" routerLinkActive="active">
-                <div class="iconButton">
-                  <div class="iconAndText">
-                    <ion-icon name="home-outline"></ion-icon>
-                  </div>
-                  <div style="font-size: 17px;">
-                    Home
-                  </div>
-                </div>
-              </ion-button>
-              <ion-button routerLink="/user-dashboard/search" routerLinkActive="active">
-                <div class="iconButton">
-                  <div class="iconAndText">
-                    <ion-icon name="search-outline"></ion-icon>
-                  </div>
-                  <div style="font-size: 17px;">
-                    Search
-                  </div>
-                </div>
-              </ion-button>
-              <ion-button routerLink="/user-dashboard/profile" routerLinkActive="active">
-                <div class="iconButton">
-                  <div class="iconAndText">
-                    <ion-icon name="person-outline"></ion-icon>
-                  </div>
-                  <div style="font-size: 17px;">
-                    User
-                  </div>
-                </div>
-              </ion-button>
-              <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems" matBadgeSize="small" matBadgePosition="below after" [matBadgeHidden]="hidden">
-                <div class="iconButton">
-                  <div class="iconAndText">
-                    <ion-icon name="cart-outline"></ion-icon>
-                  </div>
-                  <div style="font-size: 17px;">
-                    Cart
-                  </div>
-                </div>
-              </ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </div>
-    </ion-header>
+              <span>Home</span>
+            </div>
+          </ion-button>
+          <ion-button routerLink="/user-dashboard/search" routerLinkActive="active">
+            <div class="iconButton">
+              <div class="iconAndText">
+                <ion-icon name="search-outline"></ion-icon>
+              </div>
+              <span>Search</span>
+            </div>
+          </ion-button>
+          <ion-button routerLink="/user-dashboard/profile" routerLinkActive="active">
+            <div class="iconButton">
+              <div class="iconAndText">
+                <ion-icon name="person-outline"></ion-icon>
+              </div>
+              <span>User</span>
+            </div>
+          </ion-button>
+          <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems" matBadgeSize="small" matBadgePosition="above after" [matBadgeHidden]="hidden">
+            <div class="iconButton">
+              <div class="iconAndText">
+                <ion-icon name="cart-outline"></ion-icon>
+              </div>
+              <span>Cart</span>
+            </div>
+            <!-- <ion-badge *ngIf="!hidden" color="primary">{{ cartItems }}</ion-badge> -->
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </div>
+  </ion-header>
 
-    <!-- Main Content -->
-    <router-outlet></router-outlet>
+  <!-- Mobile Header (with Menu Toggle) -->
+  <ion-header *ngIf="isMobileView">
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-menu-button menu="mobileMenu"></ion-menu-button>
+        <!-- <ion-button (click)="toggleMenu()" style="font-size: 1.5rem;">
+          <ion-icon [src]="menuToggle"></ion-icon>
+        </ion-button> -->
+      </ion-buttons>
+      <ion-title>
+        <ion-img [src]="logo" alt="logo"></ion-img>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Main Content -->
+  <router-outlet></router-outlet>
 </ion-content>
   
-    <!-- Tabs for Mobile -->
-    <!-- <app-tabs *ngIf="isMobileView"></app-tabs> -->
-
 
 

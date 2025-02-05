@@ -1,4 +1,4 @@
-<div class="cart-page" style="padding-top: 2rem;">
+<div class="cart-page">
   <div class="container">    
     <div class="padding">
 
@@ -8,7 +8,7 @@
       <div *ngIf="cartExists">
         <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : 'd-flex flex-column-reverse justify-content-center'">
           <!-- Left Section - Addresses -->
-          <div class="col-md-7 p-0">
+          <div class="col-md-7 process">
             <mat-vertical-stepper #stepper [linear]="true">
   
               <mat-step [stepControl]="addressFormGroup">
@@ -26,13 +26,15 @@
                         <div class="card">
                           <div class="card-body">
                             <div class="d-flex justify-content-between">
-                              <div>
-                                <h5 class="card-title">{{ address.title }}</h5>
+                              <div style="width: 100%;">
+                                <div class="d-flex justify-content-between">
+                                  <h5 class="card-title">{{ address.title }}</h5>
+                                  <div class="d-flex justify-content-center" *ngIf="selectedAddress === address.details" style="color: #059C6A;">
+                                    <mat-icon >check_circle_outline</mat-icon>
+                                    <p style="font-size: 18px;">Selected</p>
+                                  </div>
+                                </div>
                                 <p>{{ address.details }}</p>
-                              </div>
-                              <div class="d-flex justify-content-center" *ngIf="selectedAddress === address.details" style="color: #059C6A;">
-                                <mat-icon >check_circle_outline</mat-icon>
-                                <p style="font-size: 18px;">Selected</p>
                               </div>
                             </div>
                             <button *ngIf="selectedAddress === address.details; else selectButton" class="btn select-address-btn" style="background-color: #059C6A;" matStepperNext (click)="selectAddress(address.details)">Continue</button>
