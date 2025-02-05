@@ -3,7 +3,7 @@
 
     <!-- Search Section -->
     <div class="row padding">
-      <div class="search-menu-main">
+      <div class="search-menu-main p-0">
         <h4 style="color: #1E1D1D; padding-bottom: 0.5rem;">{{"Search for restaurants and cuisine" | uppercase}}</h4>
         <div class="search-menu">
           <mat-form-field appearance="outline" class="search-field">
@@ -17,7 +17,7 @@
 
     <!-- Featured Categories -->
     <div class="row padding">
-      <div class="categories-section">
+      <div class="categories-section p-0">
         <div class="d-flex bd-highlight">
           <div class="p-2 bd-highlight">
             <h4 style="margin: 0;">{{"Popular Cuisines" | uppercase}}</h4>
@@ -46,7 +46,7 @@
 
     <!-- Display search results -->
     <div class="row padding">
-      <div class="search-section">
+      <div class="search-section p-0">
         <div *ngIf="!dataProcessing">
           <div *ngIf="showData && searchQuery">
             <div class="d-flex bd-highlight">
