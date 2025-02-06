@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Route, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { addNewAddressRequest, addToCartReqForm, applyCouponReqForm, removeCouponReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm, applyCouponReqForm, cartDataModel, removeCouponReqForm } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
@@ -28,13 +28,14 @@ export class CartPage implements OnInit {
   user: any;
   addresses: any[] = [];
   cartId: string = '';
-  cartDetails: any[] = [];
+  cartDetails: cartDataModel[] = [];
   billDetails: any[] = [
     { label: 'Item Total', amount: 0 },
     { label: 'Delivery Fee', amount: 0 },
     { label: 'Platform Fee', amount: 0 },
     { label: 'GST and Restaurant Charges', amount: 0 },
   ]
+  restaurantData: any;
   totalAmount: number = 0;
   discountedPrice: number = 0;
   discountApplied: boolean = false;
@@ -50,6 +51,7 @@ export class CartPage implements OnInit {
     private loadingController: LoadingController,
     private dialogService: DialogService,
     private notificationService: NotificationService,
+    private router: Router
   ) { }
 
   async ngOnInit() {
@@ -69,18 +71,11 @@ export class CartPage implements OnInit {
   async populateData() {
     this.user = this.authService.getUserId();
     this.apiService.getUserCartData(this.user).subscribe(
-      (data: any) => {
+      async (data: any) => {
         if(data){
           this.cartId = data.payload._id;
           this.cartExists = true;
-          data.payload.cartItems.forEach((element: any) => {
-            this.cartDetails.push(element);
-          });
-          if(data.payload.billDetails && data.payload.totalAmount){
-            this.billDetails = data.payload.billDetails;
-            this.totalAmount = data.payload.totalAmount;
-            this.cartDataLoaded = true;
-          }
+          await this.processData(data);
         }
       },
       (error: any) => {
@@ -135,16 +130,10 @@ export class CartPage implements OnInit {
       ]
     }
     this.apiService.addToCart(payload).subscribe(
-      (response: any) => {
+      async(response: any) => {
         if(response){
           this.cartDetails = [];
-          response.payload.cartItems.forEach((element: any) => {
-            this.cartDetails.push(element);
-          });
-          if(response.payload.billDetails && response.payload.totalAmount){
-            this.billDetails = response.payload.billDetails;
-            this.totalAmount = response.payload.totalAmount;
-          }
+          await this.processData(response);
           this.discountedPrice = 0;
           this.discountApplied = false;
           this.selectedDeal = {};
@@ -180,7 +169,7 @@ export class CartPage implements OnInit {
       ]
     }
     this.apiService.removeFromCart(payload).subscribe(
-      (response: any) => {
+      async(response: any) => {
         if(response){
           if(response.payload == null){
             this.cartDataLoaded = false;
@@ -188,13 +177,7 @@ export class CartPage implements OnInit {
             window.location.reload();
           } else {
             this.cartDetails = [];
-            response.payload.cartItems.forEach((element: any) => {
-              this.cartDetails.push(element);
-            });
-            if(response.payload.billDetails && response.payload.totalAmount){
-              this.billDetails = response.payload.billDetails;
-              this.totalAmount = response.payload.totalAmount;
-            }
+            await this.processData(response);
             this.discountedPrice = 0;
             this.discountApplied = false;
             this.selectedDeal = {};
@@ -300,14 +283,10 @@ export class CartPage implements OnInit {
       userId: this.user,
     }
     this.apiService.removeCoupon(removeCouponReqPayload).subscribe(
-      (response: any) => {
+      async(response: any) => {
         if(response) {
           this.cartDetails = [];
-          response.payload.cartItems.forEach((element: any) => {
-            this.cartDetails.push(element);
-          });
-          this.billDetails = response.payload.billDetails;
-          this.totalAmount = response.payload.totalAmount;
+          await this.processData(response);
           this.discountedPrice = 0;
           this.discountApplied = false;
           this.selectedDeal = {};
@@ -336,15 +315,11 @@ export class CartPage implements OnInit {
       }
 
       this.apiService.applyCoupon(applyCouponReqPayload).subscribe(
-        (response: any) => {
+        async(response: any) => {
 
           if(response.dealApplied) {
             this.cartDetails = [];
-            response.payload.cartItems.forEach((element: any) => {
-              this.cartDetails.push(element);
-            });
-            this.billDetails = response.payload.billDetails;
-            this.totalAmount = response.payload.totalAmount;
+            await this.processData(response);
             this.discountedPrice = response.discountedPrice;
             this.discountApplied = response.dealApplied;
             this.selectedDeal = dealSelected;
@@ -391,6 +366,70 @@ export class CartPage implements OnInit {
       this.dismissLoader();
       return [];
     }
+  }
+
+  async processData(data: any) {
+    try{
+      await Promise.all(
+        data.payload.cartItems.map(async (element: any) => {
+          const cartItem: cartDataModel = element;
+          try {
+            const extractedAddress = this.addressExtractionService.extractAddressDetails(cartItem.restaurant.address);
+            if(extractedAddress){
+              cartItem.restaurant.address = extractedAddress.landmark || '';
+            }
+            if(!this.restaurantData || this.restaurantData.length == 0){
+              await this.getRestaurantImage(cartItem.restaurant.restaurantId);
+            }
+          
+            console.log(this.restaurantData);
+            cartItem.restaurant.restaurantImage = this.restaurantData.profileImage;
+            if (cartItem.restaurant.orderItem) {
+              cartItem.restaurant.orderItem.map(async (orderItem: any) => {
+                this.restaurantData.menu.forEach((menuItem: any) => {
+                  menuItem.items.forEach((item: any) => {
+                    if(item.itemId == orderItem.itemId){
+                      orderItem.itemImage = item.itemImage;
+                    }
+                  });
+                });
+              })
+            }
+            
+          } catch (error) {
+            console.error("Error fetching restaurant image:", error);
+            cartItem.restaurant.restaurantImage = 'assets/images/default-restaurant.png';
+          }
+
+          this.cartDetails.push(cartItem);
+        })
+      );
+      if(data.payload.billDetails && data.payload.totalAmount){
+        this.billDetails = data.payload.billDetails;
+        this.totalAmount = data.payload.totalAmount;
+        this.cartDataLoaded = true;
+      }
+    } catch(error: any) {
+
+    }
+  }
+
+  async getRestaurantImage(id: any) {
+    try {
+        const response = await this.apiService.getRestaurantDetails(id).toPromise();
+        if (response && response.payload) {
+            this.restaurantData = response.payload;
+        } else {
+            console.warn("Restaurant details API returned an empty payload for restaurant ID:", id);
+        }
+    } catch (error: any) {
+        console.error("Error fetching restaurant details for ID:", id, error);
+        throw error;
+    }
+  }
+
+  async viewRestaurantDetails(restaurantId: any){
+    this.router.navigate(["/user-dashboard/restaurant", restaurantId]);
   }
 
 }

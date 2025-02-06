@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import { MatStepper, StepperOrientation } from '@angular/material/stepper';
 import { map, Observable } from 'rxjs';
-import { vendorSignUpReqForm, userSignUpReqForm, otpVerifyRequest, otpSendRequest } from 'src/app/models/api.interface';
+import { vendorSignUpReqForm, userSignUpReqForm, otpVerifyRequest, otpSendRequest, cuisineType } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -93,6 +93,7 @@ export class SignUpPage implements OnInit {
 
     this.adminFormGroup4 = this.fb.group({
       cuisineType: ['', Validators.required],
+      image: ['', Validators.required],
       agreeTerms: [false, Validators.requiredTrue]
     })
 
@@ -235,11 +236,15 @@ export class SignUpPage implements OnInit {
               ...this.adminFormGroup3.value,
               ...this.adminFormGroup4.value,
             };
+            const cuisineType: cuisineType = {
+              categoryId: '',
+              categoryName: adminData.cuisineType
+            }
             const vendorForm: vendorSignUpReqForm = {
               name: adminData.restaurantName,
               address: adminData.restaurantAddress,
               email: adminData.restaurantEmail,
-              cuisineType: adminData.cuisineType,
+              cuisineType: cuisineType,
               website: adminData.restaurantWebsite,
               owner: {
                 name: adminData.ownerName,
@@ -251,6 +256,7 @@ export class SignUpPage implements OnInit {
                 aadharCardNo: adminData.ownerAadharCardNumber
               },
               acceptTermsAndRegulations: adminData.agreeTerms,
+              profileImage: adminData.image
             }
             console.log('Vendor Form Submitted:', vendorForm);
             this.authApiService.processVendorRegistration(vendorForm).subscribe(
@@ -359,6 +365,26 @@ export class SignUpPage implements OnInit {
   
   async dismissLoader() {
     await this.loadingController.dismiss();
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    const file = input.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      this.notification.notifyUser('errorSnack', 'Only JPG, PNG, and JPEG formats are allowed');
+      return;
+    }
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      this.adminFormGroup4.patchValue({ image: base64String });
+    };
+    reader.readAsDataURL(file);
   }
 
 }

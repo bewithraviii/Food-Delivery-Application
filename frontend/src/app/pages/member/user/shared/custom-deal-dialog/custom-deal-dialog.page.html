@@ -22,6 +22,9 @@
         <h2>{{"Deals" | uppercase}}</h2>
         <button (click)="closeDialog()" class="close-btn"><ion-icon name="close"></ion-icon></button>
       </div>
+      <div id="mat-divider">
+        <mat-divider></mat-divider>
+      </div>
       <div class="dialog-body">
         <div *ngIf="!data.deals.length;">
           <div class="row" style="color: #525C67;">

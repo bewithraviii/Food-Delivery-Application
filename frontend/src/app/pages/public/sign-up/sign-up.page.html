@@ -157,7 +157,20 @@
                       <mat-option value="Chinese">Chinese</mat-option>
                     </mat-select>
                   </mat-form-field>
-  
+
+                  <!-- New File Upload Field -->
+                  <label for="fileUpload">Upload Image</label>
+                  <input
+                    type="file"
+                    id="fileUpload"
+                    accept="image/jpeg, image/png, image/jpg"
+                    (change)="onFileSelected($event)"
+                  />
+                  <!-- Optionally display error message if needed -->
+                  <mat-error *ngIf="adminFormGroup4.get('image')?.invalid && adminFormGroup4.get('image')?.touched">
+                    Please upload a valid image file.
+                  </mat-error>
+
                   <mat-checkbox formControlName="agreeTerms" color="primary" required>
                     I agree to the terms and conditions
                   </mat-checkbox>

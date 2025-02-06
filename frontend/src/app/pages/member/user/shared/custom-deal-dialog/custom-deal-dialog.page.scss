@@ -12,8 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 0.5rem;
     color: #FF7622;
 }
   
@@ -99,7 +98,7 @@
     padding-bottom: 0.3rem;
     border: 1px solid;
     background: transparent;
-    color: #FF956D;
+    color: #FF956D !important;
     font-weight: 500;
 }
 
@@ -180,4 +179,11 @@
         color: #FF7622;
         font-weight: 500;
     }
+}
+
+#mat-divider {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    margin-bottom: 1rem;
+
 }

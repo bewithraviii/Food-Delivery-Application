@@ -30,8 +30,8 @@
                                 <div class="d-flex justify-content-between">
                                   <h5 class="card-title">{{ address.title }}</h5>
                                   <div class="d-flex justify-content-center" *ngIf="selectedAddress === address.details" style="color: #059C6A;">
-                                    <mat-icon >check_circle_outline</mat-icon>
-                                    <p style="font-size: 18px;">Selected</p>
+                                    <mat-icon style="font-size: 18px; height: fit-content; display: flex; align-items: center; justify-content: center;">check_circle_outline</mat-icon>
+                                    <p style="font-size: 14px; margin: 0;">Selected</p>
                                   </div>
                                 </div>
                                 <p>{{ address.details }}</p>
@@ -80,11 +80,17 @@
           <div class="col-md-5 p-0" id="order-summary">
             <div class="order-details" *ngIf="cartDataLoaded">
               <div class="order-items" *ngFor="let cartItem of cartDetails">
-                <div class="restaurant-details">
+                <div class="restaurant-details" style="cursor: pointer;" (click)="viewRestaurantDetails(cartItem.restaurant.restaurantId)">
                   <div class="restaurant-details-image">
-                    <img src="assets/images/theka-coffee.jfif">
+                    <img *ngIf="cartItem.restaurant.restaurantImage; else defaultRestaurantImage" src="{{'data:image/jpeg;base64,'+ cartItem.restaurant.restaurantImage}}">
+                    <ng-template #defaultRestaurantImage>
+                      <img src="assets/images/default-cart-item.jpg">
+                    </ng-template>
                   </div>
-                  <h5 class="restaurant-details-title">{{ cartItem.restaurant.name | uppercase }}</h5>
+                  <div>
+                    <h5 class="restaurant-details-title">{{ cartItem.restaurant.name | uppercase }}</h5>
+                    <h6 class="restaurant-details-subtitle" *ngIf="cartItem.restaurant.address">{{ cartItem.restaurant.address }}</h6>
+                  </div>
                 </div>
                 <div *ngFor="let orderItem of cartItem.restaurant.orderItem" class="orderItems">
                   <div class="order-item">
@@ -99,7 +105,12 @@
                     </div>
                   </div>
                   <div class="order-item-image-section">
-                    <div class="order-item-image"><img src="assets/images/theka-coffee.jfif"></div>
+                    <div class="order-item-image">
+                      <img *ngIf="orderItem.itemImage; else defaultImage" src="{{'data:image/jpeg;base64,'+ orderItem.itemImage}}">
+                      <ng-template #defaultImage>
+                        <img src="assets/images/default-cart-item.jpg">
+                      </ng-template>
+                    </div>
                   </div>
                 </div>
               </div>

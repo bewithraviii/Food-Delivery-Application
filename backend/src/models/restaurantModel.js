@@ -36,6 +36,7 @@ const restaurantSchema = new mongoose.Schema(
             subCategoryName: { type: String, required: true },
             items: [
               {
+                itemImage: { type: String, default: null},
                 itemId: { type: Number, required: true },
                 name: { type: String, required: true },
                 price: { type: String, required: true },
