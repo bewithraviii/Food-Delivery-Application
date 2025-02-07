@@ -382,7 +382,6 @@ export class CartPage implements OnInit {
               await this.getRestaurantImage(cartItem.restaurant.restaurantId);
             }
           
-            console.log(this.restaurantData);
             cartItem.restaurant.restaurantImage = this.restaurantData.profileImage;
             if (cartItem.restaurant.orderItem) {
               cartItem.restaurant.orderItem.map(async (orderItem: any) => {

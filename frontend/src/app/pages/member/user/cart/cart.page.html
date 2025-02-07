@@ -82,7 +82,7 @@
               <div class="order-items" *ngFor="let cartItem of cartDetails">
                 <div class="restaurant-details" style="cursor: pointer;" (click)="viewRestaurantDetails(cartItem.restaurant.restaurantId)">
                   <div class="restaurant-details-image">
-                    <img *ngIf="cartItem.restaurant.restaurantImage; else defaultRestaurantImage" src="{{'data:image/jpeg;base64,'+ cartItem.restaurant.restaurantImage}}">
+                    <img *ngIf="cartItem.restaurant.restaurantImage; else defaultRestaurantImage" src="{{cartItem.restaurant.restaurantImage}}">
                     <ng-template #defaultRestaurantImage>
                       <img src="assets/images/default-cart-item.jpg">
                     </ng-template>
@@ -106,7 +106,7 @@
                   </div>
                   <div class="order-item-image-section">
                     <div class="order-item-image">
-                      <img *ngIf="orderItem.itemImage; else defaultImage" src="{{'data:image/jpeg;base64,'+ orderItem.itemImage}}">
+                      <img *ngIf="orderItem.itemImage; else defaultImage" src="{{orderItem.itemImage}}">
                       <ng-template #defaultImage>
                         <img src="assets/images/default-cart-item.jpg">
                       </ng-template>

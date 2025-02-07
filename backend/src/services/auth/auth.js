@@ -89,6 +89,17 @@ const vendorSignUp = async(data, res) => {
         const existingVendor = await Vendor.findOne({ email: data.email });
         if (existingVendor || existingVendor  != null) return res.status(400).json({ message: 'Vendor already exists' });
 
+        const cuisine = await Category.find();
+        if(!cuisine) return res.status(400).json({ message: 'Cuisines not found, Please try again' });       
+
+        const categoryData = cuisine.filter(category => data.cuisineType.includes(category.categoryName));
+        
+        data.cuisineType = categoryData.map(category => ({
+                categoryId: category._id,
+                categoryName: category.categoryName
+            })
+        );
+
         const newVendor = new Vendor(data);
         await newVendor.save();
 

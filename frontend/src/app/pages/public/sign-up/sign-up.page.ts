@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatStepper, StepperOrientation } from '@angular/material/stepper';
 import { map, Observable } from 'rxjs';
-import { vendorSignUpReqForm, userSignUpReqForm, otpVerifyRequest, otpSendRequest, cuisineType } from 'src/app/models/api.interface';
+import { vendorSignUpReqForm, userSignUpReqForm, otpVerifyRequest, otpSendRequest } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -33,6 +33,7 @@ export class SignUpPage implements OnInit {
   resendDisabled: boolean = true;
   timer: number = 60;
   timerInterval: any;
+  cuisineList: any[] = [];
 
   @ViewChild('adminStepper', { static: false }) adminStepper!: MatStepper;
 
@@ -62,8 +63,7 @@ export class SignUpPage implements OnInit {
       });
     }
 
-  ngOnInit(): void {
-
+  async ngOnInit() {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -92,7 +92,7 @@ export class SignUpPage implements OnInit {
     })
 
     this.adminFormGroup4 = this.fb.group({
-      cuisineType: ['', Validators.required],
+      cuisineType: [[], Validators.required],
       image: ['', Validators.required],
       agreeTerms: [false, Validators.requiredTrue]
     })
@@ -105,6 +105,21 @@ export class SignUpPage implements OnInit {
       otp5: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
       otp6: ['', [Validators.required, Validators.pattern('^[0-9]$')]]
     });
+
+    await this.populateCuisineList();
+  }
+
+  async populateCuisineList() {
+    this.apiService.getAllCategories().subscribe(
+      (response: any) => {
+        if(response){
+          this.cuisineList = response.payload;
+        }
+      },
+      (error: any) => {
+        this.notification.notifyUser("errorSnack", error.error.message);
+      }
+    );
   }
 
   onTabChange(index: number): void {
@@ -236,15 +251,12 @@ export class SignUpPage implements OnInit {
               ...this.adminFormGroup3.value,
               ...this.adminFormGroup4.value,
             };
-            const cuisineType: cuisineType = {
-              categoryId: '',
-              categoryName: adminData.cuisineType
-            }
+ 
             const vendorForm: vendorSignUpReqForm = {
               name: adminData.restaurantName,
               address: adminData.restaurantAddress,
               email: adminData.restaurantEmail,
-              cuisineType: cuisineType,
+              cuisineType: adminData.cuisineType,
               website: adminData.restaurantWebsite,
               owner: {
                 name: adminData.ownerName,

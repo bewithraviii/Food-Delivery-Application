@@ -65,7 +65,7 @@ export interface vendorSignUpReqForm {
     description?: String,
     address: String,
     email: String,
-    cuisineType: cuisineType,
+    cuisineType: [cuisineType],
     menu?: [],
     website: String,
     FSSAILicense?: String,
@@ -85,7 +85,6 @@ export interface vendorSignUpReqForm {
 }
 
 export interface cuisineType {
-    categoryId: string,
     categoryName: string
 }
 

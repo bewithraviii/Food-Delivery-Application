@@ -75,7 +75,7 @@
                 <div class="search-cards">
                   <ion-card *ngFor="let restaurant of filteredData" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
                     <div class="image-container">
-                      <ion-img src="{{'data:image/jpg;base64,' + restaurant.profileImage}}"></ion-img>
+                      <ion-img src="{{restaurant.profileImage}}"></ion-img>
                       <div *ngIf="restaurant.favorite" class="favorite-icon-main">
                         <ion-icon class="favorite-icon" name="heart"></ion-icon>
                       </div>
@@ -100,8 +100,9 @@
                         </div>
                       </div>
                       <div class="search-details-row">
-                        <div class="col-md-7">
-                          <ion-card-subtitle style="font-size: 12px;">{{restaurant.address.landmark}}, {{restaurant.address.city}}</ion-card-subtitle>
+                        <div class="col-md-7" style="font-size: 12px;">
+                          <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
+                          <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
                         </div>
                       </div>
                     </ion-card-header>
