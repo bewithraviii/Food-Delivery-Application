@@ -168,10 +168,10 @@ export class SearchPage implements OnInit {
   }
 
   applyCategory(category: string){
-    console.log(category);
     if (this.selectedCategory === category) {
       this.selectedCategory = '';
       this.searchQuery = '';
+      this.showData = false;
     } else {
       this.selectedCategory = category;
       this.searchQuery = this.selectedCategory;

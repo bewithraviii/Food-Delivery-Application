@@ -43,7 +43,7 @@
   <ion-header *ngIf="!isMobileView">
     <div class="container p-0">
       <ion-toolbar>
-        <ion-title><ion-img [src]="logo" alt="logo"></ion-img></ion-title>
+        <ion-title><ion-img [src]="logo" alt="logo" (click)="goToHome()" style="cursor: pointer;"></ion-img></ion-title>
         <ion-buttons slot="end">
           <ion-button routerLink="/user-dashboard/home" routerLinkActive="active">
             <div class="iconButton">
@@ -93,7 +93,7 @@
         </ion-button> -->
       </ion-buttons>
       <ion-title>
-        <ion-img [src]="logo" alt="logo"></ion-img>
+        <ion-img [src]="logo" alt="logo" (click)="goToHome()" style="cursor: pointer;"></ion-img>
       </ion-title>
     </ion-toolbar>
   </ion-header>

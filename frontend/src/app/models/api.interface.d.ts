@@ -61,10 +61,11 @@ export interface deleteAddressRequest {
 
 export interface vendorSignUpReqForm {
     name: String,
+    profileImage: any,
     description?: String,
     address: String,
     email: String,
-    cuisineType: String,
+    cuisineType: [cuisineType],
     menu?: [],
     website: String,
     FSSAILicense?: String,
@@ -80,7 +81,11 @@ export interface vendorSignUpReqForm {
         panCardNo: String,
         aadharCardNo: String,
     },
-    acceptTermsAndRegulations: Boolean
+    acceptTermsAndRegulations: Boolean,
+}
+
+export interface cuisineType {
+    categoryName: string
 }
 
 export interface addToCartReqForm {
@@ -88,10 +93,10 @@ export interface addToCartReqForm {
     cartItems: [
         {
             restaurant: {
-            restaurantId: string,
-            name: string,
-            address: string,
-            restaurantCharges: number,
+            restaurantId: string | undefined,
+            name: string | undefined,
+            address: string | undefined,
+            restaurantCharges: number | undefined,
             orderItem: [
                 {
                     itemId: number,
@@ -106,7 +111,7 @@ export interface addToCartReqForm {
 }
 
 export interface applyCouponReqForm {
-    restaurantId: string,
+    restaurantId: string | undefined,
     cartId: string,
     dealId: string
 }
@@ -119,3 +124,32 @@ export interface addToFavorite {
     restaurantId: string,
     userId: string,
 }
+
+
+
+
+
+
+
+
+
+
+export interface cartDataModel {
+    restaurant: {
+        address: string;
+        name?: string;
+        restaurantCharges?: number;
+        restaurantId?: string;
+        restaurantImage?: string;
+        orderItem?: OrderItem[];
+    },
+    _id?: string
+}
+interface OrderItem {
+    itemId?: number;
+    name?: string;
+    price?: number;
+    quantity?: number;
+    _id?: string;
+    itemImage?: string;
+  }

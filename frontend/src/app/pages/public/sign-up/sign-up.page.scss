@@ -245,3 +245,16 @@ mat-stepper {
 		cursor: not-allowed;
 	}
 }
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed;
+  height: fit-content;
+  border-radius: 4px;
+  padding: 0.5rem;
+  color: grey !important;
+  label {
+    margin-bottom: 0.2rem;
+  }
+}

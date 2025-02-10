@@ -75,4 +75,5 @@ export class UserDashboardPage implements OnInit {
   closeMenu() {
     this.menu.close('mobileMenu');
   }
+
 }

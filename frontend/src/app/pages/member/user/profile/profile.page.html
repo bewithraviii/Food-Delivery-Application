@@ -123,16 +123,16 @@
                     <div *ngIf="favList.length > 0; else noFavDataContent">
                       <h5 style="color: #2D2D2D;">{{"Saved Restaurants" | uppercase}}:</h5>
                       <div class="favorite-cards">
-                        <ion-card *ngFor="let restaurant of favList" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
+                        <ion-card *ngFor="let restaurant of favList" type="button" (click)="restaurantDetails(restaurant.id)">
                           <div class="image-container">
-                            <ion-img [src]="restaurant.image"></ion-img>
+                            <ion-img src="{{restaurant.image}}"></ion-img>
                           </div>
                           <ion-card-header>
-                            <div class="restaurant-details-row">
+                            <div class="favorite-details-row">
                               <div>
                                 <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                               </div>
-                              <div class="restaurant-details">
+                              <div class="favorite-details">
                                 <div class="rating-design">
                                   {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
                                 </div>
@@ -141,7 +141,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="restaurant-details-row">
+                            <div class="favorite-details-row">
                               <div style="display: flex;">
                                 <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisine; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
                               </div>
@@ -149,9 +149,10 @@
                                 <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
                               </div>
                             </div>
-                            <div class="restaurant-details-row">
-                              <div class="col-md-7">
-                                <ion-card-subtitle style="font-size: 12px;">{{restaurant.address.landmark}}, {{restaurant.address.city}}</ion-card-subtitle>
+                            <div class="favorite-details-row">
+                              <div class="col-md-7" style="font-size: 12px;">
+                                <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
+                                <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
                               </div>
                               <div class="col-md-5" style="justify-content: end; display: flex;">
                                 <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
@@ -230,7 +231,7 @@
     <div class="mobile-dashboard" *ngIf="!isDesktop">
       <mat-accordion>
         <mat-expansion-panel *ngFor="let item of menuItems">
-          <mat-expansion-panel-header style="border-bottom: 1px dashed #ddd;">
+          <mat-expansion-panel-header style="border-bottom: 1px dashed #ddd; padding: 0.5rem;">
             <mat-panel-title>
               <i [class]="item.icon"></i> {{ item.title }}
             </mat-panel-title>
@@ -284,16 +285,16 @@
                       <span>{{"Manage Favorites" | uppercase}}</span>
                     </div>
                     <div class="favorite-cards">
-                      <ion-card *ngFor="let restaurant of favList" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
+                      <ion-card *ngFor="let restaurant of favList" type="button" (click)="restaurantDetails(restaurant.id)">
                         <div class="image-container">
-                          <ion-img [src]="restaurant.image"></ion-img>
+                          <ion-img src="{{restaurant.image}}"></ion-img>
                         </div>
                         <ion-card-header>
-                          <div class="restaurant-details-row">
+                          <div class="favorite-details-row">
                             <div>
                               <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                             </div>
-                            <div class="restaurant-details">
+                            <div class="favorite-details">
                               <div class="rating-design">
                                 {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
                               </div>
@@ -302,7 +303,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="restaurant-details-row">
+                          <div class="favorite-details-row">
                             <div style="display: flex;">
                               <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisine; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
                             </div>
@@ -310,11 +311,12 @@
                               <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
                             </div>
                           </div>
-                          <div class="restaurant-details-row">
-                            <div class="col-md-7">
-                              <ion-card-subtitle style="font-size: 12px;">{{restaurant.address.landmark}}, {{restaurant.address.city}}</ion-card-subtitle>
+                          <div class="favorite-details-row">
+                            <div class="col-md-7" style="font-size: 12px; width: 100% !important;">
+                              <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
+                              <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
                             </div>
-                            <div class="col-md-5" style="justify-content: end; display: flex;">
+                            <div class="col-md-5" style="justify-content: end; display: flex; width: 100% !important;">
                               <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
                             </div>
                           </div>
@@ -356,7 +358,6 @@
                 </div>
               </div>
               <div *ngSwitchCase="'settings'">Settings Content</div>
-              <div *ngSwitchCase="'logout'">Logout Content</div>
             </ng-container>
           </div>
         </mat-expansion-panel>

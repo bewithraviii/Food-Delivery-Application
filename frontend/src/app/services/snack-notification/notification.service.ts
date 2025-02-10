@@ -18,7 +18,7 @@ export class NotificationService {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: [className]
+      panelClass: className
     });
   }
 

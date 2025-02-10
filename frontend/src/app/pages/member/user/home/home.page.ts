@@ -269,7 +269,7 @@ export class HomePage implements OnInit {
               { 
                 id: details.id,
                 name: details.name,  
-                image: 'assets/images/restaurant-interior.jpg', 
+                image: details.profileImage, 
                 rating: details.ratings, 
                 deliveryTime: '20', 
                 priceForTwo: details.priceForTwo,

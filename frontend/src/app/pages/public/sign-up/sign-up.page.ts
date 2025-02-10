@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatStepper, StepperOrientation } from '@angular/material/stepper';
 import { map, Observable } from 'rxjs';
 import { vendorSignUpReqForm, userSignUpReqForm, otpVerifyRequest, otpSendRequest } from 'src/app/models/api.interface';
@@ -33,6 +33,7 @@ export class SignUpPage implements OnInit {
   resendDisabled: boolean = true;
   timer: number = 60;
   timerInterval: any;
+  cuisineList: any[] = [];
 
   @ViewChild('adminStepper', { static: false }) adminStepper!: MatStepper;
 
@@ -62,8 +63,7 @@ export class SignUpPage implements OnInit {
       });
     }
 
-  ngOnInit(): void {
-
+  async ngOnInit() {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -92,7 +92,8 @@ export class SignUpPage implements OnInit {
     })
 
     this.adminFormGroup4 = this.fb.group({
-      cuisineType: ['', Validators.required],
+      cuisineType: [[], Validators.required],
+      image: ['', Validators.required],
       agreeTerms: [false, Validators.requiredTrue]
     })
 
@@ -104,6 +105,21 @@ export class SignUpPage implements OnInit {
       otp5: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
       otp6: ['', [Validators.required, Validators.pattern('^[0-9]$')]]
     });
+
+    await this.populateCuisineList();
+  }
+
+  async populateCuisineList() {
+    this.apiService.getAllCategories().subscribe(
+      (response: any) => {
+        if(response){
+          this.cuisineList = response.payload;
+        }
+      },
+      (error: any) => {
+        this.notification.notifyUser("errorSnack", error.error.message);
+      }
+    );
   }
 
   onTabChange(index: number): void {
@@ -235,6 +251,7 @@ export class SignUpPage implements OnInit {
               ...this.adminFormGroup3.value,
               ...this.adminFormGroup4.value,
             };
+ 
             const vendorForm: vendorSignUpReqForm = {
               name: adminData.restaurantName,
               address: adminData.restaurantAddress,
@@ -251,6 +268,7 @@ export class SignUpPage implements OnInit {
                 aadharCardNo: adminData.ownerAadharCardNumber
               },
               acceptTermsAndRegulations: adminData.agreeTerms,
+              profileImage: adminData.image
             }
             console.log('Vendor Form Submitted:', vendorForm);
             this.authApiService.processVendorRegistration(vendorForm).subscribe(
@@ -359,6 +377,26 @@ export class SignUpPage implements OnInit {
   
   async dismissLoader() {
     await this.loadingController.dismiss();
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    const file = input.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      this.notification.notifyUser('errorSnack', 'Only JPG, PNG, and JPEG formats are allowed');
+      return;
+    }
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      this.adminFormGroup4.patchValue({ image: base64String });
+    };
+    reader.readAsDataURL(file);
   }
 
 }

@@ -75,7 +75,7 @@ h4, h5, ion-card-title, .restaurant-details span {
   
 .category-cards {
     display: flex;
-    gap: 10px;
+    // gap: 10px;
     scroll-behavior: smooth;
     overflow-x: auto;
     -ms-overflow-style: none;
@@ -107,6 +107,13 @@ h4, h5, ion-card-title, .restaurant-details span {
     height: fit-content;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    ion-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
   
 .scroll-btn {
@@ -125,12 +132,6 @@ h4, h5, ion-card-title, .restaurant-details span {
 .next-btn {
     transform: translateY(-50%);
 }
-
-@media screen and (max-width: 768px) {
-    .scroll-btn {
-      display: none;
-    }
-}
   
   
   
@@ -141,7 +142,7 @@ h4, h5, ion-card-title, .restaurant-details span {
         cursor: pointer;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+        // gap: 16px;
         ion-card {
         background: white;
         border-radius: 12px;
@@ -157,12 +158,38 @@ h4, h5, ion-card-title, .restaurant-details span {
     }
 }
 
+@media screen and (max-width: 768px) {
+    .restaurant-cards {
+        .image-container {
+            height: 130px;
+        }
+    }
+    .scroll-btn {
+        display: none;
+    }
+}
+
 
 @media screen and (max-width: 576px) {
     .restaurant-cards {
-        grid-template-columns: 1fr !important;
+        ion-card-header {
+            padding: 0.5rem;
+            .restaurant-details-row {
+                display: block;
+                margin-top: 0.5rem;
+            }
+        }
     }
 }
+
+@media screen and (max-width: 430px) {
+    .restaurant-cards {
+        .image-container {
+            height: 100px;
+        }
+    }
+}
+
 
 .restaurant-details-row {
     display: flex;
@@ -175,25 +202,25 @@ h4, h5, ion-card-title, .restaurant-details span {
     justify-content: center;
     display: flex;
     align-items: center;
-    padding-left: 0.2rem;
     background-color: #FC6E2A;
     border-radius: 10px;
     color: white;
-    padding-right: 0.3rem;
-    padding-left: 0.3rem;
+    padding-right: 0.2rem;
+    padding-left: 0.2rem;
+    font-size: 12px;
 }
 
 .restaurant-details {
     display: flex;
     align-items: center;
     ion-icon {
-        font-size: 13px;
+        font-size: 12px;
         color: white;
         margin-left: 0.2rem;
     }
     span {
-        margin-left: 6px;
-        font-size: 14px;
+        margin-left: 1px;
+        font-size: 12px;
         color: #32343E;
     }
 }
@@ -285,9 +312,17 @@ h4, h5, ion-card-title, .restaurant-details span {
 }
 
 .image-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
     position: relative;
+    ion-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
-  
+
 .favorite-icon-main {
     position: absolute;
     top: 10px; 
@@ -299,7 +334,7 @@ h4, h5, ion-card-title, .restaurant-details span {
     display: flex;
     background-color: #FFEDE6;
     border-radius: 50%;
-    padding: 0.2rem;
+    padding: 0.3rem;
     .favorite-icon {
         color: #FC6E2A;
         box-shadow: rgba(28, 28, 28, 0.08) 0px 2px 8px;

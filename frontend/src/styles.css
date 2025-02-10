@@ -4,13 +4,13 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Success Notification */
-::ng-deep .successSnack {
+.successSnack :nth-child(1){
     background: #6ed672 !important;
     font-weight: bold !important;
     color: white !important;
 }
 /* Error Notification */
-::ng-deep .errorSnack {
+.errorSnack :nth-child(1) {
     background: #ff6257 !important;
     font-weight: bold !important;
     color: white !important;
