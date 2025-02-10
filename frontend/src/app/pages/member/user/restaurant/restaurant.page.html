@@ -164,7 +164,10 @@
                       </div>
                     </div>
                     <div class="item-image">
-                      <img src="assets/images/theka-coffee.jfif">
+                      <img *ngIf="item.itemImage; else defaultFilteredImage" src="{{item.itemImage}}">
+                      <ng-template #defaultFilteredImage>
+                        <img src="assets/images/default-cart-item.jpg">
+                      </ng-template>
                     </div>
                   </div>
                 </div>
@@ -186,7 +189,10 @@
                   </div>
                 </div>
                 <div class="item-image">
-                  <img src="assets/images/theka-coffee.jfif">
+                  <img *ngIf="item.itemImage; else defaultImage" src="{{item.itemImage}}">
+                  <ng-template #defaultImage>
+                    <img src="assets/images/default-cart-item.jpg">
+                  </ng-template>
                 </div>
               </div>
             </mat-expansion-panel>
