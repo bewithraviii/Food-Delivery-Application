@@ -84,7 +84,6 @@ export class RestaurantPage implements OnInit {
   fetchRestaurantDetails(id: string) {
     this.apiService.getRestaurantDetails(id).subscribe(
       (response: any) => {
-        console.log(response.payload);
         this.restaurantDetails = response.payload;
       },
       (error: any) => {
