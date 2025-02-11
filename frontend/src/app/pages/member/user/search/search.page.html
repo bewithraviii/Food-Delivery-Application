@@ -9,7 +9,7 @@
           <mat-form-field appearance="outline" class="search-field">
             <mat-label>What would you like to eat?</mat-label>
             <input matInput [(ngModel)]="searchQuery" (keyup.enter)="search()" (ngModelChange)="onSearchQueryChange($event)"/>
-            <mat-icon matSuffix (click)="search()" style="cursor: pointer;">search</mat-icon>
+            <mat-icon matSuffix *ngIf="searchQuery" (click)="removeSearch()" style="cursor: pointer;">clear</mat-icon>
           </mat-form-field>
         </div>
       </div>

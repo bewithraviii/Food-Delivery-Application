@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
+import { EMPTY, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -11,12 +13,12 @@ import { AddressExtractionService } from 'src/app/services/util/address-extracti
 export class SearchPage implements OnInit {
 
   @ViewChild('categoryCards', { read: ElementRef }) categoryCards!: ElementRef;
-
+  private searchSubject = new Subject<string>();
+  searchQuery: string = '';
+  selectedCategory: string = '';
   visibleCardsCount = 1;
   isPrevDisabled = true;
   isNextDisabled = false;
-  selectedCategory: string = '';
-  searchQuery: string = '';
   filteredData: any[] = [];
   restaurants: any[] = [];
   dataProcessing: boolean = false;
@@ -34,24 +36,27 @@ export class SearchPage implements OnInit {
     private cd: ChangeDetectorRef
   ) { }
 
-  async ngOnInit() {
-    await this.getCategories();
+  ngOnInit() {
+    this.getCategories();
+    this.setupSearchDebounce();
   }
 
-  
-
-  search(): void {
-    const trimmedQuery = this.searchQuery.trim();
-    if(this.selectedCategory !== trimmedQuery){
-      this.selectedCategory = '';
-    }
-    if(trimmedQuery) {
-      this.showData = true;
-      this.dataProcessing = true;
-      this.apiService.searchRestaurants(trimmedQuery).subscribe(
-        (data: any) => {
-          this.restaurants = [];
-          this.filteredData = [];
+  private setupSearchDebounce() {
+    this.searchSubject.pipe(
+      debounceTime(750),
+      distinctUntilChanged(),
+      switchMap(query => {
+        if (query.trim().length === 0) {
+          this.clearValues();
+          return EMPTY;
+        }
+        return this.apiService.searchRestaurants(query);
+      })
+    ).subscribe(
+      (data: any) => {
+        this.restaurants = [];
+        this.filteredData = [];
+        this.dataProcessing = true;
           if(data && data.payload.length > 0){
             data.payload.forEach((details: any) => { 
               const extractedAddress = this.addressExtractionService.extractAddressDetails(details.address);
@@ -61,16 +66,33 @@ export class SearchPage implements OnInit {
             });
           } else {
             this.restaurants = [];
+            this.filteredData = [];
           }
+          this.showData = true;
           this.dataProcessing = false;
-        },
-        (error: any) => {
-          console.error('Error searching restaurants:', error);
-          this.dataProcessing = false;
+      },
+      (error: any) => {
+        console.error('Error searching restaurants:', error);
+        this.dataProcessing = false;
+      }
+    );
+  }
 
-        }
-      );
+  search() {
+    const trimmedQuery = this.searchQuery.trim();
+    if(this.selectedCategory !== trimmedQuery){
+      this.selectedCategory = '';
     }
+    if(trimmedQuery) {
+      this.searchSubject.next(trimmedQuery);
+    } else {
+      this.clearValues();
+    }
+  }
+
+  removeSearch() {
+    this.clearSearchAndFilter();
+    this.clearValues();
   }
 
   applyFilters(event: any, filterType: string): void {
@@ -83,6 +105,7 @@ export class SearchPage implements OnInit {
         if (this.filterHighToLow) {
           filtered = filtered.sort((a, b) => b.restaurantRatings - a.restaurantRatings)
           this.filterLowToHigh = false;
+          this.filterRating4Plus = false;
         }
         break; 
       } 
@@ -91,6 +114,7 @@ export class SearchPage implements OnInit {
         if (this.filterLowToHigh) {
           filtered = filtered.sort((a, b) => a.restaurantRatings - b.restaurantRatings);
           this.filterHighToLow = false;
+          this.filterRating4Plus = false;
         }
         break; 
       } 
@@ -127,12 +151,20 @@ export class SearchPage implements OnInit {
     this.filteredData = [...this.restaurants];
   }
 
-  onSearchQueryChange(query: string): void {
-    if (!query.trim()) {
-      this.restaurants = [];
-      this.filteredData = [];
-      this.showData = false;
-    }
+  clearValues() {
+    this.restaurants = [];
+    this.filteredData = [];
+    this.showData = false;
+  }
+
+  clearSearchAndFilter() {
+    this.selectedCategory = '';
+    this.searchQuery = '';
+  }
+
+  onSearchQueryChange(query: string) {
+    this.clearValues();
+    this.searchSubject.next(query);
   }
 
   async getCategories() {
@@ -169,12 +201,12 @@ export class SearchPage implements OnInit {
 
   applyCategory(category: string){
     if (this.selectedCategory === category) {
-      this.selectedCategory = '';
-      this.searchQuery = '';
+      this.clearSearchAndFilter();
       this.showData = false;
     } else {
       this.selectedCategory = category;
       this.searchQuery = this.selectedCategory;
+      this.searchSubject.next(category);
     }
   }
 
