@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
+import { EMPTY, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -36,25 +36,27 @@ export class SearchPage implements OnInit {
     private cd: ChangeDetectorRef
   ) { }
 
-  async ngOnInit() {
-    await this.getCategories();
+  ngOnInit() {
+    this.getCategories();
     this.setupSearchDebounce();
   }
 
   private setupSearchDebounce() {
     this.searchSubject.pipe(
-      filter((query: string) => query.trim().length > 0),
-      debounceTime(1500),
+      debounceTime(750),
       distinctUntilChanged(),
       switchMap(query => {
-          this.showData = true;
-          this.dataProcessing = true;
-          return this.apiService.searchRestaurants(query);
+        if (query.trim().length === 0) {
+          this.clearValues();
+          return EMPTY;
+        }
+        return this.apiService.searchRestaurants(query);
       })
     ).subscribe(
       (data: any) => {
         this.restaurants = [];
         this.filteredData = [];
+        this.dataProcessing = true;
           if(data && data.payload.length > 0){
             data.payload.forEach((details: any) => { 
               const extractedAddress = this.addressExtractionService.extractAddressDetails(details.address);
@@ -64,7 +66,9 @@ export class SearchPage implements OnInit {
             });
           } else {
             this.restaurants = [];
+            this.filteredData = [];
           }
+          this.showData = true;
           this.dataProcessing = false;
       },
       (error: any) => {
@@ -76,7 +80,6 @@ export class SearchPage implements OnInit {
 
   search() {
     const trimmedQuery = this.searchQuery.trim();
-    console.log(trimmedQuery);
     if(this.selectedCategory !== trimmedQuery){
       this.selectedCategory = '';
     }
@@ -149,28 +152,19 @@ export class SearchPage implements OnInit {
   }
 
   clearValues() {
-    this.searchSubject.next('');
-    this.showData = false;
     this.restaurants = [];
     this.filteredData = [];
+    this.showData = false;
   }
 
   clearSearchAndFilter() {
     this.selectedCategory = '';
     this.searchQuery = '';
-    this.searchSubject.next('');
   }
 
   onSearchQueryChange(query: string) {
-    console.log(query);
-    this.searchQuery = query;
-    if (!query.trim()) {
-      this.clearValues();
-      this.restaurants = [];
-      this.filteredData = [];
-    } else {
-      this.searchSubject.next(query);
-    }
+    this.clearValues();
+    this.searchSubject.next(query);
   }
 
   async getCategories() {
