@@ -70,6 +70,10 @@ exports.getCuisineCategoryName = async(req, res) => {
     return await authService.getCuisineCategoryName(req, res);
 }
 
+exports.getAllCuisineCategoryDetails = async(req, res) => {
+    return await authService.getAllCuisineCategoryDetails(req, res);
+}
+
 exports.getCuisineCategoryRestaurantDetails = async(req, res) => {
     return await authService.getCuisineCategoryRestaurantDetails(req.body, res);
 }

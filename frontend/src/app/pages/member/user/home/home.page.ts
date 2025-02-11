@@ -293,24 +293,8 @@ export class HomePage implements OnInit {
   async getCategories() {
     this.apiService.getAllCategories().subscribe(
       (data: any) => {
-        const categoryImageMap: { [key: string]: string } = {
-          'Pizza': 'assets/images/pizza.jfif',
-          'Burger': 'assets/images/burger.jfif',
-          'Rolls': 'assets/images/rolls.jfif',
-          'Salads': 'assets/images/salads.jfif',
-          'Coffee': 'assets/images/coffee.jfif',
-          'Shakes': 'assets/images/shakes.jfif',
-          'Chinese': 'assets/images/chinese.jfif',
-          'North Indian': 'assets/images/north-indian.jfif',
-          'South Indian': 'assets/images/south-indian.jfif',
-          'Sandwhich': 'assets/images/sandwhich.jfif',
-          'Tea': 'assets/images/tea.jfif',
-          'Cake': 'assets/images/cake.jfif'
-        };
-
-        data.payload.forEach((categoryName: string) => {
-          const imagePath = categoryImageMap[categoryName]
-          this.categories.push({ name: categoryName, image: imagePath });
+        data.payload.forEach((category: any) => {
+          this.categories.push({ name: category.categoryName, image: category.categoryImage });
         });
       },
       (error: any) => {
