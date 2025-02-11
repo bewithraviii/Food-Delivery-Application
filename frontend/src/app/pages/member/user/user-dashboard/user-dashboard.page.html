@@ -30,7 +30,7 @@
         <div class="item-content" style="display: flex; justify-content: space-between; width: 100%;">
           <span>CART</span>
           <!-- Display badge only if there are items -->
-          <ion-badge *ngIf="!hidden">{{ cartItems }}</ion-badge>
+          <ion-badge *ngIf="hasItemsInCart()">{{ cartItems() }}</ion-badge>
         </div>
       </ion-item>
     </ion-list>
@@ -69,7 +69,7 @@
               <span>User</span>
             </div>
           </ion-button>
-          <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems" matBadgeSize="small" matBadgePosition="above after" [matBadgeHidden]="hidden">
+          <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems()" matBadgeSize="small" matBadgePosition="above after" [matBadgeHidden]="!hasItemsInCart()">
             <div class="iconButton">
               <div class="iconAndText">
                 <ion-icon name="cart-outline"></ion-icon>

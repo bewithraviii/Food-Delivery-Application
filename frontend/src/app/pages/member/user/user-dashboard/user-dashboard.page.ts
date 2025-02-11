@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { CartNotificationService } from 'src/app/services/util/cart-notification.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -14,29 +15,19 @@ export class UserDashboardPage implements OnInit {
   isMobileView?: boolean = false;
   logo: string = 'assets/svg/logo.svg';
   menuToggle: string = 'assets/svg/menu-toggle-btn.svg';
-  hidden = true;
   currentRoute: string = '';
-  cartItems: number = 0;
 
   constructor(
     private router: Router,
-    private apiService: ApiService,
-    private authService: AuthService,
-    private menu: MenuController
+    private menu: MenuController,
+    private cartNotificationService: CartNotificationService
   ) { }
+
+  cartItems = this.cartNotificationService.cartItems;
+  hasItemsInCart = this.cartNotificationService.hasItemsInCart;
 
   async ngOnInit() {
     this.checkScreenSize();
-    const userID = await this.authService.getUserId() || '';
-    this.apiService.getUserCartData(userID).subscribe(
-      (data: any) => {
-        if(data){
-          this.cartItems += 1;
-          this.hidden = false;
-        }
-      },
-      (error: any) => { console.log(error.message || 'Nav-Bar cart data error occurred')}
-    )
   }
 
   goToHome(){
