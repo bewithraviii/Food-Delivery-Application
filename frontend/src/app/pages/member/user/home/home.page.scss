@@ -8,6 +8,10 @@ ion-content {
     --background: #FFFFFF !important;
 }
 
+.home-page {
+    margin-bottom: 4rem;
+}
+
 .toolbar-container {
     padding-left: 3rem !important;
     padding-right: 3rem !important;
@@ -163,6 +167,7 @@ ion-content {
 @media screen and (max-width: 768px) {
     .home-page {
         margin-top: 3rem;
+        margin-bottom: 0;
     }
     .restaurant-cards {
         .image-container {

@@ -16,6 +16,7 @@ ion-content {
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
+    margin-bottom: 5rem;
 }
 
 .search-menu {
@@ -90,6 +91,7 @@ ion-content {
 @media screen and (max-width: 768px) {
     .search-page {
         margin-top: 4rem;
+        margin-bottom: 0;
     }
     .search-cards {
         .image-container {

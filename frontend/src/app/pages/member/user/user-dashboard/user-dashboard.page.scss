@@ -2,6 +2,11 @@
 
 ion-content {
   --background: #FFFFFF !important;
+  --overflow: hidden !important;
+}
+
+scroll-content {
+  overflow-y: auto !important;
 }
 
 ion-tab-bar {
