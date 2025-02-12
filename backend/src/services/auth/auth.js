@@ -445,6 +445,33 @@ const getCuisineCategoryName = async(req, res) => {
     }
 }
 
+const getAllCuisineCategoryDetails = async(req, res) => {
+    try {
+        const categoryLists = await Category.find();
+        if(!categoryLists) return res.status(404).json({ message: 'Cuisine category not found' });
+
+        const categoryData = [];
+        categoryLists.forEach(element => {
+            categoryData.push(
+                {
+                    categoryName: element.categoryName,
+                    categoryImage: element.categoryImage
+                }
+            );
+        });
+
+        const response = {
+            message: 'Cuisine category data fetched successfully',
+            payload: categoryData
+        }
+
+        return res.status(200).json(response);
+
+    } catch(err){
+        res.status(400).json({ message: err.message });
+    }
+}
+
 const getCuisineCategoryRestaurantDetails = async(body, res) => {
     if(!body){
         return res.status(400).json({ message: 'Cuisine category name is required' });
@@ -607,6 +634,7 @@ module.exports = {
     updateUserAddress,
     getCuisineCategory,
     getCuisineCategoryName,
+    getAllCuisineCategoryDetails,
     getCuisineCategoryRestaurantDetails,
     addCuisineCategory,
     addNewDeal,

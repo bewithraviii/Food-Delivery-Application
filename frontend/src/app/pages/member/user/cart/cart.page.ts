@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
+import { CartNotificationService } from 'src/app/services/util/cart-notification.service';
 
 
 
@@ -45,13 +46,14 @@ export class CartPage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private apiService: ApiService,
     private authService: AuthService,
     private addressExtractionService: AddressExtractionService,
     private loadingController: LoadingController,
     private dialogService: DialogService,
     private notificationService: NotificationService,
-    private router: Router
+    private cartNotificationService: CartNotificationService
   ) { }
 
   async ngOnInit() {
@@ -79,7 +81,7 @@ export class CartPage implements OnInit {
         }
       },
       (error: any) => {
-        console.log(error.message);
+        console.log(error.error.message);
       }
     );
     this.apiService.getUserDetails().subscribe(
@@ -172,9 +174,10 @@ export class CartPage implements OnInit {
       async(response: any) => {
         if(response){
           if(response.payload == null){
-            this.cartDataLoaded = false;
             this.dismissLoader();
-            window.location.reload();
+            this.cartNotificationService.clearCart();
+            this.cartDataLoaded = false;
+            this.cartExists = false;
           } else {
             this.cartDetails = [];
             await this.processData(response);
@@ -409,7 +412,7 @@ export class CartPage implements OnInit {
         this.cartDataLoaded = true;
       }
     } catch(error: any) {
-
+      console.log(error.error.message);
     }
   }
 
@@ -429,6 +432,10 @@ export class CartPage implements OnInit {
 
   async viewRestaurantDetails(restaurantId: any){
     this.router.navigate(["/user-dashboard/restaurant", restaurantId]);
+  }
+
+  navigateToHome() {
+    this.router.navigate(['user-dashboard/home']);
   }
 
 }

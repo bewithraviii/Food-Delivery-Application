@@ -4,7 +4,7 @@
       <div class="padding">
   
         <div *ngIf="!cartExists">
-          <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+          <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img" (click)="navigateToHome()">
         </div>
         <div *ngIf="cartExists">
           <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : 'd-flex flex-column-reverse justify-content-center'">

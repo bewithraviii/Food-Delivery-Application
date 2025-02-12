@@ -83,7 +83,7 @@ export class ApiService {
     return this.http.get(`${this.baseURL}/auth/fetchRestaurantDetails`);
   }
   getAllCategories(): Observable<any> {
-    return this.http.get(`${this.baseURL}/auth/getAllCuisineCategoryName`);
+    return this.http.get(`${this.baseURL}/auth/getAllCuisineCategoryDetails`);
   }
 
 

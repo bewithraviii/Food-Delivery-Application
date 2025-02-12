@@ -9,7 +9,7 @@
           <ion-img [src]="logo" alt="logo" (click)="goToHome()" style="cursor: pointer;"></ion-img>
         </ion-title>
         <ion-buttons slot="end">
-          <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems" matBadgeSize="small" matBadgePosition="above after" [matBadgeHidden]="hidden">
+          <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems()" matBadgeSize="small" matBadgePosition="above after" [matBadgeHidden]="!hasItemsInCart()">
             <ion-icon name="notifications-outline" style="font-size: 1.5rem; padding: 0.4rem;"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -79,14 +79,13 @@
                 <span>User</span>
               </div>
             </ion-button>
-            <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems" matBadgeSize="small" matBadgePosition="above after" [matBadgeHidden]="hidden">
+            <ion-button routerLink="/user-dashboard/cart" routerLinkActive="active" [matBadge]="cartItems()" matBadgeSize="small" matBadgePosition="above after" [matBadgeHidden]="!hasItemsInCart()">
               <div class="iconButton">
                 <div class="iconAndText">
                   <ion-icon name="cart-outline"></ion-icon>
                 </div>
                 <span>Cart</span>
               </div>
-              <!-- <ion-badge *ngIf="!hidden" color="primary">{{ cartItems }}</ion-badge> -->
             </ion-button>
           </ion-buttons>
         </ion-toolbar>

@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
+import { CartNotificationService } from 'src/app/services/util/cart-notification.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -29,15 +30,16 @@ export class RestaurantPage implements OnInit {
   userId: any = '';
 
   constructor(
+    private cd: ChangeDetectorRef,
+    private router: Router,
     private route: ActivatedRoute,
     private apiService: ApiService,
     private authService: AuthService,
-    private cd: ChangeDetectorRef,
     private dialogService: DialogService,
     private toastController: ToastController,
-    private notificationService: NotificationService,
     private loadingController: LoadingController,
-    private router: Router
+    private notificationService: NotificationService,
+    private cartNotificationService: CartNotificationService
   ) { }
 
   async ngOnInit() {
@@ -171,8 +173,11 @@ export class RestaurantPage implements OnInit {
     
     this.apiService.addToCart(payload).subscribe(
       (response: any) => {
-        console.log('Item added to cart:', response);
-        this.addedToCartNotify("ITEM ADDED TO CART");
+        if(response)
+        {
+          this.cartNotificationService.addItemToCart();
+          this.addedToCartNotify("ITEM ADDED TO CART");
+        }
       },
       (error: any) => {
         console.error('Error adding item to cart:', error);

@@ -18,6 +18,7 @@ router.get('/getRestaurantDetails/:id', authorizeRoles(Roles.USER, Roles.VENDOR)
 // Cuisine
 router.get('/getAllCuisineCategory', authController.getCuisineCategory);
 router.get('/getAllCuisineCategoryName', authController.getCuisineCategoryName);
+router.get('/getAllCuisineCategoryDetails', authController.getAllCuisineCategoryDetails);
 router.get('/getCuisineCategoryRestaurantDetails', authController.getCuisineCategoryRestaurantDetails);
 // Cart
 router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.getUserCart);

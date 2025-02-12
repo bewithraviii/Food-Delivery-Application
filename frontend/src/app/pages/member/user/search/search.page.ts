@@ -171,25 +171,9 @@ export class SearchPage implements OnInit {
     const selectedCategories = ['Pizza', 'Burger', 'Coffee', 'Shakes', 'North Indian', 'Chinese', 'Sandwhich', 'Tea'];
     this.apiService.getAllCategories().subscribe(
       (data: any) => {
-        const categoryImageMap: { [key: string]: string } = {
-          'Pizza': 'assets/images/pizza.jfif',
-          'Burger': 'assets/images/burger.jfif',
-          'Rolls': 'assets/images/rolls.jfif',
-          'Salads': 'assets/images/salads.jfif',
-          'Coffee': 'assets/images/coffee.jfif',
-          'Shakes': 'assets/images/shakes.jfif',
-          'Chinese': 'assets/images/chinese.jfif',
-          'North Indian': 'assets/images/north-indian.jfif',
-          'South Indian': 'assets/images/south-indian.jfif',
-          'Sandwhich': 'assets/images/sandwhich.jfif',
-          'Tea': 'assets/images/tea.jfif',
-          'Cake': 'assets/images/cake.jfif'
-        };
-
-        data.payload.forEach((categoryName: string) => {
-          if (selectedCategories.includes(categoryName)) {
-            const imagePath = categoryImageMap[categoryName]
-            this.categories.push({ name: categoryName, image: imagePath });
+        data.payload.forEach((category: any) => {
+          if (selectedCategories.includes(category.categoryName)) {
+            this.categories.push({ name: category.categoryName, image: category.categoryImage });
           }
         });
       },
@@ -202,7 +186,7 @@ export class SearchPage implements OnInit {
   applyCategory(category: string){
     if (this.selectedCategory === category) {
       this.clearSearchAndFilter();
-      this.showData = false;
+      this.clearValues();
     } else {
       this.selectedCategory = category;
       this.searchQuery = this.selectedCategory;
