@@ -4,6 +4,9 @@ h4, h5, ion-card-title, .restaurant-details span {
     
 }
 
+ion-content {
+    --background: #FFFFFF !important;
+}
 
 .toolbar-container {
     padding-left: 3rem !important;
@@ -16,7 +19,6 @@ h4, h5, ion-card-title, .restaurant-details span {
 
 .desktop-dashboard {
     background-color: #FFFFFF !important;
-    height: 100%;
 }
 
 .dashboard-content {
@@ -159,6 +161,9 @@ h4, h5, ion-card-title, .restaurant-details span {
 }
 
 @media screen and (max-width: 768px) {
+    .home-page {
+        margin-top: 3rem;
+    }
     .restaurant-cards {
         .image-container {
             height: 130px;

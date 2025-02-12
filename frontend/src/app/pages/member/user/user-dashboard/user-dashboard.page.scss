@@ -4,6 +4,11 @@ ion-content {
   --background: #FFFFFF !important;
 }
 
+ion-tab-bar {
+  --background: #FFFFFF !important;
+  --border: 1px solid;
+}
+
 ion-img {
   width: 4rem; 
   height: 3rem;
@@ -13,8 +18,21 @@ ion-img {
   --color: #FFFFFF !important;;
 }
 
+ion-tab-button.active {
+  color: #FF7622;
+}
+ion-tab-button {
+  --color: var(--color);
+}
+ion-tab-button ion-icon {
+  color: var(--color);
+}
+ion-tab-button ion-label {
+  color: var(--color);
+}
+
 ion-button.active {
-  color: #FF7622 !important;
+  --color: #FF7622 !important;
 }
 
 /* Header Styling */
@@ -25,24 +43,24 @@ ion-header {
 
 
 
-ion-menu {
-  --background: transparent;
-}
+// ion-menu {
+//   --background: transparent;
+// }
 
-ion-menu ion-list {
-  --background: transparent;
-}
+// ion-menu ion-list {
+//   --background: transparent;
+// }
 
-ion-menu ion-item {
-  --background: transparent;
-  color: #676767;
-  font-weight: 500;
-}
+// ion-menu ion-item {
+//   --background: transparent;
+//   color: #676767;
+//   font-weight: 500;
+// }
 
-ion-menu ion-item.activated,
-ion-menu ion-item[aria-current="page"] {
-  background-color: rgba(255, 165, 0, 0.2);
-}
+// ion-menu ion-item.activated,
+// ion-menu ion-item[aria-current="page"] {
+//   background-color: rgba(255, 165, 0, 0.2);
+// }
 
 ion-tab-bar {
   --background: #FFFFFF !important;
@@ -115,6 +133,16 @@ ion-button.active {
   display: flex ;
   background-color: #FC6E2A;
 }
+
+@media screen and (max-width: 768px) {
+  ::ng-deep .mat-badge-content {
+    top: -3px !important;
+    right: -1px !important;
+  }
+}
+
+
+
 
 // ::ng-deep .mat-badge-hidden .mat-badge-content{
 //     display: none;

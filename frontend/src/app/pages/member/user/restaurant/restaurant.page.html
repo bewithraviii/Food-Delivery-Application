@@ -1,259 +1,261 @@
-<div class="restaurant-page" style="padding-top: 2rem;">
-  <div class="container">
-    <!-- Restaurant Name and Info -->
-    <div class="row padding">      
-      <div class="restaurant">
-        <div class="restaurant-title">
-          <h1>{{ restaurantDetails.name }}</h1>
-          <div>
-            <button (click)="addToFavorite(restaurantId)" class="favorite-button">
-              <mat-icon class="favorite-icon">{{ isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
-            </button>
-          </div>
-        </div>
-        <div class="restaurant-info">
-          <div class="restaurant-address col-md-6">
-            <div>{{restaurantDetails.address}}</div>
-          </div>
-          <div class="ratingsCornerCenter  col-md-6">
-            <div class="ratingsCorner">
-              <div class="ratings">
-                <mat-icon style="font-size: 18px;height: fit-content; width: fit-content; margin-right: 0.2rem;">star</mat-icon> {{ restaurantDetails.restaurantRatings }} 
-              </div>
-              <div *ngIf="restaurantDetails.restaurantRatingsCount > 0">
-                ({{ restaurantDetails.restaurantRatingsCount }} ratings)
-              </div>
+<ion-content>
+  <div class="restaurant-page">
+    <div class="container">
+      <!-- Restaurant Name and Info -->
+      <div class="row padding">      
+        <div class="restaurant">
+          <div class="restaurant-title">
+            <h1>{{ restaurantDetails.name }}</h1>
+            <div>
+              <button (click)="addToFavorite(restaurantId)" class="favorite-button">
+                <mat-icon class="favorite-icon">{{ isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+              </button>
             </div>
-            <!-- <div class="averageCostCorner">
-              <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> ₹{{ restaurantDetails.averageCost || 800 }} for two
+          </div>
+          <div class="restaurant-info">
+            <div class="restaurant-address col-md-6">
+              <div>{{restaurantDetails.address}}</div>
+            </div>
+            <div class="ratingsCornerCenter  col-md-6">
+              <div class="ratingsCorner">
+                <div class="ratings">
+                  <mat-icon style="font-size: 18px;height: fit-content; width: fit-content; margin-right: 0.2rem;">star</mat-icon> {{ restaurantDetails.restaurantRatings }} 
+                </div>
+                <div *ngIf="restaurantDetails.restaurantRatingsCount > 0">
+                  ({{ restaurantDetails.restaurantRatingsCount }} ratings)
+                </div>
+              </div>
+              <!-- <div class="averageCostCorner">
+                <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> ₹{{ restaurantDetails.averageCost || 800 }} for two
+              </div> -->
+            </div>
+          </div>
+          <div class="restaurant-cuisine">
+            <div>{{"Cuisine" | uppercase}}: 
+              <span *ngFor="let cuisine of restaurantDetails.cuisineType; let i = index; let last = last">{{ cuisine.categoryName }} <span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> </span>
+            </div>
+            <div class="averageCostCorner">
+              ₹{{ restaurantDetails.priceForTwo }} for two
+            </div>
+            <!-- <div style="font-size: 16px;font-weight: 500;">
+              <span>Delivery In: </span>
+              <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
             </div> -->
           </div>
-        </div>
-        <div class="restaurant-cuisine">
-          <div>{{"Cuisine" | uppercase}}: 
-            <span *ngFor="let cuisine of restaurantDetails.cuisineType; let i = index; let last = last">{{ cuisine.categoryName }} <span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> </span>
-          </div>
-          <div class="averageCostCorner">
-            ₹{{ restaurantDetails.priceForTwo }} for two
-          </div>
-          <!-- <div style="font-size: 16px;font-weight: 500;">
-            <span>Delivery In: </span>
-            <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
-          </div> -->
-        </div>
-        <div class="restaurant-meta">
-          <div class="restaurant-time">
-            <span style="color: #FC6E2A; font-weight: 500;">{{"Open now" | uppercase}}</span>
-            <span style="margin-left: 0.5rem; margin-right: 0.5rem; color: #646982;">•</span>
-            <span style="color: #646982; display: flex;">
-              <div>
-                12midnight - 2am, 11am – 12midnight (Today)
-              </div>
-              <div class="restaurant-time-info">
-                <ion-icon id="addressInfo-hover-trigger" name="information-circle"></ion-icon>
-                <ion-popover trigger="addressInfo-hover-trigger" triggerAction="hover">
-                  <ng-template class="timing-info-popup">
-                    <ion-title class="restaurant-time-info-content">
-                      {{"Opening Hours" | uppercase}}
-                    </ion-title>
-                    <ion-content
-                    style="
-                    --padding-bottom: 1rem;
-                    --padding-start: 1rem;
-                    --padding-end: 1rem;
-                    --color: #646982;
-                    --background: white !important;"><span style="font-weight: 500;">Mon-Sun:</span> 12midnight - 2am, 11am – 12midnight</ion-content>
-                  </ng-template>
-                </ion-popover>
-              </div>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Deals -->
-    <div class="row padding" *ngIf="offersAndDeals.length > 0">
-      <div class="deals-section">
-        <div class="d-flex bd-highlight">
-          <div class="p-2 bd-highlight">
-            <h5 style="margin: 0; color: #555;">{{"Deals for you" | uppercase}}</h5>
-          </div>
-          <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
-            <div style="padding: 0.5rem;" class="center">
-              <ion-icon  (click)="scrollLeft()" class="scroll-btn prev-btn" [disabled]="isPrevDisabled" name="arrow-back-outline"></ion-icon>
-            </div>
-            <div style="padding: 0.5rem;" class="center">
-              <ion-icon (click)="scrollRight()" class="scroll-btn next-btn" [disabled]="isNextDisabled" name="arrow-forward-outline"></ion-icon>
+          <div class="restaurant-meta">
+            <div class="restaurant-time">
+              <span style="color: #FC6E2A; font-weight: 500;">{{"Open now" | uppercase}}</span>
+              <span style="margin-left: 0.5rem; margin-right: 0.5rem; color: #646982;">•</span>
+              <span style="color: #646982; display: flex;">
+                <div>
+                  12midnight - 2am, 11am – 12midnight (Today)
+                </div>
+                <div class="restaurant-time-info">
+                  <ion-icon id="addressInfo-hover-trigger" name="information-circle"></ion-icon>
+                  <ion-popover trigger="addressInfo-hover-trigger" triggerAction="hover">
+                    <ng-template class="timing-info-popup">
+                      <ion-title class="restaurant-time-info-content">
+                        {{"Opening Hours" | uppercase}}
+                      </ion-title>
+                      <ion-content
+                      style="
+                      --padding-bottom: 1rem;
+                      --padding-start: 1rem;
+                      --padding-end: 1rem;
+                      --color: #646982;
+                      --background: white !important;"><span style="font-weight: 500;">Mon-Sun:</span> 12midnight - 2am, 11am – 12midnight</ion-content>
+                    </ng-template>
+                  </ion-popover>
+                </div>
+              </span>
             </div>
           </div>
         </div>
-        <div class="deal-cards-wrapper">
-          <div class="deal-cards" #dealCards>
-            <ion-card *ngFor="let deal of offersAndDeals" class="deal-card" (click)="openDealDialog(deal)">
-              <div style="display: flex; padding: 0.3rem;">
-                <ion-img src="assets/icons/offer.png"></ion-img>
-              </div>
-              <div style="width: 100%;">
-                <ion-card-header style="background-color: transparent; padding: 0.5rem; width: 100%;">
-                  <ion-card-title>{{ deal.title }}</ion-card-title>
-                  <ion-card-subtitle>USE {{ deal.code }}</ion-card-subtitle>
-                </ion-card-header>
-              </div>
-            </ion-card>
-          </div>
-        </div>
       </div>
-    </div>
-
-
-    <!-- Menu -->
-    <div class="row padding">
-      <div class="menu-main">
-
-        <!-- Menu Header Section-->
-        <div class="menu-header">
-          <span class="line-left"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
-          <span class="menu-header-text" style="color: #555;">MENU</span>
-          <span class="line-right"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
-        </div>
   
-        <!-- Search Section-->
-        <div class="search-bar-section">
-          <div class="row">
-            <div class="col-md-6 search-details-main">
-              <div class="search-details p-2 bd-highlight">
-                <span class="bd-highlight"  style="font-size: 18px; color: #555;">{{"Order Online" | uppercase}}</span>
-                <div style="color: #A0A5BA; font-size: 14px;">
-                  <span>Delivery in: </span>
-                  <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
+      <!-- Deals -->
+      <div class="row padding" *ngIf="offersAndDeals.length > 0">
+        <div class="deals-section">
+          <div class="d-flex bd-highlight">
+            <div class="p-2 bd-highlight">
+              <h5 style="margin: 0; color: #555;">{{"Deals for you" | uppercase}}</h5>
+            </div>
+            <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
+              <div style="padding: 0.5rem;" class="center">
+                <ion-icon  (click)="scrollLeft()" class="scroll-btn prev-btn" [disabled]="isPrevDisabled" name="arrow-back-outline"></ion-icon>
+              </div>
+              <div style="padding: 0.5rem;" class="center">
+                <ion-icon (click)="scrollRight()" class="scroll-btn next-btn" [disabled]="isNextDisabled" name="arrow-forward-outline"></ion-icon>
+              </div>
+            </div>
+          </div>
+          <div class="deal-cards-wrapper">
+            <div class="deal-cards" #dealCards>
+              <ion-card *ngFor="let deal of offersAndDeals" class="deal-card" (click)="openDealDialog(deal)">
+                <div style="display: flex; padding: 0.3rem;">
+                  <ion-img src="assets/icons/offer.png"></ion-img>
+                </div>
+                <div style="width: 100%;">
+                  <ion-card-header style="background-color: transparent; padding: 0.5rem; width: 100%;">
+                    <ion-card-title>{{ deal.title }}</ion-card-title>
+                    <ion-card-subtitle>USE {{ deal.code }}</ion-card-subtitle>
+                  </ion-card-header>
+                </div>
+              </ion-card>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      <!-- Menu -->
+      <div class="row padding">
+        <div class="menu-main">
+  
+          <!-- Menu Header Section-->
+          <div class="menu-header">
+            <span class="line-left"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
+            <span class="menu-header-text" style="color: #555;">MENU</span>
+            <span class="line-right"><img src="assets/svg/noun-divider-second-cropped.svg"></span>
+          </div>
+    
+          <!-- Search Section-->
+          <div class="search-bar-section">
+            <div class="row">
+              <div class="col-md-6 search-details-main">
+                <div class="search-details p-2 bd-highlight">
+                  <span class="bd-highlight"  style="font-size: 18px; color: #555;">{{"Order Online" | uppercase}}</span>
+                  <div style="color: #A0A5BA; font-size: 14px;">
+                    <span>Delivery in: </span>
+                    <span>{{ restaurantDetails.deliveryTime || 30 }} mins</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 search-menu-main">
+                <div class="search-menu">
+                  <mat-form-field appearance="outline" class="search-field">
+                    <mat-label>Search within menu</mat-label>
+                    <input matInput [(ngModel)]="searchQuery" (input)="filterMenu()" />
+                    <mat-icon matSuffix>search</mat-icon>
+                  </mat-form-field>
                 </div>
               </div>
             </div>
-            <div class="col-md-6 search-menu-main">
-              <div class="search-menu">
-                <mat-form-field appearance="outline" class="search-field">
-                  <mat-label>Search within menu</mat-label>
-                  <input matInput [(ngModel)]="searchQuery" (input)="filterMenu()" />
-                  <mat-icon matSuffix>search</mat-icon>
-                </mat-form-field>
-              </div>
-            </div>
           </div>
-        </div>
-  
-        <!-- Menu Section -->
-        <div class="menu-section">
-          <mat-divider></mat-divider>
-          <mat-accordion multi>
-            <div *ngIf="filteredMenu.length > 0">
-              <mat-expansion-panel class="menu-list" expanded="true">
-                <mat-expansion-panel-header>
-                  <mat-panel-title class="menu-title">
-                    {{ "Recommended" | uppercase }}
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div *ngFor="let menuItems of filteredMenu">
-                  <div class="menu-item" *ngFor="let item of menuItems">
-                    <div class="item-info">
-                      <span class="menu-item-title" style="color: #555;">{{ item.name }}</span>
-                      <p class="menu-item-desc">{{ item.description }}</p>
-                      <span class="price" style="color: #555; margin-left: 0.2rem;">₹{{ item.price }}</span>
-                      <div class="menu-item-add-to-cart">
-                        <button mat-raised-button class="add-btn" (click)="addToCart(item)">ADD</button>
+    
+          <!-- Menu Section -->
+          <div class="menu-section">
+            <mat-divider></mat-divider>
+            <mat-accordion multi>
+              <div *ngIf="filteredMenu.length > 0">
+                <mat-expansion-panel class="menu-list" expanded="true">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="menu-title">
+                      {{ "Recommended" | uppercase }}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let menuItems of filteredMenu">
+                    <div class="menu-item" *ngFor="let item of menuItems">
+                      <div class="item-info">
+                        <span class="menu-item-title" style="color: #555;">{{ item.name }}</span>
+                        <p class="menu-item-desc">{{ item.description }}</p>
+                        <span class="price" style="color: #555; margin-left: 0.2rem;">₹{{ item.price }}</span>
+                        <div class="menu-item-add-to-cart">
+                          <button mat-raised-button class="add-btn" (click)="addToCart(item)">ADD</button>
+                        </div>
+                      </div>
+                      <div class="item-image">
+                        <img *ngIf="item.itemImage; else defaultFilteredImage" src="{{item.itemImage}}">
+                        <ng-template #defaultFilteredImage>
+                          <img src="assets/images/default-cart-item.jpg">
+                        </ng-template>
                       </div>
                     </div>
-                    <div class="item-image">
-                      <img *ngIf="item.itemImage; else defaultFilteredImage" src="{{item.itemImage}}">
-                      <ng-template #defaultFilteredImage>
-                        <img src="assets/images/default-cart-item.jpg">
-                      </ng-template>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+              <mat-expansion-panel *ngFor="let category of restaurantDetails.menu" class="menu-list" expanded="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="menu-title">
+                    {{ category.subCategoryName | uppercase }} ({{ category.items.length }})
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="menu-item" *ngFor="let item of category.items">
+                  <div class="item-info">
+                    <span class="menu-item-title" style="color: #555;">{{ item.name }}</span>
+                    <p class="menu-item-desc">{{ item.description }}</p>
+                    <span class="price" style="color: #555; margin-left: 0.2rem;">₹{{ item.price }}</span>
+                    <div class="menu-item-add-to-cart">
+                      <button mat-raised-button class="add-btn" (click)="addToCart(item)">ADD</button>
                     </div>
+                  </div>
+                  <div class="item-image">
+                    <img *ngIf="item.itemImage; else defaultImage" src="{{item.itemImage}}">
+                    <ng-template #defaultImage>
+                      <img src="assets/images/default-cart-item.jpg">
+                    </ng-template>
                   </div>
                 </div>
               </mat-expansion-panel>
-            </div>
-            <mat-expansion-panel *ngFor="let category of restaurantDetails.menu" class="menu-list" expanded="true">
-              <mat-expansion-panel-header>
-                <mat-panel-title class="menu-title">
-                  {{ category.subCategoryName | uppercase }} ({{ category.items.length }})
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <div class="menu-item" *ngFor="let item of category.items">
-                <div class="item-info">
-                  <span class="menu-item-title" style="color: #555;">{{ item.name }}</span>
-                  <p class="menu-item-desc">{{ item.description }}</p>
-                  <span class="price" style="color: #555; margin-left: 0.2rem;">₹{{ item.price }}</span>
-                  <div class="menu-item-add-to-cart">
-                    <button mat-raised-button class="add-btn" (click)="addToCart(item)">ADD</button>
-                  </div>
-                </div>
-                <div class="item-image">
-                  <img *ngIf="item.itemImage; else defaultImage" src="{{item.itemImage}}">
-                  <ng-template #defaultImage>
-                    <img src="assets/images/default-cart-item.jpg">
-                  </ng-template>
-                </div>
-              </div>
-            </mat-expansion-panel>
-          </mat-accordion>
+            </mat-accordion>
+          </div>
+  
         </div>
-
       </div>
-    </div>
-
-
-    <!-- Footer -->
-    <div>
-      <footer class="footer-container">
-        <div class="footer-details">
-          <div class="footer-details-content">
-            <div style="width: 4rem;">
-              <img src="assets/images/fssai-seeklogo.png">
+  
+  
+      <!-- Footer -->
+      <div>
+        <footer class="footer-container">
+          <div class="footer-details">
+            <div class="footer-details-content">
+              <div style="width: 4rem;">
+                <img src="assets/images/fssai-seeklogo.png">
+              </div>
+              <p style="margin-top: 1rem;">License No. {{ restaurantDetails.FSSAILicense || 10717026000111}}</p>
             </div>
-            <p style="margin-top: 1rem;">License No. {{ restaurantDetails.FSSAILicense || 10717026000111}}</p>
+            <mat-divider></mat-divider>
+            <div class="footer-details-content">
+              <h5>Fundamentals</h5>
+              <p>{{ restaurantDetails.name }} <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> {{ restaurantDetails.description || "Descriptions of the restaurant and about it." }}</p>
+            </div>
+            <mat-divider></mat-divider>
           </div>
-          <mat-divider></mat-divider>
-          <div class="footer-details-content">
-            <h5>Fundamentals</h5>
-            <p>{{ restaurantDetails.name }} <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> {{ restaurantDetails.description || "Descriptions of the restaurant and about it." }}</p>
+          <app-footer></app-footer>
+          <!-- <div class="footer-content" style="padding: 2rem;">
+            <div class="footer-section">
+              <h3>{{"Company" | uppercase}}</h3>
+              <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Contact</a></li>
+              </ul>
+            </div>
+            <div class="footer-section">
+              <h3>{{"Support" | uppercase}}</h3>
+              <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">Support Policy</a></li>
+              </ul>
+            </div>
+            <div class="footer-section">
+              <h3>{{"Social" | uppercase}}</h3>
+              <ul class="social-links">
+                <li><a href="#"><ion-icon name="logo-instagram"></ion-icon></a></li>
+                <li><a href="#"><ion-icon name="logo-facebook"></ion-icon></a></li>
+                <li><a href="#"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+                <li><a href="#"><ion-icon name="logo-pinterest"></ion-icon></a></li>
+              </ul>
+            </div>
           </div>
-          <mat-divider></mat-divider>
-        </div>
-        <app-footer></app-footer>
-        <!-- <div class="footer-content" style="padding: 2rem;">
-          <div class="footer-section">
-            <h3>{{"Company" | uppercase}}</h3>
-            <ul>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Careers</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h3>{{"Support" | uppercase}}</h3>
-            <ul>
-              <li><a href="#">Help Center</a></li>
-              <li><a href="#">FAQs</a></li>
-              <li><a href="#">Support Policy</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h3>{{"Social" | uppercase}}</h3>
-            <ul class="social-links">
-              <li><a href="#"><ion-icon name="logo-instagram"></ion-icon></a></li>
-              <li><a href="#"><ion-icon name="logo-facebook"></ion-icon></a></li>
-              <li><a href="#"><ion-icon name="logo-linkedin"></ion-icon></a></li>
-              <li><a href="#"><ion-icon name="logo-pinterest"></ion-icon></a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <img src='assets/svg/logo.svg'> <p>&copy; 2024 Food Delivery Application. All rights reserved.</p>
-        </div> -->
-      </footer>
+          <div class="footer-bottom">
+            <img src='assets/svg/logo.svg'> <p>&copy; 2024 Food Delivery Application. All rights reserved.</p>
+          </div> -->
+        </footer>
+      </div>
+  
+  
     </div>
-
-
   </div>
-</div>
+</ion-content>

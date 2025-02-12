@@ -1,127 +1,129 @@
-<div class="search-page" style="padding-top: 2rem; padding-bottom: 2rem;">
-  <div class="container">
-
-    <!-- Search Section -->
-    <div class="row padding">
-      <div class="search-menu-main p-0">
-        <h4 style="color: #1E1D1D; padding-bottom: 0.5rem;">{{"Search for restaurants and cuisine" | uppercase}}</h4>
-        <div class="search-menu">
-          <mat-form-field appearance="outline" class="search-field">
-            <mat-label>What would you like to eat?</mat-label>
-            <input matInput [(ngModel)]="searchQuery" (keyup.enter)="search()" (ngModelChange)="onSearchQueryChange($event)"/>
-            <mat-icon matSuffix *ngIf="searchQuery" (click)="removeSearch()" style="cursor: pointer;">clear</mat-icon>
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
-
-    <!-- Featured Categories -->
-    <div class="row padding">
-      <div class="categories-section p-0">
-        <div class="d-flex bd-highlight">
-          <div class="p-2 bd-highlight">
-            <h4 style="margin: 0;">{{"Popular Cuisines" | uppercase}}</h4>
-          </div>
-          <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
-            <div style="padding: 0.5rem;">
-              <ion-icon  (click)="scrollLeft()" class="scroll-btn prev-btn" [disabled]="isPrevDisabled" name="arrow-back-outline"></ion-icon>
-            </div>
-            <div style="padding: 0.5rem;" >
-              <ion-icon (click)="scrollRight()" class="scroll-btn next-btn" [disabled]="isNextDisabled" name="arrow-forward-outline"></ion-icon>
-            </div>
-          </div>
-        </div>
-        <div class="category-cards-wrapper">
-          <div class="category-cards" #categoryCards>
-            <ion-card *ngFor="let category of categories" class="category-card" (click)="applyCategory(category.name)" [ngClass]="{'selected-category': selectedCategory === category.name}">
-              <ion-img [src]="category.image"></ion-img>
-              <ion-card-header style="background-color: transparent; padding: 0.5rem;">
-                <ion-card-title>{{ category.name }}</ion-card-title>
-              </ion-card-header>
-            </ion-card>
+<ion-content>
+  <div class="search-page">
+    <div class="container">
+  
+      <!-- Search Section -->
+      <div class="row padding">
+        <div class="search-menu-main p-0">
+          <h4 style="color: #1E1D1D; padding-bottom: 0.5rem;">{{"Search for restaurants and cuisine" | uppercase}}</h4>
+          <div class="search-menu">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>What would you like to eat?</mat-label>
+              <input matInput [(ngModel)]="searchQuery" (keyup.enter)="search()" (ngModelChange)="onSearchQueryChange($event)"/>
+              <mat-icon matSuffix *ngIf="searchQuery" (click)="removeSearch()" style="cursor: pointer;">clear</mat-icon>
+            </mat-form-field>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Display search results -->
-    <div class="row padding">
-      <div class="search-section p-0">
-        <div *ngIf="!dataProcessing">
-          <div *ngIf="showData && searchQuery">
-            <div class="d-flex bd-highlight">
-              <div class="p-2 bd-highlight">
-                <h4 style="margin: 0; color: #1E1D1D;">{{"Your Result" | uppercase}}</h4>
+  
+      <!-- Featured Categories -->
+      <div class="row padding">
+        <div class="categories-section p-0">
+          <div class="d-flex bd-highlight">
+            <div class="p-2 bd-highlight">
+              <h4 style="margin: 0;">{{"Popular Cuisines" | uppercase}}</h4>
+            </div>
+            <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
+              <div style="padding: 0.5rem;">
+                <ion-icon  (click)="scrollLeft()" class="scroll-btn prev-btn" [disabled]="isPrevDisabled" name="arrow-back-outline"></ion-icon>
+              </div>
+              <div style="padding: 0.5rem;" >
+                <ion-icon (click)="scrollRight()" class="scroll-btn next-btn" [disabled]="isNextDisabled" name="arrow-forward-outline"></ion-icon>
               </div>
             </div>
-            <div *ngIf="filteredData.length > 0; else noResults">
-              <div class="manage-search">
-                <div class="filter-section" *ngIf="filteredData.length > 0">
-                  <div class="filter-btn">
-                    <button mat-button [matMenuTriggerFor]="filterMenu">Sort By <mat-icon class="material-icons-outlined" style="margin: 0;">keyboard_arrow_down</mat-icon></button>
-                    <mat-menu #filterMenu="matMenu">
-                      <mat-checkbox [checked]="filterHighToLow" (change)="applyFilters($event, 'highToLow')">Ratings(High to Low)</mat-checkbox>
-                      <br />
-                      <mat-checkbox [checked]="filterLowToHigh" (change)="applyFilters($event, 'lowToHigh')">Ratings(Low to High)</mat-checkbox>
-                      <br />
-                      <mat-checkbox [checked]="filterRating4Plus" (change)="applyFilters($event, 'rating4Plus')">Ratings(4+)</mat-checkbox>
-                    </mat-menu>
-                  </div>
-                  <div class="filter-btn">
-                    <button mat-button (click)="clearFilters()" [disabled]="!this.filterRating4Plus && !this.filterHighToLow">clear</button>
-                  </div>
+          </div>
+          <div class="category-cards-wrapper">
+            <div class="category-cards" #categoryCards>
+              <ion-card *ngFor="let category of categories" class="category-card" (click)="applyCategory(category.name)" [ngClass]="{'selected-category': selectedCategory === category.name}">
+                <ion-img [src]="category.image"></ion-img>
+                <ion-card-header style="background-color: transparent; padding: 0.5rem;">
+                  <ion-card-title>{{ category.name }}</ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Display search results -->
+      <div class="row padding">
+        <div class="search-section p-0">
+          <div *ngIf="!dataProcessing">
+            <div *ngIf="showData && searchQuery">
+              <div class="d-flex bd-highlight">
+                <div class="p-2 bd-highlight">
+                  <h4 style="margin: 0; color: #1E1D1D;">{{"Your Result" | uppercase}}</h4>
                 </div>
-                <mat-divider></mat-divider>
-                <div class="search-cards">
-                  <ion-card *ngFor="let restaurant of filteredData" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
-                    <div class="image-container">
-                      <ion-img src="{{restaurant.profileImage}}"></ion-img>
-                      <div *ngIf="restaurant.favorite" class="favorite-icon-main">
-                        <ion-icon class="favorite-icon" name="heart"></ion-icon>
-                      </div>
+              </div>
+              <div *ngIf="filteredData.length > 0; else noResults">
+                <div class="manage-search">
+                  <div class="filter-section" *ngIf="filteredData.length > 0">
+                    <div class="filter-btn">
+                      <button mat-button [matMenuTriggerFor]="filterMenu">Sort By <mat-icon class="material-icons-outlined" style="margin: 0;">keyboard_arrow_down</mat-icon></button>
+                      <mat-menu #filterMenu="matMenu">
+                        <mat-checkbox [checked]="filterHighToLow" (change)="applyFilters($event, 'highToLow')">Ratings(High to Low)</mat-checkbox>
+                        <br />
+                        <mat-checkbox [checked]="filterLowToHigh" (change)="applyFilters($event, 'lowToHigh')">Ratings(Low to High)</mat-checkbox>
+                        <br />
+                        <mat-checkbox [checked]="filterRating4Plus" (change)="applyFilters($event, 'rating4Plus')">Ratings(4+)</mat-checkbox>
+                      </mat-menu>
                     </div>
-                    <ion-card-header>
-                      <div class="search-details-row">
-                        <div>
-                          <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
+                    <div class="filter-btn">
+                      <button mat-button (click)="clearFilters()" [disabled]="!this.filterRating4Plus && !this.filterHighToLow">clear</button>
+                    </div>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="search-cards">
+                    <ion-card *ngFor="let restaurant of filteredData" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
+                      <div class="image-container">
+                        <ion-img src="{{restaurant.profileImage}}"></ion-img>
+                        <div *ngIf="restaurant.favorite" class="favorite-icon-main">
+                          <ion-icon class="favorite-icon" name="heart"></ion-icon>
                         </div>
-                        <div class="search-details">
-                          <div class="search-design">
-                            {{ restaurant.restaurantRatings }} <ion-icon name="star"></ion-icon>
+                      </div>
+                      <ion-card-header>
+                        <div class="search-details-row">
+                          <div>
+                            <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
+                          </div>
+                          <div class="search-details">
+                            <div class="search-design">
+                              {{ restaurant.restaurantRatings }} <ion-icon name="star"></ion-icon>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="search-details-row">
-                        <div style="display: flex;">
-                          <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisineType; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
+                        <div class="search-details-row">
+                          <div style="display: flex;">
+                            <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisineType; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
+                          </div>
+                          <div>
+                            <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
+                          </div>
                         </div>
-                        <div>
-                          <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
+                        <div class="search-details-row">
+                          <div class="col-md-7" style="font-size: 12px;">
+                            <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
+                            <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
+                          </div>
                         </div>
-                      </div>
-                      <div class="search-details-row">
-                        <div class="col-md-7" style="font-size: 12px;">
-                          <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
-                          <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
-                        </div>
-                      </div>
-                    </ion-card-header>
-                  </ion-card>
+                      </ion-card-header>
+                    </ion-card>
+                  </div>
                 </div>
               </div>
+              <ng-template #noResults>
+                <div class="manage-search">
+                  <p *ngIf="searchQuery" style="margin: 0; padding: 1rem;">No restaurants found.</p>
+                </div>
+              </ng-template>
             </div>
-            <ng-template #noResults>
-              <div class="manage-search">
-                <p *ngIf="searchQuery" style="margin: 0; padding: 1rem;">No restaurants found.</p>
-              </div>
-            </ng-template>
+          </div>
+          <div style="justify-content: center; display: flex;" *ngIf="dataProcessing">
+            <ion-spinner name="dots" style="color: #FB6D3A !important;"></ion-spinner>
           </div>
         </div>
-        <div style="justify-content: center; display: flex;" *ngIf="dataProcessing">
-          <ion-spinner name="dots" style="color: #FB6D3A !important;"></ion-spinner>
-        </div>
       </div>
+  
     </div>
-
   </div>
-</div>
+</ion-content>
