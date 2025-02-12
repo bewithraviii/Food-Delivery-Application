@@ -35,7 +35,7 @@ export class UserDashboardPage implements OnInit {
   }
 
   goToUser(){
-    this.router.navigate(['/user-dashboard/user'])
+    this.router.navigate(['/user-dashboard/profile'])
   }
 
   goToCart(){
