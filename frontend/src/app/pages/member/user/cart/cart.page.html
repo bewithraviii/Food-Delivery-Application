@@ -1,160 +1,162 @@
-<div class="cart-page">
-  <div class="container">    
-    <div class="padding">
-
-      <div *ngIf="!cartExists">
-        <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img" (click)="navigateToHome()">
-      </div>
-      <div *ngIf="cartExists">
-        <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : 'd-flex flex-column-reverse justify-content-center'">
-          <!-- Left Section - Addresses -->
-          <div class="col-md-7 process">
-            <mat-vertical-stepper #stepper [linear]="true">
+<ion-content>
+  <div class="cart-page">
+    <div class="container">    
+      <div class="padding">
   
-              <mat-step [stepControl]="addressFormGroup">
-                <form [formGroup]="addressFormGroup">
-                  <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Delivery address" | uppercase}}</h4></ng-template>
-                  <div class="address-section">
-                    <div class="d-flex justify-content-between mb-3">
-                      <div>
-                        <h5 style="margin: 0; font-size: 16px;">{{"Choose a delivery address" | uppercase}}</h5>
-                        <p style="margin: 0;font-size: 14px;">Multiple addresses in this location</p>
+        <div *ngIf="!cartExists">
+          <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img" (click)="navigateToHome()">
+        </div>
+        <div *ngIf="cartExists">
+          <div class="row" [ngClass]="isDesktop ? 'd-flex justify-content-center' : 'd-flex flex-column-reverse justify-content-center'">
+            <!-- Left Section - Addresses -->
+            <div class="col-md-7 process">
+              <mat-vertical-stepper #stepper [linear]="true">
+    
+                <mat-step [stepControl]="addressFormGroup">
+                  <form [formGroup]="addressFormGroup">
+                    <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Delivery address" | uppercase}}</h4></ng-template>
+                    <div class="address-section">
+                      <div class="d-flex justify-content-between mb-3">
+                        <div>
+                          <h5 style="margin: 0; font-size: 16px;">{{"Choose a delivery address" | uppercase}}</h5>
+                          <p style="margin: 0;font-size: 14px;">Multiple addresses in this location</p>
+                        </div>
                       </div>
-                    </div>
-                    <div class="addresses">
-                      <div class="address-card" *ngFor="let address of addresses">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                              <div style="width: 100%;">
-                                <div class="d-flex justify-content-between">
-                                  <h5 class="card-title">{{ address.title }}</h5>
-                                  <div class="d-flex justify-content-center" *ngIf="selectedAddress === address.details" style="color: #059C6A;">
-                                    <mat-icon style="font-size: 18px; height: fit-content; display: flex; align-items: center; justify-content: center;">check_circle_outline</mat-icon>
-                                    <p style="font-size: 14px; margin: 0;">Selected</p>
+                      <div class="addresses">
+                        <div class="address-card" *ngFor="let address of addresses">
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between">
+                                <div style="width: 100%;">
+                                  <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">{{ address.title }}</h5>
+                                    <div class="d-flex justify-content-center" *ngIf="selectedAddress === address.details" style="color: #059C6A;">
+                                      <mat-icon style="font-size: 18px; height: fit-content; display: flex; align-items: center; justify-content: center;">check_circle_outline</mat-icon>
+                                      <p style="font-size: 14px; margin: 0;">Selected</p>
+                                    </div>
                                   </div>
+                                  <p>{{ address.details }}</p>
                                 </div>
-                                <p>{{ address.details }}</p>
                               </div>
+                              <button *ngIf="selectedAddress === address.details; else selectButton" class="btn select-address-btn" style="background-color: #059C6A;" matStepperNext (click)="selectAddress(address.details)">Continue</button>
+                              <ng-template #selectButton>
+                                <button  class="btn select-address-btn" matStepperNext (click)="selectAddress(address.details)">Deliver Here</button>
+                              </ng-template>
                             </div>
-                            <button *ngIf="selectedAddress === address.details; else selectButton" class="btn select-address-btn" style="background-color: #059C6A;" matStepperNext (click)="selectAddress(address.details)">Continue</button>
-                            <ng-template #selectButton>
-                              <button  class="btn select-address-btn" matStepperNext (click)="selectAddress(address.details)">Deliver Here</button>
-                            </ng-template>
                           </div>
                         </div>
-                      </div>
-                      <div class="selectedAddress" *ngIf="!doesSelectedAddressExist() && selectedAddress != ''">
-                        <div class="card">
-                          <div class="card-body">
-                            <h5 class="card-title">Current Address</h5>
-                            <p>{{ selectedAddress }}</p>
-                            <button class="btn select-address-btn" matStepperNext (click)="selectAddress(selectedAddress)">Continue</button>
+                        <div class="selectedAddress" *ngIf="!doesSelectedAddressExist() && selectedAddress != ''">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Current Address</h5>
+                              <p>{{ selectedAddress }}</p>
+                              <button class="btn select-address-btn" matStepperNext (click)="selectAddress(selectedAddress)">Continue</button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </form>
-              </mat-step>
-  
-              <mat-step [stepControl]="paymentFormGroup">
-                <form [formGroup]="paymentFormGroup">
-                  <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Payment" | uppercase}}</h4></ng-template>
-                  <div class="payment-section">
-                    <h5 style="margin: 0; font-size: 16px;">Choose payment method</h5>
-                    <div class="pay-btn" *ngIf="!isPayment; else processPayment">
-                      <button class="payment-btn-design" type="button" (click)="processPaymentPage()">{{"Proceed to pay" | uppercase}}</button>
+                  </form>
+                </mat-step>
+    
+                <mat-step [stepControl]="paymentFormGroup">
+                  <form [formGroup]="paymentFormGroup">
+                    <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Payment" | uppercase}}</h4></ng-template>
+                    <div class="payment-section">
+                      <h5 style="margin: 0; font-size: 16px;">Choose payment method</h5>
+                      <div class="pay-btn" *ngIf="!isPayment; else processPayment">
+                        <button class="payment-btn-design" type="button" (click)="processPaymentPage()">{{"Proceed to pay" | uppercase}}</button>
+                      </div>
+                      <ng-template #processPayment>
+                        <h3>Stripe Payment</h3>
+                      </ng-template>
                     </div>
-                    <ng-template #processPayment>
-                      <h3>Stripe Payment</h3>
-                    </ng-template>
-                  </div>
-                </form>
-              </mat-step>
-  
-            </mat-vertical-stepper>
-          </div>
-      
-          <!-- Right Section - Order Summary -->
-          <div class="col-md-5 p-0" id="order-summary">
-            <div class="order-details" *ngIf="cartDataLoaded">
-              <div class="order-items" *ngFor="let cartItem of cartDetails">
-                <div class="restaurant-details" style="cursor: pointer;" (click)="viewRestaurantDetails(cartItem.restaurant.restaurantId)">
-                  <div class="restaurant-details-image">
-                    <img *ngIf="cartItem.restaurant.restaurantImage; else defaultRestaurantImage" src="{{cartItem.restaurant.restaurantImage}}">
-                    <ng-template #defaultRestaurantImage>
-                      <img src="assets/images/default-cart-item.jpg">
-                    </ng-template>
-                  </div>
-                  <div>
-                    <h5 class="restaurant-details-title">{{ cartItem.restaurant.name | uppercase }}</h5>
-                    <h6 class="restaurant-details-subtitle" *ngIf="cartItem.restaurant.address">{{ cartItem.restaurant.address }}</h6>
-                  </div>
-                </div>
-                <div *ngFor="let orderItem of cartItem.restaurant.orderItem" class="orderItems">
-                  <div class="order-item">
-                    <div class="order-item-content">
-                      <span>{{ orderItem.name }}</span>
-                      <span>{{ '₹' + orderItem.price }}</span>
-                    </div>
-                    <div class="quantity-controls">
-                      <button (click)="decreaseQuantity(orderItem)" class="quantity-manager"><ion-icon name="remove-sharp"></ion-icon></button>
-                      <span style="font-size: 14px;">{{ orderItem.quantity }}</span>
-                      <button (click)="increaseQuantity(orderItem)" class="quantity-manager"><ion-icon name="add-sharp"></ion-icon></button>
-                    </div>
-                  </div>
-                  <div class="order-item-image-section">
-                    <div class="order-item-image">
-                      <img *ngIf="orderItem.itemImage; else defaultImage" src="{{orderItem.itemImage}}">
-                      <ng-template #defaultImage>
+                  </form>
+                </mat-step>
+    
+              </mat-vertical-stepper>
+            </div>
+        
+            <!-- Right Section - Order Summary -->
+            <div class="col-md-5 p-0" id="order-summary">
+              <div class="order-details" *ngIf="cartDataLoaded">
+                <div class="order-items" *ngFor="let cartItem of cartDetails">
+                  <div class="restaurant-details" style="cursor: pointer;" (click)="viewRestaurantDetails(cartItem.restaurant.restaurantId)">
+                    <div class="restaurant-details-image">
+                      <img *ngIf="cartItem.restaurant.restaurantImage; else defaultRestaurantImage" src="{{cartItem.restaurant.restaurantImage}}">
+                      <ng-template #defaultRestaurantImage>
                         <img src="assets/images/default-cart-item.jpg">
                       </ng-template>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="coupon-section">
-                <button class="btn coupon-btn" *ngIf="!discountApplied; else removeCoupon" (click)="applyCoupon()">Apply Coupon</button>
-                <ng-template #removeCoupon>
-                  <div class="remove-coupon-container">
-                    <div class="remove-coupon-content">
-                      <span style="font-size: 14px; color: #FF8F60">{{selectedDeal.code}}</span>
-                      <span style="font-size: 13px; color: #FF8F60">Offer applied on the bill</span>
-                    </div>
                     <div>
-                      <button class="btn remove-coupon-btn" (click)="removeAppliedCoupon(selectedDeal)">{{ "Remove" | uppercase }}</button>
+                      <h5 class="restaurant-details-title">{{ cartItem.restaurant.name | uppercase }}</h5>
+                      <h6 class="restaurant-details-subtitle" *ngIf="cartItem.restaurant.address">{{ cartItem.restaurant.address }}</h6>
                     </div>
                   </div>
-                </ng-template>
-              </div>
-              <div class="bill-details">
-                <h6>{{"Bill Details" | uppercase}}</h6>
-                <div class="bill-item" *ngFor="let item of billDetails" [ngClass]="{'billItemColor': item.label == 'Item Discount'}">
-                  <span>{{ item.label }}</span>
-                  <span><span *ngIf="item.label == 'Item Discount'">-</span>{{ '₹' + item.amount }}</span>
+                  <div *ngFor="let orderItem of cartItem.restaurant.orderItem" class="orderItems">
+                    <div class="order-item">
+                      <div class="order-item-content">
+                        <span>{{ orderItem.name }}</span>
+                        <span>{{ '₹' + orderItem.price }}</span>
+                      </div>
+                      <div class="quantity-controls">
+                        <button (click)="decreaseQuantity(orderItem)" class="quantity-manager"><ion-icon name="remove-sharp"></ion-icon></button>
+                        <span style="font-size: 14px;">{{ orderItem.quantity }}</span>
+                        <button (click)="increaseQuantity(orderItem)" class="quantity-manager"><ion-icon name="add-sharp"></ion-icon></button>
+                      </div>
+                    </div>
+                    <div class="order-item-image-section">
+                      <div class="order-item-image">
+                        <img *ngIf="orderItem.itemImage; else defaultImage" src="{{orderItem.itemImage}}">
+                        <ng-template #defaultImage>
+                          <img src="assets/images/default-cart-item.jpg">
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <mat-divider></mat-divider>
-                <div class="total">
-                  <h5>To Pay</h5>
-                  <h5>{{ '₹' + totalAmount }}</h5>
+                <div class="coupon-section">
+                  <button class="btn coupon-btn" *ngIf="!discountApplied; else removeCoupon" (click)="applyCoupon()">Apply Coupon</button>
+                  <ng-template #removeCoupon>
+                    <div class="remove-coupon-container">
+                      <div class="remove-coupon-content">
+                        <span style="font-size: 14px; color: #FF8F60">{{selectedDeal.code}}</span>
+                        <span style="font-size: 13px; color: #FF8F60">Offer applied on the bill</span>
+                      </div>
+                      <div>
+                        <button class="btn remove-coupon-btn" (click)="removeAppliedCoupon(selectedDeal)">{{ "Remove" | uppercase }}</button>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="bill-details">
+                  <h6>{{"Bill Details" | uppercase}}</h6>
+                  <div class="bill-item" *ngFor="let item of billDetails" [ngClass]="{'billItemColor': item.label == 'Item Discount'}">
+                    <span>{{ item.label }}</span>
+                    <span><span *ngIf="item.label == 'Item Discount'">-</span>{{ '₹' + item.amount }}</span>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="total">
+                    <h5>To Pay</h5>
+                    <h5>{{ '₹' + totalAmount }}</h5>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="order-details" *ngIf="!cartDataLoaded">
-              <div style="justify-content: center; display: flex;">
-                <ion-spinner name="dots" style="color: #FB6D3A !important;"></ion-spinner>
+              <div class="order-details" *ngIf="!cartDataLoaded">
+                <div style="justify-content: center; display: flex;">
+                  <ion-spinner name="dots" style="color: #FB6D3A !important;"></ion-spinner>
+                </div>
               </div>
-            </div>
-            <div class="cancellation-notice">
-              <h6>Review your order and address details to avoid cancellations</h6>
-              <p style="font-size: 12px;">Note: Please ensure your address and order details are correct. This order, if cancelled, is non-refundable.</p>
-              <a type="button">Read policy</a>
+              <div class="cancellation-notice">
+                <h6>Review your order and address details to avoid cancellations</h6>
+                <p style="font-size: 12px;">Note: Please ensure your address and order details are correct. This order, if cancelled, is non-refundable.</p>
+                <a type="button">Read policy</a>
+              </div>
             </div>
           </div>
         </div>
+        
       </div>
-      
     </div>
   </div>
-</div>
+</ion-content>

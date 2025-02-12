@@ -1,127 +1,290 @@
-<div class="profile-page" style="padding-top: 2rem;">
-  <div class="container">    
-    <div class="padding">
-      <div class="user-profile row bd-highlight">
-        <div class="p-3 bd-highlight col-md-6">
-          <div class="profile-intro">
-            <div class="profile-icon">
-              <img [src]="profileIcon" alt="profileIcon">
-            </div>
-            <div class="profile-text">
-              {{ user.name | uppercase }}
-            </div>
-          </div>
-          <div class="user-detail">
-            <div class="user-detail-placement">
-              <div class="icon-style">
-                <ion-icon name="person-outline" class="ion-icon-style" style="color: #FB6F3D;"></ion-icon>
+<ion-content>
+  <div class="profile-page">
+    <div class="container">    
+      <div class="padding">
+        <div class="user-profile row bd-highlight">
+          <div class="p-3 bd-highlight col-md-6">
+            <div class="profile-intro">
+              <div class="profile-icon">
+                <img [src]="profileIcon" alt="profileIcon">
               </div>
-              <div style="margin-left: 1rem;">
-                <h6 style="margin: 0; color: #32343E;">FULL NAME</h6>
-                <div style="margin: 0; color: #6B6E82;">{{ user.name }}</div>
+              <div class="profile-text">
+                {{ user.name | uppercase }}
               </div>
             </div>
-            <div class="user-detail-placement">
-              <div class="icon-style">
-                <ion-icon name="mail-outline" class="ion-icon-style" style="color: #413DFB;"></ion-icon>
-              </div>
-              <div style="margin-left: 1rem;">
-                <h6 style="margin: 0; color: #32343E;">EMAIL</h6>
-                <p style="margin: 0; color: #6B6E82;">{{ user.email }}</p>
-              </div>
-            </div>
-            <div class="user-detail-placement">
-              <div class="icon-style">
-                <ion-icon name="call-outline" class="ion-icon-style" style="color: #369BFF;"></ion-icon>
-              </div>
-              <div style="margin-left: 1rem;">
-                <h6 style="margin: 0; color: #32343E;">PHONE NUMBER</h6>
-                <p style="margin: 0; color: #6B6E82;">{{ user.phoneNumber }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="p-3 me-auto bd-highlight profile-edit col-md-6">
-          <button class="edit-button profile-edit-btn" (click)="editUser()"><ion-icon name="create-outline" style="font-size: 20px;"></ion-icon><span style="margin-left: 0.5rem;">Edit Profile</span></button>
-          <button class="logout-button logout-btn" (click)="userLogout()"><ion-icon name="exit-outline" style="font-size: 20px;"></ion-icon><span style="margin-left: 0.5rem;">Logout</span></button>
-        </div>
-      </div>
-    </div>
-    <!-- Desktop and Laptop View -->
-    <div *ngIf="isDesktop">
-
-      <div class="row padding">
-        <div class="desktop-dashboard">
-          <div class="dashboard-sidebar">
-            <ul class="menu-list">
-              <li
-                style="margin-top: 1rem;"
-                *ngFor="let item of menuItems"
-                [class.active]="selectedMenu === item.id"
-                (click)="selectMenu(item.id)"
-              >
-                <div style="justify-content: center;display: flex;align-items: center;">
-                  <ion-icon [name]="item.icon" style="font-size: 20px;"></ion-icon> 
+            <div class="user-detail">
+              <div class="user-detail-placement">
+                <div class="icon-style">
+                  <ion-icon name="person-outline" class="ion-icon-style" style="color: #FB6F3D;"></ion-icon>
                 </div>
                 <div style="margin-left: 1rem;">
-                  <span>{{ item.title | uppercase }}</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="dashboard-content">
-            <ng-container [ngSwitch]="selectedMenu">
-              <div *ngSwitchCase="'orders'">
-                <div>
-                  <div class="manage-orders">
-                    <h3>{{"Orders" | uppercase}}</h3>
-                  </div>
-                  <div class="manage-content">
-                    <div *ngIf="ordersList.length <= 0; else orderDetails" class="no-data-content">
-                      <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
-                    </div>
-                    <ng-template #orderDetails>
-                      <h5 style="color: #2D2D2D;">{{"Your Orders" | uppercase}}:</h5>
-                    </ng-template>
-                  </div>
+                  <h6 style="margin: 0; color: #32343E;">FULL NAME</h6>
+                  <div style="margin: 0; color: #6B6E82;">{{ user.name }}</div>
                 </div>
               </div>
-              <div *ngSwitchCase="'addresses'">
-                <div>
-                  <div class="manage-address">
-                    <h3>{{"Manage Address" | uppercase}}</h3>
-                    <button class="add-address" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
+              <div class="user-detail-placement">
+                <div class="icon-style">
+                  <ion-icon name="mail-outline" class="ion-icon-style" style="color: #413DFB;"></ion-icon>
+                </div>
+                <div style="margin-left: 1rem;">
+                  <h6 style="margin: 0; color: #32343E;">EMAIL</h6>
+                  <p style="margin: 0; color: #6B6E82;">{{ user.email }}</p>
+                </div>
+              </div>
+              <div class="user-detail-placement">
+                <div class="icon-style">
+                  <ion-icon name="call-outline" class="ion-icon-style" style="color: #369BFF;"></ion-icon>
+                </div>
+                <div style="margin-left: 1rem;">
+                  <h6 style="margin: 0; color: #32343E;">PHONE NUMBER</h6>
+                  <p style="margin: 0; color: #6B6E82;">{{ user.phoneNumber }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 me-auto bd-highlight profile-edit col-md-6">
+            <button class="edit-button profile-edit-btn" (click)="editUser()"><ion-icon name="create-outline" style="font-size: 20px;"></ion-icon><span style="margin-left: 0.5rem;">Edit Profile</span></button>
+            <button class="logout-button logout-btn" (click)="userLogout()"><ion-icon name="exit-outline" style="font-size: 20px;"></ion-icon><span style="margin-left: 0.5rem;">Logout</span></button>
+          </div>
+        </div>
+      </div>
+      <!-- Desktop and Laptop View -->
+      <div *ngIf="isDesktop">
+  
+        <div class="row padding">
+          <div class="desktop-dashboard">
+            <div class="dashboard-sidebar">
+              <ul class="menu-list">
+                <li
+                  style="margin-top: 1rem;"
+                  *ngFor="let item of menuItems"
+                  [class.active]="selectedMenu === item.id"
+                  (click)="selectMenu(item.id)"
+                >
+                  <div style="justify-content: center;display: flex;align-items: center;">
+                    <ion-icon [name]="item.icon" style="font-size: 20px;"></ion-icon> 
                   </div>
-                  <div class="manage-content">
-                    <div>
-                      <h5 style="color: #2D2D2D;">{{"Saved Address" | uppercase}}:</h5>
-                      <div class="addresses" *ngIf="addresses.length > 0; else noAddDataContent">
-                        <div class="address-card" *ngFor="let address of addresses">
-                          <h4>{{ address?.title }}</h4>
-                          <p>{{ address?.details }}</p>
-                          <div class="actions">
-                            <button class="edit" type="button"><mat-icon fontIcon="edit_note" class="edit" (click)="editAddress(address)"></mat-icon></button>
-                            <button class="delete" type="button"><mat-icon fontIcon="delete_outline" class="delete" (click)="deleteAddress(address)"></mat-icon></button>
+                  <div style="margin-left: 1rem;">
+                    <span>{{ item.title | uppercase }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="dashboard-content">
+              <ng-container [ngSwitch]="selectedMenu">
+                <div *ngSwitchCase="'orders'">
+                  <div>
+                    <div class="manage-orders">
+                      <h3>{{"Orders" | uppercase}}</h3>
+                    </div>
+                    <div class="manage-content">
+                      <div *ngIf="ordersList.length <= 0; else orderDetails" class="no-data-content">
+                        <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                      </div>
+                      <ng-template #orderDetails>
+                        <h5 style="color: #2D2D2D;">{{"Your Orders" | uppercase}}:</h5>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'addresses'">
+                  <div>
+                    <div class="manage-address">
+                      <h3>{{"Manage Address" | uppercase}}</h3>
+                      <button class="add-address" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
+                    </div>
+                    <div class="manage-content">
+                      <div>
+                        <h5 style="color: #2D2D2D;">{{"Saved Address" | uppercase}}:</h5>
+                        <div class="addresses" *ngIf="addresses.length > 0; else noAddDataContent">
+                          <div class="address-card" *ngFor="let address of addresses">
+                            <h4>{{ address?.title }}</h4>
+                            <p>{{ address?.details }}</p>
+                            <div class="actions">
+                              <button class="edit" type="button"><mat-icon fontIcon="edit_note" class="edit" (click)="editAddress(address)"></mat-icon></button>
+                              <button class="delete" type="button"><mat-icon fontIcon="delete_outline" class="delete" (click)="deleteAddress(address)"></mat-icon></button>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <ng-template #noAddDataContent>
+                        <div class="no-data-content">
+                          <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                        </div>
+                      </ng-template>
                     </div>
-                    <ng-template #noAddDataContent>
-                      <div class="no-data-content">
+                  </div>
+                </div>
+                <div *ngSwitchCase="'favorites'">
+                  <div>
+                    <div class="manage-favorites">
+                      <h3>{{"Favorites" | uppercase}}</h3>
+                    </div>
+                    <div class="manage-content">
+                      <div *ngIf="favList.length > 0; else noFavDataContent">
+                        <h5 style="color: #2D2D2D;">{{"Saved Restaurants" | uppercase}}:</h5>
+                        <div class="favorite-cards">
+                          <ion-card *ngFor="let restaurant of favList" type="button" (click)="restaurantDetails(restaurant.id)">
+                            <div class="image-container">
+                              <ion-img src="{{restaurant.image}}"></ion-img>
+                            </div>
+                            <ion-card-header>
+                              <div class="favorite-details-row">
+                                <div>
+                                  <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
+                                </div>
+                                <div class="favorite-details">
+                                  <div class="rating-design">
+                                    {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
+                                  </div>
+                                  <div>
+                                    <span>| {{ restaurant.deliveryTime }} min</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="favorite-details-row">
+                                <div style="display: flex;">
+                                  <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisine; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
+                                </div>
+                                <div>
+                                  <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
+                                </div>
+                              </div>
+                              <div class="favorite-details-row">
+                                <div class="col-md-7" style="font-size: 12px;">
+                                  <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
+                                  <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
+                                </div>
+                                <div class="col-md-5" style="justify-content: end; display: flex;">
+                                  <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
+                                </div>
+                              </div>
+                            </ion-card-header>
+                          </ion-card>
+                        </div>
+                      </div>
+                      <ng-template #noFavDataContent>
+                        <div class="no-data-content">
+                          <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'payments'">
+                  <div>
+                    <div class="manage-payments">
+                      <h3>{{"Payments" | uppercase}}</h3>
+                      <button class="add-payments" (click)="addNewPaymentCard()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
+                    </div>
+                    <div class="manage-content">
+                      <div *ngIf="paymentCards.length > 0; else noPayDataContent" class="payment">
+                        <h5 style="color: #2D2D2D;">{{"Saved Cards" | uppercase}}:</h5>
+                        <div class="payments">
+                          <ion-card class="payments-cards" *ngFor="let card of paymentCards">
+                            <ion-item class="custom-item">
+                              <ion-thumbnail slot="start">
+                                <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                              </ion-thumbnail>
+                              <div>
+                                <ion-card-title>{{ card.cardNumber }}</ion-card-title>
+                                <ion-card-subtitle>{{ card.cardExpiry }}</ion-card-subtitle>
+                              </div>
+                              <div slot="end">
+                                  <ion-button class="deleteSavedCards">Delete</ion-button>
+                              </div>
+                            </ion-item>
+                          </ion-card>
+                        </div>
+                      </div>
+                      <ng-template #noPayDataContent>
+                        <div class="no-data-content">
+                          <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'settings'">
+                  <div>
+                    <div class="manage-settings">
+                      <h3>{{"Settings" | uppercase}}</h3>
+                    </div>
+                    <div class="manage-content">
+                      <div *ngIf="settingList.length > 0; else noSettingDataContent">
+                        <h5 style="color: #2D2D2D;">{{"Setting Data" | uppercase}}:</h5>
+                      </div>
+                      <ng-template #noSettingDataContent>
+                        <div class="no-data-content">
+                          <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Mobile and Tablet View -->
+      <div class="mobile-dashboard" *ngIf="!isDesktop">
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let item of menuItems">
+            <mat-expansion-panel-header style="border-bottom: 1px dashed #ddd; padding: 0.5rem;">
+              <mat-panel-title>
+                <i [class]="item.icon"></i> {{ item.title }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div style="margin-top: 1rem;">
+              <ng-container [ngSwitch]="item.id">
+                <div *ngSwitchCase="'orders'">
+                  <div class="menuContainer">
+                    <div class="manage-content">
+                      <div *ngIf="ordersList.length <= 0; else orderDetails" class="no-data-content">
                         <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                      </div>
+                      <ng-template #orderDetails>
+                        <div style="margin-bottom: 1rem;">
+                          <span>{{"Manage Orders" | uppercase}}</span>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'addresses'">
+                  <div class="menuContainer">
+                    <div *ngIf="addresses.length <= 0; else addressesDetails" class="no-data-content">
+                      <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                    </div>
+                    <ng-template #addressesDetails>
+                      <div class="manage-address-mobile" style="margin-bottom: 1rem;">
+                        <span>{{"Manage Addresses" | uppercase}}</span>
+                        <button class="add-address" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 1.5rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
+                      </div>
+                      <div class="addresses">
+                        <div class="address-card" *ngFor="let address of addresses">
+                          <h4>{{ address.title }}</h4>
+                          <p>{{ address.details }}</p>
+                          <div class="actions">
+                            <button class="edit"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
+                            <button class="delete"><mat-icon fontIcon="delete_sweep" class="delete"></mat-icon></button>
+                          </div>
+                        </div>
                       </div>
                     </ng-template>
                   </div>
                 </div>
-              </div>
-              <div *ngSwitchCase="'favorites'">
-                <div>
-                  <div class="manage-favorites">
-                    <h3>{{"Favorites" | uppercase}}</h3>
-                  </div>
-                  <div class="manage-content">
-                    <div *ngIf="favList.length > 0; else noFavDataContent">
-                      <h5 style="color: #2D2D2D;">{{"Saved Restaurants" | uppercase}}:</h5>
+                <div *ngSwitchCase="'favorites'">
+                  <div class="menuContainer">
+                    <div *ngIf="favList.length <= 0; else favoriteDetails" class="no-data-content">
+                      <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
+                    </div>
+                    <ng-template #favoriteDetails>
+                      <div style="margin-bottom: 1rem;">
+                        <span>{{"Manage Favorites" | uppercase}}</span>
+                      </div>
                       <div class="favorite-cards">
                         <ion-card *ngFor="let restaurant of favList" type="button" (click)="restaurantDetails(restaurant.id)">
                           <div class="image-container">
@@ -150,218 +313,57 @@
                               </div>
                             </div>
                             <div class="favorite-details-row">
-                              <div class="col-md-7" style="font-size: 12px;">
+                              <div class="col-md-7" style="font-size: 12px; width: 100% !important;">
                                 <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
                                 <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
                               </div>
-                              <div class="col-md-5" style="justify-content: end; display: flex;">
+                              <div class="col-md-5" style="justify-content: end; display: flex; width: 100% !important;">
                                 <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
                               </div>
                             </div>
                           </ion-card-header>
                         </ion-card>
                       </div>
-                    </div>
-                    <ng-template #noFavDataContent>
-                      <div class="no-data-content">
-                        <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
-                      </div>
                     </ng-template>
                   </div>
                 </div>
-              </div>
-              <div *ngSwitchCase="'payments'">
-                <div>
-                  <div class="manage-payments">
-                    <h3>{{"Payments" | uppercase}}</h3>
-                    <button class="add-payments" (click)="addNewPaymentCard()"><ion-icon name="add-circle" style="font-size: 2rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
-                  </div>
-                  <div class="manage-content">
-                    <div *ngIf="paymentCards.length > 0; else noPayDataContent" class="payment">
-                      <h5 style="color: #2D2D2D;">{{"Saved Cards" | uppercase}}:</h5>
-                      <div class="payments">
-                        <ion-card class="payments-cards" *ngFor="let card of paymentCards">
-                          <ion-item class="custom-item">
-                            <ion-thumbnail slot="start">
-                              <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-                            </ion-thumbnail>
-                            <div>
-                              <ion-card-title>{{ card.cardNumber }}</ion-card-title>
-                              <ion-card-subtitle>{{ card.cardExpiry }}</ion-card-subtitle>
-                            </div>
-                            <div slot="end">
-                                <ion-button class="deleteSavedCards">Delete</ion-button>
-                            </div>
-                          </ion-item>
-                        </ion-card>
-                      </div>
-                    </div>
-                    <ng-template #noPayDataContent>
-                      <div class="no-data-content">
-                        <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
-                      </div>
-                    </ng-template>
-                  </div>
-                </div>
-              </div>
-              <div *ngSwitchCase="'settings'">
-                <div>
-                  <div class="manage-settings">
-                    <h3>{{"Settings" | uppercase}}</h3>
-                  </div>
-                  <div class="manage-content">
-                    <div *ngIf="settingList.length > 0; else noSettingDataContent">
-                      <h5 style="color: #2D2D2D;">{{"Setting Data" | uppercase}}:</h5>
-                    </div>
-                    <ng-template #noSettingDataContent>
-                      <div class="no-data-content">
-                        <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
-                      </div>
-                    </ng-template>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <!-- Mobile and Tablet View -->
-    <div class="mobile-dashboard" *ngIf="!isDesktop">
-      <mat-accordion>
-        <mat-expansion-panel *ngFor="let item of menuItems">
-          <mat-expansion-panel-header style="border-bottom: 1px dashed #ddd; padding: 0.5rem;">
-            <mat-panel-title>
-              <i [class]="item.icon"></i> {{ item.title }}
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div style="margin-top: 1rem;">
-            <ng-container [ngSwitch]="item.id">
-              <div *ngSwitchCase="'orders'">
-                <div class="menuContainer">
-                  <div class="manage-content">
-                    <div *ngIf="ordersList.length <= 0; else orderDetails" class="no-data-content">
+                <div *ngSwitchCase="'payments'">
+                  <div class="menuContainer">
+                    <div *ngIf="paymentCards.length <= 0; else paymentDetails" class="no-data-content">
                       <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
                     </div>
-                    <ng-template #orderDetails>
-                      <div style="margin-bottom: 1rem;">
-                        <span>{{"Manage Orders" | uppercase}}</span>
+                    <ng-template #paymentDetails>
+                      <div *ngIf="paymentCards.length > 0" class="payment">
+                        <div class="manage-payments-mobile" style="margin-bottom: 1rem;">
+                          <span>{{"Saved Cards" | uppercase}}</span>
+                          <button class="add-payments" (click)="addNewPaymentCard()"><ion-icon name="add-circle" style="font-size: 1.5rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
+                        </div>
+                        <div class="payments">
+                          <ion-card class="payments-cards" *ngFor="let card of paymentCards">
+                            <ion-item class="custom-item">
+                              <ion-thumbnail slot="start">
+                                <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                              </ion-thumbnail>
+                              <div>
+                                <ion-card-title>{{ card.cardNumber }}</ion-card-title>
+                                <ion-card-subtitle>{{ card.cardExpiry }}</ion-card-subtitle>
+                              </div>
+                              <div slot="end">
+                                  <ion-button class="deleteSavedCards">Delete</ion-button>
+                              </div>
+                            </ion-item>
+                          </ion-card>
+                        </div>
                       </div>
                     </ng-template>
                   </div>
                 </div>
-              </div>
-              <div *ngSwitchCase="'addresses'">
-                <div class="menuContainer">
-                  <div *ngIf="addresses.length <= 0; else addressesDetails" class="no-data-content">
-                    <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
-                  </div>
-                  <ng-template #addressesDetails>
-                    <div class="manage-address-mobile" style="margin-bottom: 1rem;">
-                      <span>{{"Manage Addresses" | uppercase}}</span>
-                      <button class="add-address" (click)="addNewAddress()"><ion-icon name="add-circle" style="font-size: 1.5rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
-                    </div>
-                    <div class="addresses">
-                      <div class="address-card" *ngFor="let address of addresses">
-                        <h4>{{ address.title }}</h4>
-                        <p>{{ address.details }}</p>
-                        <div class="actions">
-                          <button class="edit"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
-                          <button class="delete"><mat-icon fontIcon="delete_sweep" class="delete"></mat-icon></button>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
-                </div>
-              </div>
-              <div *ngSwitchCase="'favorites'">
-                <div class="menuContainer">
-                  <div *ngIf="favList.length <= 0; else favoriteDetails" class="no-data-content">
-                    <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
-                  </div>
-                  <ng-template #favoriteDetails>
-                    <div style="margin-bottom: 1rem;">
-                      <span>{{"Manage Favorites" | uppercase}}</span>
-                    </div>
-                    <div class="favorite-cards">
-                      <ion-card *ngFor="let restaurant of favList" type="button" (click)="restaurantDetails(restaurant.id)">
-                        <div class="image-container">
-                          <ion-img src="{{restaurant.image}}"></ion-img>
-                        </div>
-                        <ion-card-header>
-                          <div class="favorite-details-row">
-                            <div>
-                              <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
-                            </div>
-                            <div class="favorite-details">
-                              <div class="rating-design">
-                                {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
-                              </div>
-                              <div>
-                                <span>| {{ restaurant.deliveryTime }} min</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="favorite-details-row">
-                            <div style="display: flex;">
-                              <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisine; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
-                            </div>
-                            <div>
-                              <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
-                            </div>
-                          </div>
-                          <div class="favorite-details-row">
-                            <div class="col-md-7" style="font-size: 12px; width: 100% !important;">
-                              <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
-                              <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
-                            </div>
-                            <div class="col-md-5" style="justify-content: end; display: flex; width: 100% !important;">
-                              <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
-                            </div>
-                          </div>
-                        </ion-card-header>
-                      </ion-card>
-                    </div>
-                  </ng-template>
-                </div>
-              </div>
-              <div *ngSwitchCase="'payments'">
-                <div class="menuContainer">
-                  <div *ngIf="paymentCards.length <= 0; else paymentDetails" class="no-data-content">
-                    <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
-                  </div>
-                  <ng-template #paymentDetails>
-                    <div *ngIf="paymentCards.length > 0" class="payment">
-                      <div class="manage-payments-mobile" style="margin-bottom: 1rem;">
-                        <span>{{"Saved Cards" | uppercase}}</span>
-                        <button class="add-payments" (click)="addNewPaymentCard()"><ion-icon name="add-circle" style="font-size: 1.5rem; color: #FB6D3A; border-radius: 50%;"></ion-icon></button>
-                      </div>
-                      <div class="payments">
-                        <ion-card class="payments-cards" *ngFor="let card of paymentCards">
-                          <ion-item class="custom-item">
-                            <ion-thumbnail slot="start">
-                              <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-                            </ion-thumbnail>
-                            <div>
-                              <ion-card-title>{{ card.cardNumber }}</ion-card-title>
-                              <ion-card-subtitle>{{ card.cardExpiry }}</ion-card-subtitle>
-                            </div>
-                            <div slot="end">
-                                <ion-button class="deleteSavedCards">Delete</ion-button>
-                            </div>
-                          </ion-item>
-                        </ion-card>
-                      </div>
-                    </div>
-                  </ng-template>
-                </div>
-              </div>
-              <div *ngSwitchCase="'settings'">Settings Content</div>
-            </ng-container>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
+                <div *ngSwitchCase="'settings'">Settings Content</div>
+              </ng-container>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
     </div>
   </div>
-</div>
+</ion-content>

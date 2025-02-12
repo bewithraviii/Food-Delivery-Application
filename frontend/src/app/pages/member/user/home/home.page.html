@@ -1,177 +1,179 @@
-<div class="home-page">
-    <div class="container desktop-dashboard">
-      <div class="dashboard-content">
-        <!-- Featured Intro -->
-        <div class="row padding">
-          <div class="col-md-6 p-2">
-            <div class="center">
-              <h4 style="color: #1E1D1D;">Hello {{userName}}, <span style="font-weight: bold;">{{greeting}}!</span></h4>
-            </div>
-            <mat-divider></mat-divider>
-            <div class="center">
-              <ion-text class="deliveryAddressCenter">
-                <div class="iconButton">
-                  <div class="iconAndText" style="color: #FC6E2A; margin-top: 0.5rem;">
-                    <ion-icon name="location-sharp"></ion-icon>
-                    <h6 style="margin: 0;">DELIVER TO</h6>
-                  </div>
-                  <div class="address-section">
-                    <!-- Expansion Panel for Saved Addresses -->
-                    <mat-expansion-panel #addressPanel expanded="false" class="expansionRemoveBG">
-                      <mat-expansion-panel-header  style="padding: 0.5rem;height: fit-content;">
-                        <mat-panel-title>
-                          <span 
-                          class="underlineAddressType" 
-                          style="margin-right: 0.5rem; font-weight: bold;">
-                            {{ selectedAddress?.name || "" }}
-                          </span>
-                          <span style="color: #676767;">
-                            {{ selectedAddress?.details }}
-                          </span>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-                  
-                      <!-- Detect Current Location -->
-                      <div class="address-item contentAlign" (click)="detectCurrentLocation()" style="cursor: pointer;">
-                        <mat-icon>my_location</mat-icon>
-                        <span style="font-size: 16px;">{{"Detect current location" | uppercase}}</span>
-                      </div>
-                      <mat-divider></mat-divider>
-                  
-                      <!-- Add Address -->
-                      <div class="address-item contentAlign" (click)="addNewAddress()" style="cursor: pointer;">
-                        <mat-icon>add_location</mat-icon>
-                        <span style="font-size: 16px;">{{"Add address" | uppercase}}</span>
-                      </div>
-                      <mat-divider></mat-divider>
-                  
-                      <!-- List of saved addresses with clickable selection -->
-                      <div style="font-size: 14px; margin: 0.5rem;">
-                        <span>{{"Saved Addresses" | uppercase}}</span>
-                      </div>
-                      <div *ngFor="let address of savedAddresses" class="saved-address" (click)="selectAddress(address)" style="cursor: pointer;">
-                        <div class="address contentAlign" style="display: flex;">
-                          <div>
-                            <mat-icon style="color: #676767;">{{ getIconForAddressType(address.type)}}</mat-icon>
-                          </div>
-                          <div>
-                            <div style="font-weight: bold;">
-                              {{ address.name | uppercase }}
+<ion-content>
+  <div class="home-page">
+      <div class="container desktop-dashboard">
+        <div class="dashboard-content">
+          <!-- Featured Intro -->
+          <div class="row padding">
+            <div class="col-md-6 p-2">
+              <div class="center">
+                <h4 style="color: #1E1D1D;">Hello {{userName}}, <span style="font-weight: bold;">{{greeting}}!</span></h4>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="center">
+                <ion-text class="deliveryAddressCenter">
+                  <div class="iconButton">
+                    <div class="iconAndText" style="color: #FC6E2A; margin-top: 0.5rem;">
+                      <ion-icon name="location-sharp"></ion-icon>
+                      <h6 style="margin: 0;">DELIVER TO</h6>
+                    </div>
+                    <div class="address-section">
+                      <!-- Expansion Panel for Saved Addresses -->
+                      <mat-expansion-panel #addressPanel expanded="false" class="expansionRemoveBG">
+                        <mat-expansion-panel-header  style="padding: 0.5rem;height: fit-content;">
+                          <mat-panel-title>
+                            <span 
+                            class="underlineAddressType" 
+                            style="margin-right: 0.5rem; font-weight: bold;">
+                              {{ selectedAddress?.name || "" }}
+                            </span>
+                            <span style="color: #676767;">
+                              {{ selectedAddress?.details }}
+                            </span>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                    
+                        <!-- Detect Current Location -->
+                        <div class="address-item contentAlign" (click)="detectCurrentLocation()" style="cursor: pointer;">
+                          <mat-icon>my_location</mat-icon>
+                          <span style="font-size: 16px;">{{"Detect current location" | uppercase}}</span>
+                        </div>
+                        <mat-divider></mat-divider>
+                    
+                        <!-- Add Address -->
+                        <div class="address-item contentAlign" (click)="addNewAddress()" style="cursor: pointer;">
+                          <mat-icon>add_location</mat-icon>
+                          <span style="font-size: 16px;">{{"Add address" | uppercase}}</span>
+                        </div>
+                        <mat-divider></mat-divider>
+                    
+                        <!-- List of saved addresses with clickable selection -->
+                        <div style="font-size: 14px; margin: 0.5rem;">
+                          <span>{{"Saved Addresses" | uppercase}}</span>
+                        </div>
+                        <div *ngFor="let address of savedAddresses" class="saved-address" (click)="selectAddress(address)" style="cursor: pointer;">
+                          <div class="address contentAlign" style="display: flex;">
+                            <div>
+                              <mat-icon style="color: #676767;">{{ getIconForAddressType(address.type)}}</mat-icon>
                             </div>
-                            <div class="addressFont">
-                              {{ address.details }}
+                            <div>
+                              <div style="font-weight: bold;">
+                                {{ address.name | uppercase }}
+                              </div>
+                              <div class="addressFont">
+                                {{ address.details }}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                  
-                    </mat-expansion-panel>
-                  </div>
-                </div>
-              </ion-text>
-            </div>
-          </div>
-          <div class="col-md-6 p-2">
-            <h4 style="color: #1E1D1D;">What's on your mind?</h4>
-            <mat-form-field appearance="outline" style="width: 100%;" (click)="navigateToSearch()">
-              <mat-label>Search dishes, restaurants etc..</mat-label>
-              <input matInput>
-            </mat-form-field>
-          </div>
-        </div>
-  
-        <!-- Featured Categories -->
-        <div class="row padding">
-          <div class="categories-section p-0">
-            <div class="d-flex bd-highlight">
-              <div class="p-2 bd-highlight">
-                <h5 style="margin: 0;">{{"All Categories" | uppercase}}</h5>
-              </div>
-              <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
-                <div style="padding: 0.5rem;">
-                  <ion-icon  (click)="scrollLeft()" class="scroll-btn prev-btn" [disabled]="isPrevDisabled" name="arrow-back-outline"></ion-icon>
-                </div>
-                <div style="padding: 0.5rem;" >
-                  <ion-icon (click)="scrollRight()" class="scroll-btn next-btn" [disabled]="isNextDisabled" name="arrow-forward-outline"></ion-icon>
-                </div>
-              </div>
-            </div>
-            <div class="category-cards-wrapper">
-              <div class="category-cards" #categoryCards>
-                <ion-card *ngFor="let category of categories" class="category-card" (click)="applyCategory(category)" [ngClass]="{'selected-category': selectedCategory === category.name}">
-                  <ion-img [src]="category.image"></ion-img>
-                  <ion-card-header style="background-color: transparent; padding: 0.5rem;">
-                    <ion-card-title>{{ category.name }}</ion-card-title>
-                  </ion-card-header>
-                </ion-card>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Featured Restaurants -->
-        <div class="row padding">
-          <div class="restaurants-section p-0">
-            <div class="restaurant-heading p-2 bd-highlight">
-              <h5>{{"Restaurants" | uppercase}}</h5>
-              <!-- <div>
-                <button (click)="applyFavorite(true)">Favorite</button>
-              </div> -->
-            </div>
-            <div *ngIf="filteredRestaurants.length > 0; else noRestaurantDataFound">
-              <div class="restaurant-cards">
-                <ion-card *ngFor="let restaurant of filteredRestaurants" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
-                  <div class="image-container">
-                    <ion-img src="{{restaurant.image}}"></ion-img>
-                    <div *ngIf="restaurant.favorite" class="favorite-icon-main">
-                      <ion-icon class="favorite-icon" name="heart"></ion-icon>
+                    
+                      </mat-expansion-panel>
                     </div>
                   </div>
-                  <ion-card-header>
-                    <div class="restaurant-details-row">
-                      <div>
-                        <ion-card-title>{{ restaurant.name }}</ion-card-title>
+                </ion-text>
+              </div>
+            </div>
+            <div class="col-md-6 p-2">
+              <h4 style="color: #1E1D1D;">What's on your mind?</h4>
+              <mat-form-field appearance="outline" style="width: 100%;" (click)="navigateToSearch()">
+                <mat-label>Search dishes, restaurants etc..</mat-label>
+                <input matInput>
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <!-- Featured Categories -->
+          <div class="row padding">
+            <div class="categories-section p-0">
+              <div class="d-flex bd-highlight">
+                <div class="p-2 bd-highlight">
+                  <h5 style="margin: 0;">{{"All Categories" | uppercase}}</h5>
+                </div>
+                <div class="ms-auto p-2 bd-highlight" style="justify-content: center; display: flex; align-items: center; flex-direction: row;">
+                  <div style="padding: 0.5rem;">
+                    <ion-icon  (click)="scrollLeft()" class="scroll-btn prev-btn" [disabled]="isPrevDisabled" name="arrow-back-outline"></ion-icon>
+                  </div>
+                  <div style="padding: 0.5rem;" >
+                    <ion-icon (click)="scrollRight()" class="scroll-btn next-btn" [disabled]="isNextDisabled" name="arrow-forward-outline"></ion-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="category-cards-wrapper">
+                <div class="category-cards" #categoryCards>
+                  <ion-card *ngFor="let category of categories" class="category-card" (click)="applyCategory(category)" [ngClass]="{'selected-category': selectedCategory === category.name}">
+                    <ion-img [src]="category.image"></ion-img>
+                    <ion-card-header style="background-color: transparent; padding: 0.5rem;">
+                      <ion-card-title>{{ category.name }}</ion-card-title>
+                    </ion-card-header>
+                  </ion-card>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Featured Restaurants -->
+          <div class="row padding">
+            <div class="restaurants-section p-0">
+              <div class="restaurant-heading p-2 bd-highlight">
+                <h5>{{"Restaurants" | uppercase}}</h5>
+                <!-- <div>
+                  <button (click)="applyFavorite(true)">Favorite</button>
+                </div> -->
+              </div>
+              <div *ngIf="filteredRestaurants.length > 0; else noRestaurantDataFound">
+                <div class="restaurant-cards">
+                  <ion-card *ngFor="let restaurant of filteredRestaurants" class="restaurant-card" type="button" (click)="restaurantDetails(restaurant.id)">
+                    <div class="image-container">
+                      <ion-img src="{{restaurant.image}}"></ion-img>
+                      <div *ngIf="restaurant.favorite" class="favorite-icon-main">
+                        <ion-icon class="favorite-icon" name="heart"></ion-icon>
                       </div>
-                      <div class="restaurant-details">
-                        <div class="rating-design">
-                          {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
+                    </div>
+                    <ion-card-header>
+                      <div class="restaurant-details-row">
+                        <div>
+                          <ion-card-title>{{ restaurant.name }}</ion-card-title>
+                        </div>
+                        <div class="restaurant-details">
+                          <div class="rating-design">
+                            {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
+                          </div>
+                          <div>
+                            <span>| {{ restaurant.deliveryTime }} min</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="restaurant-details-row">
+                        <div style="display: flex;">
+                          <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisine; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
                         </div>
                         <div>
-                          <span>| {{ restaurant.deliveryTime }} min</span>
+                          <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
                         </div>
                       </div>
-                    </div>
-                    <div class="restaurant-details-row">
-                      <div style="display: flex;">
-                        <ion-card-subtitle *ngFor="let cuisine of restaurant.cuisine; let i = index; let last = last">{{cuisine.categoryName}}<span *ngIf="!last" style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span></ion-card-subtitle>
+                      <div class="restaurant-details-row">
+                        <div class="col-md-7" style="font-size: 12px;">
+                          <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
+                          <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
+                        </div>
+                        <div class="col-md-5" style="justify-content: end; display: flex;">
+                          <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
+                        </div>
                       </div>
-                      <div>
-                        <ion-card-subtitle>{{restaurant.priceForTwo}}&#8377; For two</ion-card-subtitle>
-                      </div>
-                    </div>
-                    <div class="restaurant-details-row">
-                      <div class="col-md-7" style="font-size: 12px;">
-                        <ion-card-subtitle *ngIf="restaurant.address.landmark != null">{{restaurant.address.landmark+","}}</ion-card-subtitle>
-                        <ion-card-subtitle>{{restaurant.address.city}}</ion-card-subtitle>
-                      </div>
-                      <div class="col-md-5" style="justify-content: end; display: flex;">
-                        <ion-card-subtitle>{{restaurant.distance}} Km</ion-card-subtitle>
-                      </div>
-                    </div>
-                  </ion-card-header>
-                </ion-card>
+                    </ion-card-header>
+                  </ion-card>
+                </div>
               </div>
+              <ng-template #noRestaurantDataFound>
+                <div style="background-color: #F6F8FA; border-radius: 12px;">
+                  <h4 style="font-size: 0.85rem; color: #555;" class="noRestaurantFound">No restaurant found</h4>
+                </div>
+              </ng-template>
             </div>
-            <ng-template #noRestaurantDataFound>
-              <div style="background-color: #F6F8FA; border-radius: 12px;">
-                <h4 style="font-size: 0.85rem; color: #555;" class="noRestaurantFound">No restaurant found</h4>
-              </div>
-            </ng-template>
           </div>
         </div>
+      
+        <app-footer></app-footer>
+  
       </div>
-    
-      <app-footer></app-footer>
-
-    </div>
-</div>
+  </div>
+</ion-content>
