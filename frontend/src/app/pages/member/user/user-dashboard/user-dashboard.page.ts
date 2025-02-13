@@ -34,19 +34,6 @@ export class UserDashboardPage implements OnInit {
     this.router.navigate(['/user-dashboard/home'])
   }
 
-  goToUser(){
-    this.router.navigate(['/user-dashboard/profile'])
-  }
-
-  goToCart(){
-    this.router.navigate(['/user-dashboard/cart'])
-  }
-
-  goToSearch(){
-    this.router.navigate(['/user-dashboard/search'])
-  }
-  
-
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.checkScreenSize();

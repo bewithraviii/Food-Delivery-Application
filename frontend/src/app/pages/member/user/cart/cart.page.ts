@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Route, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { addNewAddressRequest, addToCartReqForm, applyCouponReqForm, cartDataModel, removeCouponReqForm } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -53,14 +54,37 @@ export class CartPage implements OnInit {
     private loadingController: LoadingController,
     private dialogService: DialogService,
     private notificationService: NotificationService,
-    private cartNotificationService: CartNotificationService
+    private cartNotificationService: CartNotificationService,
   ) { }
 
   async ngOnInit() {
     this.checkScreenSize();
     this.initializeForms();
-    await this.populateData();
-    this.fetchSelectedAddress();
+    if(this.isDesktop){
+      this.resetState();
+      await this.populateData();
+      this.fetchSelectedAddress();
+    }
+  }
+
+  async ionViewWillEnter() {
+      this.resetState();
+      await this.populateData();
+      this.fetchSelectedAddress();
+  }
+
+  resetState() {
+    this.cartExists = false;
+    this.cartDataLoaded = false;
+    this.selectedAddress = '';
+    this.isPayment = false;
+    this.addresses = [];
+    this.cartDetails = [];
+    this.restaurantData = null;
+    this.totalAmount = 0;
+    this.discountedPrice = 0;
+    this.discountApplied = false;
+    this.selectedDeal = {};
   }
 
   fetchSelectedAddress() {
@@ -71,6 +95,7 @@ export class CartPage implements OnInit {
   }
 
   async populateData() {
+
     this.user = this.authService.getUserId();
     this.apiService.getUserCartData(this.user).subscribe(
       async (data: any) => {
@@ -120,7 +145,9 @@ export class CartPage implements OnInit {
             restaurantId: this.cartDetails[0].restaurant.restaurantId,
             name: this.cartDetails[0].restaurant.name,
             address: this.cartDetails[0].restaurant.address,
-            restaurantCharges: this.cartDetails[0].restaurant.restaurantCharges || 0,
+            restaurantCharges: this.cartDetails[0].restaurant.restaurantCharges,
+            deliveryFeeApplicable: this.cartDetails[0].restaurant.deliveryFeeApplicable,
+            gstApplicable: this.cartDetails[0].restaurant.gstApplicable,
             orderItem: [{
               itemId: orderItem.itemId,
               name: orderItem.name,
@@ -160,12 +187,14 @@ export class CartPage implements OnInit {
             name: this.cartDetails[0].restaurant.name,
             address: this.cartDetails[0].restaurant.address,
             restaurantCharges: this.cartDetails[0].restaurant.restaurantCharges || 0,
+            deliveryFeeApplicable: this.cartDetails[0].restaurant.deliveryFeeApplicable,
+            gstApplicable: this.cartDetails[0].restaurant.gstApplicable,
             orderItem: [{
               itemId: orderItem.itemId,
               name: orderItem.name,
               price: orderItem.price,
               quantity: 1,
-            }]
+            }],
           },
         }
       ]

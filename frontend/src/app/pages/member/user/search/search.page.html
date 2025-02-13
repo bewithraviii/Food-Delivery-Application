@@ -87,7 +87,7 @@
                             <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                           </div>
                           <div class="search-details">
-                            <div class="search-design">
+                            <div class="search-design" *ngIf="restaurant.restaurantRatings > 0">
                               {{ restaurant.restaurantRatings }} <ion-icon name="star"></ion-icon>
                             </div>
                           </div>

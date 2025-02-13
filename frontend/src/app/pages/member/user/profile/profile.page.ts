@@ -65,11 +65,29 @@ export class ProfilePage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await this.presentLoader('Loading Profile...');
     this.checkScreenSize();
+    if(this.isDesktop){
+      await this.presentLoader('Loading Profile...');
+      this.resetState()
+      await this.populateRestaurantData();
+      await this.populateUserData();
+      await this.dismissLoader();
+    }
+  }
+
+  async ionViewWillEnter() {
+    await this.presentLoader('Loading Profile...');
+    this.resetState();
     await this.populateRestaurantData();
     await this.populateUserData();
     await this.dismissLoader();
+  }
+
+  resetState() {
+    this.ordersList = [];
+    this.addresses = [];
+    this.restaurant = [];
+    this.favList = [];
   }
 
   async populateRestaurantData() {

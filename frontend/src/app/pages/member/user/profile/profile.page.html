@@ -134,11 +134,12 @@
                                   <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                                 </div>
                                 <div class="favorite-details">
-                                  <div class="rating-design">
+                                  <div class="rating-design" *ngIf="restaurant.rating > 0">
                                     {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
                                   </div>
                                   <div>
-                                    <span>| {{ restaurant.deliveryTime }} min</span>
+                                    <span *ngIf="restaurant.rating > 0">|</span>
+                                    <span> {{ restaurant.deliveryTime }} min</span>
                                   </div>
                                 </div>
                               </div>
@@ -296,11 +297,12 @@
                                 <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                               </div>
                               <div class="favorite-details">
-                                <div class="rating-design">
+                                <div class="rating-design" *ngIf="restaurant.rating > 0">
                                   {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
                                 </div>
                                 <div>
-                                  <span>| {{ restaurant.deliveryTime }} min</span>
+                                  <span *ngIf="restaurant.rating > 0">|</span>
+                                  <span> {{ restaurant.deliveryTime }} min</span>
                                 </div>
                               </div>
                             </div>

@@ -175,19 +175,24 @@ const getAllRestaurantDetails = async(req, res) => {
 
         let restaurantsDetails = [];
         restaurantsData.forEach(restaurant => {
-            restaurantsDetails.push({
-                name: restaurant.name,
-                description: restaurant?.description,
-                address: restaurant.address,
-                email: restaurant.email,
-                cuisineType: restaurant.cuisineType,
-                website: restaurant.website,
-                menu: restaurant.menu,
-                id: restaurant._id,
-                ratings: restaurant.restaurantRatings,
-                priceForTwo: restaurant.priceForTwo,
-                profileImage: restaurant.profileImage
-            });
+            if(restaurant.menu.length > 0) {
+                restaurantsDetails.push({
+                    name: restaurant.name,
+                    description: restaurant?.description,
+                    address: restaurant.address,
+                    email: restaurant.email,
+                    cuisineType: restaurant.cuisineType,
+                    website: restaurant.website,
+                    menu: restaurant.menu,
+                    id: restaurant._id,
+                    ratings: restaurant.restaurantRatings,
+                    priceForTwo: restaurant.priceForTwo,
+                    profileImage: restaurant.profileImage,
+                    restaurantCharges: restaurant.restaurantCharges,
+                    deliveryFeeApplicable: restaurantsData.deliveryFeeApplicable,
+                    gstApplicable: restaurantsData.gstApplicable
+                });
+            }
         });
 
         return res.status(200).json({
@@ -242,10 +247,13 @@ const getRestaurantDetails = async(req, res) => {
             website: restaurantsData.website,
             menu: restaurantsData.menu,
             id: restaurantsData._id,
+            restaurantCharges: restaurantsData.restaurantCharges,
             restaurantRatings: restaurantsData.restaurantRatings,
             restaurantRatingsCount: restaurantsData.restaurantRatingsCount,
             priceForTwo: restaurantsData.priceForTwo,
-            profileImage: restaurantsData.profileImage
+            profileImage: restaurantsData.profileImage,
+            deliveryFeeApplicable: restaurantsData.deliveryFeeApplicable,
+            gstApplicable: restaurantsData.gstApplicable
         };
 
         return res.status(200).json({

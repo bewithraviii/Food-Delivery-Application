@@ -159,7 +159,9 @@ export class RestaurantPage implements OnInit {
             restaurantId: this.restaurantId,
             name: this.restaurantDetails.name,
             address: this.restaurantDetails.address,
-            restaurantCharges: this.restaurantDetails.restaurantCharges || 0,
+            restaurantCharges: this.restaurantDetails.restaurantCharges,
+            deliveryFeeApplicable: this.restaurantDetails.deliveryFeeApplicable,
+            gstApplicable: this.restaurantDetails.gstApplicable,
             orderItem: [{
               itemId: item.itemId,
               name: item.name,

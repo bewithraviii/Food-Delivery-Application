@@ -3,6 +3,7 @@ const Deals = require('../../models/dealsModel');
 const Restaurant = require('../../models/restaurantModel');
 const User = require('../../models/userModel');
 const cartStatus = require('../../utils/enums/cartStatus');
+const BillCalculation = require('../../utils/cart/bill-calculation');
 
 const getCartData = async (req, res) => {
     try{
@@ -15,31 +16,15 @@ const getCartData = async (req, res) => {
         if(!existingCart){
             return res.status(400).json({ message: 'Cart not found' });
         }
-        const billDetails = [
-            { label: 'Item Total', amount: 0 },
-            { label: 'Delivery Fee', amount: 30 },
-            { label: 'Platform Fee', amount: 9 },
-            { label: 'GST and Restaurant Charges', amount: 0 },
-        ]
-        let totalAmount = 0;
 
-        existingCart.cartItems.forEach((cartDetail) => {
-            cartDetail.restaurant.orderItem.forEach((item) => {
-            const itemTotal = item.price * item.quantity;
-            const gst = itemTotal * 5 / 100;
-            const restaurantCharge = cartDetail.restaurant.restaurantCharges;
-            const gstOnPlatformFee = +(billDetails[2].amount * 18 / 100).toFixed(2);
-            billDetails[0].amount = billDetails[0].amount + itemTotal;
-            billDetails[3].amount = billDetails[3].amount + +(gst + restaurantCharge + gstOnPlatformFee).toFixed(2);
-            });
-        })
-        billDetails.forEach(billDetail => {
-            totalAmount = totalAmount + billDetail.amount;
-        });
+        const billData = await BillCalculation(existingCart.cartItems);
+        if(!billData) {
+            res.status(500).json({ message: 'Server error', error: "Something went wrong while processing bill calculation." });
+        }
 
         return res.status(200).json({
             message: 'Cart fetched successfully',
-            payload: {...existingCart._doc, billDetails, totalAmount}
+            payload: {...existingCart._doc, ...billData}
         });
 
     } catch(err) {
@@ -55,14 +40,6 @@ const addToCart = async (req, res) => {
         return res.status(400).json({ message: 'Cart data is required' });
     }
     try{   
-        const billDetails = [
-            { label: 'Item Total', amount: 0 },
-            { label: 'Delivery Fee', amount: 30 },
-            { label: 'Platform Fee', amount: 9 },
-            { label: 'GST and Restaurant Charges', amount: 0 },
-        ]
-        let totalAmount = 0;
-
         const userId = data.userId;
         const existingCart = await Cart.findOne({ userId: userId});
         if(!existingCart){
@@ -94,19 +71,10 @@ const addToCart = async (req, res) => {
             });  
         }
 
-        existingCart.cartItems.forEach((cartDetail) => {
-            cartDetail.restaurant.orderItem.forEach((item) => {
-            const itemTotal = item.price * item.quantity;
-            const gst = itemTotal * 5 / 100;
-            const restaurantCharge = cartDetail.restaurant.restaurantCharges;
-            const gstOnPlatformFee = +(billDetails[2].amount * 18 / 100).toFixed(2);
-            billDetails[0].amount = billDetails[0].amount + itemTotal;
-            billDetails[3].amount = billDetails[3].amount + +(gst + restaurantCharge + gstOnPlatformFee).toFixed(2);
-            });
-        })
-        billDetails.forEach(billDetail => {
-            totalAmount = totalAmount + billDetail.amount;
-        });
+        const billData = await BillCalculation(existingCart.cartItems);
+        if(!billData) {
+            res.status(500).json({ message: 'Server error', error: "Something went wrong while processing bill calculation." });
+        }
 
         if(existingCart.couponApplied){
             existingCart.couponApplied = null;
@@ -114,7 +82,7 @@ const addToCart = async (req, res) => {
         await existingCart.save();
         return res.status(200).json({ 
             message: 'Cart updated successfully',
-            payload: {...existingCart._doc, billDetails, totalAmount} 
+            payload: {...existingCart._doc, ...billData} 
         });
 
     } catch(err) {
@@ -130,14 +98,6 @@ const removeFromCart = async(req, res) => {
     }
 
     try {
-        const billDetails = [
-            { label: 'Item Total', amount: 0 },
-            { label: 'Delivery Fee', amount: 30 },
-            { label: 'Platform Fee', amount: 9 },
-            { label: 'GST and Restaurant Charges', amount: 0 },
-        ]
-        let totalAmount = 0;
-
         const userId = data.userId;
         const existingCart = await Cart.findOne({ userId: userId});
         if(!existingCart){
@@ -167,19 +127,11 @@ const removeFromCart = async(req, res) => {
             await existingCart.deleteOne({ userId: userId});
             return res.status(200).json({ message: 'Cart successfully cleared', payload: null });
         } else {
-            existingCart.cartItems.forEach((cartDetail) => {
-                cartDetail.restaurant.orderItem.forEach((item) => {
-                const itemTotal = item.price * item.quantity;
-                const gst = itemTotal * 5 / 100;
-                const restaurantCharge = cartDetail.restaurant.restaurantCharges;
-                const gstOnPlatformFee = parseFloat((billDetails[2].amount * 18 / 100).toFixed(2));
-                billDetails[0].amount = billDetails[0].amount + itemTotal;
-                billDetails[3].amount = billDetails[3].amount + parseFloat((gst + restaurantCharge + gstOnPlatformFee).toFixed(2));
-                });
-            })
-            billDetails.forEach(billDetail => {
-                totalAmount = totalAmount + billDetail.amount;
-            });
+
+            const billData = await BillCalculation(existingCart.cartItems);
+            if(!billData) {
+                res.status(500).json({ message: 'Server error', error: "Something went wrong while processing bill calculation." });
+            }
 
             if(existingCart.couponApplied){
                 existingCart.couponApplied = null;
@@ -187,7 +139,7 @@ const removeFromCart = async(req, res) => {
             await existingCart.save();
             return res.status(200).json({ 
                 message: 'Cart updated successfully', 
-                payload: {...existingCart._doc, billDetails, totalAmount}
+                payload: {...existingCart._doc, ...billData}
             });
         }
     } catch(err) {
@@ -317,7 +269,6 @@ const removeDealsFromCart = async(body, res) => {
         billDetails.forEach(billDetail => {
             totalAmount = totalAmount + billDetail.amount;
         });
-
             
         if(existingCart.couponApplied){
             existingCart.couponApplied = null;
@@ -334,6 +285,5 @@ const removeDealsFromCart = async(body, res) => {
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 }
-
 
 module.exports = { getCartData, addToCart, removeFromCart, applyDealsToCart, removeDealsFromCart }
