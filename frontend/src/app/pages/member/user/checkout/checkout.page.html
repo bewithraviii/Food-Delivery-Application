@@ -1,0 +1,43 @@
+<ion-content>
+  <div class="checkout-page">
+    <div class="container">    
+      <div class="padding">
+        
+        <div class="checkout-main">
+          <div>
+            <h1>{{"Payment Details" | uppercase}}</h1>
+          </div>
+          <div class="checkout-details">
+            <div class="order-details">
+            </div>
+          </div>
+        </div>
+
+        <div class="addressAndTime">
+          <div class="location-info-container">
+            <!-- First location row -->
+            <div class="location-item">
+              <div class="dot"></div>
+              <span class="location-title">Domino's Pizza</span>
+              <span class="separator">|</span>
+              <span class="delivery-time">Delivery in: 20-25 mins</span>
+            </div>
+          
+            <!-- Vertical line + dot in the middle -->
+            <div class="vertical-line"></div>
+          
+            <!-- Second location row -->
+            <div class="location-item">
+              <div class="dot"></div>
+              <span class="location-title">{{selectedAddressData.title}}</span>
+              <span class="separator">|</span>
+              <span class="address">{{selectedAddressData.details}}</span>
+            </div>
+      
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -116,6 +116,9 @@ export class ApiService {
   getUserCartData(reqPayload: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getCartByUserId/${reqPayload}`);
   }
+  getUserCartDataForCheckout(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getCartByUserIdForCheckout/${reqPayload}`);
+  }
   removeFromCart(reqPayload: addToCartReqForm): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/removeFromCart`, reqPayload);
   }

@@ -38,9 +38,9 @@
                                   <p>{{ address.details }}</p>
                                 </div>
                               </div>
-                              <button *ngIf="selectedAddress === address.details; else selectButton" class="btn select-address-btn" style="background-color: #059C6A;" matStepperNext (click)="selectAddress(address.details)">Continue</button>
+                              <button *ngIf="selectedAddress === address.details; else selectButton" class="btn select-address-btn" style="background-color: #059C6A;" matStepperNext (click)="selectAddress({title: address.title, details: address.details})">Continue</button>
                               <ng-template #selectButton>
-                                <button  class="btn select-address-btn" matStepperNext (click)="selectAddress(address.details)">Deliver Here</button>
+                                <button  class="btn select-address-btn" matStepperNext (click)="selectAddress({title: address.title, details: address.details})">Deliver Here</button>
                               </ng-template>
                             </div>
                           </div>
@@ -61,15 +61,12 @@
     
                 <mat-step [stepControl]="paymentFormGroup">
                   <form [formGroup]="paymentFormGroup">
-                    <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Payment" | uppercase}}</h4></ng-template>
+                    <ng-template matStepLabel><h4 style="margin: 0; color: #555;">{{"Checkout" | uppercase}}</h4></ng-template>
                     <div class="payment-section">
-                      <h5 style="margin: 0; font-size: 16px;">Choose payment method</h5>
-                      <div class="pay-btn" *ngIf="!isPayment; else processPayment">
-                        <button class="payment-btn-design" type="button" (click)="processPaymentPage()">{{"Proceed to pay" | uppercase}}</button>
+                      <h5 style="margin: 0; font-size: 16px;">Proceed to checkout</h5>
+                      <div class="pay-btn">
+                        <button class="payment-btn-design" type="button" (click)="processPaymentPage()">{{"Checkout" | uppercase}}</button>
                       </div>
-                      <ng-template #processPayment>
-                        <h3>Stripe Payment</h3>
-                      </ng-template>
                     </div>
                   </form>
                 </mat-step>

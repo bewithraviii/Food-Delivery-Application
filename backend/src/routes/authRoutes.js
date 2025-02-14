@@ -22,6 +22,7 @@ router.get('/getAllCuisineCategoryDetails', authController.getAllCuisineCategory
 router.get('/getCuisineCategoryRestaurantDetails', authController.getCuisineCategoryRestaurantDetails);
 // Cart
 router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.getUserCart);
+router.get('/getCartByUserIdForCheckout/:id', authorizeRoles(Roles.USER), cartController.getCartByUserIdForCheckout)
 // Deals
 router.get('/getDealsForRestaurant/:id', authController.getRestaurantDeal);
 // Search

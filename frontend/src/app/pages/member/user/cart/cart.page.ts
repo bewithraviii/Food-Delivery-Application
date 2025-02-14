@@ -26,7 +26,6 @@ export class CartPage implements OnInit {
   cartDataLoaded: boolean = false;
   isDesktop: boolean = true;
   selectedAddress: string = '';
-  isPayment: boolean = false;
   user: any;
   addresses: any[] = [];
   cartId: string = '';
@@ -46,14 +45,14 @@ export class CartPage implements OnInit {
   paymentFormGroup!: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
+    private fb: FormBuilder,
     private apiService: ApiService,
     private authService: AuthService,
-    private addressExtractionService: AddressExtractionService,
-    private loadingController: LoadingController,
     private dialogService: DialogService,
+    private loadingController: LoadingController,
     private notificationService: NotificationService,
+    private addressExtractionService: AddressExtractionService,
     private cartNotificationService: CartNotificationService,
   ) { }
 
@@ -77,7 +76,6 @@ export class CartPage implements OnInit {
     this.cartExists = false;
     this.cartDataLoaded = false;
     this.selectedAddress = '';
-    this.isPayment = false;
     this.addresses = [];
     this.cartDetails = [];
     this.restaurantData = null;
@@ -224,15 +222,15 @@ export class CartPage implements OnInit {
     );
   }
 
-  selectAddress(address: string) {
-    this.selectedAddress = address;
+  selectAddress(address: any) {
+    this.selectedAddress = address.details;
     this.addressFormGroup.patchValue({ address: this.selectedAddress });
-    this.addressExtractionService.setAddresses([{details: this.selectedAddress}]);
+    this.addressExtractionService.setAddresses([address]);
     this.stepper.next();
   }
 
   processPaymentPage() {
-    this.isPayment = !this.isPayment;
+    this.router.navigate(['/user-dashboard/checkout']);
   }
 
   async presentLoader(message?: string) {
@@ -246,52 +244,6 @@ export class CartPage implements OnInit {
   
   async dismissLoader() {
     await this.loadingController.dismiss();
-  }
-
-  async calculateTravelTime(destination: string) {
-    let restaurantCoords: any;  
-    let destinationCoords: any;
-
-    restaurantCoords = await this.getCoordsOfAddress(this.cartDetails[0].restaurant?.address);
-    destinationCoords = await this.getCoordsOfAddress(destination);
-
-    if(restaurantCoords !== null || undefined && destinationCoords !== null || undefined) {
-      const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
-      const end = `${destinationCoords.lon},${destinationCoords.lat}`;
-      this.apiService.getDistanceTrackTime(start, end).subscribe(
-        (response: any) => {
-          console.log(response);
-          const travelTimeInSeconds = response.features[0].properties.summary.duration;
-          const travelTimeInMinutes = travelTimeInSeconds / 60;
-  
-          console.log('Travel Time (minutes):', travelTimeInMinutes.toFixed(0));
-          // this.notificationService.notifyUser("successSnack", `Estimated travel time: ${travelTimeInMinutes.toFixed(2)} minutes`);
-          // return travelTimeInMinutes.toFixed(2);
-        },
-        (error: any) => {
-          console.error('Error calculating travel time', error);
-          this.notificationService.notifyUser("errorSnack", "Error calculating travel time.");
-        }
-      );
-    }
-  }
-
-  async onAddressSelected(address: string) {
-    await this.calculateTravelTime(address);
-  }
-
-  async getCoordsOfAddress(address: string): Promise<{ lat: number, lon: number } | null> {
-    try {
-      const response = await this.apiService.getAddressLatAndLong(address).toPromise();
-      if (response && response.features && response.features.length > 0) {
-        const coordinates = response.features[0].geometry.coordinates;
-        return { lat: coordinates[1], lon: coordinates[0] };
-      }
-      return null;
-    } catch (error) {
-      console.error('Error fetching coordinates from address', error);
-      return null;
-    }
   }
 
   doesSelectedAddressExist(): boolean {
@@ -435,7 +387,8 @@ export class CartPage implements OnInit {
           this.cartDetails.push(cartItem);
         })
       );
-      if(data.payload.billDetails && data.payload.totalAmount){
+      
+      if(data.payload.billDetails){
         this.billDetails = data.payload.billDetails;
         this.totalAmount = data.payload.totalAmount;
         this.cartDataLoaded = true;

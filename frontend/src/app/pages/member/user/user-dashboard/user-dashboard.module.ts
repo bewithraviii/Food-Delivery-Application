@@ -27,6 +27,7 @@ import { CustomDealDialogPage } from '../shared/custom-deal-dialog/custom-deal-d
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CheckoutPage } from '../checkout/checkout.page';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CartPage,
     SearchPage,
     ProfilePage,
-    RestaurantPage
+    RestaurantPage,
+    CheckoutPage
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
