@@ -25,6 +25,7 @@ router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.ge
 router.get('/getCartByUserIdForCheckout/:id', authorizeRoles(Roles.USER), cartController.getCartByUserIdForCheckout)
 // Deals
 router.get('/getDealsForRestaurant/:id', authController.getRestaurantDeal);
+router.get('/getDealInfo/:id', authController.getDealInfo)
 // Search
 router.get('/searchRestaurant', authorizeRoles(Roles.USER), searchController.searchRestaurant);
 

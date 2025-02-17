@@ -2,40 +2,138 @@
   <div class="checkout-page">
     <div class="container">    
       <div class="padding">
-        
-        <div class="checkout-main">
-          <div>
-            <h1>{{"Payment Details" | uppercase}}</h1>
-          </div>
-          <div class="checkout-details">
-            <div class="order-details">
-            </div>
-          </div>
-        </div>
 
-        <div class="addressAndTime">
-          <div class="location-info-container">
-            <!-- First location row -->
-            <div class="location-item">
-              <div class="dot"></div>
-              <span class="location-title">Domino's Pizza</span>
-              <span class="separator">|</span>
-              <span class="delivery-time">Delivery in: 20-25 mins</span>
+        <div class="row">
+
+          <div class="col-md-6">
+            <div class="checkout-main">
+              <h5>{{"Order Summary" | uppercase}}</h5>
+              <div class="checkout-details">
+                <div class="order-details" *ngFor="let cart of cartDetails">
+                  <div class="restaurant-details">
+                    <span class="restaurant-details-title">{{ cart.restaurant.name | uppercase }}</span>
+                    <span class="restaurant-details-subtitle" *ngIf="cart.restaurant.address">
+                      {{ cart.restaurant.address }}
+                    </span>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div *ngFor="let orderItem of cart.restaurant.orderItem" class="orderItems">
+                    <div class="order-item">
+                      <div class="order-item-content">
+                        <span>{{ orderItem.name }}</span>
+                        <span>{{ '₹' + orderItem.price }}</span>
+                      </div>
+                      <div class="quantity-controls">
+                        <span style="font-size: 14px;">Qty: {{ orderItem.quantity }}</span>
+                      </div>
+                    </div>
+  
+                  </div>
+
+                  <div class="bill-details">
+                    <div class="bill-item" *ngFor="let item of billDetails" [ngClass]="{'billItemColor': item.label == 'Item Discount'}">
+                      <span>{{ item.label | uppercase }}</span>
+                      <span><span *ngIf="item.label == 'Item Discount'">-</span>{{ '₹' + item.amount }}</span>
+                    </div>
+                  </div>
+
+                  <div class="order-counting">
+                    <div class="order-counting-values">
+                      <span>ITEMS: {{itemCount}}</span>
+                      <span>TOTAL: {{'₹' + totalAmount}}</span>
+                    </div>
+                  </div>
+  
+                  <div class="amount-saved-section" *ngIf="discountAmount > 0">
+                    <div class="saved-icon">
+                      <img [src]="discountLogo">
+                    </div>
+                    <div class="saved-information">
+                      <h6 style="font-size: 18px;">{{'₹' + discountAmount}} Saved!</h6>
+                      <h6 style="font-size: 14px;">on this Order</h6>
+                    </div>
+                  </div>
+  
+                  <div class="cooking-instructions">
+                    <mat-form-field appearance="outline" class="cooking-instruction-field">
+                      <mat-icon matPrefix>edit</mat-icon>
+                      <mat-label>Write cooking instructions...</mat-label>
+                      <input matInput [(ngModel)]="cookingInstructions" />
+                      <mat-icon matSuffix *ngIf="cookingInstructions" (click)="removeCookingInstruction()" style="cursor: pointer;">clear</mat-icon>
+                    </mat-form-field>
+                  </div>
+  
+                </div>
+              </div>
             </div>
-          
-            <!-- Vertical line + dot in the middle -->
-            <div class="vertical-line"></div>
-          
-            <!-- Second location row -->
-            <div class="location-item">
-              <div class="dot"></div>
-              <span class="location-title">{{selectedAddressData.title}}</span>
-              <span class="separator">|</span>
-              <span class="address">{{selectedAddressData.details}}</span>
+          </div>
+  
+          <div class="col-md-6">
+
+            <div class="coupon-section" *ngIf="dealInformation.length > 0">
+              <h5>{{"Coupon Applied" | uppercase}}</h5>
+              <div class="coupon-details" *ngFor="let dealInfo of dealInformation">
+                <div class="couponImg">
+                  <img src="assets/icons/coupon-code.png" alt="{{dealInfo.code}}">
+                </div>
+                <div class="couponContainer">
+                  <div class="coupon">
+                    <span style="padding: 0; font-size: 16px; font-weight: 500;">{{dealInfo.code}}</span>
+                    <span style="padding: 0; font-size: 12px;">{{'₹' + discountAmount}} Saved</span>
+                  </div>
+                </div>
+              </div>
             </div>
-      
+
+            <div class="delivery-estimation">
+              <h5>{{"Delivery Estimation" | uppercase}}</h5>
+              <div class="addressAndTime">
+                <div class="location-info-container">
+                  <!-- First location row -->
+                  <div class="location-item">
+                    <div class="dot"></div>
+                    <span class="location-title" *ngFor="let cart of cartDetails">{{cart.restaurant.name | uppercase}}</span>
+                    <span class="separator">|</span>
+                    <span class="delivery-time" *ngIf="canAbleToDeliver; else notAbleToDeliver">
+                      <span>Delivery in: {{deliveryTimeEstimation}}</span>
+                      <span *ngIf="deliveryTimeEstimation !== 0">  - {{(deliveryTimeEstimation + 5) | number}}  mins</span>
+                    </span>
+                    <ng-template #notAbleToDeliver>
+                      <span style="color: #FF3434;">Restaurant not able to deliver at this address, Please select other one.</span>
+                    </ng-template>
+                  </div>
+                
+                  <!-- Vertical line + dot in the middle -->
+                  <div class="vertical-line"></div>
+                
+                  <!-- Second location row -->
+                  <div class="location-item">
+                    <div class="dot"></div>
+                    <span class="location-title">{{selectedAddressData.title | uppercase}}</span>
+                    <span class="separator">|</span>
+                    <span class="address">{{selectedAddressData.details}}</span>
+                  </div>
+            
+                </div>
+              </div>
+            </div>
+
+            // From here need to work upon, Complete Address and payment-btn
+            <div class="address-information">
+              <h5>{{"Delivery Information" | uppercase}}</h5>
+              <div class="user-address-info">
+
+              </div>
+            </div>
+
+            <div class="procced-to-pay">
+              <div class="payment-btn"></div>
+            </div>
+
           </div>
         </div>
+        
+
 
       </div>
     </div>

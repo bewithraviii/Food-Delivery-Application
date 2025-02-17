@@ -132,6 +132,11 @@ export class ApiService {
     return this.http.post(`${this.baseURL}/auth/removeDealsFromCart`, reqPayload);
   }
 
+  // Check-out Page
+  getDealInformation(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getDealInfo/${reqPayload}`);
+  }
+
   // Search Page
   searchRestaurants(query: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/searchRestaurant?query=${encodeURIComponent(query)}`);

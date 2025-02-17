@@ -245,6 +245,7 @@ export class HomePage implements OnInit {
       if(data){
         this.user.id = data.id,
         this.user.name = data.name;
+        this.userName = data.name;
         this.user.phoneNumber = data.phoneNumber;
         this.user.email = data.email;
         data.address.forEach((address: any) => {

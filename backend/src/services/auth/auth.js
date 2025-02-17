@@ -584,6 +584,34 @@ const getRestaurantDeal = async(req, res) => {
     }
 }
 
+const getDealInfo = async(req, res) => {
+    const id = req.params.id;
+    if(!id){
+        return res.status(404).json({ message: 'Deal id not found' });
+    }
+
+    try {
+        const dealsData = await Deals.findOne({ _id: id });
+        if(!dealsData){
+            return res.status(404).json({ message: 'Deals not found' });
+        }
+    
+        const dealData = {
+            discountPercent: dealsData.discountPercent,
+            code: dealsData.code,
+            title: dealsData.title,
+            maxDiscount: dealsData.maxDiscount,
+            description: dealsData.description,
+            minOrderValue: dealsData.minOrderValue,
+            discountType: dealsData.discountType,
+        }
+
+        res.status(200).json({ message: 'Deal data fetched successfully', payload: dealData });
+    } catch(err){
+        res.status(400).json({ message: err.message });
+    }
+}
+
 const addToFavorite = async(body, res) => {
     if(!body) {
         return res.status(400).json({ message: 'Favorite processing data is required' });
@@ -647,5 +675,6 @@ module.exports = {
     addCuisineCategory,
     addNewDeal,
     getRestaurantDeal,
+    getDealInfo,
     addToFavorite
 }

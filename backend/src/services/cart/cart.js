@@ -7,6 +7,8 @@ const BillCalculation = require('../../utils/cart/bill-calculation');
 
 const getCartByUserIdForCheckout = async (req, res) => {
     try{
+        let deal;
+        let billData;
         const userId = req.params.id;
         if(!userId){
             return res.status(400).json({ message: 'User id not found' });
@@ -17,9 +19,19 @@ const getCartByUserIdForCheckout = async (req, res) => {
             return res.status(400).json({ message: 'Cart not found' });
         }
 
+        if(existingCart.couponApplied){
+            deal = await Deals.findOne({ _id: existingCart.couponApplied });
+            if(!deal) return res.status(400).json({ message: 'Deal not found' });
+        }
+
         await updateRestaurantDataForCartItems(existingCart.cartItems);
 
-        const billData = await BillCalculation(existingCart.cartItems, null);
+        if(deal){
+            billData = await BillCalculation(existingCart.cartItems, deal);
+        } else {
+            billData = await BillCalculation(existingCart.cartItems, null);
+        }
+
         if(!billData) {
             res.status(500).json({ message: 'Server error', error: "Something went wrong while processing bill calculation." });
         }

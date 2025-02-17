@@ -15,20 +15,27 @@ import { AddressExtractionService } from 'src/app/services/util/address-extracti
 })
 export class CheckoutPage implements OnInit {
 
+  discountLogo: string = 'assets/icons/discount-green.png'
   isDesktop: boolean = true;
   addressFormGroup!: FormGroup;
   addresses: any[] = [];
   selectedAddress: string = '';
   selectedAddressData: any = {};
+  deliveryTimeEstimation: number = 0;
   user: any;
   cartDetails: cartDataModel[] = [];
+  dealInformation: any = [];
+  discountAmount: number = 0;
   totalAmount: number = 0;
+  itemCount: number = 0;
   billDetails: any[] = [
     { label: 'Item Total', amount: 0 },
     { label: 'Delivery Fee', amount: 0 },
     { label: 'Platform Fee', amount: 0 },
     { label: 'GST and Restaurant Charges', amount: 0 },
   ]
+  canAbleToDeliver: boolean = true;
+  cookingInstructions: string = '';
 
 
   constructor(
@@ -64,7 +71,12 @@ export class CheckoutPage implements OnInit {
   }
 
   resetState() {
+    this.cartDetails = [];
     this.addresses = [];
+    this.totalAmount = 0;
+    this.discountAmount = 0;
+    this.dealInformation = [];
+    this.itemCount = 0;
   }
 
   initializeForms() {
@@ -87,11 +99,31 @@ export class CheckoutPage implements OnInit {
     this.apiService.getUserCartDataForCheckout(this.user).subscribe(
       async (data: any) => {
         if(data){
+          console.log(data);
           data.payload.cartItems.forEach((cart: any) => {
-            this.cartDetails.push = cart;
-            console.log(this.cartDetails);
+            this.cartDetails.push(cart);
             this.deliveryTime(this.selectedAddressData.details, this.cartDetails[0]?.restaurant?.address);
           });
+          this.billDetails = data.payload.billDetails;
+          this.totalAmount = data.payload.totalAmount;
+          this.discountAmount = data.payload.discountedPrice;
+          if(data.payload.couponApplied){
+            this.apiService.getDealInformation(data.payload.couponApplied).subscribe(
+              async (data: any) => {
+                if(data && data.payload){
+                  this.dealInformation.push(data.payload);
+                }
+              },
+              (error: any) => {
+                console.log(error.error.message);
+              }
+            );
+          }
+          this.cartDetails.forEach((cart: any) => {
+            cart.restaurant.orderItem.forEach((items: any) => {
+              this.itemCount = this.itemCount + items.quantity;
+            }); 
+          })
         }
       },
       (error: any) => {
@@ -108,6 +140,7 @@ export class CheckoutPage implements OnInit {
         console.log(error.message || "Something went wrong while adding address from user data.");
       }
     );
+
   }
 
 
@@ -132,28 +165,28 @@ export class CheckoutPage implements OnInit {
     let restaurantCoords: any;  
     let destinationCoords: any;
 
-    restaurantCoords = await this.getCoordsOfAddress(restaurantAddress);
-    destinationCoords = await this.getCoordsOfAddress(destination);
+    // restaurantCoords = await this.getCoordsOfAddress(restaurantAddress);
+    // destinationCoords = await this.getCoordsOfAddress(destination);
 
-    if(restaurantCoords !== null || undefined && destinationCoords !== null || undefined) {
-      const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
-      const end = `${destinationCoords.lon},${destinationCoords.lat}`;
-      this.apiService.getDistanceTrackTime(start, end).subscribe(
-        (response: any) => {
-          console.log(response);
-          const travelTimeInSeconds = response.features[0].properties.summary.duration;
-          const travelTimeInMinutes = travelTimeInSeconds / 60;
-  
-          console.log('Travel Time (minutes):', travelTimeInMinutes.toFixed(0));
-          // this.notificationService.notifyUser("successSnack", `Estimated travel time: ${travelTimeInMinutes.toFixed(2)} minutes`);
-          // return travelTimeInMinutes.toFixed(2);
-        },
-        (error: any) => {
-          console.error('Error calculating travel time', error);
-          this.notificationService.notifyUser("errorSnack", "Error calculating travel time.");
-        }
-      );
-    }
+    // if(restaurantCoords && destinationCoords) {
+    //   const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
+    //   const end = `${destinationCoords.lon},${destinationCoords.lat}`;
+
+    //   this.apiService.getDistanceTrackTime(start, end).subscribe(
+    //     (response: any) => {
+    //       const travelTimeInSeconds = response.features[0].properties.summary.duration;
+    //       const travelTimeInMinutes = travelTimeInSeconds / 60;
+    //       this.deliveryTimeEstimation = +travelTimeInMinutes.toFixed(0);
+    //     },
+    //     (error: any) => {
+    //       console.log("Here", error.error.error);
+    //       if(error.error.error.code === 2004){
+    //         this.canAbleToDeliver = false;
+    //         this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, Please select other one.");
+    //       }
+    //     }
+    //   );
+    // }
   }
 
   async getCoordsOfAddress(address: string): Promise<{ lat: number, lon: number } | null> {
@@ -168,6 +201,10 @@ export class CheckoutPage implements OnInit {
       console.error('Error fetching coordinates from address', error);
       return null;
     }
+  }
+
+  removeCookingInstruction() {
+    this.cookingInstructions = '';
   }
 
 
