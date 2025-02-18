@@ -5,10 +5,50 @@ const User = require('../../models/userModel');
 const cartStatus = require('../../utils/enums/cartStatus');
 const BillCalculation = require('../../utils/cart/bill-calculation');
 
-const getCartByUserIdForCheckout = async (req, res) => {
+// const getCartByUserIdForCheckout = async (req, res) => {
+//     try{
+//         let deal;
+//         let billData;
+//         const userId = req.params.id;
+//         if(!userId){
+//             return res.status(400).json({ message: 'User id not found' });
+//         }
+
+//         const existingCart = await Cart.findOne({ userId: userId, status: cartStatus.CartStatus.PENDING });
+//         if(!existingCart){
+//             return res.status(400).json({ message: 'Cart not found' });
+//         }
+
+//         if(existingCart.couponApplied){
+//             deal = await Deals.findOne({ _id: existingCart.couponApplied });
+//             if(!deal) return res.status(400).json({ message: 'Deal not found' });
+//         }
+
+//         await updateRestaurantDataForCartItems(existingCart.cartItems);
+
+//         if(deal){
+//             billData = await BillCalculation(existingCart.cartItems, deal);
+//         } else {
+//             billData = await BillCalculation(existingCart.cartItems, null);
+//         }
+
+//         if(!billData) {
+//             res.status(500).json({ message: 'Server error', error: "Something went wrong while processing bill calculation." });
+//         }
+        
+//         return res.status(200).json({
+//             message: 'Cart fetched successfully',
+//             payload: {...existingCart._doc, ...billData}
+//         });
+
+//     } catch(err) {
+//         console.log("Fetch cart failed due to: ", err);
+//         res.status(500).json({ message: 'Server error', error: err.message });
+//     }
+// }
+
+const getCartData = async (req, res) => {
     try{
-        let deal;
-        let billData;
         const userId = req.params.id;
         if(!userId){
             return res.status(400).json({ message: 'User id not found' });
@@ -19,6 +59,8 @@ const getCartByUserIdForCheckout = async (req, res) => {
             return res.status(400).json({ message: 'Cart not found' });
         }
 
+        let deal;
+        let billData;
         if(existingCart.couponApplied){
             deal = await Deals.findOne({ _id: existingCart.couponApplied });
             if(!deal) return res.status(400).json({ message: 'Deal not found' });
@@ -35,46 +77,23 @@ const getCartByUserIdForCheckout = async (req, res) => {
         if(!billData) {
             res.status(500).json({ message: 'Server error', error: "Something went wrong while processing bill calculation." });
         }
-        
-        return res.status(200).json({
-            message: 'Cart fetched successfully',
-            payload: {...existingCart._doc, ...billData}
-        });
 
-    } catch(err) {
-        console.log("Fetch cart failed due to: ", err);
-        res.status(500).json({ message: 'Server error', error: err.message });
-    }
-}
-
-const getCartData = async (req, res) => {
-    try{
-        const userId = req.params.id;
-        if(!userId){
-            return res.status(400).json({ message: 'User id not found' });
-        }
-
-        const existingCart = await Cart.findOne({ userId: userId, status: cartStatus.CartStatus.PENDING });
-        if(!existingCart){
-            return res.status(400).json({ message: 'Cart not found' });
-        }
-
-        await updateRestaurantDataForCartItems(existingCart.cartItems);
-
-        const billData = await BillCalculation(existingCart.cartItems, null);
-        if(!billData) {
-            res.status(500).json({ message: 'Server error', error: "Something went wrong while processing bill calculation." });
-        }
-
-        if(existingCart.couponApplied){
-            existingCart.couponApplied = null;
-            await existingCart.save();
+        let responsePayload;
+        if(billData.discountedPrice)
+        {
+            responsePayload = {
+                message: 'Cart fetched successfully',
+                dealApplied: true,
+                payload: {...existingCart._doc, ...billData}
+            }
+        } else {
+            responsePayload = {
+                message: 'Cart fetched successfully',
+                payload: {...existingCart._doc, ...billData}
+            }
         }
         
-        return res.status(200).json({
-            message: 'Cart fetched successfully',
-            payload: {...existingCart._doc, ...billData}
-        });
+        return res.status(200).json(responsePayload);
 
     } catch(err) {
         console.log("Fetch cart failed due to: ", err);
@@ -310,4 +329,6 @@ const updateRestaurantDataForCartItems = async(cartItems) => {
     );
 }
 
-module.exports = { getCartData, addToCart, removeFromCart, applyDealsToCart, removeDealsFromCart, getCartByUserIdForCheckout }
+module.exports = { getCartData, addToCart, removeFromCart, applyDealsToCart, removeDealsFromCart, 
+    // getCartByUserIdForCheckout 
+}

@@ -25,7 +25,7 @@ export class CartPage implements OnInit {
   cartExists: boolean = false;
   cartDataLoaded: boolean = false;
   isDesktop: boolean = true;
-  selectedAddress: string = '';
+  selectedAddress: any;
   user: any;
   addresses: any[] = [];
   cartId: string = '';
@@ -75,7 +75,7 @@ export class CartPage implements OnInit {
   resetState() {
     this.cartExists = false;
     this.cartDataLoaded = false;
-    this.selectedAddress = '';
+    this.selectedAddress = null;
     this.addresses = [];
     this.cartDetails = [];
     this.restaurantData = null;
@@ -88,7 +88,7 @@ export class CartPage implements OnInit {
   fetchSelectedAddress() {
     const addresses = this.addressExtractionService.getAddresses();
     if(addresses.length > 0){
-      this.selectedAddress = addresses[0].details
+      this.selectedAddress = { details: addresses[0].details, title: addresses[0].name || null}
     }
   }
 
@@ -223,7 +223,7 @@ export class CartPage implements OnInit {
   }
 
   selectAddress(address: any) {
-    this.selectedAddress = address.details;
+    this.selectedAddress = {details: address.details, title: address.title};
     this.addressFormGroup.patchValue({ address: this.selectedAddress });
     this.addressExtractionService.setAddresses([address]);
     this.stepper.next();
@@ -251,7 +251,7 @@ export class CartPage implements OnInit {
       return false;
     } else {
 
-      const result = this.addresses.some(addr => addr.details === this.selectedAddress);
+      const result = this.addresses.some(addr => addr.details === this.selectedAddress.details);
       if(result){
         return true;
       } else {
@@ -385,9 +385,23 @@ export class CartPage implements OnInit {
           }
 
           this.cartDetails.push(cartItem);
-        })
+        }) 
       );
+      if(data.payload.couponApplied){
+        try {
+          const dealData = await this.apiService
+            .getDealInformation(data.payload.couponApplied)
+            .toPromise();
       
+          if (dealData && dealData.payload) {
+            this.selectedDeal = dealData.payload;
+          }
+        } catch (error: any) {
+          console.log(error.error.message);
+        }
+        this.discountedPrice = data.payload.discountedPrice;
+        this.discountApplied = data.dealApplied;
+      }
       if(data.payload.billDetails){
         this.billDetails = data.payload.billDetails;
         this.totalAmount = data.payload.totalAmount;

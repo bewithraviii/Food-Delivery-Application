@@ -1,12 +1,12 @@
 <ion-content>
   <div class="checkout-page">
     <div class="container">    
-      <div class="padding">
+      <div class="page-content">
 
         <div class="row">
 
           <div class="col-md-6">
-            <div class="checkout-main">
+            <div class="checkout-main padding">
               <h5>{{"Order Summary" | uppercase}}</h5>
               <div class="checkout-details">
                 <div class="order-details" *ngFor="let cart of cartDetails">
@@ -70,7 +70,7 @@
   
           <div class="col-md-6">
 
-            <div class="coupon-section" *ngIf="dealInformation.length > 0">
+            <div class="coupon-section padding" *ngIf="dealInformation.length > 0">
               <h5>{{"Coupon Applied" | uppercase}}</h5>
               <div class="coupon-details" *ngFor="let dealInfo of dealInformation">
                 <div class="couponImg">
@@ -85,7 +85,7 @@
               </div>
             </div>
 
-            <div class="delivery-estimation">
+            <div class="delivery-estimation padding">
               <h5>{{"Delivery Estimation" | uppercase}}</h5>
               <div class="addressAndTime">
                 <div class="location-info-container">
@@ -118,22 +118,97 @@
               </div>
             </div>
 
-            // From here need to work upon, Complete Address and payment-btn
-            <div class="address-information">
+            <div class="address-information padding">
               <h5>{{"Delivery Information" | uppercase}}</h5>
               <div class="user-address-info">
+                <div class="address-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-content">
+                        <div class="card-content-title">
+                          <div style="display: flex;">
+                            <span style="padding-right: 0.5rem; font-weight: 500; font-size: 14px;">Deliver To</span>
+                            <div class="logo-title-number">
+                              <div class="logo-title">
+                                <mat-icon >{{ getIconForAddressType(selectedAddressData.title)}}</mat-icon>
+                                <span class="card-title">{{ selectedAddressData.title || "location" | uppercase }}</span>
+                              </div>
+                              <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span>
+                              <span>8765432182</span>
+                            </div>
 
+                          </div>
+                          <div class="d-flex justify-content-center" style="color: #059C6A;">
+                            <mat-icon style="font-size: 18px; height: fit-content; display: flex; align-items: center; justify-content: center;">check_circle_outline</mat-icon>
+                            <p style="font-size: 14px; margin: 0;">Selected</p>
+                          </div>
+                        </div>
+                        <p style="margin: 0; margin-top: 0.5rem; font-size: 12px; color: #333333;">{{ selectedAddressData.details }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="procced-to-pay">
-              <div class="payment-btn"></div>
+            <div class="padding">
+              <div class="proceed-to-pay">
+                <button class="payment-btn">
+                  <div class="payment-info">
+                    <span class="payment-label">TO PAY <span style="font-size: 12px;">(Incl. Taxes)</span></span>
+                    <span class="payment-amount">{{'₹ ' + totalAmount}}</span>
+                  </div>
+                </button>
+              </div>
             </div>
 
           </div>
-        </div>
-        
 
+        </div>
+        <div class="row">
+          <div class="payment-gateway padding">
+            <h5>{{"Payment Methods" | uppercase}}</h5>
+            <div class="payment">
+
+              <div class="payment-methods">
+                <div class="payment-option"
+                     (click)="selectPaymentMethod('googlePay')"
+                     [class.selected]="selectedPaymentMethod === 'googlePay'">
+                  <mat-icon class="payment-icon">account_balance_wallet</mat-icon>
+                  <span>Google Pay</span>
+                </div>
+                <div class="payment-option"
+                     (click)="selectPaymentMethod('stripe')"
+                     [class.selected]="selectedPaymentMethod === 'stripe'">
+                  <mat-icon class="payment-icon">credit_card</mat-icon>
+                  <span>Stripe</span>
+                </div>
+                <div class="payment-option"
+                     (click)="selectPaymentMethod('pod')"
+                     [class.selected]="selectedPaymentMethod === 'pod'">
+                  <mat-icon class="payment-icon">money</mat-icon>
+                  <span>Pay on Delivery</span>
+                </div>
+              </div>
+              <div class="view-selected-payment-method-content">
+                <ng-container *ngIf="selectedPaymentMethod === 'googlePay'">
+                  <app-google-pay-form></app-google-pay-form>
+                </ng-container>
+                <ng-container *ngIf="selectedPaymentMethod === 'stripe'">
+                  <app-stripe-pay-form></app-stripe-pay-form>
+                </ng-container>
+                <ng-container *ngIf="selectedPaymentMethod === 'pod'">
+                  <div class="pod-info">
+                    <p>
+                      Pay on Delivery selected. Please click the "Proceed to Pay" button to confirm your order.
+                    </p>
+                  </div>
+                </ng-container>
+              </div>
+
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>

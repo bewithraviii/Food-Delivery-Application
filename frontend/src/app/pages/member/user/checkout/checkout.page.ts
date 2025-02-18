@@ -36,6 +36,7 @@ export class CheckoutPage implements OnInit {
   ]
   canAbleToDeliver: boolean = true;
   cookingInstructions: string = '';
+  selectedPaymentMethod: 'googlePay' | 'stripe' | 'pod' | null = null;
 
 
   constructor(
@@ -96,7 +97,7 @@ export class CheckoutPage implements OnInit {
   async populateData() {
 
     this.user = this.authService.getUserId();
-    this.apiService.getUserCartDataForCheckout(this.user).subscribe(
+    this.apiService.getUserCartData(this.user).subscribe(
       async (data: any) => {
         if(data){
           console.log(data);
@@ -165,28 +166,28 @@ export class CheckoutPage implements OnInit {
     let restaurantCoords: any;  
     let destinationCoords: any;
 
-    // restaurantCoords = await this.getCoordsOfAddress(restaurantAddress);
-    // destinationCoords = await this.getCoordsOfAddress(destination);
+    restaurantCoords = await this.getCoordsOfAddress(restaurantAddress);
+    destinationCoords = await this.getCoordsOfAddress(destination);
 
-    // if(restaurantCoords && destinationCoords) {
-    //   const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
-    //   const end = `${destinationCoords.lon},${destinationCoords.lat}`;
+    if(restaurantCoords && destinationCoords) {
+      const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
+      const end = `${destinationCoords.lon},${destinationCoords.lat}`;
 
-    //   this.apiService.getDistanceTrackTime(start, end).subscribe(
-    //     (response: any) => {
-    //       const travelTimeInSeconds = response.features[0].properties.summary.duration;
-    //       const travelTimeInMinutes = travelTimeInSeconds / 60;
-    //       this.deliveryTimeEstimation = +travelTimeInMinutes.toFixed(0);
-    //     },
-    //     (error: any) => {
-    //       console.log("Here", error.error.error);
-    //       if(error.error.error.code === 2004){
-    //         this.canAbleToDeliver = false;
-    //         this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, Please select other one.");
-    //       }
-    //     }
-    //   );
-    // }
+      this.apiService.getDistanceTrackTime(start, end).subscribe(
+        (response: any) => {
+          const travelTimeInSeconds = response.features[0].properties.summary.duration;
+          const travelTimeInMinutes = travelTimeInSeconds / 60;
+          this.deliveryTimeEstimation = +travelTimeInMinutes.toFixed(0);
+        },
+        (error: any) => {
+          console.log("Here", error.error.error);
+          if(error.error.error.code === 2004){
+            this.canAbleToDeliver = false;
+            this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, Please select other one.");
+          }
+        }
+      );
+    }
   }
 
   async getCoordsOfAddress(address: string): Promise<{ lat: number, lon: number } | null> {
@@ -207,5 +208,52 @@ export class CheckoutPage implements OnInit {
     this.cookingInstructions = '';
   }
 
+  getIconForAddressType(type: string | null): string {
+    switch (type) {
+      case 'home':
+        return 'home';
+      case 'Home':
+        return 'home';
+      case 'work':
+        return 'work';
+      case 'Work':
+        return 'work';
+      case 'other':
+        return 'navigation';
+      case 'Other':
+        return 'navigation';
+      default:
+        return 'location_on';
+    }
+  }
+
+  selectPaymentMethod(method: 'googlePay' | 'stripe' | 'pod'): void {
+    this.selectedPaymentMethod = method;
+  }
+
+  // Trigger payment based on selected method
+  proceedWithPayment(): void {
+    if (!this.selectedPaymentMethod) {
+      this.notificationService.notifyUser('errorSnack', 'Please select a payment method.');
+      return;
+    }
+
+    switch (this.selectedPaymentMethod) {
+      case 'googlePay':
+        // Insert your Google Pay processing logic here
+        console.log('Processing Google Pay...');
+        break;
+      case 'stripe':
+        // Insert your Stripe processing logic here
+        console.log('Processing Stripe payment...');
+        break;
+      case 'pod':
+        // Process Cash on Delivery confirmation here
+        console.log('Processing Cash on Delivery...');
+        break;
+      default:
+        break;
+    }
+  }
 
 }

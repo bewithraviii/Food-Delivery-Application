@@ -7,7 +7,12 @@ ion-content {
     color: #555;
 }
 
+
 .padding {
+    padding: 0.5rem;
+}
+
+.page-content {
     padding-bottom: 1.5rem;
 }
 
@@ -133,7 +138,7 @@ ion-content {
     .order-counting {
         padding-left: 1rem;
         padding-right: 1rem;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         
         .order-counting-values {
             display: flex;
@@ -144,7 +149,7 @@ ion-content {
 
 
     .amount-saved-section {
-        margin-top: 3rem;
+        margin-top: 2rem;
         margin-bottom: 1rem;
         padding-left: 1rem;
         padding-right: 1rem;
@@ -189,6 +194,7 @@ ion-content {
 }
 
 .coupon-section {
+
     .coupon-details {
         border: 1px solid #ddd;
         border-radius: 12px;
@@ -224,18 +230,144 @@ ion-content {
 
 }
 
-.addressAndTime{
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: transparent;
-    padding: 1rem;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    font-family: roboto;
-    font-size: 16px;
+.delivery-estimation {
+
+    .addressAndTime{
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        background: transparent;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-family: roboto;
+        font-size: 16px;
+}
 }
 
-.user-address-info{
+.address-information {
+    padding-bottom: 0.5rem;
+
+    .user-address-info{
+        // border: 1px solid #ddd;
+        // border-radius: 12px;
+        // background: transparent;
+        // padding: 1rem;
+        // border-radius: 10px;
+        // font-family: roboto;
+        // font-size: 16px;
+        margin-bottom: 20px;
+    
+        .address-card {
+    
+            .card {
+                .card-body {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+
+                    .card-content {
+                        width: 100%;
+
+                        .card-content-title {
+                            display: flex;
+                            justify-content: space-between;
+                            
+                            .logo-title-number {
+                                display: flex;
+                                background-color: #FFF5DD;
+                                border: 1px solid rgb(255, 236, 189);
+                                // color: #FF8F60;
+                                border-radius: 5px;
+                                padding-right: 0.3rem;
+                                font-weight: 500;
+                                font-size: 12px;
+                                height: fit-content;
+
+                                .logo-title {
+                                    display: flex;
+    
+                                    mat-icon {
+                                        // color: #FF8F60;
+                                        font-size: 1rem;
+                                        height: fit-content;
+                                        justify-content: center;
+                                        display: flex;
+                                        align-items: center;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                h5 {
+                  font-size: 16px;
+                  margin: 0;
+                }
+            
+                p {
+                  font-size: 14px;
+                  margin: 0;
+                }
+
+                span {
+                  margin: 0;
+                }
+            }
+        }
+    }
+}
+
+.proceed-to-pay {
+    border: 1px solid #FF8F60;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+  
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  
+    &:active {
+      transform: scale(0.99);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  
+    .payment-btn {
+      width: 100%;
+      background-color: #FFF2ED;
+      border-radius: 10px;
+      padding: 16px;
+      box-sizing: border-box;
+      transition: background-color 0.2s ease-in-out;
+      border: none;
+      outline: none;
+  
+    //   &:hover {
+    //     background-color: #FFF2ED;
+    //   }
+  
+    //   &:active {
+    //     background-color: #FFEDE6;
+    //   }
+  
+      .payment-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+  
+      .payment-info .payment-label,
+      .payment-info .payment-amount {
+        color: #FC6E2A;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+}
+
+.payment {
     border: 1px solid #ddd;
     border-radius: 12px;
     background: transparent;
@@ -244,7 +376,62 @@ ion-content {
     margin-bottom: 20px;
     font-family: roboto;
     font-size: 16px;
-}
+    h5 {
+      margin-bottom: 1rem;
+      font-size: 18px;
+      color: #333;
+    }
+    .payment-methods {
+      display: flex;
+      justify-content: space-around;
+      gap: 1rem;
+      .payment-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f7f7f7;
+        border: 1px solid #fc6e2a;
+        border-radius: 8px;
+        padding: 0.8rem;
+        width: 30%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        mat-icon.payment-icon {
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+          color: #fc6e2a;
+        }
+        span {
+          font-size: 14px;
+          font-weight: 500;
+          color: #333;
+        }
+        &:hover {
+          background-color: #ffeede;
+        }
+        &.selected {
+          background-color: #fc6e2a;
+          color: #fff;
+          mat-icon.payment-icon {
+            color: #fff;
+          }
+          span {
+            color: #fff;
+          }
+        }
+      }
+    }
+    .view-selected-payment-method-content {
+      margin-top: 1rem;
+      .cod-info {
+        background-color: #f7f7f7;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #333;
+      }
+    }
+  }
 
 
 @media (max-width: 768px) {

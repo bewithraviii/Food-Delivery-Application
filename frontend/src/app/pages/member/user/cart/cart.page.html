@@ -30,7 +30,7 @@
                                 <div style="width: 100%;">
                                   <div class="d-flex justify-content-between">
                                     <h5 class="card-title">{{ address.title }}</h5>
-                                    <div class="d-flex justify-content-center" *ngIf="selectedAddress === address.details" style="color: #059C6A;">
+                                    <div class="d-flex justify-content-center" *ngIf="selectedAddress.details === address.details" style="color: #059C6A;">
                                       <mat-icon style="font-size: 18px; height: fit-content; display: flex; align-items: center; justify-content: center;">check_circle_outline</mat-icon>
                                       <p style="font-size: 14px; margin: 0;">Selected</p>
                                     </div>
@@ -38,18 +38,18 @@
                                   <p>{{ address.details }}</p>
                                 </div>
                               </div>
-                              <button *ngIf="selectedAddress === address.details; else selectButton" class="btn select-address-btn" style="background-color: #059C6A;" matStepperNext (click)="selectAddress({title: address.title, details: address.details})">Continue</button>
+                              <button *ngIf="selectedAddress.details === address.details; else selectButton" class="btn select-address-btn" style="background-color: #059C6A;" matStepperNext (click)="selectAddress({title: address.title, details: address.details})">Continue</button>
                               <ng-template #selectButton>
                                 <button  class="btn select-address-btn" matStepperNext (click)="selectAddress({title: address.title, details: address.details})">Deliver Here</button>
                               </ng-template>
                             </div>
                           </div>
                         </div>
-                        <div class="selectedAddress" *ngIf="!doesSelectedAddressExist() && selectedAddress != ''">
+                        <div class="selectedAddress" *ngIf="!doesSelectedAddressExist() && selectedAddress">
                           <div class="card">
                             <div class="card-body">
                               <h5 class="card-title">Current Address</h5>
-                              <p>{{ selectedAddress }}</p>
+                              <p>{{ selectedAddress.details }}</p>
                               <button class="btn select-address-btn" matStepperNext (click)="selectAddress(selectedAddress)">Continue</button>
                             </div>
                           </div>
