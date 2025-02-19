@@ -1,8 +1,9 @@
 <ion-content>
   <div class="checkout-page">
-    <div class="container">    
-      <div class="page-content">
+    <div class="container"> 
 
+      <div class="page-content" *ngIf="!paymentDone; else paymentConfirmed">
+        
         <div class="row">
 
           <div class="col-md-6">
@@ -134,7 +135,7 @@
                                 <span class="card-title">{{ selectedAddressData.title || "location" | uppercase }}</span>
                               </div>
                               <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span>
-                              <span>8765432182</span>
+                              <span>{{ user.phoneNumber }}</span>
                             </div>
 
                           </div>
@@ -165,6 +166,7 @@
           </div>
 
         </div>
+
         <div class="row">
           <div class="payment-gateway padding">
             <h5>{{"Payment Methods" | uppercase}}</h5>
@@ -190,20 +192,45 @@
                   <span>Pay on Delivery</span>
                 </div>
               </div>
-              <div class="view-selected-payment-method-content">
-                <ng-container *ngIf="selectedPaymentMethod === 'googlePay'">
-                  <app-google-pay-form></app-google-pay-form>
-                </ng-container>
-                <ng-container *ngIf="selectedPaymentMethod === 'stripe'">
-                  <app-stripe-pay-form></app-stripe-pay-form>
-                </ng-container>
-                <ng-container *ngIf="selectedPaymentMethod === 'pod'">
-                  <div class="pod-info">
-                    <p>
-                      Pay on Delivery selected. Please click the "Proceed to Pay" button to confirm your order.
-                    </p>
-                  </div>
-                </ng-container>
+
+              <div class="view-selected-payment-method-content" *ngIf="selectedPaymentMethod">
+                <mat-divider></mat-divider>
+                <div class="payment-content">
+                  <ng-container *ngIf="selectedPaymentMethod === 'googlePay'">
+                    <!-- <app-google-pay-form></app-google-pay-form> -->
+                     <h6>Not available at this moment please try again later</h6>
+                  </ng-container>
+                  <ng-container *ngIf="selectedPaymentMethod === 'stripe'">
+                    <!-- <app-stripe-pay-form></app-stripe-pay-form> -->
+                    <h6>Not available at this moment please try again later</h6>
+                  </ng-container>
+                  <ng-container *ngIf="selectedPaymentMethod === 'pod'">
+                    <div class="pod-info">
+                      <h6>Pay on Delivery selected. Please click the "Proceed to Pay" button to confirm your order.</h6>
+                      <div class="pod-type">
+                        <div class="cod-card" (click)="onCashDeliverySelected()">
+                          <div class="cod-title">
+                            <div style="display: flex; flex-direction: row;">
+                              <img src="assets/icons/pay-money.png">
+                              <span>Cash on delivery</span>
+                            </div>
+                            <div>
+                              <mat-radio-button [checked]="isCashDeliverySelected"></mat-radio-button>
+                            </div>
+                          </div>
+                          <div class="cod-description">
+                            <span>Pay at the time of delivery via cash.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="place-order">
+                      <button mat-fab extended class="place-order-btn" [disabled]="!isCashDeliverySelected" (click)="proceedWithPayment()">
+                          <span class="place-order-label">{{"Place Order" | uppercase}}</span>
+                      </button>
+                    </div>
+                  </ng-container>
+                </div>
               </div>
 
             </div>
@@ -211,6 +238,11 @@
         </div>
 
       </div>
+
+      <ng-template #paymentConfirmed>
+        <app-payment-success *ngIf="paymentDone"></app-payment-success>
+      </ng-template>
+
     </div>
   </div>
 </ion-content>

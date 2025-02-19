@@ -15,14 +15,15 @@ import { AddressExtractionService } from 'src/app/services/util/address-extracti
 })
 export class CheckoutPage implements OnInit {
 
+  paymentDone: boolean = false;
   discountLogo: string = 'assets/icons/discount-green.png'
   isDesktop: boolean = true;
   addressFormGroup!: FormGroup;
-  addresses: any[] = [];
   selectedAddress: string = '';
   selectedAddressData: any = {};
   deliveryTimeEstimation: number = 0;
-  user: any;
+  user: any = {};
+  rawCartData: any = [];
   cartDetails: cartDataModel[] = [];
   dealInformation: any = [];
   discountAmount: number = 0;
@@ -37,6 +38,7 @@ export class CheckoutPage implements OnInit {
   canAbleToDeliver: boolean = true;
   cookingInstructions: string = '';
   selectedPaymentMethod: 'googlePay' | 'stripe' | 'pod' | null = null;
+  isCashDeliverySelected: boolean = false;
 
 
   constructor(
@@ -73,11 +75,13 @@ export class CheckoutPage implements OnInit {
 
   resetState() {
     this.cartDetails = [];
-    this.addresses = [];
+    this.rawCartData = [];
     this.totalAmount = 0;
     this.discountAmount = 0;
     this.dealInformation = [];
     this.itemCount = 0;
+    this.isCashDeliverySelected = false;
+    this.paymentDone = false;
   }
 
   initializeForms() {
@@ -95,24 +99,24 @@ export class CheckoutPage implements OnInit {
   }
 
   async populateData() {
-
-    this.user = this.authService.getUserId();
-    this.apiService.getUserCartData(this.user).subscribe(
+    this.user.userId = this.authService.getUserId();
+    this.apiService.getUserCartData(this.user.userId).subscribe(
       async (data: any) => {
         if(data){
           console.log(data);
-          data.payload.cartItems.forEach((cart: any) => {
+          this.rawCartData = data.payload;
+          this.rawCartData.cartItems.forEach((cart: any) => {
             this.cartDetails.push(cart);
             this.deliveryTime(this.selectedAddressData.details, this.cartDetails[0]?.restaurant?.address);
           });
-          this.billDetails = data.payload.billDetails;
-          this.totalAmount = data.payload.totalAmount;
-          this.discountAmount = data.payload.discountedPrice;
-          if(data.payload.couponApplied){
-            this.apiService.getDealInformation(data.payload.couponApplied).subscribe(
-              async (data: any) => {
-                if(data && data.payload){
-                  this.dealInformation.push(data.payload);
+          this.billDetails = this.rawCartData.billDetails;
+          this.totalAmount = this.rawCartData.totalAmount;
+          this.discountAmount = this.rawCartData.discountedPrice;
+          if(this.rawCartData.couponApplied){
+            this.apiService.getDealInformation(this.rawCartData.couponApplied).subscribe(
+              async (response: any) => {
+                if(response && response.payload){
+                  this.dealInformation.push(response.payload);
                 }
               },
               (error: any) => {
@@ -132,10 +136,8 @@ export class CheckoutPage implements OnInit {
       }
     );
     this.apiService.getUserDetails().subscribe(
-      (data: any) => {
-        data.payload.address.forEach((address: any) => {
-          this.addresses.push(address);
-        });
+      (response: any) => {
+        this.user.phoneNumber = response.payload.phoneNumber;
       },
       (error: any) => {
         console.log(error.message || "Something went wrong while adding address from user data.");
@@ -143,7 +145,6 @@ export class CheckoutPage implements OnInit {
     );
 
   }
-
 
   async presentLoader(message?: string) {
     const loader = await this.loadingController.create({
@@ -180,7 +181,7 @@ export class CheckoutPage implements OnInit {
           this.deliveryTimeEstimation = +travelTimeInMinutes.toFixed(0);
         },
         (error: any) => {
-          console.log("Here", error.error.error);
+          console.log(error);
           if(error.error.error.code === 2004){
             this.canAbleToDeliver = false;
             this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, Please select other one.");
@@ -231,7 +232,10 @@ export class CheckoutPage implements OnInit {
     this.selectedPaymentMethod = method;
   }
 
-  // Trigger payment based on selected method
+  onCashDeliverySelected(): void {
+    this.isCashDeliverySelected = true;
+  }
+
   proceedWithPayment(): void {
     if (!this.selectedPaymentMethod) {
       this.notificationService.notifyUser('errorSnack', 'Please select a payment method.');
@@ -248,12 +252,32 @@ export class CheckoutPage implements OnInit {
         console.log('Processing Stripe payment...');
         break;
       case 'pod':
-        // Process Cash on Delivery confirmation here
-        console.log('Processing Cash on Delivery...');
+        this.orderProcessing(this.selectedPaymentMethod);
         break;
       default:
         break;
     }
+  }
+
+  async orderProcessing(paymentMethod: string) {
+
+    await this.presentLoader('Processing Payment...');
+
+    const orderDetails = {
+      userId: this.user.userId,
+      cartDetails: this.rawCartData,
+      totalPrice: this.totalAmount,
+    }
+
+    console.log("order-track-Details: ", orderDetails)
+
+    // this.dismissLoader();
+    // this.paymentDone = true;
+    setTimeout(() => {
+      this.dismissLoader();
+      this.paymentDone = true;
+    }, 1500);
+
   }
 
 }

@@ -28,6 +28,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CheckoutPage } from '../checkout/checkout.page';
+import { MatRadioModule } from '@angular/material/radio';
+import { PaymentSuccessPage } from '../shared/components/payment-success/payment-success.page';
+import { TrackOrderPage } from '../track-order/track-order.page';
+import { OrderPage } from '../order/order.page';
 
 
 @NgModule({
@@ -49,7 +53,8 @@ import { CheckoutPage } from '../checkout/checkout.page';
     MatBadgeModule,
     MatMenuModule,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    MatRadioModule
   ],
   declarations: [
     UserDashboardPage,
@@ -63,7 +68,10 @@ import { CheckoutPage } from '../checkout/checkout.page';
     SearchPage,
     ProfilePage,
     RestaurantPage,
-    CheckoutPage
+    CheckoutPage,
+    PaymentSuccessPage,
+    OrderPage,
+    TrackOrderPage,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

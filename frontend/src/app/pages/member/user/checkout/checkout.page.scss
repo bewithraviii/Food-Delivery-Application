@@ -320,36 +320,14 @@ ion-content {
 .proceed-to-pay {
     border: 1px solid #FF8F60;
     border-radius: 10px;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    cursor: pointer;
-  
-    &:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  
-    &:active {
-      transform: scale(0.99);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
+    cursor: none;
   
     .payment-btn {
       width: 100%;
       background-color: #FFF2ED;
       border-radius: 10px;
       padding: 16px;
-      box-sizing: border-box;
-      transition: background-color 0.2s ease-in-out;
-      border: none;
-      outline: none;
-  
-    //   &:hover {
-    //     background-color: #FFF2ED;
-    //   }
-  
-    //   &:active {
-    //     background-color: #FFEDE6;
-    //   }
-  
+
       .payment-info {
         display: flex;
         justify-content: space-between;
@@ -371,7 +349,6 @@ ion-content {
     border: 1px solid #ddd;
     border-radius: 12px;
     background: transparent;
-    padding: 1rem;
     border-radius: 10px;
     margin-bottom: 20px;
     font-family: roboto;
@@ -385,11 +362,11 @@ ion-content {
       display: flex;
       justify-content: space-around;
       gap: 1rem;
+      padding: 1rem;
       .payment-option {
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #f7f7f7;
         border: 1px solid #fc6e2a;
         border-radius: 8px;
         padding: 0.8rem;
@@ -407,7 +384,7 @@ ion-content {
           color: #333;
         }
         &:hover {
-          background-color: #ffeede;
+          background-color: #FFF2ED;
         }
         &.selected {
           background-color: #fc6e2a;
@@ -421,17 +398,75 @@ ion-content {
         }
       }
     }
+    
     .view-selected-payment-method-content {
-      margin-top: 1rem;
-      .cod-info {
-        background-color: #f7f7f7;
-        padding: 1rem;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #333;
-      }
+        .payment-content {
+            padding: 1rem;
+
+            .pod-info {
+                margin-bottom: 1rem;
+
+                h6 {
+                    font-size: 12px;
+                    margin-bottom: 1.5rem;
+                }
+
+                .pod-type{
+                    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);;
+                    padding: 1rem;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    color: #333;
+                    // border: 1px solid #FFF2ED;
+
+                    .cod-card{
+                        cursor: pointer;
+
+                        .cod-title{
+                            display: flex;
+                            justify-content: space-between;
+
+                            img {
+                                width: 2.5rem;
+                            }
+                            span {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                font-size: 16px;
+                                padding-left: 1rem;
+                            }
+                        }
+
+                        .cod-description {
+                            margin-top: 0.5rem;
+                        }
+                    }
+                }
+            }
+
+            .place-order {
+
+                .place-order-btn {
+                    border-radius: 8px; 
+                    background-color: #FC6E2A;
+                    padding: 1rem;
+                    cursor: pointer;
+                    width: 100%;
+
+                    .place-order-label {
+                        color: white;
+                    }
+
+                    &[disabled] {
+                        background-color: #ccc;
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
     }
-  }
+}
 
 
 @media (max-width: 768px) {
