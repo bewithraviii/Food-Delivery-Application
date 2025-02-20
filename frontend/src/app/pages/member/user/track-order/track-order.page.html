@@ -1,7 +1,179 @@
 <ion-content>
   <div class="track-order-page">
     <div class="container">
+      <div class="page-content">
+ 
+        <div class="order-tracking padding">
 
+          <h5>{{"Order Details" | uppercase }}</h5>
+
+          <div class="order-details">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="order-info-basic">
+                  
+                  <div class="order-number">
+                    <div class="order-specific">
+                      <span>{{"Order No. #" + orderId}}</span>
+                      <span class="view-order" (click)="navigateToOrder()">View Orders Details <mat-icon>arrow_right</mat-icon></span>
+                    </div>
+                    <div class="order-quanity-price">
+    
+                    </div>
+                  </div>
+  
+                  <mat-divider></mat-divider>
+  
+                  <div class="order-status">
+                    <div class="order-status-title">
+                      <span>{{"Status" | uppercase }}</span>
+                    </div>
+                    <div class="status-timing">
+                      <div class="row">
+                        <div class="col-6 p-0">
+                          <div class="order-status-progress">
+                            <div 
+                              class="step-item"
+                              *ngFor="let step of orderSteps; let i = index"
+                              [class.completed]="step.completed"
+                              [class.active]="i === getCurrentStepIndex()"
+                            >
+                              <div class="step-circle"></div>
+                              <div class="step-label">{{ step.label }}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-6 p-0">
+                          <div class="timing">
+                            <div class="arriving-time">
+                              <div class="arriving-time-two">
+                                <h4>Arriving By</h4>
+                                <span>{{ arrivingTime }}</span>
+                              </div>
+                            </div>
+                            <div class="arrival-status-updates">
+                              <span class="arrival-status">{{ arrivalStatus }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="order-management padding">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="order-info">
+                <h5>{{"Summary" | uppercase }}</h5>
+                <div class="info-details">
+                  <div class="order-number">
+                    <div class="bill-icon">
+                      <mat-icon>food_bank</mat-icon>
+                    </div>
+                    <div class="hash-number">
+                      <span>{{"Order #" + orderId}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="order-process">
+                <div class="rider">
+                  <h5>{{"Rider's Detail" | uppercase }}</h5>
+                  <div class="delivery-info">
+                    <div class="rider-detail">
+                      <div class="rider-icon">
+                        <img src="assets/icons/delivery-man.png">
+                      </div>
+                      <div class="rider-title">
+                        <h6>Rider will be assigned soon</h6>
+                        <span>Your rider for today!</span>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="riders-instructions">
+                      <mat-form-field appearance="outline" class="rider-instruction-field">
+                        <mat-label>Write riders instructions...</mat-label>
+                        <input matInput [(ngModel)]="riderInstructions" [disabled]="!riderAssigned" />
+                        <mat-icon matSuffix *ngIf="riderInstructions" (click)="removeRidersInstruction()" style="cursor: pointer;">clear</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="cancel-order">
+                  <h5>{{"Order Review" | uppercase }}</h5>
+                  <div class="cancel-accordion">
+                    <mat-accordion>
+                      <mat-expansion-panel
+                      [disabled]="!cancelOrderAllowed"
+                      class="expansionRemoveBG"
+                      >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title style="color: #555;"> 
+                            <mat-progress-spinner
+                            mode="determinate"
+                            [value]="(cancelTimer / 60) * 100"
+                            diameter="20"
+                            strokeWidth="2"
+                            class="custom-spinner"
+                            >
+                            </mat-progress-spinner>
+                            Cancel your order
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div *ngIf="cancelOrderAllowed" class="cancel-options">
+                          <div class="time-calculation">
+                            <ng-container *ngIf="cancelOrderAllowed">
+                              <div class="timer-wrapper">
+                                <span class="timer-text">
+                                  {{ cancelTimer }}s left to cancel your order!
+                                </span>
+                              </div>
+                            </ng-container>
+                          </div>
+
+                          <mat-radio-group
+                            [(ngModel)]="selectedCancelReason"
+                            class="cancel-reasons-group"
+                          >
+                            <mat-radio-button
+                              *ngFor="let reason of cancelReasons"
+                              [value]="reason"
+                              class="cancel-reason-option"
+                            >
+                              {{ reason }}
+                            </mat-radio-button>
+                          </mat-radio-group>
+
+                          <div class="submit-btn">
+                            <button
+                              mat-raised-button
+                              (click)="onSubmitCancel()"
+                              [disabled]="!selectedCancelReason"
+                            >
+                              Cancel Order
+                            </button>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </ion-content>

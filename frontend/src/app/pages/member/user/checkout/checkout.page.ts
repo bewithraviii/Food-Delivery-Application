@@ -39,6 +39,7 @@ export class CheckoutPage implements OnInit {
   cookingInstructions: string = '';
   selectedPaymentMethod: 'googlePay' | 'stripe' | 'pod' | null = null;
   isCashDeliverySelected: boolean = false;
+  orderId: string = '';
 
 
   constructor(
@@ -82,6 +83,7 @@ export class CheckoutPage implements OnInit {
     this.itemCount = 0;
     this.isCashDeliverySelected = false;
     this.paymentDone = false;
+    this.orderId = '';
   }
 
   initializeForms() {
@@ -267,9 +269,12 @@ export class CheckoutPage implements OnInit {
       userId: this.user.userId,
       cartDetails: this.rawCartData,
       totalPrice: this.totalAmount,
+      cookingInstructions: this.cookingInstructions
     }
 
     console.log("order-track-Details: ", orderDetails)
+
+    this.orderId = 'asfwqef415325'
 
     // this.dismissLoader();
     // this.paymentDone = true;

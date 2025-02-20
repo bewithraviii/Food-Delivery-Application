@@ -32,6 +32,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PaymentSuccessPage } from '../shared/components/payment-success/payment-success.page';
 import { TrackOrderPage } from '../track-order/track-order.page';
 import { OrderPage } from '../order/order.page';
+import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { OrderPage } from '../order/order.page';
     MatMenuModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatRadioModule
+    MatRadioModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     UserDashboardPage,

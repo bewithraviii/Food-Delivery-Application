@@ -141,4 +141,11 @@ export class ApiService {
   searchRestaurants(query: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/searchRestaurant?query=${encodeURIComponent(query)}`);
   }
+
+
+  // track-Order Page
+  getOrderDetails(orderId: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getOrderDetails/${orderId}`);
+  }
+
 }

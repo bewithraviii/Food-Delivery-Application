@@ -240,7 +240,7 @@
       </div>
 
       <ng-template #paymentConfirmed>
-        <app-payment-success *ngIf="paymentDone"></app-payment-success>
+        <app-payment-success *ngIf="paymentDone" [orderId]="orderId" ></app-payment-success>
       </ng-template>
 
     </div>

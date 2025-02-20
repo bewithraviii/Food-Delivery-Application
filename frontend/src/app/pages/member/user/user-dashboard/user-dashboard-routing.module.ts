@@ -27,7 +27,7 @@ const routes: Routes = [
       { path: 'profile', component: ProfilePage },
       { path: 'restaurant/:id', component: RestaurantPage},
       { path: 'checkout', component: CheckoutPage },
-      { path: 'order', component: OrderPage },
+      { path: 'order/:id', component: OrderPage },
       { path: 'track-order/:id', component: TrackOrderPage },
     ]
   }

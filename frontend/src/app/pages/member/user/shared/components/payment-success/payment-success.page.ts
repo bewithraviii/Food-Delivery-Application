@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { interval, Subscription } from 'rxjs';
 
@@ -9,10 +9,11 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./payment-success.page.scss'],
 })
 export class PaymentSuccessPage implements OnInit, OnDestroy {
-  animationDuration: number = 3000;
+  animationDuration: number = 5000;
   showVideo: boolean = false;
   showConfirmationMessage: boolean = false;
   private subscription: Subscription = new Subscription();
+  @Input() orderId!: string;
 
   constructor(private navController: NavController) {}
 
@@ -21,8 +22,8 @@ export class PaymentSuccessPage implements OnInit, OnDestroy {
 
     this.subscription.add(
       interval(this.animationDuration).subscribe(() => {
-        // this.navController.navigateRoot('/home');
-        // this.showVideo = false;
+        this.navController.navigateRoot(`/user-dashboard/track-order/${this.orderId}`);
+        this.showVideo = false;
       })
     );
   }
