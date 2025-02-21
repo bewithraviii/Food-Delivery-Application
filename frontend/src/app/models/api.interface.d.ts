@@ -156,4 +156,18 @@ interface OrderItem {
     quantity?: number;
     _id?: string;
     itemImage?: string;
-  }
+}
+
+interface OrderDataModal {
+    userId: string,
+    cartData: any,
+    totalPrice: number,
+    cookingInstructions: string,
+    paymentMethod: string,
+    paymentId: string
+}
+
+interface UpdateOrderModal {
+    userId: string,
+    orderId: string
+}

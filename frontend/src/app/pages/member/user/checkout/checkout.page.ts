@@ -2,11 +2,14 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { cartDataModel } from 'src/app/models/api.interface';
+import { firstValueFrom } from 'rxjs';
+import { PAYMENT_METHODS } from 'src/app/enums/enum';
+import { cartDataModel, OrderDataModal } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
+import { CartNotificationService } from 'src/app/services/util/cart-notification.service';
 
 @Component({
   selector: 'app-checkout',
@@ -37,7 +40,7 @@ export class CheckoutPage implements OnInit {
   ]
   canAbleToDeliver: boolean = true;
   cookingInstructions: string = '';
-  selectedPaymentMethod: 'googlePay' | 'stripe' | 'pod' | null = null;
+  selectedPaymentMethod: 'GOOGLE_PAY' | 'STRIPE' | 'POD' | null = null;
   isCashDeliverySelected: boolean = false;
   orderId: string = '';
 
@@ -49,6 +52,7 @@ export class CheckoutPage implements OnInit {
     private authService: AuthService,
     private loadingController: LoadingController,
     private notificationService: NotificationService,
+    private cartNotificationService: CartNotificationService,
     private addressExtractionService: AddressExtractionService,
   ) { }
 
@@ -105,7 +109,6 @@ export class CheckoutPage implements OnInit {
     this.apiService.getUserCartData(this.user.userId).subscribe(
       async (data: any) => {
         if(data){
-          console.log(data);
           this.rawCartData = data.payload;
           this.rawCartData.cartItems.forEach((cart: any) => {
             this.cartDetails.push(cart);
@@ -135,6 +138,9 @@ export class CheckoutPage implements OnInit {
       },
       (error: any) => {
         console.log(error.error.message);
+        if(error.error.message == "Cart not found"){
+          this.router.navigate(['/user-dashboard/home']);
+        }
       }
     );
     this.apiService.getUserDetails().subscribe(
@@ -230,7 +236,7 @@ export class CheckoutPage implements OnInit {
     }
   }
 
-  selectPaymentMethod(method: 'googlePay' | 'stripe' | 'pod'): void {
+  selectPaymentMethod(method: 'GOOGLE_PAY' | 'STRIPE' | 'POD'): void {
     this.selectedPaymentMethod = method;
   }
 
@@ -245,43 +251,63 @@ export class CheckoutPage implements OnInit {
     }
 
     switch (this.selectedPaymentMethod) {
-      case 'googlePay':
+      case 'GOOGLE_PAY':
         // Insert your Google Pay processing logic here
         console.log('Processing Google Pay...');
         break;
-      case 'stripe':
+      case 'STRIPE':
         // Insert your Stripe processing logic here
         console.log('Processing Stripe payment...');
         break;
-      case 'pod':
-        this.orderProcessing(this.selectedPaymentMethod);
+      case 'POD':
+        let PaymentId = '';
+        if(this.isCashDeliverySelected){
+          PaymentId = PAYMENT_METHODS.COD
+        }
+        this.orderProcessing(this.selectedPaymentMethod, PaymentId);
         break;
       default:
         break;
     }
   }
 
-  async orderProcessing(paymentMethod: string) {
+  async orderProcessing(paymentMethod: string, paymentId: string) {
 
     await this.presentLoader('Processing Payment...');
 
-    const orderDetails = {
+    const orderDetails: OrderDataModal = {
       userId: this.user.userId,
-      cartDetails: this.rawCartData,
+      cartData: this.rawCartData,
       totalPrice: this.totalAmount,
-      cookingInstructions: this.cookingInstructions
+      cookingInstructions: this.cookingInstructions,
+      paymentMethod: paymentMethod,
+      paymentId: paymentId ? paymentId : PAYMENT_METHODS.POD
     }
 
-    console.log("order-track-Details: ", orderDetails)
+    try {
+      const addNewOrder: any = await firstValueFrom(this.apiService.addNewOrder(orderDetails));
+      if (addNewOrder.payload) {
+        this.orderId = addNewOrder.payload._id;
+        this.paymentDone = true;
 
-    this.orderId = 'asfwqef415325'
+        this.cartNotificationService.removeItemFromCart();
 
-    // this.dismissLoader();
-    // this.paymentDone = true;
-    setTimeout(() => {
+      } else {
+        this.notificationService.notifyUser("errorSnack", "Order processing failed. No order ID received.");
+        console.error("Order processing failed: No order ID received from the server.");
+      }   
+    } catch (error: any) {
+      this.notificationService.notifyUser("errorSnack", error.error.message || "Error adding new order")
+      console.error("Error adding new order:", error);
+    } finally {
       this.dismissLoader();
-      this.paymentDone = true;
-    }, 1500);
+    }
+
+
+    // setTimeout(() => {
+    //   this.dismissLoader();
+    //   this.paymentDone = true;
+    // }, 1500);
 
   }
 

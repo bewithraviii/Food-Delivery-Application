@@ -1,6 +1,8 @@
+const { PROCESSING } = require("./status");
+
 const CartStatus = {
     PENDING: 'PENDING',
-    COMPLETED: 'COMPLETED',
+    PROCESSED: 'PROCESSED',
 };
 
 const CartPaymentValues = Object.freeze({

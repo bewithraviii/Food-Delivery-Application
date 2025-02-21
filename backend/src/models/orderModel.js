@@ -7,9 +7,13 @@ const orderSchema = new mongoose.Schema({
         ref: 'User', 
         required: true,
     },
-    cartData: { type: Array, require: true },
+    paymentMethod: { type: String, require: true },
+    paymentId: { type: String, require: true },
+    cartData: { type: Object, require: true },
+    cookingInstructions: { type: String, default: null },
     totalPrice: { type: Number, required: true },
     orderDate: { type: Date, default: Date.now },
+    cancelReason: { type: String, default: null },
     status: { type: String, enum: orderStatus, default: orderStatus.CONFIRMED },
 });
 

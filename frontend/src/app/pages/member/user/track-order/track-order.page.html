@@ -14,11 +14,8 @@
                   
                   <div class="order-number">
                     <div class="order-specific">
-                      <span>{{"Order No. #" + orderId}}</span>
+                      <span style="font-weight: 500;">{{"Order No. #" + orderId}}</span>
                       <span class="view-order" (click)="navigateToOrder()">View Orders Details <mat-icon>arrow_right</mat-icon></span>
-                    </div>
-                    <div class="order-quanity-price">
-    
                     </div>
                   </div>
   
@@ -76,10 +73,53 @@
                 <div class="info-details">
                   <div class="order-number">
                     <div class="bill-icon">
-                      <mat-icon>food_bank</mat-icon>
+                      <!-- <mat-icon>food_bank</mat-icon> -->
+                       <img src="assets/icons/dish.png">
                     </div>
                     <div class="hash-number">
-                      <span>{{"Order #" + orderId}}</span>
+                      <h6 >{{"Order " | uppercase}}{{"#" + orderId}}</h6>
+                      <div>
+                        <span>items: {{orderItemQuantity}}</span>
+                        <span style="margin-left: 0.3rem;margin-right: 0.3rem;">|</span>
+                        <span>paid: {{'₹' + orderDetails.totalPrice}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="order-data">
+                    <div *ngFor="let orderItem of cartData.restaurant.orderItem" class="orderItems">
+                      <div class="order-item">
+                        <div class="order-item-content">
+                          <span>{{ orderItem.name }}</span>
+                          <span>{{ '₹' + orderItem.price }}</span>
+                        </div>
+                        <div class="quantity-controls">
+                          <span style="font-size: 14px;">Qty: {{ orderItem.quantity }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="item-total-value">
+                      <span>TOTAL:</span>
+                      <span>{{'₹' + totalAmount}}</span>
+                    </div>
+                    <div>
+
+                    </div>
+                  </div>
+                  <div *ngIf="this.orderDetails.cartData.couponApplied" class="coupon-section">
+                    <div class="coupon-info">
+                      <div class="coupon-details" *ngFor="let dealInfo of dealInformation">
+                        <div class="couponImg">
+                          <img src="assets/icons/coupon-code.png" alt="{{dealInfo.code}}">
+                        </div>
+                        <div class="couponContainer">
+                          <div class="coupon">
+                            <span style="padding: 0; font-size: 16px; font-weight: 500;">{{dealInfo.code}}</span>
+                            <span style="padding: 0; font-size: 12px;">{{'₹' + this.orderDetails.cartData.discountedPrice}} Saved</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

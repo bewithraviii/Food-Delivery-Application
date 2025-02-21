@@ -202,7 +202,7 @@ const getAllRestaurantDetails = async(req, res) => {
 
 
     } catch(error){
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching restaurant details:', error);
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Token expired' });
         }
@@ -262,7 +262,7 @@ const getRestaurantDetails = async(req, res) => {
         });
 
     } catch(error) {
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching restaurant details:', error);
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Token expired' });
         }

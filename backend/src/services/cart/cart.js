@@ -109,12 +109,11 @@ const addToCart = async (req, res) => {
     }
     try{   
         const userId = data.userId;
-        const existingCart = await Cart.findOne({ userId: userId });
+        const existingCart = await Cart.findOne({ userId: userId, status: cartStatus.CartStatus.PENDING });
         if(!existingCart){
             const newCart = new Cart();
             newCart.userId = userId;
             newCart.cartItems = data.cartItems;
-            newCart.status = cartStatus.PENDING
             await newCart.save();
             return res.status(201).json({ message: 'Cart created successfully', payload: newCart });
         }

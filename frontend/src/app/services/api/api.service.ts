@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { addNewAddressRequest, addToCartReqForm, addToFavorite, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm, addToFavorite, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, OrderDataModal, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, UpdateOrderModal, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -146,6 +146,12 @@ export class ApiService {
   // track-Order Page
   getOrderDetails(orderId: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getOrderDetails/${orderId}`);
+  }
+  addNewOrder(reqPayload: OrderDataModal): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/addNewOrder`, reqPayload);
+  }
+  updateOrderStatus(reqPayload: UpdateOrderModal): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/updateOrderStatus`, reqPayload);
   }
 
 }

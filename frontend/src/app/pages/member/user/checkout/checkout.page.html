@@ -174,20 +174,20 @@
 
               <div class="payment-methods">
                 <div class="payment-option"
-                     (click)="selectPaymentMethod('googlePay')"
-                     [class.selected]="selectedPaymentMethod === 'googlePay'">
+                     (click)="selectPaymentMethod('GOOGLE_PAY')"
+                     [class.selected]="selectedPaymentMethod === 'GOOGLE_PAY'">
                   <mat-icon class="payment-icon">account_balance_wallet</mat-icon>
                   <span>Google Pay</span>
                 </div>
                 <div class="payment-option"
-                     (click)="selectPaymentMethod('stripe')"
-                     [class.selected]="selectedPaymentMethod === 'stripe'">
+                     (click)="selectPaymentMethod('STRIPE')"
+                     [class.selected]="selectedPaymentMethod === 'STRIPE'">
                   <mat-icon class="payment-icon">credit_card</mat-icon>
                   <span>Stripe</span>
                 </div>
                 <div class="payment-option"
-                     (click)="selectPaymentMethod('pod')"
-                     [class.selected]="selectedPaymentMethod === 'pod'">
+                     (click)="selectPaymentMethod('POD')"
+                     [class.selected]="selectedPaymentMethod === 'POD'">
                   <mat-icon class="payment-icon">money</mat-icon>
                   <span>Pay on Delivery</span>
                 </div>
@@ -196,19 +196,19 @@
               <div class="view-selected-payment-method-content" *ngIf="selectedPaymentMethod">
                 <mat-divider></mat-divider>
                 <div class="payment-content">
-                  <ng-container *ngIf="selectedPaymentMethod === 'googlePay'">
+                  <ng-container *ngIf="selectedPaymentMethod === 'GOOGLE_PAY'">
                     <!-- <app-google-pay-form></app-google-pay-form> -->
                      <h6>Not available at this moment please try again later</h6>
                   </ng-container>
-                  <ng-container *ngIf="selectedPaymentMethod === 'stripe'">
+                  <ng-container *ngIf="selectedPaymentMethod === 'STRIPE'">
                     <!-- <app-stripe-pay-form></app-stripe-pay-form> -->
                     <h6>Not available at this moment please try again later</h6>
                   </ng-container>
-                  <ng-container *ngIf="selectedPaymentMethod === 'pod'">
+                  <ng-container *ngIf="selectedPaymentMethod === 'POD'">
                     <div class="pod-info">
-                      <h6>Pay on Delivery selected. Please click the "Proceed to Pay" button to confirm your order.</h6>
-                      <div class="pod-type">
-                        <div class="cod-card" (click)="onCashDeliverySelected()">
+                      <h6>Pay on Delivery selected. Please click the "Place Order" button to confirm your order.</h6>
+                      <div class="pod-type" (click)="onCashDeliverySelected()">
+                        <div class="cod-card" >
                           <div class="cod-title">
                             <div style="display: flex; flex-direction: row;">
                               <img src="assets/icons/pay-money.png">
