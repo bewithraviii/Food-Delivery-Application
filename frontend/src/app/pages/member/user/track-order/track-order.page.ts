@@ -19,7 +19,12 @@ export class TrackOrderPage implements OnInit {
   orderDetails: any = {};
   orderItemQuantity: number = 0;
   totalAmount: number = 0;
-  cartData: any = {};
+  cartData: any = {
+    restaurant: {
+      orderItem: []
+    },
+    _id: String
+  };
   dealInformation: any = [];
   currentStepIndex = 0;
   orderSteps: {label: string, completed: boolean}[] = [
@@ -67,14 +72,21 @@ export class TrackOrderPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    this.resetState();
-    this.fetchOrderDetails(this.orderId);
+    if(!this.isDesktop){
+      this.resetState()
+      this.fetchOrderDetails(this.orderId);
+    }
   }
 
   resetState() {
     this.selectedCancelReason = '';
     this.orderDetails = {};
-    this.cartData = {};
+    this.cartData = {
+      restaurant: {
+        orderItem: []
+      },
+      _id: String
+    };
     this.dealInformation = [];
     this.cancelOrderAllowed = true;
     this.cancelTimer = 60;
@@ -89,6 +101,7 @@ export class TrackOrderPage implements OnInit {
   }
 
   async fetchOrderDetails(orderId: any) {
+    await this.presentLoader("Gathering Information...");
     try {
       const orderData: any = await firstValueFrom(this.apiService.getOrderDetails(orderId));
       if(orderData){
@@ -105,34 +118,43 @@ export class TrackOrderPage implements OnInit {
           }
         }
         await this.processData();
+        this.dismissLoader();
       }
     } catch(error: any) {
       this.notificationService.notifyUser("errorSnack", error.error.message);
       console.log(error);
+      this.dismissLoader();
+      if(error.error.message == "order not found"){
+        this.router.navigate(['/user-dashboard/home']);
+      }
+
     }
   }
 
   async processData(){
-    this.orderDetails.cartData.cartItems.forEach((cart: any) => {
-      this.cartData = cart;
-
-      this.cartData.restaurant.orderItem.forEach((items: any) => {
-        this.orderItemQuantity = this.orderItemQuantity + items.quantity;
-        let itemTotal =  items.price * items.quantity;
-        this.totalAmount = this.totalAmount + itemTotal;
-      }); 
-    })
-    if(this.orderDetails.cartData.couponApplied){
-      this.apiService.getDealInformation(this.orderDetails.cartData.couponApplied).subscribe(
-        async (response: any) => {
-          if(response && response.payload){
-            this.dealInformation.push(response.payload);
+    try {
+      this.orderDetails.cartData.cartItems.forEach((cart: any) => {
+        this.cartData = cart;
+        this.cartData.restaurant.orderItem.forEach((items: any) => {
+          this.orderItemQuantity = this.orderItemQuantity + items.quantity;
+          let itemTotal =  items.price * items.quantity;
+          this.totalAmount = this.totalAmount + itemTotal;
+        }); 
+      })
+      if(this.orderDetails.cartData.couponApplied){
+        this.apiService.getDealInformation(this.orderDetails.cartData.couponApplied).subscribe(
+          async (response: any) => {
+            if(response && response.payload){
+              this.dealInformation.push(response.payload);
+            }
+          },
+          (error: any) => {
+            console.log(error.error.message);
           }
-        },
-        (error: any) => {
-          console.log(error.error.message);
-        }
-      );
+        );
+      }
+    } catch (error: any){
+      console.log("Error: ", error);
     }
   }
 

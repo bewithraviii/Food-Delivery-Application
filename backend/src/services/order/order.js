@@ -13,6 +13,7 @@ const addNewOrder = async(body, res) => {
 
         const newOrder = new Order();
         newOrder.userId = body.userId;
+        newOrder.userAddress = body.userAddress;
         newOrder.cartData = body.cartData;
         newOrder.cookingInstructions = body.cookingInstructions || null;
         newOrder.totalPrice = body.totalPrice;
@@ -92,5 +93,40 @@ const updateOrderStatus = async(body, res) => {
     }
 }
 
+const fetchOrderDetails = async(req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'Authorization token is missing' });
+        }
 
-module.exports = { addNewOrder, getOrderDetailsById, updateOrderStatus };
+        const JWT_SECRET = 'FoodDeliveryApp';
+        const decoded = JWT.verify(token, JWT_SECRET);
+        
+        const userId = decoded.id;
+        if (!userId) {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+
+        const orderData = await Order.find();
+        if(!orderData || orderData.length == 0){
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        return res.status(200).json({
+            message: 'Order details fetched successfully',
+            payload: orderData
+        });
+
+
+    } catch(error){
+        console.error('Error fetching restaurant details:', error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+        }
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
+
+module.exports = { addNewOrder, getOrderDetailsById, updateOrderStatus, fetchOrderDetails };

@@ -100,6 +100,9 @@ export class ApiService {
   updateAddress(reqPayload: editAddressRequest): Observable<any> { 
     return this.http.post(`${this.baseURL}/auth/updateUserAddress`, reqPayload);
   }
+  getAllOrderDetails(): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/fetchOrderDetails`);
+  }
 
   // Restaurant-Page
   getRestaurantDetails(reqPayload: string): Observable<any> {
@@ -153,5 +156,7 @@ export class ApiService {
   updateOrderStatus(reqPayload: UpdateOrderModal): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/updateOrderStatus`, reqPayload);
   }
+
+
 
 }

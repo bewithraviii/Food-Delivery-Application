@@ -13,4 +13,5 @@ export enum ORDER_STATUS {
     PENDING = 'PENDING',
     COMPLETED = 'COMPLETED',
     CANCELLED = 'CANCELLED',
+    LIVE = 'LIVE',
 };

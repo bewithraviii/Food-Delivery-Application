@@ -277,6 +277,7 @@ export class CheckoutPage implements OnInit {
 
     const orderDetails: OrderDataModal = {
       userId: this.user.userId,
+      userAddress: this.selectedAddressData,
       cartData: this.rawCartData,
       totalPrice: this.totalAmount,
       cookingInstructions: this.cookingInstructions,

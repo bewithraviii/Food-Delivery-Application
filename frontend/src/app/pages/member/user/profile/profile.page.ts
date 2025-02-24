@@ -115,6 +115,14 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  async populateOrderData() {
+    try {
+      const response: any = await firstValueFrom(this.apiService.getAllOrderDetails());
+    } catch (error: any) {
+      console.error("Error fetching order data:", error.error.message);
+    }
+  }
+
   async populateUserData() {
     try {
       const fetchedData: any = await firstValueFrom(this.apiService.getUserDetails());

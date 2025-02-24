@@ -31,6 +31,7 @@ router.get('/getDealInfo/:id', authController.getDealInfo);
 router.get('/searchRestaurant', authorizeRoles(Roles.USER), searchController.searchRestaurant);
 // Order
 router.get('/getOrderDetails/:id', authorizeRoles(Roles.USER, Roles.VENDOR), orderController.getOrderDetailsById);
+router.get('/fetchOrderDetails', authorizeRoles(Roles.USER), orderController.fetchOrderDetails)
 
 
 

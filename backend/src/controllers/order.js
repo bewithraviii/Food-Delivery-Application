@@ -11,3 +11,7 @@ exports.getOrderDetailsById = async(req, res) => {
 exports.updateOrderStatus = async(req, res) => {
     return await orderService.updateOrderStatus(req.body, res);
 }
+
+exports.fetchOrderDetails = async(req, res) => {
+    return await orderService.fetchOrderDetails(req, res);
+}

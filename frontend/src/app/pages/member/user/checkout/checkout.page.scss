@@ -248,13 +248,6 @@ ion-content {
     padding-bottom: 0.5rem;
 
     .user-address-info{
-        // border: 1px solid #ddd;
-        // border-radius: 12px;
-        // background: transparent;
-        // padding: 1rem;
-        // border-radius: 10px;
-        // font-family: roboto;
-        // font-size: 16px;
         margin-bottom: 20px;
     
         .address-card {
@@ -468,6 +461,9 @@ ion-content {
     }
 }
 
+.billItemColor {
+    color: #FF8F60;
+}
 
 @media (max-width: 768px) {
     .checkout-page {

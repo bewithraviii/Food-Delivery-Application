@@ -7,6 +7,10 @@ const orderSchema = new mongoose.Schema({
         ref: 'User', 
         required: true,
     },
+    userAddress: {
+        title: { type: String, require: true },
+        details: { type: String, require: true }
+    },
     paymentMethod: { type: String, require: true },
     paymentId: { type: String, require: true },
     cartData: { type: Object, require: true },

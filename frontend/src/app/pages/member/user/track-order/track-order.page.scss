@@ -445,5 +445,10 @@ ion-content {
         .order-info-basic{
             border-right: none !important;
         }
+
+        .order-specific {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }

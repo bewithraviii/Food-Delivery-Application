@@ -86,42 +86,49 @@
                     </div>
                   </div>
                   <mat-divider></mat-divider>
-                  <div class="order-data">
-                    <div *ngFor="let orderItem of cartData.restaurant.orderItem" class="orderItems">
-                      <div class="order-item">
-                        <div class="order-item-content">
-                          <span>{{ orderItem.name }}</span>
-                          <span>{{ '₹' + orderItem.price }}</span>
-                        </div>
-                        <div class="quantity-controls">
-                          <span style="font-size: 14px;">Qty: {{ orderItem.quantity }}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <mat-divider></mat-divider>
-                    <div class="item-total-value">
-                      <span>TOTAL:</span>
-                      <span>{{'₹' + totalAmount}}</span>
-                    </div>
-                    <div>
-
+                  <div class="order-data-info" *ngIf="!cartData; else showCartInfo">
+                    <div style="justify-content: center; display: flex;">
+                      <ion-spinner name="dots" style="color: #FB6D3A !important;"></ion-spinner>
                     </div>
                   </div>
-                  <div *ngIf="this.orderDetails.cartData.couponApplied" class="coupon-section">
-                    <div class="coupon-info">
-                      <div class="coupon-details" *ngFor="let dealInfo of dealInformation">
-                        <div class="couponImg">
-                          <img src="assets/icons/coupon-code.png" alt="{{dealInfo.code}}">
+                  <ng-template #showCartInfo>
+                    <div class="order-data" *ngIf="cartData?.restaurant?.orderItem">
+                      <div *ngFor="let orderItem of cartData?.restaurant?.orderItem" class="orderItems">
+                        <div class="order-item">
+                          <div class="order-item-content">
+                            <span>{{ orderItem.name }}</span>
+                            <span>{{ '₹' + orderItem.price }}</span>
+                          </div>
+                          <div class="quantity-controls">
+                            <span style="font-size: 14px;">Qty: {{ orderItem.quantity }}</span>
+                          </div>
                         </div>
-                        <div class="couponContainer">
-                          <div class="coupon">
-                            <span style="padding: 0; font-size: 16px; font-weight: 500;">{{dealInfo.code}}</span>
-                            <span style="padding: 0; font-size: 12px;">{{'₹' + this.orderDetails.cartData.discountedPrice}} Saved</span>
+                      </div>
+                      <mat-divider></mat-divider>
+                      <div class="item-total-value">
+                        <span>TOTAL:</span>
+                        <span>{{'₹' + totalAmount}}</span>
+                      </div>
+                      <div>
+  
+                      </div>
+                    </div>
+                    <div *ngIf="this.orderDetails?.cartData?.couponApplied" class="coupon-section">
+                      <div class="coupon-info">
+                        <div class="coupon-details" *ngFor="let dealInfo of dealInformation">
+                          <div class="couponImg">
+                            <img src="assets/icons/coupon-code.png" alt="{{dealInfo.code}}">
+                          </div>
+                          <div class="couponContainer">
+                            <div class="coupon">
+                              <span style="padding: 0; font-size: 16px; font-weight: 500;">{{dealInfo.code}}</span>
+                              <span style="padding: 0; font-size: 12px;">{{'₹' + this.orderDetails.cartData.discountedPrice}} Saved</span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </ng-template>
                 </div>
               </div>
             </div>

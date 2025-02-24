@@ -269,8 +269,8 @@
                           <h4>{{ address.title }}</h4>
                           <p>{{ address.details }}</p>
                           <div class="actions">
-                            <button class="edit"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
-                            <button class="delete"><mat-icon fontIcon="delete_sweep" class="delete"></mat-icon></button>
+                            <button class="edit"><mat-icon fontIcon="edit_note" class="edit" (click)="editAddress(address)"></mat-icon></button>
+                            <button class="delete"><mat-icon fontIcon="delete_sweep" class="delete" (click)="deleteAddress(address)"></mat-icon></button>
                           </div>
                         </div>
                       </div>

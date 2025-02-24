@@ -164,7 +164,8 @@ interface OrderDataModal {
     totalPrice: number,
     cookingInstructions: string,
     paymentMethod: string,
-    paymentId: string
+    paymentId: string,
+    userAddress: any
 }
 
 interface UpdateOrderModal {
