@@ -1,6 +1,8 @@
 <ion-content>
   <div class="profile-page">
-    <div class="container">    
+    <div class="container"> 
+
+      <!-- User Profile View -->
       <div class="padding">
         <div class="user-profile row bd-highlight">
           <div class="p-3 bd-highlight col-md-6">
@@ -48,9 +50,9 @@
           </div>
         </div>
       </div>
+
       <!-- Desktop and Laptop View -->
-      <div *ngIf="isDesktop">
-  
+      <div *ngIf="isDesktop">        
         <div class="row padding">
           <div class="desktop-dashboard">
             <div class="dashboard-sidebar">
@@ -83,6 +85,9 @@
                       </div>
                       <ng-template #orderDetails>
                         <h5 style="color: #2D2D2D;">{{"Your Orders" | uppercase}}:</h5>
+                        <div class="orders-list" *ngFor="let orderDetail of ordersList">
+                          <app-order-card [orderDetail]="orderDetail"></app-order-card>
+                        </div>
                       </ng-template>
                     </div>
                   </div>
@@ -249,6 +254,9 @@
                       <ng-template #orderDetails>
                         <div style="margin-bottom: 1rem;">
                           <span>{{"Manage Orders" | uppercase}}</span>
+                          <div class="orders-list" *ngFor="let orderDetail of ordersList">
+                            <app-order-card [orderDetail]="orderDetail"></app-order-card>
+                          </div>
                         </div>
                       </ng-template>
                     </div>
@@ -366,6 +374,7 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
+
     </div>
   </div>
 </ion-content>

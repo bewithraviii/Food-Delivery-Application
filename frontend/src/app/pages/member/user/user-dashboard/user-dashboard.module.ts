@@ -33,6 +33,8 @@ import { PaymentSuccessPage } from '../shared/components/payment-success/payment
 import { TrackOrderPage } from '../track-order/track-order.page';
 import { OrderPage } from '../order/order.page';
 import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { OrderCardPage } from '../shared/components/order-card/order-card.page';
+import { RestaurantCardPage } from '../shared/components/restaurant-card/restaurant-card.page';
 
 
 @NgModule({
@@ -72,6 +74,8 @@ import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/p
     RestaurantPage,
     CheckoutPage,
     PaymentSuccessPage,
+    OrderCardPage,
+    RestaurantCardPage,
     OrderPage,
     TrackOrderPage,
   ],

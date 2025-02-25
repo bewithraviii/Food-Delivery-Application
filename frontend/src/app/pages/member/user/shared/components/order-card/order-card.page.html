@@ -1,0 +1,29 @@
+<div class="order-card">
+  <div class="order-start">
+    <div class="restaurant-info">
+      <div class="image-section">
+        <ion-img src="{{orderDetail.restaurantImage}}" ></ion-img>
+      </div>
+      <div class="restaurant-data">
+        <div class="restaurant-section">
+          <h6 (click)="navigateToRestaurant(orderDetail?.cartData?.restaurantId)">{{orderDetail?.cartData?.name}}</h6>
+          <span>{{orderDetail?.cartData?.address.landmark}}</span>
+        </div>
+        <div class="order-section">
+          <span>{{"Order" | uppercase}} {{"#" + orderDetail._id}}</span>
+          <h6 (click)="redirectToOrderDetail(orderDetail._id)">{{"View Details" | uppercase}}</h6>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <mat-divider></mat-divider>
+  <div class="order-end">
+    <div class="order-status" >
+      <span>{{orderDetail.status}}</span>
+    </div>
+    <div class="amount-paid">
+      <span>Total Paid: ₹ {{orderDetail.totalPrice}}</span>
+    </div>
+  </div>
+</div>

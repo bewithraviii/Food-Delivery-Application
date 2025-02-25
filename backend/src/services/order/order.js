@@ -1,3 +1,4 @@
+const JWT = require('jsonwebtoken');
 const Order = require('../../models/orderModel');
 const Cart = require('../../models/cartModel');
 const cartStatus = require('../../utils/enums/cartStatus');
@@ -112,15 +113,28 @@ const fetchOrderDetails = async(req, res) => {
         if(!orderData || orderData.length == 0){
             return res.status(404).json({ message: 'Order not found' });
         }
+        
+        let orderDetails = [];
+        orderData.forEach(order => {
+            orderDetails.push({
+                _id: order._id,
+                status: order.status,
+                userId: order.userId,
+                paymentMethod: order.paymentMethod,
+                totalPrice: order.totalPrice,
+                updatedDate: order.updatedAt,
+                cartData: order.cartData.cartItems[0].restaurant,
+            });
+        });
 
         return res.status(200).json({
             message: 'Order details fetched successfully',
-            payload: orderData
+            payload: orderDetails
         });
 
 
     } catch(error){
-        console.error('Error fetching restaurant details:', error);
+        console.error('Error fetching order details:', error);
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Token expired' });
         }

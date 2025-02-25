@@ -162,7 +162,7 @@ export class OrderPage implements OnInit {
   }
 
   async formateDateAndTime() {
-    const dateJSON = new Date(this.orderDetails.orderDate);
+    const dateJSON = new Date(this.orderDetails.createdAt);
     this.formattedDate = formatDate(dateJSON, 'dd MMM yyyy', 'en-US');
     this.formattedTime = formatDate(dateJSON, 'HH:mm', 'en-US');
   }

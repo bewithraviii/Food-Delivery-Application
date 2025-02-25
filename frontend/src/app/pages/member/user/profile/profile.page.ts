@@ -69,8 +69,9 @@ export class ProfilePage implements OnInit {
     if(this.isDesktop){
       await this.presentLoader('Loading Profile...');
       this.resetState()
-      await this.populateRestaurantData();
       await this.populateUserData();
+      await this.populateRestaurantData();
+      await this.populateOrderData();
       await this.dismissLoader();
     }
   }
@@ -80,6 +81,7 @@ export class ProfilePage implements OnInit {
     this.resetState();
     await this.populateRestaurantData();
     await this.populateUserData();
+    await this.populateOrderData();
     await this.dismissLoader();
   }
 
@@ -118,6 +120,16 @@ export class ProfilePage implements OnInit {
   async populateOrderData() {
     try {
       const response: any = await firstValueFrom(this.apiService.getAllOrderDetails());
+      if (response && response.payload) {
+        this.ordersList = [];
+        response.payload.forEach( async (order: any) => {
+          const resId = order?.cartData?.restaurantId;
+          const restaurantDetails = await firstValueFrom(this.apiService.getRestaurantDetails(resId));
+          const extractedAddress = this.addressExtractionService.extractAddressDetails(order.cartData.address);
+          order.cartData.address = extractedAddress;
+          this.ordersList.push({...order, restaurantImage: restaurantDetails.payload.profileImage});
+        });
+      }
     } catch (error: any) {
       console.error("Error fetching order data:", error.error.message);
     }

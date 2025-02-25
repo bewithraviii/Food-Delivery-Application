@@ -16,10 +16,9 @@ const orderSchema = new mongoose.Schema({
     cartData: { type: Object, require: true },
     cookingInstructions: { type: String, default: null },
     totalPrice: { type: Number, required: true },
-    orderDate: { type: Date, default: Date.now },
     cancelReason: { type: String, default: null },
     status: { type: String, enum: orderStatus, default: orderStatus.CONFIRMED },
-});
+}, { timestamps: true });
 
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
