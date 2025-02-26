@@ -77,7 +77,35 @@ const updateOrderStatus = async(body, res) => {
             return res.status(404).json({ message: 'order not found' });
         }
 
-        orderData.status = OrderStatus.PROCESSING;
+        switch(body.updateOrderStatusTo) {
+            case OrderStatus.PROCESSING:
+                orderData.status = OrderStatus.PROCESSING;
+              break;
+            case OrderStatus.CANCELLED:
+                orderData.status = OrderStatus.CANCELLED;
+                orderData.cancelReason = body.selectedCancelReason;
+              break;
+            case OrderStatus.OUT_FOR_DELIVERY:
+                orderData.status = OrderStatus.OUT_FOR_DELIVERY;
+              break;
+            case OrderStatus.COMPLETED:
+                orderData.status = OrderStatus.COMPLETED;
+              break;
+            default:
+                orderData.status = OrderStatus.CONFIRMED;
+          }
+
+        // if(body.updateOrderStatusTo == OrderStatus.PROCESSING){
+        //     orderData.status = OrderStatus.PROCESSING;
+        // } else if (body.updateOrderStatusTo == OrderStatus.CANCELLED){
+        //     orderData.status = OrderStatus.CANCELLED;
+        //     orderData.cancelReason = body.selectedCancelReason;
+        // } else if (body.updateOrderStatusTo == OrderStatus.COMPLETED){
+        //     orderData.status = OrderStatus.COMPLETED;
+        // } else if (body.updateOrderStatusTo == OrderStatus.OUT_FOR_DELIVERY) {
+        //     orderData.status = OrderStatus.OUT_FOR_DELIVERY;
+        // }
+
         const updatedOrder = await orderData.save();
 
         return res.status(200).json({

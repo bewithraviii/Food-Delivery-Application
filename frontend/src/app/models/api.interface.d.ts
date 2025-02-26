@@ -170,5 +170,7 @@ interface OrderDataModal {
 
 interface UpdateOrderModal {
     userId: string,
-    orderId: string
+    orderId: string,
+    updateOrderStatusTo: string,
+    selectedCancelReason?: string
 }

@@ -9,7 +9,7 @@
 
           <div class="order-details">
             <div class="row">
-              <div class="col-md-6">
+              <div [ngClass]="{'col-md-12': orderCancelled, 'col-md-6': !orderCancelled}">
                 <div class="order-info-basic">
                   
                   <div class="order-number">
@@ -21,7 +21,7 @@
   
                   <mat-divider></mat-divider>
   
-                  <div class="order-status">
+                  <div class="order-status" *ngIf="!orderCancelled; else cancelOrderInfo">
                     <div class="order-status-title">
                       <span>{{"Status" | uppercase }}</span>
                     </div>
@@ -56,9 +56,43 @@
                       </div>
                     </div>
                   </div>
+                  <ng-template #cancelOrderInfo>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="order-cancel-design">
+                          <div class="cancel-design-logo">
+                            <img src="assets/icons/cancel-background.png">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="order-cancel-data">
+                          <div class="cancel-data-text">
+                            <h6>{{cancelHeading}}</h6>
+                            <span>{{cancelContent}}</span>
+                          </div>
+                          <mat-divider></mat-divider>
+                          <div class="cancel-navigation-buttons">
+                            
+                            <button class="home-btn" (click)="navigateToHome()">
+                              <span>{{"Go to home page" | uppercase}}</span>
+                            </button>
+  
+                            <button class="order-btn" (click)="navigateToProfile()">
+                              <span>{{"Visit my order" | uppercase}}</span>
+                            </button>
+  
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6" *ngIf="!orderCancelled">
+                <div class="order-map">
+
+                </div>
               </div>
             </div>
           </div>
@@ -133,7 +167,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div class="order-process">
+              <div class="order-process" *ngIf="!orderCancelled; else showHelpAndSupport">
                 <div class="rider">
                   <h5>{{"Rider's Detail" | uppercase }}</h5>
                   <div class="delivery-info">
@@ -216,6 +250,14 @@
                   </div>
                 </div>
               </div>
+              <ng-template #showHelpAndSupport>
+                <div class="support-section">
+                  <h5>{{"Help & Support" | uppercase }}</h5>
+                  <div class="help-and-support">
+
+                  </div>
+                </div>
+              </ng-template>
             </div>
           </div>
         </div>

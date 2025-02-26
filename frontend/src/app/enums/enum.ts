@@ -15,3 +15,10 @@ export enum ORDER_STATUS {
     CANCELLED = 'CANCELLED',
     LIVE = 'LIVE',
 };
+
+
+
+export enum CANCEL_DATA {
+    CANCEL_DATA_HEADING = "Your order has been cancelled.",
+    CANCEL_DATA_CONTENT = "A refund will be initiated basis our cancellation policy, for further queries reach us out at Help & Support section."
+}

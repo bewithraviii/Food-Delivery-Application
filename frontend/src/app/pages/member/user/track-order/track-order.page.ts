@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { firstValueFrom, interval, Subscription, take, timer } from 'rxjs';
-import { ORDER_STATUS } from 'src/app/enums/enum';
+import { CANCEL_DATA, ORDER_STATUS } from 'src/app/enums/enum';
 import { UpdateOrderModal } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
@@ -47,7 +47,9 @@ export class TrackOrderPage implements OnInit {
   ];
   selectedCancelReason: string = '';
   timerSubscription!: Subscription;
-
+  orderCancelled: boolean = false;
+  cancelHeading: string = CANCEL_DATA.CANCEL_DATA_HEADING;
+  cancelContent: string = CANCEL_DATA.CANCEL_DATA_CONTENT;
 
   constructor(
     private router: Router,
@@ -110,6 +112,13 @@ export class TrackOrderPage implements OnInit {
         if (this.orderDetails.status === ORDER_STATUS.CONFIRMED) {
           this.cancelOrderAllowed = true;
           this.startCancelTimer();
+        } else if(this.orderDetails.status === ORDER_STATUS.CANCELLED){
+          this.orderCancelled = true;
+          this.cancelOrderAllowed = false;
+          this.cancelTimer = 0;
+          if(this.timerSubscription){
+            this.timerSubscription.unsubscribe();
+          }
         } else {
           this.cancelOrderAllowed = false;
           this.cancelTimer = 0;
@@ -162,6 +171,14 @@ export class TrackOrderPage implements OnInit {
     this.router.navigate([`/user-dashboard/order/${this.orderId}`]);
   }
 
+  async navigateToProfile() {
+    this.router.navigate([`/user-dashboard/profile`]);
+  }
+
+  async navigateToHome() {
+    this.router.navigate([`/user-dashboard/home`]);
+  }
+
   getCurrentStepIndex(): number {
     return this.currentStepIndex;
   }
@@ -179,21 +196,27 @@ export class TrackOrderPage implements OnInit {
       complete: () => {
         this.cancelTimer = 0;
         this.cancelOrderAllowed = false;
-        this.updateOrderStatus(this.orderId);
+        this.updateOrderStatus(this.orderId, ORDER_STATUS.PROCESSING);
       }
     });   
   }
 
-  onSubmitCancel() {
+  async onSubmitCancel() {
     if (!this.selectedCancelReason) return;
 
     console.log('Canceling order with reason:', this.selectedCancelReason);
+    const cancelledOrder = await this.cancelOrderProcess(this.selectedCancelReason, this.orderId, ORDER_STATUS.CANCELLED);
+    if(!cancelledOrder){
+      return;
+    }
 
     if(this.timerSubscription)
     {
       this.timerSubscription.unsubscribe();
     }
+
     this.cancelOrderAllowed = false;
+    // this.orderCancelled = true
   }
 
   async presentLoader(message?: string) {
@@ -241,11 +264,12 @@ export class TrackOrderPage implements OnInit {
     }
   }
 
-  async updateOrderStatus(orderId: string) {
+  async updateOrderStatus(orderId: string, status: string) {
     try {
       const updateOrderPayload: UpdateOrderModal = {
         userId: this.orderDetails.userId,
-        orderId: this.orderId
+        orderId: orderId,
+        updateOrderStatusTo: status
       }
       const updatedOrderData: any = await firstValueFrom(this.apiService.updateOrderStatus(updateOrderPayload));
       if(updatedOrderData){
@@ -255,6 +279,31 @@ export class TrackOrderPage implements OnInit {
     } catch(error: any) {
       this.notificationService.notifyUser("errorSnack", error.error.message);
       console.log(error);
+    }
+  }
+
+  async cancelOrderProcess(selectedCancelReason: string, orderId: string, status: string ) {
+    await this.presentLoader('Cancelling order...');
+
+    try {
+      const updateOrderPayload: UpdateOrderModal = {
+        userId: this.orderDetails.userId,
+        orderId: orderId,
+        updateOrderStatusTo: status,
+        selectedCancelReason:selectedCancelReason
+      }
+      const updatedOrderData: any = await firstValueFrom(this.apiService.updateOrderStatus(updateOrderPayload));
+      if(updatedOrderData){
+        this.orderDetails = updatedOrderData.payload;
+        // this.updateOrderSteps(this.orderDetails.status);
+      }
+      this.dismissLoader();
+      return true;
+    } catch(error: any) {
+      this.dismissLoader();
+      this.notificationService.notifyUser("errorSnack", error.error.message);
+      console.log(error);
+      return false;
     }
   }
 

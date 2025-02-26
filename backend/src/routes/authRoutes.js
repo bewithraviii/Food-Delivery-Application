@@ -61,7 +61,7 @@ router.post('/applyDealsToCart', authorizeRoles(Roles.USER), cartController.appl
 router.post('/removeDealsFromCart', authorizeRoles(Roles.USER), cartController.removeDealsFromCart);
 // Order
 router.post('/addNewOrder', authorizeRoles(Roles.USER), orderController.addNewOrder);
-router.post('/updateOrderStatus', authorizeRoles(Roles.USER, Roles.VENDOR), orderController.updateOrderStatus)
+router.post('/updateOrderStatus', authorizeRoles(Roles.USER, Roles.VENDOR, Roles.DELIVERY_AGENT), orderController.updateOrderStatus)
 
 
 // ADMIN

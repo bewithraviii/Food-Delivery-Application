@@ -10,8 +10,22 @@
           <span>{{orderDetail?.cartData?.address.landmark}}</span>
         </div>
         <div class="order-section">
-          <span>{{"Order" | uppercase}} {{"#" + orderDetail._id}}</span>
-          <h6 (click)="redirectToOrderDetail(orderDetail._id)">{{"View Details" | uppercase}}</h6>
+          <div class="order-details">
+            <span style="font-weight: 500;">{{"Order" | uppercase}} {{"#" + orderDetail._id}}</span>
+            <div class="order-list">
+            
+              <div *ngFor="let items of orderDetail?.cartData?.orderItem; let i = index; let last = last" class="order-item-list">
+                <div class="order-item">
+                  <span>{{items.name}}</span>
+                  <!-- <span style="justify-content: center; align-items: center; display: flex;"><ion-icon name="close"></ion-icon></span> -->
+                  <span>&nbsp;({{items.quantity}})</span>
+                  <span *ngIf="!last" class="order-list-apart">•</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <h6 (click)="redirectToOrderDetail(orderDetail._id)" style='margin-top: 1rem;'>{{"View Details" | uppercase}}</h6>
         </div>
       </div>
     </div>
@@ -20,6 +34,24 @@
   <mat-divider></mat-divider>
   <div class="order-end">
     <div class="order-status" >
+      <span *ngIf="orderDetail.status == 'LIVE'" class="active-process">
+        <div class="step-circle"></div>
+      </span>
+      <span *ngIf="orderDetail.status == 'COMPLETED'" class="active-process">
+        <div class="completed-process">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </div>
+      </span>
+      <span *ngIf="orderDetail.status == 'CANCELLED'" class="active-process">
+        <div class="cancelled-process">
+          <ion-icon name="close-circle"></ion-icon>
+        </div>
+      </span>
+      <span *ngIf="orderDetail.status == 'CONFIRMED'" class="active-process">
+        <div class="confirmed-process">
+          <ion-icon name="timer"></ion-icon>
+        </div>
+      </span>
       <span>{{orderDetail.status}}</span>
     </div>
     <div class="amount-paid">

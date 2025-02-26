@@ -12,8 +12,6 @@ import { AddressExtractionService } from 'src/app/services/util/address-extracti
 export class OrderCardPage implements OnInit {
 
   @Input() orderDetail!: any;
-  // formattedTime: any;
-  // formattedDate: any;
 
   constructor(
     private router: Router
@@ -22,12 +20,6 @@ export class OrderCardPage implements OnInit {
   ngOnInit() {
     this.updateOrderStatus(this.orderDetail.status);
   }
-
-  // async formateDateAndTime(orderTiming: Date) {
-  //   const dateJSON = new Date(orderTiming);
-  //   this.formattedDate = formatDate(dateJSON, 'dd MMM yyyy', 'en-US');
-  //   this.formattedTime = formatDate(dateJSON, 'HH:mm', 'en-US');
-  // }
 
   async updateOrderStatus(orderStatus: string) {
     switch (orderStatus) {
@@ -47,7 +39,7 @@ export class OrderCardPage implements OnInit {
   }
 
   redirectToOrderDetail(orderId: string) {
-    this.router.navigate([`/user-dashboard/track-order/${orderId}`]);
+    this.router.navigate([`/user-dashboard/order/${orderId}`]);
   }
 
   navigateToRestaurant(restaurantId: string) {
