@@ -25,7 +25,7 @@ ion-content {
 
 .profile-icon {
     aspect-ratio: 1/1;
-    width: 5rem;
+    width: 4rem;
 }
 
 .profile-text {
@@ -366,6 +366,7 @@ ion-content {
             color: white;
             padding-right: 0.2rem;
             padding-left: 0.2rem;
+            font-size: 12px;
         }
     }
 
@@ -391,6 +392,14 @@ ion-content {
     .favorite-cards {
         .image-container {
             height: 100px;
+        }
+
+        ion-card-title {
+            font-size: 18px !important;
+        }
+
+        ion-card-subtitle {
+            font-size: 12px !important;
         }
     }
 }

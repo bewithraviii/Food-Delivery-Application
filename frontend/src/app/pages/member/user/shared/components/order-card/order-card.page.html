@@ -6,8 +6,15 @@
       </div>
       <div class="restaurant-data">
         <div class="restaurant-section">
-          <h6 (click)="navigateToRestaurant(orderDetail?.cartData?.restaurantId)">{{orderDetail?.cartData?.name}}</h6>
-          <span>{{orderDetail?.cartData?.address.landmark}}</span>
+          <div class="restaurant-start">
+            <h6 (click)="navigateToRestaurant(orderDetail?.cartData?.restaurantId)">{{orderDetail?.cartData?.name}}</h6>
+            <span>{{orderDetail?.cartData?.address.landmark}}</span>
+          </div>
+          <div class="restaurant-end">
+            <span>{{formattedDate}}</span>
+            <span style="margin-left: 0.3rem; margin-right: 0.3rem;">•</span>
+            <span>{{formattedTime}}</span>
+          </div>
         </div>
         <div class="order-section">
           <div class="order-details">
@@ -29,7 +36,6 @@
         </div>
       </div>
     </div>
-
   </div>
   <mat-divider></mat-divider>
   <div class="order-end">

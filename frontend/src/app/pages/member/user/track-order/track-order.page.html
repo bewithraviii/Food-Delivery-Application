@@ -10,7 +10,7 @@
           <div class="order-details">
             <div class="row">
               <div [ngClass]="{'col-md-12': orderCancelled, 'col-md-6': !orderCancelled}">
-                <div class="order-info-basic">
+                <div class="order-info-basic" [ngClass]="{'div-border-right': !orderCancelled}">
                   
                   <div class="order-number">
                     <div class="order-specific">
@@ -45,7 +45,12 @@
                             <div class="arriving-time">
                               <div class="arriving-time-two">
                                 <h4>Arriving By</h4>
-                                <span>{{ arrivingTime }}</span>
+                                <span *ngIf="arrivingTime; else showTimeCalculationLoader">{{ arrivingTime }}</span>
+                                <ng-template #showTimeCalculationLoader>
+                                  <div style="justify-content: center; display: flex;">
+                                    <ion-spinner name="dots" style="color: #FC6E2A !important;"></ion-spinner>
+                                  </div>
+                                </ng-template>
                               </div>
                             </div>
                             <div class="arrival-status-updates">
@@ -140,7 +145,7 @@
                       </div>
                       <mat-divider></mat-divider>
                       <div class="item-total-value">
-                        <span>TOTAL:</span>
+                        <span>Item Total:</span>
                         <span>{{'₹' + totalAmount}}</span>
                       </div>
                       <div>
@@ -254,7 +259,28 @@
                 <div class="support-section">
                   <h5>{{"Help & Support" | uppercase }}</h5>
                   <div class="help-and-support">
-
+                    <div class="help-and-support-heading">
+                      <div class="help-and-support-icon">
+                         <img src="assets/icons/live-chat.png">
+                      </div>
+                      <div class="help-and-support-content">
+                        <h6>{{helpAndSupportHeading}}</h6>
+                        <span>{{helpAndSupportContent}}</span>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="help-and-support-information">
+                      <div>
+                        <span>{{helpAndSupportDescription}}</span>
+                        <span style="color: #FB6D3A; font-weight: 500; cursor: pointer">{{helpAndSupportNumber}}</span>
+                      </div>
+                      <div>
+                        <span>Visit 
+                          <a style="cursor: pointer; color: #FB6D3A; font-weight: 500;" (click)="navigateToHome()">Help & Support</a> 
+                          to track and manage your query.
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </ng-template>

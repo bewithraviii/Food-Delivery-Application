@@ -69,6 +69,42 @@ ion-content {
 
     .order-end {
         padding: 1rem;
+
+        .cancel-order {
+            padding: 1rem;
+            background-color: #fff5f0;
+            color: #FC6E2A;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+
+            .cancel-order-image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .cancel-image{
+                    margin: 0.5rem;
+                    img {
+                        width: 3rem;
+                    }
+                }
+            }
+
+            .cancel-order-text{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+
+                .cancel-text {
+                    margin: 0.5rem;
+                    span{
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
       
         .order-progress {
             display: flex;
@@ -352,8 +388,26 @@ ion-content {
 
 @media (max-width: 768px) {
     .order-page {
-        margin-top: 5rem;
+        margin-top: 4rem;
         margin-bottom: 2rem;
+    }
+
+}
+
+@media (max-width: 449px) {
+    .order-start{
+        display: flex;
+        flex-direction: column !important;
+
+        .order-status{ 
+            margin-bottom: 1rem;
+        }
+
+        .order-number{
+            .order-date-time{
+                justify-content: start !important;
+            }
+        }
     }
 
 }

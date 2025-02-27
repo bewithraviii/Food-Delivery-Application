@@ -36,7 +36,7 @@
 
             <div class="order-end">
 
-              <div class="order-progress">
+              <div class="order-progress" *ngIf="orderStatus !== 'CANCELLED'; else showCancelOrder">
 
                 <div class="progress-step"
                      [ngClass]="{
@@ -73,6 +73,26 @@
                   <div class="step-label">Out for delivery</div>
                 </div>
               </div>
+              <ng-template #showCancelOrder>
+                <div class="cancel-order">
+                  <!-- <div class="row"> -->
+                    <!-- <div class="col-md-6"> -->
+                      <div class="cancel-order-image">
+                        <div class="cancel-image">
+                          <img src="assets/icons/cancel-bag.png" >
+                        </div>
+                      </div>
+                    <!-- </div> -->
+                    <!-- <div class="col-md-6"> -->
+                      <div class="cancel-order-text">
+                        <div class="cancel-text">
+                          <span>{{"Order Cancelled" | uppercase}}</span>
+                        </div>
+                      </div>
+                    <!-- </div> -->
+                  <!-- </div> -->
+                </div>
+              </ng-template>
             
               <div class="address-information">
                 <div class="user-address-info">

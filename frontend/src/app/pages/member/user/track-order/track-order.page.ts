@@ -2,10 +2,11 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { firstValueFrom, interval, Subscription, take, timer } from 'rxjs';
-import { CANCEL_DATA, ORDER_STATUS } from 'src/app/enums/enum';
+import { ARRIVAL_UPDATES, CANCEL_DATA, CANCEL_REASONS, HELP_SUPPORT, ORDER_STATUS, ORDER_STEPS } from 'src/app/enums/enum';
 import { UpdateOrderModal } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
+import { DeliveryTimeCalculationService } from 'src/app/services/util/delivery-time-calculation.service';
 
 @Component({
   selector: 'app-track-order',
@@ -28,28 +29,32 @@ export class TrackOrderPage implements OnInit {
   dealInformation: any = [];
   currentStepIndex = 0;
   orderSteps: {label: string, completed: boolean}[] = [
-    { label: 'Order Confirmed', completed: false },
-    { label: 'Cooking in Progress', completed: false },
-    { label: 'Out for Delivery', completed: false },
-    { label: 'Order Delivered', completed: false}
+    { label: ORDER_STEPS.ORDER_CONFIRMED, completed: false },
+    { label: ORDER_STEPS.COOKING_IN_PROGRESS, completed: false },
+    { label: ORDER_STEPS.OUT_FOR_DELIVERY, completed: false },
+    { label: ORDER_STEPS.ORDER_DELIVERED, completed: false}
   ];
   riderAssigned: boolean = false;
   riderInstructions: string = '';
-  arrivingTime = '2:25 PM';
-  arrivalStatus = 'On Time';
+  arrivingTime = '';
+  arrivalStatus = ARRIVAL_UPDATES.ARRIVAL_ON_TIME;
   cancelTimer: number = 60;
   cancelOrderAllowed: boolean = true;
   cancelReasons: string[] = [
-    'Changing my mind',
-    'Promised delivery price too high',
-    'Forgot to apply coupon',
-    'Ordered wrong items / more items'
+    CANCEL_REASONS.CHANGING_MIND,
+    CANCEL_REASONS.PROMISED_DELIVERY_PRICE_TOO_HIGH,
+    CANCEL_REASONS.FORGOT_TO_APPLY_COUPON,
+    CANCEL_REASONS.ORDERED_WRONG_ITEMS_MORE_ITEMS,
   ];
   selectedCancelReason: string = '';
   timerSubscription!: Subscription;
   orderCancelled: boolean = false;
   cancelHeading: string = CANCEL_DATA.CANCEL_DATA_HEADING;
   cancelContent: string = CANCEL_DATA.CANCEL_DATA_CONTENT;
+  helpAndSupportContent: string = HELP_SUPPORT.HELP_SUPPORT_CONTENT;
+  helpAndSupportHeading: string = HELP_SUPPORT.HELP_SUPPORT_HEADING;
+  helpAndSupportDescription: string = HELP_SUPPORT.HELP_SUPPORT_DESCRIPTION;
+  helpAndSupportNumber: string = HELP_SUPPORT.HELP_SUPPORT_NUMBER
 
   constructor(
     private router: Router,
@@ -57,6 +62,7 @@ export class TrackOrderPage implements OnInit {
     private apiService: ApiService,
     private loadingController: LoadingController,
     private notificationService: NotificationService,
+    private deliveryTimeCalculationService: DeliveryTimeCalculationService,
   ) { }
 
   async ngOnInit() {
@@ -66,23 +72,20 @@ export class TrackOrderPage implements OnInit {
     });
     
     if(this.isDesktop){
-      if(this.orderId){
-        this.resetState()
-        this.fetchOrderDetails(this.orderId);
-      }
+      this.loadOrderData();
     }
   }
 
   async ionViewWillEnter() {
     if(!this.isDesktop){
-      this.resetState()
-      this.fetchOrderDetails(this.orderId);
+      this.loadOrderData();
     }
   }
 
   resetState() {
     this.selectedCancelReason = '';
     this.orderDetails = {};
+    this.orderItemQuantity = 0;
     this.cartData = {
       restaurant: {
         orderItem: []
@@ -94,6 +97,13 @@ export class TrackOrderPage implements OnInit {
     this.cancelTimer = 60;
     if(this.timerSubscription){
       this.timerSubscription.unsubscribe();
+    }
+  }
+
+  private loadOrderData(){
+    this.resetState();
+    if (this.orderId) {
+      this.fetchOrderDetails(this.orderId);
     }
   }
 
@@ -112,6 +122,7 @@ export class TrackOrderPage implements OnInit {
         if (this.orderDetails.status === ORDER_STATUS.CONFIRMED) {
           this.cancelOrderAllowed = true;
           this.startCancelTimer();
+          this.calculateArrivalTime();
         } else if(this.orderDetails.status === ORDER_STATUS.CANCELLED){
           this.orderCancelled = true;
           this.cancelOrderAllowed = false;
@@ -120,23 +131,24 @@ export class TrackOrderPage implements OnInit {
             this.timerSubscription.unsubscribe();
           }
         } else {
+          this.calculateArrivalTime();
           this.cancelOrderAllowed = false;
           this.cancelTimer = 0;
           if(this.timerSubscription){
             this.timerSubscription.unsubscribe();
           }
+
         }
         await this.processData();
-        this.dismissLoader();
       }
     } catch(error: any) {
       this.notificationService.notifyUser("errorSnack", error.error.message);
-      console.log(error);
-      this.dismissLoader();
       if(error.error.message == "order not found"){
         this.router.navigate(['/user-dashboard/home']);
       }
 
+    } finally {
+      this.dismissLoader();
     }
   }
 
@@ -216,7 +228,6 @@ export class TrackOrderPage implements OnInit {
     }
 
     this.cancelOrderAllowed = false;
-    // this.orderCancelled = true
   }
 
   async presentLoader(message?: string) {
@@ -273,7 +284,7 @@ export class TrackOrderPage implements OnInit {
       }
       const updatedOrderData: any = await firstValueFrom(this.apiService.updateOrderStatus(updateOrderPayload));
       if(updatedOrderData){
-        this.orderDetails = updatedOrderData.payload;
+        this.orderDetails.status = updatedOrderData.payload.status;
         this.updateOrderSteps(this.orderDetails.status);
       }
     } catch(error: any) {
@@ -295,7 +306,6 @@ export class TrackOrderPage implements OnInit {
       const updatedOrderData: any = await firstValueFrom(this.apiService.updateOrderStatus(updateOrderPayload));
       if(updatedOrderData){
         this.orderDetails = updatedOrderData.payload;
-        // this.updateOrderSteps(this.orderDetails.status);
       }
       this.dismissLoader();
       return true;
@@ -305,6 +315,34 @@ export class TrackOrderPage implements OnInit {
       console.log(error);
       return false;
     }
+  }
+
+  async calculateArrivalTime() {
+
+    const userAddress = this.orderDetails?.userAddress?.details;
+    let restaurantAddress;
+
+    this.orderDetails.cartData.cartItems.forEach((cart: any) => {
+      restaurantAddress = cart.restaurant.address; 
+    })
+
+    if(userAddress && restaurantAddress){
+      this.deliveryTimeCalculationService
+      .calculateDeliveryTime(userAddress, restaurantAddress)
+      .subscribe(
+        (minutes: number) => {
+          const deliveryTimeEstimationInMinutes = minutes + 10;
+          const now = new Date();
+          now.setMinutes(now.getMinutes() + deliveryTimeEstimationInMinutes);
+          this.arrivingTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        },
+        (error: any) => {
+          console.error(error);
+          this.notificationService.notifyUser("errorSnack", error.error.message);
+        }
+      );
+    }
+    
   }
 
 }

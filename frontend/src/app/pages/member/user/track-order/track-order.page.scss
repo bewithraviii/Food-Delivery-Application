@@ -22,6 +22,10 @@ ion-content {
 
 }
 
+.div-border-right{
+    border-right: 1px solid #ddd;
+}
+
 .order-tracking{
     .order-details{
         border: 1px solid #ddd;
@@ -261,6 +265,7 @@ ion-content {
 .order-management {
 
     .order-info {
+        margin-bottom: 1rem;
 
         .info-details {
             border: 1px solid #ddd;
@@ -318,7 +323,7 @@ ion-content {
                 .item-total-value {
                     font-size: 14px;
                     width: 100%;
-                    margin-top: 0.5rem;
+                    margin-top: 1rem;
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
@@ -367,6 +372,8 @@ ion-content {
     }
 
     .order-process {
+        margin-bottom: 1rem;
+
 
         .rider {
 
@@ -459,14 +466,49 @@ ion-content {
         }
     }
 
-    .help-and-support {
-        border: 1px solid #ddd;
-        border-radius: 12px;
-        font-family: roboto;
-        background: transparent;
-        font-size: 16px;
-        padding: 1rem;
+    .support-section{
+        margin-bottom: 1rem;
+
+        .help-and-support {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: roboto;
+            background: transparent;
+            font-size: 16px;
+            // padding: 1rem;
+    
+            .help-and-support-heading {
+                display: flex;
+                padding: 1rem;
+
+                .help-and-support-icon {
+                    padding-right: 1rem;
+                    img {
+                        width: 2.5rem;
+                    }
+                }
+
+                .help-and-support-content {
+                    h6 {
+                        font-size: 16px;
+                        margin: 0;
+                    }
+                    span {
+                        font-size: 14px;
+                    }
+                }
+    
+            }
+
+            .help-and-support-information {
+                padding: 1rem;
+                font-size: 15px;
+            }
+    
+        }
+
     }
+
 
 }
 

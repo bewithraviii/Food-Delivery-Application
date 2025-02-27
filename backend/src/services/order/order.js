@@ -150,6 +150,7 @@ const fetchOrderDetails = async(req, res) => {
                 userId: order.userId,
                 paymentMethod: order.paymentMethod,
                 totalPrice: order.totalPrice,
+                createdDate: order.createdAt,
                 updatedDate: order.updatedAt,
                 cartData: order.cartData.cartItems[0].restaurant,
             });

@@ -68,9 +68,9 @@ export class ProfilePage implements OnInit {
     this.checkScreenSize();
     if(this.isDesktop){
       await this.presentLoader('Loading Profile...');
-      this.resetState()
-      await this.populateUserData();
+      this.resetState();
       await this.populateRestaurantData();
+      await this.populateUserData();
       await this.populateOrderData();
       await this.dismissLoader();
     }

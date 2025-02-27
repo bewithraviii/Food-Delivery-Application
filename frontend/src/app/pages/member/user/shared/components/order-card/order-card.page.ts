@@ -12,13 +12,24 @@ import { AddressExtractionService } from 'src/app/services/util/address-extracti
 export class OrderCardPage implements OnInit {
 
   @Input() orderDetail!: any;
+  formattedDate: any;
+  formattedTime: any;
+
 
   constructor(
     private router: Router
   ) { }
 
-  ngOnInit() {
-    this.updateOrderStatus(this.orderDetail.status);
+  async ngOnInit() {
+    await this.updateOrderStatus(this.orderDetail.status);
+    await this.formateDateAndTime(this.orderDetail.createdDate);
+  }
+
+  async formateDateAndTime(date: any) {
+    console.log("Here", this.orderDetail);
+    const dateJSON = new Date(date);
+    this.formattedDate = formatDate(dateJSON, 'dd MMM yyyy', 'en-US');
+    this.formattedTime = formatDate(dateJSON, 'HH:mm', 'en-US');
   }
 
   async updateOrderStatus(orderStatus: string) {

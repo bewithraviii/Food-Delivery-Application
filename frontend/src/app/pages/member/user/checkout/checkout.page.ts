@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AddressExtractionService } from 'src/app/services/util/address-extraction.service';
 import { CartNotificationService } from 'src/app/services/util/cart-notification.service';
+import { DeliveryTimeCalculationService } from 'src/app/services/util/delivery-time-calculation.service';
 
 @Component({
   selector: 'app-checkout',
@@ -54,6 +55,7 @@ export class CheckoutPage implements OnInit {
     private notificationService: NotificationService,
     private cartNotificationService: CartNotificationService,
     private addressExtractionService: AddressExtractionService,
+    private deliveryTimeCalculationService: DeliveryTimeCalculationService,
   ) { }
 
   @HostListener('window:resize', [])
@@ -112,7 +114,18 @@ export class CheckoutPage implements OnInit {
           this.rawCartData = data.payload;
           this.rawCartData.cartItems.forEach((cart: any) => {
             this.cartDetails.push(cart);
-            this.deliveryTime(this.selectedAddressData.details, this.cartDetails[0]?.restaurant?.address);
+            this.deliveryTimeCalculationService
+              .calculateDeliveryTime(this.selectedAddressData.details, cart.restaurant.address)
+              .subscribe(
+                (minutes: number) => {
+                  this.deliveryTimeEstimation = minutes;
+                },
+                (error: any) => {
+                  console.error(error);
+                  this.canAbleToDeliver = false;
+                  this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, please select another one.");
+                }
+              );
           });
           this.billDetails = this.rawCartData.billDetails;
           this.totalAmount = this.rawCartData.totalAmount;
@@ -167,51 +180,51 @@ export class CheckoutPage implements OnInit {
     await this.loadingController.dismiss();
   }
 
-  async deliveryTime(address: string, restaurantAddress: string) {
-    await this.calculateTravelTime(address, restaurantAddress);
-  }
+  // async deliveryTime(address: string, restaurantAddress: string) {
+  //   await this.calculateTravelTime(address, restaurantAddress);
+  // }
   
-  async calculateTravelTime(destination: string, restaurantAddress: string) {
-    let restaurantCoords: any;  
-    let destinationCoords: any;
+  // async calculateTravelTime(destination: string, restaurantAddress: string) {
+  //   let restaurantCoords: any;  
+  //   let destinationCoords: any;
 
-    restaurantCoords = await this.getCoordsOfAddress(restaurantAddress);
-    destinationCoords = await this.getCoordsOfAddress(destination);
+  //   restaurantCoords = await this.getCoordsOfAddress(restaurantAddress);
+  //   destinationCoords = await this.getCoordsOfAddress(destination);
 
-    if(restaurantCoords && destinationCoords) {
-      const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
-      const end = `${destinationCoords.lon},${destinationCoords.lat}`;
+  //   if(restaurantCoords && destinationCoords) {
+  //     const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
+  //     const end = `${destinationCoords.lon},${destinationCoords.lat}`;
 
-      this.apiService.getDistanceTrackTime(start, end).subscribe(
-        (response: any) => {
-          const travelTimeInSeconds = response.features[0].properties.summary.duration;
-          const travelTimeInMinutes = travelTimeInSeconds / 60;
-          this.deliveryTimeEstimation = +travelTimeInMinutes.toFixed(0);
-        },
-        (error: any) => {
-          console.log(error);
-          if(error.error.error.code === 2004){
-            this.canAbleToDeliver = false;
-            this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, Please select other one.");
-          }
-        }
-      );
-    }
-  }
+  //     this.apiService.getDistanceTrackTime(start, end).subscribe(
+  //       (response: any) => {
+  //         const travelTimeInSeconds = response.features[0].properties.summary.duration;
+  //         const travelTimeInMinutes = travelTimeInSeconds / 60;
+  //         this.deliveryTimeEstimation = +travelTimeInMinutes.toFixed(0);
+  //       },
+  //       (error: any) => {
+  //         console.log(error);
+  //         if(error.error.error.code === 2004){
+  //           this.canAbleToDeliver = false;
+  //           this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, Please select other one.");
+  //         }
+  //       }
+  //     );
+  //   }
+  // }
 
-  async getCoordsOfAddress(address: string): Promise<{ lat: number, lon: number } | null> {
-    try {
-      const response = await this.apiService.getAddressLatAndLong(address).toPromise();
-      if (response && response.features && response.features.length > 0) {
-        const coordinates = response.features[0].geometry.coordinates;
-        return { lat: coordinates[1], lon: coordinates[0] };
-      }
-      return null;
-    } catch (error) {
-      console.error('Error fetching coordinates from address', error);
-      return null;
-    }
-  }
+  // async getCoordsOfAddress(address: string): Promise<{ lat: number, lon: number } | null> {
+  //   try {
+  //     const response = await this.apiService.getAddressLatAndLong(address).toPromise();
+  //     if (response && response.features && response.features.length > 0) {
+  //       const coordinates = response.features[0].geometry.coordinates;
+  //       return { lat: coordinates[1], lon: coordinates[0] };
+  //     }
+  //     return null;
+  //   } catch (error) {
+  //     console.error('Error fetching coordinates from address', error);
+  //     return null;
+  //   }
+  // }
 
   removeCookingInstruction() {
     this.cookingInstructions = '';

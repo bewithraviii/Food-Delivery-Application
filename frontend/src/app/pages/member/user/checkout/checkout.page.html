@@ -167,7 +167,7 @@
 
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="canAbleToDeliver">
           <div class="payment-gateway padding">
             <h5>{{"Payment Methods" | uppercase}}</h5>
             <div class="payment">

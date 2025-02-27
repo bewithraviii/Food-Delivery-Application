@@ -8,15 +8,15 @@
     color: #555;
 
     .order-start {
-        display: flex;
-        justify-content: space-between;
+        // display: flex;
+        // justify-content: space-between;
         margin-bottom: 1rem;
 
         .restaurant-info {
             display: flex;
 
             .image-section{
-                width: 165px;
+                width: 350px;
                 height: 145px;
                 overflow: hidden;
                 position: relative;
@@ -30,23 +30,36 @@
 
             .restaurant-data {
                 padding-left: 1rem;
+                width: 100%;
 
                 .restaurant-section {
-                    h6 {
-                        font-size: 18px;
-                        font-weight: 500;
-                        margin: 0;
-                        width: fit-content;
-                        cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
 
-                        &:hover {
-                            color: #FC6E2A;
+                    .restaurant-start{
+                        h6 {
+                            font-size: 18px;
+                            font-weight: 500;
+                            margin: 0;
+                            width: fit-content;
+                            cursor: pointer;
+    
+                            &:hover {
+                                color: #FC6E2A;
+                            }
+                        }
+    
+                        span {
+                            font-size: 12px;
                         }
                     }
 
-                    span {
-                        font-size: 12px;
+                    .restaurant-end{
+                        span{
+                            font-size: 14px;
+                        }
                     }
+
                 }
 
                 .order-section {
