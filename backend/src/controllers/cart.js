@@ -1,7 +1,7 @@
 const cartService = require('../services/cart/cart');
 
-exports.getCartByUserIdForCheckout = async(req, res) => {
-    return await cartService.getCartByUserIdForCheckout(req, res);
+exports.getUserCartDataForCheck = async(req, res) => {
+    return await cartService.getUserCartDataForCheck(req, res);
 }
 
 exports.getUserCart = async(req, res) => {

@@ -8,8 +8,8 @@
           <h5>{{"Order Details" | uppercase }}</h5>
 
           <div class="order-details">
-            <div class="row">
-              <div [ngClass]="{'col-md-12': orderCancelled, 'col-md-6': !orderCancelled}">
+            <div class="row" style="margin: 0; width: 100%;">
+              <div [ngClass]="{'col-md-12': orderCancelled, 'col-md-6 p-0': !orderCancelled}">
                 <div class="order-info-basic" [ngClass]="{'div-border-right': !orderCancelled}">
                   
                   <div class="order-number">
@@ -94,9 +94,14 @@
                   </ng-template>
                 </div>
               </div>
-              <div class="col-md-6" *ngIf="!orderCancelled">
+              <div class="col-md-6 p-0" *ngIf="!orderCancelled">
                 <div class="order-map">
-
+                  <div *ngIf="mapLoading;" style="height: 100%;">
+                    <div style="justify-content: center; display: flex; height: 100%; align-items: center;">
+                      <ion-spinner name="dots" style="color: #FC6E2A !important;"></ion-spinner>
+                    </div>
+                  </div>
+                  <div #map id="map" class="map"></div>
                 </div>
               </div>
             </div>

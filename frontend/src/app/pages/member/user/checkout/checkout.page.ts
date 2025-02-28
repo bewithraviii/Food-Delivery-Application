@@ -180,52 +180,6 @@ export class CheckoutPage implements OnInit {
     await this.loadingController.dismiss();
   }
 
-  // async deliveryTime(address: string, restaurantAddress: string) {
-  //   await this.calculateTravelTime(address, restaurantAddress);
-  // }
-  
-  // async calculateTravelTime(destination: string, restaurantAddress: string) {
-  //   let restaurantCoords: any;  
-  //   let destinationCoords: any;
-
-  //   restaurantCoords = await this.getCoordsOfAddress(restaurantAddress);
-  //   destinationCoords = await this.getCoordsOfAddress(destination);
-
-  //   if(restaurantCoords && destinationCoords) {
-  //     const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
-  //     const end = `${destinationCoords.lon},${destinationCoords.lat}`;
-
-  //     this.apiService.getDistanceTrackTime(start, end).subscribe(
-  //       (response: any) => {
-  //         const travelTimeInSeconds = response.features[0].properties.summary.duration;
-  //         const travelTimeInMinutes = travelTimeInSeconds / 60;
-  //         this.deliveryTimeEstimation = +travelTimeInMinutes.toFixed(0);
-  //       },
-  //       (error: any) => {
-  //         console.log(error);
-  //         if(error.error.error.code === 2004){
-  //           this.canAbleToDeliver = false;
-  //           this.notificationService.notifyUser("errorSnack", "Delivery not available at this address, Please select other one.");
-  //         }
-  //       }
-  //     );
-  //   }
-  // }
-
-  // async getCoordsOfAddress(address: string): Promise<{ lat: number, lon: number } | null> {
-  //   try {
-  //     const response = await this.apiService.getAddressLatAndLong(address).toPromise();
-  //     if (response && response.features && response.features.length > 0) {
-  //       const coordinates = response.features[0].geometry.coordinates;
-  //       return { lat: coordinates[1], lon: coordinates[0] };
-  //     }
-  //     return null;
-  //   } catch (error) {
-  //     console.error('Error fetching coordinates from address', error);
-  //     return null;
-  //   }
-  // }
-
   removeCookingInstruction() {
     this.cookingInstructions = '';
   }
@@ -251,10 +205,15 @@ export class CheckoutPage implements OnInit {
 
   selectPaymentMethod(method: 'GOOGLE_PAY' | 'STRIPE' | 'POD'): void {
     this.selectedPaymentMethod = method;
+    if (method === 'POD') {
+      this.isCashDeliverySelected = true;
+    } else {
+      this.isCashDeliverySelected = false;
+    }
   }
 
   onCashDeliverySelected(): void {
-    this.isCashDeliverySelected = true;
+    this.isCashDeliverySelected = !this.isCashDeliverySelected;
   }
 
   proceedWithPayment(): void {

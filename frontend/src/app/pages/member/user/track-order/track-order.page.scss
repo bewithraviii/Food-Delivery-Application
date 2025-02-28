@@ -256,9 +256,19 @@ ion-content {
         }
 
         .order-map{
-            border-right: 1px solid #ddd;
+            width: 100%;
+            height: 100%;
+
+
         }
     }
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-bottom-right-radius: 12px !important;
+    border-top-right-radius: 12px !important;
 }
 
 
@@ -572,14 +582,27 @@ ion-content {
 
 @media (max-width: 768px) {
     .track-order-page {
-        margin-top: 5rem;
+        margin-top: 4rem;
         margin-bottom: 0;
     }
 
-    .order-details {
-        .order-map{
-            border-right: none !important;
+    .div-border-right {
+        border-right: none;
+    }
+
+    .order-map{
+        height: 300px !important;
+        #map {
+            height: 300px !important;
+            border-bottom-right-radius: 12px !important;
+            border-bottom-left-radius: 12px !important;
+            border-top-right-radius: 0px !important;
         }
+
+    }
+
+    .order-details {
+
 
         .order-specific {
             display: flex;

@@ -11,12 +11,12 @@ export class DeliveryTimeCalculationService {
     private apiService: ApiService
   ) { }
 
-  private getCoords(address: string): Observable<{ lat: number, lon: number }> {
+  getCoords(address: string): Observable<{ lat: number, lng: number }> {
     return this.apiService.getAddressLatAndLong(address).pipe(
       map((response: any) => {
         if (response && response.features && response.features.length > 0) {
           const coordinates = response.features[0].geometry.coordinates;
-          return { lat: coordinates[1], lon: coordinates[0] };
+          return { lat: coordinates[1], lng: coordinates[0] };
         }
         throw new Error("No coordinates found for address: " + address);
       }),
@@ -32,8 +32,8 @@ export class DeliveryTimeCalculationService {
       switchMap(restaurantCoords => 
         this.getCoords(destination).pipe(
           switchMap(destinationCoords => {
-            const start = `${restaurantCoords.lon},${restaurantCoords.lat}`;
-            const end = `${destinationCoords.lon},${destinationCoords.lat}`;
+            const start = `${restaurantCoords.lng},${restaurantCoords.lat}`;
+            const end = `${destinationCoords.lng},${destinationCoords.lat}`;
             return this.apiService.getDistanceTrackTime(start, end).pipe(
               map((response: any) => {
                 const travelTimeInSeconds = response.features[0].properties.summary.duration;

@@ -1,7 +1,8 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { firstValueFrom, interval, Subscription, take, timer } from 'rxjs';
+import * as L from 'leaflet';
+import { firstValueFrom, interval, Subscription, switchMap, take, timer } from 'rxjs';
 import { ARRIVAL_UPDATES, CANCEL_DATA, CANCEL_REASONS, HELP_SUPPORT, ORDER_STATUS, ORDER_STEPS } from 'src/app/enums/enum';
 import { UpdateOrderModal } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -15,6 +16,9 @@ import { DeliveryTimeCalculationService } from 'src/app/services/util/delivery-t
 })
 export class TrackOrderPage implements OnInit {
 
+  @ViewChild('map') mapContainer!: ElementRef;
+  map!: L.Map;
+  mapLoading: boolean = true;
   isDesktop: boolean = true;
   orderId!: any;
   orderDetails: any = {};
@@ -54,7 +58,8 @@ export class TrackOrderPage implements OnInit {
   helpAndSupportContent: string = HELP_SUPPORT.HELP_SUPPORT_CONTENT;
   helpAndSupportHeading: string = HELP_SUPPORT.HELP_SUPPORT_HEADING;
   helpAndSupportDescription: string = HELP_SUPPORT.HELP_SUPPORT_DESCRIPTION;
-  helpAndSupportNumber: string = HELP_SUPPORT.HELP_SUPPORT_NUMBER
+  helpAndSupportNumber: string = HELP_SUPPORT.HELP_SUPPORT_NUMBER;
+
 
   constructor(
     private router: Router,
@@ -95,6 +100,7 @@ export class TrackOrderPage implements OnInit {
     this.dealInformation = [];
     this.cancelOrderAllowed = true;
     this.cancelTimer = 60;
+    this.orderCancelled = false;
     if(this.timerSubscription){
       this.timerSubscription.unsubscribe();
     }
@@ -139,6 +145,7 @@ export class TrackOrderPage implements OnInit {
           }
 
         }
+        this.loadMapWithCoordinates();
         await this.processData();
       }
     } catch(error: any) {
@@ -247,6 +254,10 @@ export class TrackOrderPage implements OnInit {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
+
+    if(this.map){
+      this.map.remove();
+    }
   }
 
   updateOrderSteps(orderStatus: ORDER_STATUS) {
@@ -326,23 +337,87 @@ export class TrackOrderPage implements OnInit {
       restaurantAddress = cart.restaurant.address; 
     })
 
-    if(userAddress && restaurantAddress){
-      this.deliveryTimeCalculationService
-      .calculateDeliveryTime(userAddress, restaurantAddress)
-      .subscribe(
-        (minutes: number) => {
-          const deliveryTimeEstimationInMinutes = minutes + 10;
-          const now = new Date();
-          now.setMinutes(now.getMinutes() + deliveryTimeEstimationInMinutes);
-          this.arrivingTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        },
-        (error: any) => {
-          console.error(error);
-          this.notificationService.notifyUser("errorSnack", error.error.message);
-        }
-      );
-    }
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 25);
+    this.arrivingTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // if(userAddress && restaurantAddress){
+    //   this.deliveryTimeCalculationService
+    //   .calculateDeliveryTime(userAddress, restaurantAddress)
+    //   .subscribe(
+    //     (minutes: number) => {
+    //       const deliveryTimeEstimationInMinutes = minutes + 10;
+    //       const now = new Date();
+    //       now.setMinutes(now.getMinutes() + deliveryTimeEstimationInMinutes);
+    //       this.arrivingTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    //     },
+    //     (error: any) => {
+    //       console.error(error);
+    //       this.notificationService.notifyUser("errorSnack", error.error.message);
+    //     }
+    //   );
+    // }
     
+  }
+
+  private initializeMap(userCoords: any): void {
+    if(this.map){
+      this.map.remove();
+    }
+
+    this.map = L.map(this.mapContainer.nativeElement).setView([userCoords.lat, userCoords.lng], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    this.map.whenReady(() => {
+    });
+    
+
+  }
+
+  private addMarker(latitude: number, longitude: number, popupText: string) {
+    const marker = L.marker([latitude, longitude]).addTo(this.map);
+    this.map.setView([latitude, longitude], 50);
+    marker.bindPopup(`<b>${popupText}</b>`).openPopup();
+  }
+
+  private async loadMapWithCoordinates() {
+    this.mapLoading = true;
+
+    const userAddress = this.orderDetails?.userAddress?.details;
+    let restaurantAddress = '';
+
+    this.orderDetails.cartData.cartItems.forEach((cart: any) => {
+      restaurantAddress = cart.restaurant.address; 
+    })
+    
+    const userCoords: any = await firstValueFrom(this.deliveryTimeCalculationService.getCoords(userAddress));
+    const restaurantCoords: any = await firstValueFrom(this.deliveryTimeCalculationService.getCoords(restaurantAddress));
+
+    if (userCoords && restaurantCoords) {
+      // Initialize the map
+      this.initializeMap(userCoords);
+  
+      // Mark both the delivery and restaurant locations on the map
+      this.addMarker(userCoords.lat, userCoords.lng, "Delivery Location");
+      this.addMarker(restaurantCoords.lat, restaurantCoords.lng, "Restaurant Location");
+  
+      // Fit the map view to show both markers
+      const bounds = L.latLngBounds([ 
+        [userCoords.lat, userCoords.lng],
+        [restaurantCoords.lat, restaurantCoords.lng] 
+      ]);
+      this.map.fitBounds(bounds);
+  
+      // Draw a polyline between the restaurant and delivery location
+      const routeCoordinates = [
+        [restaurantCoords.lat, restaurantCoords.lng],
+        [userCoords.lat, userCoords.lng]
+      ];
+      const polyline = L.polyline(routeCoordinates, { color: 'blue' }).addTo(this.map);  // Add route in theme color
+    }
+    this.mapLoading = false;
   }
 
 }

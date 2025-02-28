@@ -26,7 +26,6 @@ export class OrderCardPage implements OnInit {
   }
 
   async formateDateAndTime(date: any) {
-    console.log("Here", this.orderDetail);
     const dateJSON = new Date(date);
     this.formattedDate = formatDate(dateJSON, 'dd MMM yyyy', 'en-US');
     this.formattedTime = formatDate(dateJSON, 'HH:mm', 'en-US');
