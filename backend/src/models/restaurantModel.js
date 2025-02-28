@@ -70,7 +70,9 @@ const restaurantSchema = new mongoose.Schema(
         panCardNo: { type: String, required: true },
         aadharCardNo: { type: String, required: true },
       },
-      acceptTermsAndRegulations: { type: Boolean, required: true }
+      acceptTermsAndRegulations: { type: Boolean, required: true },
+      gstApplicable: { type: Boolean, default: true },
+      deliveryFeeApplicable: { type: Boolean, default: true }
     }, 
     { timestamps: true }
 );

@@ -1,6 +1,8 @@
 <ion-content>
   <div class="profile-page">
-    <div class="container">    
+    <div class="container"> 
+
+      <!-- User Profile View -->
       <div class="padding">
         <div class="user-profile row bd-highlight">
           <div class="p-3 bd-highlight col-md-6">
@@ -48,9 +50,9 @@
           </div>
         </div>
       </div>
+
       <!-- Desktop and Laptop View -->
-      <div *ngIf="isDesktop">
-  
+      <div *ngIf="isDesktop">        
         <div class="row padding">
           <div class="desktop-dashboard">
             <div class="dashboard-sidebar">
@@ -83,6 +85,9 @@
                       </div>
                       <ng-template #orderDetails>
                         <h5 style="color: #2D2D2D;">{{"Your Orders" | uppercase}}:</h5>
+                        <div class="orders-list" *ngFor="let orderDetail of ordersList">
+                          <app-order-card [orderDetail]="orderDetail"></app-order-card>
+                        </div>
                       </ng-template>
                     </div>
                   </div>
@@ -134,11 +139,12 @@
                                   <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                                 </div>
                                 <div class="favorite-details">
-                                  <div class="rating-design">
+                                  <div class="rating-design" *ngIf="restaurant.rating > 0">
                                     {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
                                   </div>
                                   <div>
-                                    <span>| {{ restaurant.deliveryTime }} min</span>
+                                    <span *ngIf="restaurant.rating > 0">|</span>
+                                    <span> {{ restaurant.deliveryTime }} min</span>
                                   </div>
                                 </div>
                               </div>
@@ -248,6 +254,9 @@
                       <ng-template #orderDetails>
                         <div style="margin-bottom: 1rem;">
                           <span>{{"Manage Orders" | uppercase}}</span>
+                          <div class="orders-list" *ngFor="let orderDetail of ordersList">
+                            <app-order-card [orderDetail]="orderDetail"></app-order-card>
+                          </div>
                         </div>
                       </ng-template>
                     </div>
@@ -268,8 +277,8 @@
                           <h4>{{ address.title }}</h4>
                           <p>{{ address.details }}</p>
                           <div class="actions">
-                            <button class="edit"><mat-icon fontIcon="edit_note" class="edit"></mat-icon></button>
-                            <button class="delete"><mat-icon fontIcon="delete_sweep" class="delete"></mat-icon></button>
+                            <button class="edit"><mat-icon fontIcon="edit_note" class="edit" (click)="editAddress(address)"></mat-icon></button>
+                            <button class="delete"><mat-icon fontIcon="delete_sweep" class="delete" (click)="deleteAddress(address)"></mat-icon></button>
                           </div>
                         </div>
                       </div>
@@ -296,11 +305,12 @@
                                 <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                               </div>
                               <div class="favorite-details">
-                                <div class="rating-design">
+                                <div class="rating-design" *ngIf="restaurant.rating > 0">
                                   {{ restaurant.rating }} <ion-icon name="star"></ion-icon>
                                 </div>
                                 <div>
-                                  <span>| {{ restaurant.deliveryTime }} min</span>
+                                  <span *ngIf="restaurant.rating > 0">|</span>
+                                  <span> {{ restaurant.deliveryTime }} min</span>
                                 </div>
                               </div>
                             </div>
@@ -364,6 +374,7 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
+
     </div>
   </div>
 </ion-content>

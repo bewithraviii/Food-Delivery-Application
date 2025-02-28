@@ -1,0 +1,255 @@
+.order-card {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: transparent;
+    padding: 1rem;
+    font-family: roboto;
+    font-size: 16px;
+    color: #555;
+
+    .order-start {
+        // display: flex;
+        // justify-content: space-between;
+        margin-bottom: 1rem;
+
+        .restaurant-info {
+            display: flex;
+
+            .image-section{
+                width: 350px;
+                height: 145px;
+                overflow: hidden;
+                position: relative;
+                ion-img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    
+                }
+            }
+
+            .restaurant-data {
+                padding-left: 1rem;
+                width: 100%;
+
+                .restaurant-section {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .restaurant-start{
+                        h6 {
+                            font-size: 18px;
+                            font-weight: 500;
+                            margin: 0;
+                            width: fit-content;
+                            cursor: pointer;
+    
+                            &:hover {
+                                color: #FC6E2A;
+                            }
+                        }
+    
+                        span {
+                            font-size: 12px;
+                        }
+                    }
+
+                    .restaurant-end{
+                        span{
+                            font-size: 14px;
+                        }
+                    }
+
+                }
+
+                .order-section {
+                    margin-top: 1rem;
+
+                    .order-details{
+
+                        .order-list {
+                            display: flex;
+                            
+                            .order-item-list{
+                                .order-item {
+                                    display: flex;
+                                    .order-list-apart {
+                                        margin-left: 0.3rem;
+                                        margin-right: 0.3rem;
+                                    }
+                                    span {
+                                        font-size: 12px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    h6 {
+                        font-size: 16px;
+                        font-weight: 500;
+                        color: #FC6E2A;
+                        cursor: pointer;
+                        width: fit-content;
+                        margin: 0;
+                    }
+                    span {
+                        font-size: 14px;
+                        
+                    }
+                }
+            }
+
+        }
+
+
+    }
+
+    .order-end {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+
+        .order-status{
+            display: flex;
+            .active-process{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: fit-content;
+
+                .step-circle {
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    border: 2px solid #ffab87;
+                    background-color: #FC6E2A;
+                    animation: pulseBorder 3s infinite cubic-bezier(0.42, 0, 0.58, 1);
+                }
+
+                .completed-process {
+                    color: #28a745;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 18px;
+                }
+
+                .cancelled-process {
+                    color: #F14237;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 18px;
+                }
+
+                .confirmed-process {
+                    color: #FC6E2A;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 18px;
+                }
+            }
+            span {
+                font-size: 14px;
+                padding: 0.2rem;
+            }
+        }
+
+        .amount-paid {
+            padding: 0.2rem;
+            span {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+@keyframes pulseBorder {
+    0% {
+        border-width: 2px;
+        transform: scale(1);
+    }
+    25% {
+        border-width: 4px;
+    }
+    50% {
+        border-width: 6px;
+        transform: scale(1.2);
+    }
+    75% {
+        border-width: 4px;
+    }
+    100% {
+        border-width: 2px;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 991px) {
+
+    .image-section{
+        width: 110px !important;
+        height: 170px !important;
+        overflow: hidden;
+        position: relative;
+        ion-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .order-list {
+        display: flex;
+        flex-direction: column;
+        .order-item-list{
+            .order-item {
+                .order-list-apart {
+                    display: none !important;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .order-start{
+        .restaurant-info {
+
+            .image-section{
+                width: 110px !important;
+                height: 110px;
+                overflow: hidden;
+                position: relative;
+                ion-img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            } 
+        }
+    }
+
+}
+
+@media (max-width: 468px) {
+    .order-card {
+        .order-start{
+            display: flex;
+            flex-direction: column;
+    
+            .restaurant-info {
+                display: block !important;
+                .image-section{
+                    display: none;
+                }
+                .restaurant-data {
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+
+}

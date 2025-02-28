@@ -3,6 +3,7 @@ const authController = require('../controllers/auth');
 const cartController = require('../controllers/cart');
 const searchController = require('../controllers/search');
 const vendorController = require('../controllers/vendor');
+const orderController = require('../controllers/order');
 const router = express.Router();
 const { authorizeRoles } = require('../middleware/auth');
 const Roles = require('../utils/enums/roles');
@@ -22,11 +23,15 @@ router.get('/getAllCuisineCategoryDetails', authController.getAllCuisineCategory
 router.get('/getCuisineCategoryRestaurantDetails', authController.getCuisineCategoryRestaurantDetails);
 // Cart
 router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.getUserCart);
+router.get('/getUserCartDataForCheck/:id', authorizeRoles(Roles.USER), cartController.getUserCartDataForCheck);
 // Deals
 router.get('/getDealsForRestaurant/:id', authController.getRestaurantDeal);
+router.get('/getDealInfo/:id', authController.getDealInfo);
 // Search
 router.get('/searchRestaurant', authorizeRoles(Roles.USER), searchController.searchRestaurant);
-
+// Order
+router.get('/getOrderDetails/:id', authorizeRoles(Roles.USER, Roles.VENDOR), orderController.getOrderDetailsById);
+router.get('/fetchOrderDetails', authorizeRoles(Roles.USER), orderController.fetchOrderDetails)
 
 
 
@@ -52,9 +57,11 @@ router.post('/addToFavorite', authorizeRoles(Roles.USER), authController.addToFa
 // Cart
 router.post('/addToCart', authorizeRoles(Roles.USER), cartController.addToCart);
 router.post('/removeFromCart', authorizeRoles(Roles.USER), cartController.removeFromCart);
-router.post('/applyDealsToCart', authorizeRoles(Roles.USER), cartController.applyDealsToCart)
-router.post('/removeDealsFromCart', authorizeRoles(Roles.USER), cartController.removeDealsFromCart)
-
+router.post('/applyDealsToCart', authorizeRoles(Roles.USER), cartController.applyDealsToCart);
+router.post('/removeDealsFromCart', authorizeRoles(Roles.USER), cartController.removeDealsFromCart);
+// Order
+router.post('/addNewOrder', authorizeRoles(Roles.USER), orderController.addNewOrder);
+router.post('/updateOrderStatus', authorizeRoles(Roles.USER, Roles.VENDOR, Roles.DELIVERY_AGENT), orderController.updateOrderStatus)
 
 
 // ADMIN

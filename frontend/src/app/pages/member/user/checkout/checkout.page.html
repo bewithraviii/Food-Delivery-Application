@@ -1,0 +1,248 @@
+<ion-content>
+  <div class="checkout-page">
+    <div class="container"> 
+
+      <div class="page-content" *ngIf="!paymentDone; else paymentConfirmed">
+        
+        <div class="row">
+
+          <div class="col-md-6">
+            <div class="checkout-main padding">
+              <h5>{{"Order Summary" | uppercase}}</h5>
+              <div class="checkout-details">
+                <div class="order-details" *ngFor="let cart of cartDetails">
+                  <div class="restaurant-details">
+                    <span class="restaurant-details-title">{{ cart.restaurant.name | uppercase }}</span>
+                    <span class="restaurant-details-subtitle" *ngIf="cart.restaurant.address">
+                      {{ cart.restaurant.address }}
+                    </span>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div *ngFor="let orderItem of cart.restaurant.orderItem" class="orderItems">
+                    <div class="order-item">
+                      <div class="order-item-content">
+                        <span>{{ orderItem.name }}</span>
+                        <span>{{ '₹' + orderItem.price }}</span>
+                      </div>
+                      <div class="quantity-controls">
+                        <span style="font-size: 14px;">Qty: {{ orderItem.quantity }}</span>
+                      </div>
+                    </div>
+  
+                  </div>
+
+                  <div class="bill-details">
+                    <div class="bill-item" *ngFor="let item of billDetails" [ngClass]="{'billItemColor': item.label == 'Item Discount'}">
+                      <span>{{ item.label | uppercase }}</span>
+                      <span><span *ngIf="item.label == 'Item Discount'">-</span>{{ '₹' + item.amount }}</span>
+                    </div>
+                  </div>
+
+                  <div class="order-counting">
+                    <div class="order-counting-values">
+                      <span>ITEMS: {{itemCount}}</span>
+                      <span>TOTAL: {{'₹' + totalAmount}}</span>
+                    </div>
+                  </div>
+  
+                  <div class="amount-saved-section" *ngIf="discountAmount > 0">
+                    <div class="saved-icon">
+                      <img [src]="discountLogo">
+                    </div>
+                    <div class="saved-information">
+                      <h6 style="font-size: 18px;">{{'₹' + discountAmount}} Saved!</h6>
+                      <h6 style="font-size: 14px;">on this Order</h6>
+                    </div>
+                  </div>
+  
+                  <div class="cooking-instructions">
+                    <mat-form-field appearance="outline" class="cooking-instruction-field">
+                      <mat-icon matPrefix>edit</mat-icon>
+                      <mat-label>Write cooking instructions...</mat-label>
+                      <input matInput [(ngModel)]="cookingInstructions" />
+                      <mat-icon matSuffix *ngIf="cookingInstructions" (click)="removeCookingInstruction()" style="cursor: pointer;">clear</mat-icon>
+                    </mat-form-field>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+
+            <div class="coupon-section padding" *ngIf="dealInformation.length > 0">
+              <h5>{{"Coupon Applied" | uppercase}}</h5>
+              <div class="coupon-details" *ngFor="let dealInfo of dealInformation">
+                <div class="couponImg">
+                  <img src="assets/icons/coupon-code.png" alt="{{dealInfo.code}}">
+                </div>
+                <div class="couponContainer">
+                  <div class="coupon">
+                    <span style="padding: 0; font-size: 16px; font-weight: 500;">{{dealInfo.code}}</span>
+                    <span style="padding: 0; font-size: 12px;">{{'₹' + discountAmount}} Saved</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="delivery-estimation padding">
+              <h5>{{"Delivery Estimation" | uppercase}}</h5>
+              <div class="addressAndTime">
+                <div class="location-info-container">
+                  <!-- First location row -->
+                  <div class="location-item">
+                    <div class="dot"></div>
+                    <span class="location-title" *ngFor="let cart of cartDetails">{{cart.restaurant.name | uppercase}}</span>
+                    <span class="separator">|</span>
+                    <span class="delivery-time" *ngIf="canAbleToDeliver; else notAbleToDeliver">
+                      <span>Delivery in: {{deliveryTimeEstimation}}</span>
+                      <span *ngIf="deliveryTimeEstimation !== 0">  - {{(deliveryTimeEstimation + 5) | number}}  mins</span>
+                    </span>
+                    <ng-template #notAbleToDeliver>
+                      <span style="color: #FF3434;">Restaurant not able to deliver at this address, Please select other one.</span>
+                    </ng-template>
+                  </div>
+                
+                  <!-- Vertical line + dot in the middle -->
+                  <div class="vertical-line"></div>
+                
+                  <!-- Second location row -->
+                  <div class="location-item">
+                    <div class="dot"></div>
+                    <span class="location-title">{{selectedAddressData.title | uppercase}}</span>
+                    <span class="separator">|</span>
+                    <span class="address">{{selectedAddressData.details}}</span>
+                  </div>
+            
+                </div>
+              </div>
+            </div>
+
+            <div class="address-information padding">
+              <h5>{{"Delivery Information" | uppercase}}</h5>
+              <div class="user-address-info">
+                <div class="address-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-content">
+                        <div class="card-content-title">
+                          <div style="display: flex;">
+                            <span style="padding-right: 0.5rem; font-weight: 500; font-size: 14px;">Deliver To</span>
+                            <div class="logo-title-number">
+                              <div class="logo-title">
+                                <mat-icon >{{ getIconForAddressType(selectedAddressData.title)}}</mat-icon>
+                                <span class="card-title">{{ selectedAddressData.title || "location" | uppercase }}</span>
+                              </div>
+                              <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span>
+                              <span>{{ user.phoneNumber }}</span>
+                            </div>
+
+                          </div>
+                          <div class="d-flex justify-content-center" style="color: #059C6A;">
+                            <mat-icon style="font-size: 18px; height: fit-content; display: flex; align-items: center; justify-content: center;">check_circle_outline</mat-icon>
+                            <p style="font-size: 14px; margin: 0;">Selected</p>
+                          </div>
+                        </div>
+                        <p style="margin: 0; margin-top: 0.5rem; font-size: 12px; color: #333333;">{{ selectedAddressData.details }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="padding">
+              <div class="proceed-to-pay">
+                <button class="payment-btn">
+                  <div class="payment-info">
+                    <span class="payment-label">TO PAY <span style="font-size: 12px;">(Incl. Taxes)</span></span>
+                    <span class="payment-amount">{{'₹ ' + totalAmount}}</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="row" *ngIf="canAbleToDeliver">
+          <div class="payment-gateway padding">
+            <h5>{{"Payment Methods" | uppercase}}</h5>
+            <div class="payment">
+
+              <div class="payment-methods">
+                <div class="payment-option"
+                     (click)="selectPaymentMethod('GOOGLE_PAY')"
+                     [class.selected]="selectedPaymentMethod === 'GOOGLE_PAY'">
+                  <mat-icon class="payment-icon">account_balance_wallet</mat-icon>
+                  <span>Google Pay</span>
+                </div>
+                <div class="payment-option"
+                     (click)="selectPaymentMethod('STRIPE')"
+                     [class.selected]="selectedPaymentMethod === 'STRIPE'">
+                  <mat-icon class="payment-icon">credit_card</mat-icon>
+                  <span>Stripe</span>
+                </div>
+                <div class="payment-option"
+                     (click)="selectPaymentMethod('POD')"
+                     [class.selected]="selectedPaymentMethod === 'POD'">
+                  <mat-icon class="payment-icon">money</mat-icon>
+                  <span>Pay on Delivery</span>
+                </div>
+              </div>
+
+              <div class="view-selected-payment-method-content" *ngIf="selectedPaymentMethod">
+                <mat-divider></mat-divider>
+                <div class="payment-content">
+                  <ng-container *ngIf="selectedPaymentMethod === 'GOOGLE_PAY'">
+                    <!-- <app-google-pay-form></app-google-pay-form> -->
+                     <h6>Not available at this moment please try again later</h6>
+                  </ng-container>
+                  <ng-container *ngIf="selectedPaymentMethod === 'STRIPE'">
+                    <!-- <app-stripe-pay-form></app-stripe-pay-form> -->
+                    <h6>Not available at this moment please try again later</h6>
+                  </ng-container>
+                  <ng-container *ngIf="selectedPaymentMethod === 'POD'">
+                    <div class="pod-info">
+                      <h6>Pay on Delivery selected. Please click the "Place Order" button to confirm your order.</h6>
+                      <div class="pod-type" (click)="onCashDeliverySelected()">
+                        <div class="cod-card" >
+                          <div class="cod-title">
+                            <div style="display: flex; flex-direction: row;">
+                              <img src="assets/icons/pay-money.png">
+                              <span>Cash on delivery</span>
+                            </div>
+                            <div>
+                              <mat-radio-button [checked]="isCashDeliverySelected"></mat-radio-button>
+                            </div>
+                          </div>
+                          <div class="cod-description">
+                            <span>Pay at the time of delivery via cash.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="place-order">
+                      <button mat-fab extended class="place-order-btn" [disabled]="!isCashDeliverySelected" (click)="proceedWithPayment()">
+                          <span class="place-order-label">{{"Place Order" | uppercase}}</span>
+                      </button>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <ng-template #paymentConfirmed>
+        <app-payment-success *ngIf="paymentDone" [orderId]="orderId" ></app-payment-success>
+      </ng-template>
+
+    </div>
+  </div>
+</ion-content>

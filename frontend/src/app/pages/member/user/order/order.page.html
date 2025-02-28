@@ -1,0 +1,204 @@
+<ion-content>
+  <div class="order-page">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-6">
+          <h5>{{"Order information" | uppercase}}</h5>
+          <div class="order-information-status padding">
+
+            <div class="order-start">
+              <div class="order-status">
+                <div class="order-status-condition">
+                  <h6>
+                    {{orderStatus}} ORDER
+                  </h6>
+                </div>
+                <div class="order-status-details">
+                  <div class="status-details">
+                    <span>items: {{orderItemQuantity}}</span>
+                    <span style="margin-left: 0.3rem;margin-right: 0.3rem;">|</span>
+                    <span>paid: {{'₹' + orderDetails.totalPrice}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="order-number">
+                <h6 >{{"#" + orderId}}</h6>
+                <div class="order-date-time">
+                  <span>{{formattedDate}}</span>
+                  <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span>
+                  <span>{{formattedTime}}</span>
+                </div>
+              </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="order-end">
+
+              <div class="order-progress" *ngIf="orderStatus !== 'CANCELLED'; else showCancelOrder">
+
+                <div class="progress-step"
+                     [ngClass]="{
+                       'completed': orderDetails?.status !== 'PENDING' && orderDetails?.status !== 'CANCELLED',
+                       'active': orderDetails?.status === 'CONFIRMED'
+                     }">
+                  <div class="step-icon">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </div>
+                  <div class="step-label">Order received</div>
+                </div>
+            
+
+                <div class="progress-step"
+                     [ngClass]="{
+                       'completed': orderDetails?.status === 'COMPLETED' || orderDetails?.status === 'OUT_FOR_DELIVERY',
+                       'active': orderDetails?.status === 'PROCESSING'
+                     }">
+                  <div class="step-icon">
+                    <ion-icon name="restaurant-outline"></ion-icon>
+                  </div>
+                  <div class="step-label">Cooking</div>
+                </div>
+            
+
+                <div class="progress-step"
+                     [ngClass]="{
+                       'active': orderDetails?.status === 'OUT_FOR_DELIVERY',
+                       'completed': orderDetails?.status === 'COMPLETED'
+                     }">
+                  <div class="step-icon">
+                    <ion-icon name="bicycle-outline"></ion-icon>
+                  </div>
+                  <div class="step-label">Out for delivery</div>
+                </div>
+              </div>
+              <ng-template #showCancelOrder>
+                <div class="cancel-order">
+                  <!-- <div class="row"> -->
+                    <!-- <div class="col-md-6"> -->
+                      <div class="cancel-order-image">
+                        <div class="cancel-image">
+                          <img src="assets/icons/cancel-bag.png" >
+                        </div>
+                      </div>
+                    <!-- </div> -->
+                    <!-- <div class="col-md-6"> -->
+                      <div class="cancel-order-text">
+                        <div class="cancel-text">
+                          <span>{{"Order Cancelled" | uppercase}}</span>
+                        </div>
+                      </div>
+                    <!-- </div> -->
+                  <!-- </div> -->
+                </div>
+              </ng-template>
+            
+              <div class="address-information">
+                <div class="user-address-info">
+                  <div class="address-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="card-content">
+                          <div class="card-content-title">
+                            <div style="display: flex;">
+                              <span style="padding-right: 0.5rem; font-weight: 500; font-size: 14px;">Deliver To</span>
+                              <div class="logo-title-number">
+                                <div class="logo-title">
+                                  <mat-icon >{{ getIconForAddressType(selectedAddressData.title)}}</mat-icon>
+                                  <span class="card-title">{{ selectedAddressData.title || "location" | uppercase }}</span>
+                                </div>
+                                <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span>
+                                <span>{{ user.phoneNumber }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <p style="margin: 0; margin-top: 0.5rem; font-size: 12px; color: #333333;">{{ selectedAddressData.details }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="proceed-to-pay">
+                <button class="payment-btn">
+                  <div class="payment-info">
+                    <span class="payment-label">Paid by <span style="margin-left: 0.3rem;margin-right: 0.3rem;">•</span> {{orderDetails.paymentMethod}}</span>
+                    <span class="payment-amount">{{'₹ ' + totalAmount}}</span>
+                  </div>
+                </button>
+              </div>
+
+              <div class="track-order-section">
+                <div class="track-order">
+                  <button mat-fab extended class="track-order-btn" (click)="navigateToOrderTracking()">
+                      <span class="track-order-label">{{"Track Order" | uppercase}}</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h5>{{"Order Summary" | uppercase}}</h5>
+          <div class="order-bill">
+            <div class="bill-details">
+
+              <div class="restaurant-info" *ngFor="let cart of cartDetails">
+                <div class="restaurant-details">
+                  <span class="restaurant-details-title">{{ cart.restaurant.name | uppercase }}</span>
+                  <span class="restaurant-details-subtitle" *ngIf="cart.restaurant.address">
+                    {{ cart.restaurant.address }}
+                  </span>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+
+
+              <div class="order-data" *ngIf="cartData?.restaurant?.orderItem">
+                <div *ngFor="let orderItem of cartData?.restaurant?.orderItem" class="orderItems">
+                  <div class="order-item">
+                    <div class="order-item-content">
+                      <span>{{ orderItem.name }}</span>
+                      <span>{{ '₹' + orderItem.price }}</span>
+                    </div>
+                    <div class="quantity-controls">
+                      <span style="font-size: 14px;">Qty: {{ orderItem.quantity }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+
+                </div>
+              </div>
+
+              <div class="bill-summary">
+                <div class="bill-calculation">
+                  <div class="bill-item" *ngFor="let item of billDetails" [ngClass]="{'billItemColor': item.label == 'Item Discount'}">
+                    <span>{{ item.label | uppercase }}</span>
+                    <span><span *ngIf="item.label == 'Item Discount'">-</span>{{ '₹' + item.amount }}</span>
+                  </div>
+                </div>
+
+                <mat-divider></mat-divider>
+                
+                <div class="item-total-value">
+                  <span>TOTAL:</span>
+                  <span>{{'₹' + totalAmount}}</span>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

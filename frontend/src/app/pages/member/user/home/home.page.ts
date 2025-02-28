@@ -100,11 +100,12 @@ export class HomePage implements OnInit {
 
   async getAddressFromCoordinates(lat: number, lng: number) {
     await this.presentLoader();
+    let currentLocation;
     this.apiService.getLocationFromLatAndLong(lat,lng).subscribe((response: any) => {
       this.detectedAddress = response.display_name;
-      const currentLocation = { name: 'location', details: this.detectedAddress, type: 'location' };
+      currentLocation = { name: 'location', details: this.detectedAddress, type: 'location' };
       this.selectedAddress = currentLocation;
-      this.addressExtractionService.setAddresses([this.selectedAddress]);
+      this.addressExtractionService.setAddresses([currentLocation]);
       this.addressPanel.close();
       this.dismissLoader();
     }, error => {
@@ -245,6 +246,7 @@ export class HomePage implements OnInit {
       if(data){
         this.user.id = data.id,
         this.user.name = data.name;
+        this.userName = data.name;
         this.user.phoneNumber = data.phoneNumber;
         this.user.email = data.email;
         data.address.forEach((address: any) => {

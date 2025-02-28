@@ -1,0 +1,612 @@
+ion-content {
+    --background: #FFFFFF !important;
+}
+
+.container {
+    background-color: #FFFFFF !important;
+    color: #555;
+}
+
+.padding {
+    padding: 0.5rem;
+}
+
+
+.page-content {
+    padding-bottom: 1.5rem;
+}
+
+.track-order-page {
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+
+}
+
+.div-border-right{
+    border-right: 1px solid #ddd;
+}
+
+.order-tracking{
+    .order-details{
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-family: roboto;
+        background: transparent;
+        font-size: 16px;
+        padding: 0;
+        
+        .order-info-basic{
+            
+        
+            .order-number{
+                width: 100%;
+                padding: 1rem;
+                
+                .order-specific {
+                    display: flex;
+                    justify-content: space-between;
+                    .view-order {
+                        color: #FC6E2A;
+                        cursor: pointer;
+                        font-weight: 500;
+                    }
+            
+                    span {
+                        display: flex;
+                    }
+                }
+        
+                .order-quanity-price {
+        
+                }
+            }
+        
+            .order-status {
+                width: 100%;
+                padding: 1rem;
+    
+                .order-status-title{
+                    margin-bottom: 1rem;
+                }
+    
+                .status-timing {
+    
+                    padding: 0.5rem;
+    
+                    .order-status-progress {
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+                      
+                        .step-item {
+                          display: flex;
+                          align-items: center;
+                          position: relative;
+                          margin-bottom: 1.5rem;
+                      
+                          .step-circle {
+                            width: 16px;
+                            height: 16px;
+                            border-radius: 50%;
+                            border: 2px solid #ccc;
+                            background-color: #ffeae1;
+                            margin-right: 0.5rem;
+                            position: relative;
+                          }
+                      
+                          &::before {
+                            content: '';
+                            position: absolute;
+                            left: 7px;
+                            top: 16px;
+                            width: 2px;
+                            height: 100%;
+                            background-color: #ccc;
+                            z-index: -1;
+                          }
+                      
+                          &:last-child::before {
+                            display: none;
+                          }
+                      
+                          &.completed .step-circle {
+                            border-color: #9fd4a3;
+                            background-color: #28a745;
+                          }
+                      
+                          &.active .step-circle {
+                            border-color: #ffab87;
+                            background-color: #FC6E2A;
+                            animation: pulseBorder 3s infinite cubic-bezier(0.42, 0, 0.58, 1);
+                          }
+                      
+                          .step-label {
+                            font-size: 14px;
+                            color: #555;
+                          }
+                        }
+                    }
+                    
+                    .timing {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    
+                        .arriving-time {
+                            border: 2px solid #FC6E2A;
+                            background-color: #ffab87;
+                            border-radius: 50%;
+                            width: 140px;
+                            height: 140px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto;
+                            position: absolute;
+    
+                            .arriving-time-two {
+                                border: 2px solid #FC6E2A;
+                                background-color: #ffeae1;
+                                border-radius: 50%;
+                                width: 120px;
+                                height: 140px;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 7px;
+                                
+                                h4 {
+                                    padding: 0.5rem;
+                                    margin: 0;
+                                    font-size: 18px;
+                                    font-weight: bold;
+                                }
+    
+                                span {
+                                    font-size: 16px;
+                                    font-weight: bold;
+                                }
+                            }
+                        }
+                          
+                          
+                        .arrival-status-updates {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            top: 120px;
+                            position: relative;
+    
+                            .arrival-status {
+                                border: 2px solid #28a745;
+                                border-radius: 30px;
+                                background-color: #ecf7ec;
+                                font-weight: bold;
+                                padding-top: 0.2rem;
+                                padding-bottom: 0.2rem;
+                                padding-left: 2rem;
+                                padding-right: 2rem;
+                            }
+                        }
+                    }
+                }
+            }
+        
+
+            .order-cancel-design {
+                background-color: #FC7C3F;
+                height: 100%;
+
+                .cancel-design-logo {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    padding-top: 2rem;
+                    padding-bottom: 2rem;
+
+                    img {
+                        width: 8rem;
+                    }
+                }
+            }
+
+            .order-cancel-data {
+                padding: 1rem;
+
+                .cancel-data-text {
+                    margin-bottom: 1.5rem;
+                    h6 {
+                        font-size: 18px;
+                    }
+                    span {
+                        font-size: 15px;
+
+                    }
+                }
+
+                .cancel-navigation-buttons {
+                    display: flex;
+                    justify-content: space-evenly;
+                    margin-top: 1rem;
+
+                    .home-btn, .order-btn{
+                        width: fit-content;
+                        border-radius: 5px;
+                        padding: 0.5rem;
+                        border: 1px solid #FC7C3F;
+                        color: #FC7C3F;
+                        background-color: transparent;
+                        
+                        &:hover{
+                            background-color: #FC7C3F;
+                            color: white;
+                        }
+
+                        span {
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .order-map{
+            width: 100%;
+            height: 100%;
+
+
+        }
+    }
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-bottom-right-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+}
+
+
+.order-management {
+
+    .order-info {
+        margin-bottom: 1rem;
+
+        .info-details {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: roboto;
+            background: transparent;
+            font-size: 16px;
+
+            .order-number {
+                display: flex;
+                padding: 1rem;
+
+                .bill-icon{
+
+                    padding-right: 1rem;
+                    img {
+                        width: 2.5rem;
+                    }
+                }
+
+                .hash-number {
+                    h6 {
+                        margin: 0;
+                    }
+                    span{
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            .order-data {
+                padding: 1rem;
+
+                .orderItems {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 0.5rem;
+                    margin-bottom: 0.5rem;
+
+            
+                    .order-item {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        width: 100%;
+              
+                        .order-item-content {
+                          display: flex;
+                          justify-content: space-between;
+                          font-size: 14px;
+                        }
+                    } 
+                }
+
+                .item-total-value {
+                    font-size: 14px;
+                    width: 100%;
+                    margin-top: 1rem;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                }
+            }
+
+            .coupon-section {
+
+                .coupon-info {
+                    .coupon-details {
+                        border-bottom-left-radius: 12px !important;
+                        border-bottom-right-radius: 12px !important;
+                        border-top-left-radius: 0px !important;
+                        border-top-right-radius: 0px !important;
+                        background: transparent;
+                        padding: 1rem;
+                        border-radius: 10px;
+                        font-family: roboto;
+                        font-size: 16px;
+                        display: flex;
+                        background: #FFF2ED;
+                
+                        .couponImg {
+                            width: 2.5rem;
+                            margin-right: 1rem;
+                        }
+                
+                    }
+                
+                    .couponContainer {
+                        height: fit-content;
+                        padding: 0;
+                        width: fit-content;
+                        font-family: 'Roboto';
+                        
+                        .coupon {
+                            letter-spacing: 1px;
+                            color: #FF956D;
+                            display: flex;
+                            flex-direction: column;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .order-process {
+        margin-bottom: 1rem;
+
+
+        .rider {
+
+            .delivery-info {
+                border: 1px solid #ddd;
+                border-radius: 12px;
+                font-family: roboto;
+                background: transparent;
+                font-size: 16px;
+                
+                .rider-detail{
+                    padding: 1rem;
+                    display: flex;
+    
+                    .rider-icon{
+                        padding-right: 1rem;
+                        img {
+                            width: 2.5rem;
+                        }
+                    }
+    
+                    .rider-title{
+                        h6 {
+                            margin: 0;
+                        }
+                        span {
+                            font-size: 12px;
+                        }
+                    }
+                }
+    
+                .riders-instructions {
+                    padding: 1rem;
+                    display: flex;
+                    padding-bottom: 0;
+
+                    mat-form-field {
+                        width: 100%;
+                    }
+                }
+
+            }
+
+        }
+
+        .cancel-order{
+
+            .cancel-accordion {
+                border: 1px solid #ddd;
+                border-radius: 12px;
+
+                .timer-wrapper {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                }
+                
+                .timer-text {
+                  font-weight: 500;
+                  font-size: 0.9rem;
+                }
+  
+                .cancel-options{
+
+                    .time-calculation{
+                        padding: 0.5rem;
+                        color: #FC6E2A;
+                        margin-bottom: 1rem;
+                    }
+  
+                    .cancel-reasons-group .cancel-reason-option {
+                        display: block;
+                        width: 100%;
+                    }
+    
+                    .submit-btn {
+                        button {
+                            margin-top: 1.5rem;
+                            width: 100%;
+                            background-color: #FC6E2A;
+                            color: white;
+    
+                            &:disabled {
+                                background-color: gray;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .support-section{
+        margin-bottom: 1rem;
+
+        .help-and-support {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: roboto;
+            background: transparent;
+            font-size: 16px;
+            // padding: 1rem;
+    
+            .help-and-support-heading {
+                display: flex;
+                padding: 1rem;
+
+                .help-and-support-icon {
+                    padding-right: 1rem;
+                    img {
+                        width: 2.5rem;
+                    }
+                }
+
+                .help-and-support-content {
+                    h6 {
+                        font-size: 16px;
+                        margin: 0;
+                    }
+                    span {
+                        font-size: 14px;
+                    }
+                }
+    
+            }
+
+            .help-and-support-information {
+                padding: 1rem;
+                font-size: 15px;
+            }
+    
+        }
+
+    }
+
+
+}
+
+@keyframes pulseBorder {
+    0% {
+        border-width: 2px;
+        transform: scale(1);
+    }
+    25% {
+        border-width: 4px;
+    }
+    50% {
+        border-width: 5px;
+        transform: scale(1.2);
+    }
+    75% {
+        border-width: 4px;
+    }
+    100% {
+        border-width: 2px;
+        transform: scale(1);
+    }
+}
+
+
+.expansionRemoveBG {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0;
+}
+
+::ng-deep .custom-spinner{
+    margin-right: 0.5rem;
+    --mdc-circular-progress-active-indicator-color: #FC6E2A !important;
+} 
+
+::ng-deep .cancel-options .mat-expansion-panel-header {
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+::ng-deep .cancel-options .mat-expansion-panel-content {
+    background: white;
+    border: 1px solid rgb(207, 207, 207);
+    box-shadow: rgba(28, 28, 28, 0.08) 0px 2px 8px;
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+::ng-deep .cancel-options .mat-expansion-panel-body {
+    padding: 0 !important;
+}
+
+::ng-deep .cancel-options .mat-expansion-panel {
+    border: 1px solid #ddd !important;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .track-order-page {
+        margin-top: 4rem;
+        margin-bottom: 0;
+    }
+
+    .div-border-right {
+        border-right: none;
+    }
+
+    .order-map{
+        height: 300px !important;
+        #map {
+            height: 300px !important;
+            border-bottom-right-radius: 12px !important;
+            border-bottom-left-radius: 12px !important;
+            border-top-right-radius: 0px !important;
+        }
+
+    }
+
+    .order-details {
+
+
+        .order-specific {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

@@ -2,28 +2,23 @@ const mongoose = require('mongoose');
 const orderStatus = require('../utils/enums/status');
 
 const orderSchema = new mongoose.Schema({
-    orderId: { type: String, required: true },
     userId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
-        required: true 
+        required: true,
     },
-    items: [
-        {
-            itemName: { type: String, required: true },
-            quantity: { type: Number, required: true },
-            price: { type: Number, required: true },
-            cartId: { 
-                type: mongoose.Schema.Types.ObjectId, 
-                ref: 'Cart', 
-                required: true 
-            },
-        }
-    ],
+    userAddress: {
+        title: { type: String, require: true },
+        details: { type: String, require: true }
+    },
+    paymentMethod: { type: String, require: true },
+    paymentId: { type: String, require: true },
+    cartData: { type: Object, require: true },
+    cookingInstructions: { type: String, default: null },
     totalPrice: { type: Number, required: true },
-    orderDate: { type: Date, default: Date.now },
-    status: { type: String, enum: orderStatus, default: orderStatus.PENDING },
-});
+    cancelReason: { type: String, default: null },
+    status: { type: String, enum: orderStatus, default: orderStatus.CONFIRMED },
+}, { timestamps: true });
 
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;

@@ -7,6 +7,9 @@ import { CartPage } from '../cart/cart.page';
 import { SearchPage } from '../search/search.page';
 import { ProfilePage } from '../profile/profile.page';
 import { RestaurantPage } from '../restaurant/restaurant.page';
+import { CheckoutPage } from '../checkout/checkout.page';
+import { OrderPage } from '../order/order.page';
+import { TrackOrderPage } from '../track-order/track-order.page';
 
 const routes: Routes = [
   {
@@ -22,7 +25,10 @@ const routes: Routes = [
       { path: 'cart', component: CartPage },
       { path: 'search', component: SearchPage },
       { path: 'profile', component: ProfilePage },
-      { path: 'restaurant/:id', component: RestaurantPage}
+      { path: 'restaurant/:id', component: RestaurantPage},
+      { path: 'checkout', component: CheckoutPage },
+      { path: 'order/:id', component: OrderPage },
+      { path: 'track-order/:id', component: TrackOrderPage },
     ]
   }
 ];

@@ -65,11 +65,31 @@ export class ProfilePage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await this.presentLoader('Loading Profile...');
     this.checkScreenSize();
+    if(this.isDesktop){
+      await this.presentLoader('Loading Profile...');
+      this.resetState();
+      await this.populateRestaurantData();
+      await this.populateUserData();
+      await this.populateOrderData();
+      await this.dismissLoader();
+    }
+  }
+
+  async ionViewWillEnter() {
+    await this.presentLoader('Loading Profile...');
+    this.resetState();
     await this.populateRestaurantData();
     await this.populateUserData();
+    await this.populateOrderData();
     await this.dismissLoader();
+  }
+
+  resetState() {
+    this.ordersList = [];
+    this.addresses = [];
+    this.restaurant = [];
+    this.favList = [];
   }
 
   async populateRestaurantData() {
@@ -94,6 +114,24 @@ export class ProfilePage implements OnInit {
       }
     } catch (error: any) {
       console.error("Error fetching restaurant data:", error.error.message);
+    }
+  }
+
+  async populateOrderData() {
+    try {
+      const response: any = await firstValueFrom(this.apiService.getAllOrderDetails());
+      if (response && response.payload) {
+        this.ordersList = [];
+        response.payload.forEach( async (order: any) => {
+          const resId = order?.cartData?.restaurantId;
+          const restaurantDetails = await firstValueFrom(this.apiService.getRestaurantDetails(resId));
+          const extractedAddress = this.addressExtractionService.extractAddressDetails(order.cartData.address);
+          order.cartData.address = extractedAddress;
+          this.ordersList.push({...order, restaurantImage: restaurantDetails.payload.profileImage});
+        });
+      }
+    } catch (error: any) {
+      console.error("Error fetching order data:", error.error.message);
     }
   }
 

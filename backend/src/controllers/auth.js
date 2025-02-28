@@ -93,3 +93,7 @@ exports.getRestaurantDeal = async(req, res) => {
 exports.addToFavorite = async(req, res) => {
     return await authService.addToFavorite(req.body, res);
 }
+
+exports.getDealInfo = async(req, res) => {
+    return await authService.getDealInfo(req, res);
+}
