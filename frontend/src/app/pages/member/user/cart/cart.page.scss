@@ -15,6 +15,7 @@ ion-content {
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
+    margin-bottom: 5rem;
 
     .address-section {
         border: 1px solid #ddd;
@@ -100,7 +101,7 @@ ion-content {
 
       .restaurant-details-image {
         height: 4rem;
-        width: 4rem;
+        width: 6rem;
         img {
           border-radius: 12px;
           width: 100%;
@@ -150,7 +151,7 @@ ion-content {
       }
 
       .orderItems {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
         display: flex;
         justify-content: space-between;
       }
@@ -188,6 +189,7 @@ ion-content {
 @media (max-width: 768px) {
     .cart-page {
       margin-top: 4rem;
+      margin-bottom: 0;
   
       #address-section,
       #order-summary {
@@ -296,6 +298,7 @@ mat-stepper {
   padding: 1rem;
   background-color: #FB6D3A;
   color: white;
+  border-radius: 12px;
 }
 
 .no-data-img {

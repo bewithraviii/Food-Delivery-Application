@@ -1,0 +1,299 @@
+<ion-content>
+  <div class="track-order-page">
+    <div class="container">
+      <div class="page-content">
+ 
+        <div class="order-tracking padding">
+
+          <h5>{{"Order Details" | uppercase }}</h5>
+
+          <div class="order-details">
+            <div class="row" style="margin: 0; width: 100%;">
+              <div [ngClass]="{'col-md-12': orderCancelled, 'col-md-6 p-0': !orderCancelled}">
+                <div class="order-info-basic" [ngClass]="{'div-border-right': !orderCancelled}">
+                  
+                  <div class="order-number">
+                    <div class="order-specific">
+                      <span style="font-weight: 500;">{{"Order No. #" + orderId}}</span>
+                      <span class="view-order" (click)="navigateToOrder()">View Orders Details <mat-icon>arrow_right</mat-icon></span>
+                    </div>
+                  </div>
+  
+                  <mat-divider></mat-divider>
+  
+                  <div class="order-status" *ngIf="!orderCancelled; else cancelOrderInfo">
+                    <div class="order-status-title">
+                      <span>{{"Status" | uppercase }}</span>
+                    </div>
+                    <div class="status-timing">
+                      <div class="row">
+                        <div class="col-6 p-0">
+                          <div class="order-status-progress">
+                            <div 
+                              class="step-item"
+                              *ngFor="let step of orderSteps; let i = index"
+                              [class.completed]="step.completed"
+                              [class.active]="i === getCurrentStepIndex()"
+                            >
+                              <div class="step-circle"></div>
+                              <div class="step-label">{{ step.label }}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-6 p-0">
+                          <div class="timing">
+                            <div class="arriving-time">
+                              <div class="arriving-time-two">
+                                <h4>Arriving By</h4>
+                                <span *ngIf="arrivingTime; else showTimeCalculationLoader">{{ arrivingTime }}</span>
+                                <ng-template #showTimeCalculationLoader>
+                                  <div style="justify-content: center; display: flex;">
+                                    <ion-spinner name="dots" style="color: #FC6E2A !important;"></ion-spinner>
+                                  </div>
+                                </ng-template>
+                              </div>
+                            </div>
+                            <div class="arrival-status-updates">
+                              <span class="arrival-status">{{ arrivalStatus }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-template #cancelOrderInfo>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="order-cancel-design">
+                          <div class="cancel-design-logo">
+                            <img src="assets/icons/cancel-background.png">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="order-cancel-data">
+                          <div class="cancel-data-text">
+                            <h6>{{cancelHeading}}</h6>
+                            <span>{{cancelContent}}</span>
+                          </div>
+                          <mat-divider></mat-divider>
+                          <div class="cancel-navigation-buttons">
+                            
+                            <button class="home-btn" (click)="navigateToHome()">
+                              <span>{{"Go to home page" | uppercase}}</span>
+                            </button>
+  
+                            <button class="order-btn" (click)="navigateToProfile()">
+                              <span>{{"Visit my order" | uppercase}}</span>
+                            </button>
+  
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="col-md-6 p-0" *ngIf="!orderCancelled">
+                <div class="order-map">
+                  <div *ngIf="mapLoading;" style="height: 100%;">
+                    <div style="justify-content: center; display: flex; height: 100%; align-items: center;">
+                      <ion-spinner name="dots" style="color: #FC6E2A !important;"></ion-spinner>
+                    </div>
+                  </div>
+                  <div #map id="map" class="map"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="order-management padding">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="order-info">
+                <h5>{{"Summary" | uppercase }}</h5>
+                <div class="info-details">
+                  <div class="order-number">
+                    <div class="bill-icon">
+                      <!-- <mat-icon>food_bank</mat-icon> -->
+                       <img src="assets/icons/dish.png">
+                    </div>
+                    <div class="hash-number">
+                      <h6 >{{"Order " | uppercase}}{{"#" + orderId}}</h6>
+                      <div>
+                        <span>items: {{orderItemQuantity}}</span>
+                        <span style="margin-left: 0.3rem;margin-right: 0.3rem;">|</span>
+                        <span>paid: {{'₹' + orderDetails.totalPrice}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="order-data-info" *ngIf="!cartData; else showCartInfo">
+                    <div style="justify-content: center; display: flex;">
+                      <ion-spinner name="dots" style="color: #FB6D3A !important;"></ion-spinner>
+                    </div>
+                  </div>
+                  <ng-template #showCartInfo>
+                    <div class="order-data" *ngIf="cartData?.restaurant?.orderItem">
+                      <div *ngFor="let orderItem of cartData?.restaurant?.orderItem" class="orderItems">
+                        <div class="order-item">
+                          <div class="order-item-content">
+                            <span>{{ orderItem.name }}</span>
+                            <span>{{ '₹' + orderItem.price }}</span>
+                          </div>
+                          <div class="quantity-controls">
+                            <span style="font-size: 14px;">Qty: {{ orderItem.quantity }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <mat-divider></mat-divider>
+                      <div class="item-total-value">
+                        <span>Item Total:</span>
+                        <span>{{'₹' + totalAmount}}</span>
+                      </div>
+                      <div>
+  
+                      </div>
+                    </div>
+                    <div *ngIf="this.orderDetails?.cartData?.couponApplied" class="coupon-section">
+                      <div class="coupon-info">
+                        <div class="coupon-details" *ngFor="let dealInfo of dealInformation">
+                          <div class="couponImg">
+                            <img src="assets/icons/coupon-code.png" alt="{{dealInfo.code}}">
+                          </div>
+                          <div class="couponContainer">
+                            <div class="coupon">
+                              <span style="padding: 0; font-size: 16px; font-weight: 500;">{{dealInfo.code}}</span>
+                              <span style="padding: 0; font-size: 12px;">{{'₹' + this.orderDetails.cartData.discountedPrice}} Saved</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="order-process" *ngIf="!orderCancelled; else showHelpAndSupport">
+                <div class="rider">
+                  <h5>{{"Rider's Detail" | uppercase }}</h5>
+                  <div class="delivery-info">
+                    <div class="rider-detail">
+                      <div class="rider-icon">
+                        <img src="assets/icons/delivery-man.png">
+                      </div>
+                      <div class="rider-title">
+                        <h6>Rider will be assigned soon</h6>
+                        <span>Your rider for today!</span>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="riders-instructions">
+                      <mat-form-field appearance="outline" class="rider-instruction-field">
+                        <mat-label>Write riders instructions...</mat-label>
+                        <input matInput [(ngModel)]="riderInstructions" [disabled]="!riderAssigned" />
+                        <mat-icon matSuffix *ngIf="riderInstructions" (click)="removeRidersInstruction()" style="cursor: pointer;">clear</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="cancel-order">
+                  <h5>{{"Order Review" | uppercase }}</h5>
+                  <div class="cancel-accordion">
+                    <mat-accordion>
+                      <mat-expansion-panel
+                      [disabled]="!cancelOrderAllowed"
+                      class="expansionRemoveBG"
+                      >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title style="color: #555;"> 
+                            <mat-progress-spinner
+                            mode="determinate"
+                            [value]="(cancelTimer / 60) * 100"
+                            diameter="20"
+                            strokeWidth="2"
+                            class="custom-spinner"
+                            >
+                            </mat-progress-spinner>
+                            Cancel your order
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div *ngIf="cancelOrderAllowed" class="cancel-options">
+                          <div class="time-calculation">
+                            <ng-container *ngIf="cancelOrderAllowed">
+                              <div class="timer-wrapper">
+                                <span class="timer-text">
+                                  {{ cancelTimer }}s left to cancel your order!
+                                </span>
+                              </div>
+                            </ng-container>
+                          </div>
+
+                          <mat-radio-group
+                            [(ngModel)]="selectedCancelReason"
+                            class="cancel-reasons-group"
+                          >
+                            <mat-radio-button
+                              *ngFor="let reason of cancelReasons"
+                              [value]="reason"
+                              class="cancel-reason-option"
+                            >
+                              {{ reason }}
+                            </mat-radio-button>
+                          </mat-radio-group>
+
+                          <div class="submit-btn">
+                            <button
+                              mat-raised-button
+                              (click)="onSubmitCancel()"
+                              [disabled]="!selectedCancelReason"
+                            >
+                              Cancel Order
+                            </button>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </div>
+              </div>
+              <ng-template #showHelpAndSupport>
+                <div class="support-section">
+                  <h5>{{"Help & Support" | uppercase }}</h5>
+                  <div class="help-and-support">
+                    <div class="help-and-support-heading">
+                      <div class="help-and-support-icon">
+                         <img src="assets/icons/live-chat.png">
+                      </div>
+                      <div class="help-and-support-content">
+                        <h6>{{helpAndSupportHeading}}</h6>
+                        <span>{{helpAndSupportContent}}</span>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="help-and-support-information">
+                      <div>
+                        <span>{{helpAndSupportDescription}}</span>
+                        <span style="color: #FB6D3A; font-weight: 500; cursor: pointer">{{helpAndSupportNumber}}</span>
+                      </div>
+                      <div>
+                        <span>Visit 
+                          <a style="cursor: pointer; color: #FB6D3A; font-weight: 500;" (click)="navigateToHome()">Help & Support</a> 
+                          to track and manage your query.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ion-content>

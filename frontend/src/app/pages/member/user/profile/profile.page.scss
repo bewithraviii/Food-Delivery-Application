@@ -15,6 +15,7 @@ ion-content {
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
+    margin-bottom: 5rem;
 }
 
 .profile-intro {
@@ -24,7 +25,7 @@ ion-content {
 
 .profile-icon {
     aspect-ratio: 1/1;
-    width: 5rem;
+    width: 4rem;
 }
 
 .profile-text {
@@ -164,7 +165,7 @@ ion-content {
 .address-card {
     background: white;
     padding: 15px;
-    // border: 1px solid #ddd;
+    border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     flex: 1 1 45%;
@@ -231,6 +232,7 @@ ion-content {
         margin-top: 4rem;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+        margin-bottom: 0;
     }
     
     .desktop-dashboard {
@@ -295,10 +297,11 @@ ion-content {
 }
 
 .manage-content {
-    border-radius: 12px;
-    padding: 1rem;
-    background: white !important;
-    border: 1px solid #ddd;
+    padding: 0.5rem;
+}
+
+.orders-list {
+    margin-top: 1rem;
 }
 
 .no-data-content {
@@ -363,6 +366,7 @@ ion-content {
             color: white;
             padding-right: 0.2rem;
             padding-left: 0.2rem;
+            font-size: 12px;
         }
     }
 
@@ -388,6 +392,14 @@ ion-content {
     .favorite-cards {
         .image-container {
             height: 100px;
+        }
+
+        ion-card-title {
+            font-size: 18px !important;
+        }
+
+        ion-card-subtitle {
+            font-size: 12px !important;
         }
     }
 }

@@ -97,6 +97,8 @@ export interface addToCartReqForm {
             name: string | undefined,
             address: string | undefined,
             restaurantCharges: number | undefined,
+            deliveryFeeApplicable: boolean | undefined,
+            gstApplicable: boolean | undefined,
             orderItem: [
                 {
                     itemId: number,
@@ -136,6 +138,8 @@ export interface addToFavorite {
 
 export interface cartDataModel {
     restaurant: {
+        deliveryFeeApplicable?: boolean;
+        gstApplicable?: boolean;
         address: string;
         name?: string;
         restaurantCharges?: number;
@@ -152,4 +156,21 @@ interface OrderItem {
     quantity?: number;
     _id?: string;
     itemImage?: string;
-  }
+}
+
+interface OrderDataModal {
+    userId: string,
+    cartData: any,
+    totalPrice: number,
+    cookingInstructions: string,
+    paymentMethod: string,
+    paymentId: string,
+    userAddress: any
+}
+
+interface UpdateOrderModal {
+    userId: string,
+    orderId: string,
+    updateOrderStatusTo: string,
+    selectedCancelReason?: string
+}

@@ -13,6 +13,7 @@ ion-content {
 
 .restaurant-page {
     margin-top: 1rem;
+    margin-bottom: 4rem;
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
@@ -171,6 +172,7 @@ ion-content {
 @media (max-width: 768px) {
     .restaurant-page {
         margin-top: 4rem;
+        margin-bottom: 0;
     }
     .restaurant-info,
     .restaurant-meta {

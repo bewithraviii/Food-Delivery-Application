@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { addNewAddressRequest, addToCartReqForm, addToFavorite, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm, addToFavorite, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, OrderDataModal, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, UpdateOrderModal, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -100,6 +100,9 @@ export class ApiService {
   updateAddress(reqPayload: editAddressRequest): Observable<any> { 
     return this.http.post(`${this.baseURL}/auth/updateUserAddress`, reqPayload);
   }
+  getAllOrderDetails(): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/fetchOrderDetails`);
+  }
 
   // Restaurant-Page
   getRestaurantDetails(reqPayload: string): Observable<any> {
@@ -116,6 +119,9 @@ export class ApiService {
   getUserCartData(reqPayload: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getCartByUserId/${reqPayload}`);
   }
+  getUserCartDataForCheck(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getUserCartDataForCheck/${reqPayload}`);
+  }
   removeFromCart(reqPayload: addToCartReqForm): Observable<any> {
     return this.http.post(`${this.baseURL}/auth/removeFromCart`, reqPayload);
   }
@@ -129,8 +135,28 @@ export class ApiService {
     return this.http.post(`${this.baseURL}/auth/removeDealsFromCart`, reqPayload);
   }
 
+  // Check-out Page
+  getDealInformation(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getDealInfo/${reqPayload}`);
+  }
+
   // Search Page
   searchRestaurants(query: string): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/searchRestaurant?query=${encodeURIComponent(query)}`);
   }
+
+
+  // track-Order Page
+  getOrderDetails(orderId: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getOrderDetails/${orderId}`);
+  }
+  addNewOrder(reqPayload: OrderDataModal): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/addNewOrder`, reqPayload);
+  }
+  updateOrderStatus(reqPayload: UpdateOrderModal): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/updateOrderStatus`, reqPayload);
+  }
+
+
+
 }

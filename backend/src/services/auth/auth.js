@@ -175,19 +175,24 @@ const getAllRestaurantDetails = async(req, res) => {
 
         let restaurantsDetails = [];
         restaurantsData.forEach(restaurant => {
-            restaurantsDetails.push({
-                name: restaurant.name,
-                description: restaurant?.description,
-                address: restaurant.address,
-                email: restaurant.email,
-                cuisineType: restaurant.cuisineType,
-                website: restaurant.website,
-                menu: restaurant.menu,
-                id: restaurant._id,
-                ratings: restaurant.restaurantRatings,
-                priceForTwo: restaurant.priceForTwo,
-                profileImage: restaurant.profileImage
-            });
+            if(restaurant.menu.length > 0) {
+                restaurantsDetails.push({
+                    name: restaurant.name,
+                    description: restaurant?.description,
+                    address: restaurant.address,
+                    email: restaurant.email,
+                    cuisineType: restaurant.cuisineType,
+                    website: restaurant.website,
+                    menu: restaurant.menu,
+                    id: restaurant._id,
+                    ratings: restaurant.restaurantRatings,
+                    priceForTwo: restaurant.priceForTwo,
+                    profileImage: restaurant.profileImage,
+                    restaurantCharges: restaurant.restaurantCharges,
+                    deliveryFeeApplicable: restaurantsData.deliveryFeeApplicable,
+                    gstApplicable: restaurantsData.gstApplicable
+                });
+            }
         });
 
         return res.status(200).json({
@@ -197,7 +202,7 @@ const getAllRestaurantDetails = async(req, res) => {
 
 
     } catch(error){
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching restaurant details:', error);
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Token expired' });
         }
@@ -242,10 +247,13 @@ const getRestaurantDetails = async(req, res) => {
             website: restaurantsData.website,
             menu: restaurantsData.menu,
             id: restaurantsData._id,
+            restaurantCharges: restaurantsData.restaurantCharges,
             restaurantRatings: restaurantsData.restaurantRatings,
             restaurantRatingsCount: restaurantsData.restaurantRatingsCount,
             priceForTwo: restaurantsData.priceForTwo,
-            profileImage: restaurantsData.profileImage
+            profileImage: restaurantsData.profileImage,
+            deliveryFeeApplicable: restaurantsData.deliveryFeeApplicable,
+            gstApplicable: restaurantsData.gstApplicable
         };
 
         return res.status(200).json({
@@ -254,7 +262,7 @@ const getRestaurantDetails = async(req, res) => {
         });
 
     } catch(error) {
-        console.error('Error fetching user details:', error);
+        console.error('Error fetching restaurant details:', error);
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Token expired' });
         }
@@ -576,6 +584,34 @@ const getRestaurantDeal = async(req, res) => {
     }
 }
 
+const getDealInfo = async(req, res) => {
+    const id = req.params.id;
+    if(!id){
+        return res.status(404).json({ message: 'Deal id not found' });
+    }
+
+    try {
+        const dealsData = await Deals.findOne({ _id: id });
+        if(!dealsData){
+            return res.status(404).json({ message: 'Deals not found' });
+        }
+    
+        const dealData = {
+            discountPercent: dealsData.discountPercent,
+            code: dealsData.code,
+            title: dealsData.title,
+            maxDiscount: dealsData.maxDiscount,
+            description: dealsData.description,
+            minOrderValue: dealsData.minOrderValue,
+            discountType: dealsData.discountType,
+        }
+
+        res.status(200).json({ message: 'Deal data fetched successfully', payload: dealData });
+    } catch(err){
+        res.status(400).json({ message: err.message });
+    }
+}
+
 const addToFavorite = async(body, res) => {
     if(!body) {
         return res.status(400).json({ message: 'Favorite processing data is required' });
@@ -639,5 +675,6 @@ module.exports = {
     addCuisineCategory,
     addNewDeal,
     getRestaurantDeal,
+    getDealInfo,
     addToFavorite
 }

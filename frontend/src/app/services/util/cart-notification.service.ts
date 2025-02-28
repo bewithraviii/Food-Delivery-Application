@@ -27,11 +27,11 @@ export class CartNotificationService {
   
   async initializeCart() {
     const userID = await this.authService.getUserId() || '';
-    this.apiService.getUserCartData(userID)
+    this.apiService.getUserCartDataForCheck(userID)
       .pipe(take(1))
       .subscribe({
         next: (data: any) => {
-          if (data) {
+          if (data.payload) {
             this._cartItems.set(1);
           } else {
             this._cartItems.set(0);

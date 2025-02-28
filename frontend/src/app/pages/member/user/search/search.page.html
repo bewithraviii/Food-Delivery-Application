@@ -69,7 +69,7 @@
                       </mat-menu>
                     </div>
                     <div class="filter-btn">
-                      <button mat-button (click)="clearFilters()" [disabled]="!this.filterRating4Plus && !this.filterHighToLow">clear</button>
+                      <button mat-button (click)="clearFilters()" [disabled]="!this.filterRating4Plus && !this.filterHighToLow && !this.filterLowToHigh">clear</button>
                     </div>
                   </div>
                   <mat-divider></mat-divider>
@@ -87,7 +87,7 @@
                             <ion-card-title style="color: #32343E;">{{ restaurant.name }}</ion-card-title>
                           </div>
                           <div class="search-details">
-                            <div class="search-design">
+                            <div class="search-design" *ngIf="restaurant.restaurantRatings > 0">
                               {{ restaurant.restaurantRatings }} <ion-icon name="star"></ion-icon>
                             </div>
                           </div>

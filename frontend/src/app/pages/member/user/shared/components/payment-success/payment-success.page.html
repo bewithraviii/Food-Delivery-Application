@@ -1,0 +1,22 @@
+<div class="success-overlay">
+  <div class="container">
+    <div class="content">
+      <div class="success-content">
+        <div class="success-video-card">
+          <div class="video-container" *ngIf="showVideo">
+            <video autoplay loop muted playsinline class="success-video">
+              <source src="assets/animations/payment-success.webm" type="video/webm">
+            </video>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="success-card">
+          <div class="card-data">
+            <div class="card-data-title"><h3>We've got your order!</h3></div>
+            <div class="card-data-details"><span>You successfully made a payment,enjoy our service.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
