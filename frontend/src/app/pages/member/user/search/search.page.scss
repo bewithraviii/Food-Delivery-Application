@@ -42,7 +42,8 @@ ion-content {
     ion-card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0px 2px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
     }
 
     .search-details-row {
@@ -207,7 +208,8 @@ ion-content {
     background: transparent;
     border-radius: 12px;
     height: fit-content;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
     cursor: pointer;
     overflow: hidden;
     position: relative;

@@ -74,6 +74,7 @@
               {
                 "input": "src/theme/variables.css"
               },
+              "node_modules/intl-tel-input/build/css/intlTelInput.css",
               "src/styles.css",
               "node_modules/leaflet/dist/leaflet.css"
             ],
@@ -84,13 +85,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "150kb",
+                  "maximumError": "150kb"
                 }
               ],
               "outputHashing": "all"
@@ -144,6 +145,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/intl-tel-input/build/css/intlTelInput.css",
               "src/styles.css",
               "node_modules/leaflet/dist/leaflet.css",
               "node_modules/@ionic/angular/css/core.css",

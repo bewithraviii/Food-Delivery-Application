@@ -39,6 +39,10 @@
         </div>
       </div>
       <div *ngIf="!isConfirmationDialog && contextData.identity == 'form'">
+        <!-- Map integration section -->
+        <div class="map-section" *ngIf="contextData.type === 'map'">
+          <div #map id="map"></div>
+        </div>
         <form [formGroup]="dialogForm" class="dialog-form">
           <div *ngFor="let field of fields">
             <mat-form-field appearance="outline" class="full-width" style="width: 100%;">

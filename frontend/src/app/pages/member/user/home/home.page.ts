@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { GREETINGS } from 'src/app/enums/enum';
 import { addNewAddressRequest } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { DialogService } from 'src/app/services/dialog/dialog.service';
@@ -17,7 +18,7 @@ export class HomePage implements OnInit {
 
   @ViewChild('categoryCards', { read: ElementRef }) categoryCards!: ElementRef;
   @ViewChild('addressPanel') addressPanel!: MatExpansionPanel;
-  userName: string = '' || "Ravi";
+  userName: string = '' || "User";
   greeting: string = '';
   isPrevDisabled = true;
   isNextDisabled = false;
@@ -34,6 +35,7 @@ export class HomePage implements OnInit {
     email: '...',
     id: ''
   };
+  isDesktop: boolean = true;
   favoriteList: any[] = [];
   savedAddresses: { name: string, details: string, type: string }[] = [];
 
@@ -48,22 +50,44 @@ export class HomePage implements OnInit {
 
 
   async ngOnInit() {
+    this.checkScreenSize();
+    if(this.isDesktop){
+      await this.getUserData();
+      await this.getRestaurantData();
+      await this.getCategories();
+      this.setGreeting();
+    }
+  }
+
+  async ionViewWillEnter() {
+    this.resetState();
     await this.getUserData();
     await this.getRestaurantData();
     await this.getCategories();
     this.setGreeting();
   }
 
+  @HostListener('window:resize', [])
+  checkScreenSize(): void {
+    this.isDesktop = window.innerWidth > 768;
+  }
+
+  resetState() {
+    this.savedAddresses = [];
+    this.restaurants = [];
+    this.categories = [];
+  }
+
   setGreeting(){
     const currentHour = new Date().getHours();
     if (currentHour >= 5 && currentHour < 12) {
-      this.greeting = 'Good Morning';
+      this.greeting = GREETINGS.GOOD_MORNING;
     } else if (currentHour >= 12 && currentHour < 17) {
-      this.greeting = 'Good Afternoon';
+      this.greeting = GREETINGS.GOOD_AFTERNOON;
     } else if (currentHour >= 17 && currentHour < 21) {
-      this.greeting = 'Good Evening';
+      this.greeting = GREETINGS.GOOD_EVENING;
     } else {
-      this.greeting = 'Good Night';
+      this.greeting = GREETINGS.WELCOME;
     }
   }
 
@@ -197,7 +221,7 @@ export class HomePage implements OnInit {
     const addressData = { title: '', details: '' }
     const addedAddress = await this.dialogService.openDialog(
       "Add Address",
-      { newAddress: addressData, identity: "form" },
+      { newAddress: addressData, identity: "form", type: "map" },
       fields,
       null,
     );

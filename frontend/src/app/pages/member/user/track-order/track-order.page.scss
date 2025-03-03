@@ -577,7 +577,16 @@ ion-content {
     border: 1px solid #ddd !important;
 }
 
+@media (max-width: 991px) {
+    .order-details {
 
+
+        .order-specific {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
 
 
 @media (max-width: 768px) {

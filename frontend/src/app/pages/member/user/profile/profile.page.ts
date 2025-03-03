@@ -223,7 +223,7 @@ export class ProfilePage implements OnInit {
     const addAddress = { title: '', details: '' }
     const addedAddress = await this.dialogService.openDialog(
       "Add Address",
-      { newAddress: addAddress, identity: 'form' },
+      { newAddress: addAddress, identity: 'form', type: "map" },
       fields,
       this.addAddressTemplate,
     );
@@ -261,7 +261,7 @@ export class ProfilePage implements OnInit {
     const editAddress = { title: address.title, details: address.details }
     const editedAddress = await this.dialogService.openDialog(
       "Edit Address",
-      { editAddress: editAddress, identity: 'form' },
+      { editAddress: editAddress, identity: 'form', type: "map" },
       fields,
       this.addAddressTemplate,
     );

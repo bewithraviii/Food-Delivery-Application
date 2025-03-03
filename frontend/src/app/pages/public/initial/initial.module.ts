@@ -20,7 +20,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
-
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 
 
@@ -43,6 +43,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     MatCardModule,
     MatSelectModule,
+    NgxIntlTelInputModule
   ],
   declarations: [
     InitialPage,

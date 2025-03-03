@@ -5,6 +5,13 @@ export enum PAYMENT_METHODS {
     COD = "COD",
 }
 
+export enum GREETINGS {
+    GOOD_MORNING = "Good Morning",
+    GOOD_AFTERNOON = "Good Afternoon",
+    GOOD_EVENING = "Good Evening",
+    WELCOME = "Welcome"
+}
+
 
 export enum ORDER_STATUS {
     CONFIRMED = 'CONFIRMED',

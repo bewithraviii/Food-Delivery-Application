@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LoadingController } from '@ionic/angular';
+import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-sign-up',
@@ -34,6 +35,9 @@ export class SignUpPage implements OnInit {
   timer: number = 60;
   timerInterval: any;
   cuisineList: any[] = [];
+  CountryISO = CountryISO;
+  SearchCountryField = SearchCountryField;
+  PhoneNumberFormat = PhoneNumberFormat;
 
   @ViewChild('adminStepper', { static: false }) adminStepper!: MatStepper;
 
@@ -67,7 +71,7 @@ export class SignUpPage implements OnInit {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      phoneNumber: [undefined, Validators.required],
       address: ['', Validators.required],
     });
 

@@ -84,7 +84,6 @@
                         <img src="assets/svg/no-data-found-two.svg" alt="" class="no-data-img">
                       </div>
                       <ng-template #orderDetails>
-                        <h5 style="color: #2D2D2D;">{{"Your Orders" | uppercase}}:</h5>
                         <div class="orders-list" *ngFor="let orderDetail of ordersList">
                           <app-order-card [orderDetail]="orderDetail"></app-order-card>
                         </div>
@@ -100,7 +99,6 @@
                     </div>
                     <div class="manage-content">
                       <div>
-                        <h5 style="color: #2D2D2D;">{{"Saved Address" | uppercase}}:</h5>
                         <div class="addresses" *ngIf="addresses.length > 0; else noAddDataContent">
                           <div class="address-card" *ngFor="let address of addresses">
                             <h4>{{ address?.title }}</h4>
@@ -127,7 +125,6 @@
                     </div>
                     <div class="manage-content">
                       <div *ngIf="favList.length > 0; else noFavDataContent">
-                        <h5 style="color: #2D2D2D;">{{"Saved Restaurants" | uppercase}}:</h5>
                         <div class="favorite-cards">
                           <ion-card *ngFor="let restaurant of favList" type="button" (click)="restaurantDetails(restaurant.id)">
                             <div class="image-container">
@@ -185,7 +182,6 @@
                     </div>
                     <div class="manage-content">
                       <div *ngIf="paymentCards.length > 0; else noPayDataContent" class="payment">
-                        <h5 style="color: #2D2D2D;">{{"Saved Cards" | uppercase}}:</h5>
                         <div class="payments">
                           <ion-card class="payments-cards" *ngFor="let card of paymentCards">
                             <ion-item class="custom-item">
@@ -238,12 +234,12 @@
       <div class="mobile-dashboard" *ngIf="!isDesktop">
         <mat-accordion>
           <mat-expansion-panel *ngFor="let item of menuItems">
-            <mat-expansion-panel-header style="border-bottom: 1px dashed #ddd; padding: 0.5rem;">
+            <mat-expansion-panel-header style="border-bottom: 1px dashed #ddd; padding: 0.5rem; font-size: 16px;">
               <mat-panel-title>
                 <i [class]="item.icon"></i> {{ item.title }}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div style="margin-top: 1rem;">
+            <div >
               <ng-container [ngSwitch]="item.id">
                 <div *ngSwitchCase="'orders'">
                   <div class="menuContainer">

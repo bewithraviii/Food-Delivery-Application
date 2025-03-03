@@ -16,6 +16,7 @@ ion-content {
     display: flex;
     flex-direction: column;
     margin-bottom: 5rem;
+    margin-top: 2rem;
 }
 
 .profile-intro {
@@ -44,7 +45,7 @@ ion-content {
 .profile-edit-btn {
     margin: 0.5rem;
     padding: 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     background-color: #FC6E2A;
     color: #F3F3F3;
@@ -56,7 +57,7 @@ ion-content {
 .logout-btn {
     margin: 0.5rem;
     padding: 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     background-color: #FC6E2A;
     color: #F3F3F3;
@@ -69,7 +70,8 @@ ion-content {
 .user-profile {
     background: #FFFFFF;
     border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
 }
 
 .user-detail {
@@ -105,7 +107,7 @@ ion-content {
     background-color: #FFFFFF;
     padding: 1rem;
     border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd !important;
 }
   
@@ -166,9 +168,12 @@ ion-content {
     background: white;
     padding: 15px;
     border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     flex: 1 1 45%;
+    h4 {
+         margin: 0;
+    }
 }
 
 .payment {
@@ -229,7 +234,7 @@ ion-content {
 @media (max-width: 768px) {
 
     .profile-page {
-        margin-top: 4rem;
+        margin-top: 5rem;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
         margin-bottom: 0;
@@ -296,9 +301,9 @@ ion-content {
     border-radius: 5px;
 }
 
-.manage-content {
-    padding: 0.5rem;
-}
+// .manage-content {
+//     padding: 0.5rem;
+// }
 
 .orders-list {
     margin-top: 1rem;
@@ -327,11 +332,14 @@ ion-content {
     cursor: pointer;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    // gap: 16px;
+    gap: 10px;
+
     ion-card {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    margin: 0;
     }
 
     .favorite-details-row {
@@ -417,3 +425,6 @@ ion-content {
     }
 }
 
+.menuContainer {
+    padding: 0.5rem;
+}

@@ -235,6 +235,7 @@ export class TrackOrderPage implements OnInit {
     }
 
     this.cancelOrderAllowed = false;
+    this.orderCancelled = true;
   }
 
   async presentLoader(message?: string) {
@@ -366,9 +367,7 @@ export class TrackOrderPage implements OnInit {
     }
 
     this.map = L.map(this.mapContainer.nativeElement).setView([userCoords.lat, userCoords.lng], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(this.map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
     this.map.whenReady(() => {
     });
@@ -415,7 +414,7 @@ export class TrackOrderPage implements OnInit {
         [restaurantCoords.lat, restaurantCoords.lng],
         [userCoords.lat, userCoords.lng]
       ];
-      const polyline = L.polyline(routeCoordinates, { color: 'blue' }).addTo(this.map);  // Add route in theme color
+      const polyline = L.polyline(routeCoordinates, { color: 'blue' }).addTo(this.map);
     }
     this.mapLoading = false;
   }

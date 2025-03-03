@@ -13,6 +13,8 @@ export class ApiService {
   private openStreetMapURL = environment.openStreetMapUrl;
   private openRouteServices = environment.openRouteServices;
   private openRouteGeocode = environment.openRouteGeocode;
+  private openRouteGeocodeReverse = environment.openRouteGeocodeReverse;
+
 
   constructor(
     private http: HttpClient,
@@ -63,6 +65,9 @@ export class ApiService {
   getLocationFromLatAndLong(lat: number, lng: number): Observable<any> {
     return this.http.get(`${this.openStreetMapURL}/reverse?format=json&lat=${lat}&lon=${lng}`)
   }
+  // getLocationFromLatAndLongORS(lat: number, lng: number): Observable<any> {
+  //   return this.http.get(`${this.openRouteGeocodeReverse}&point.lon=${lng}&point.lat=${lat}`);
+  // }
   // Distance
   getAddressLatAndLong(address: string): Observable<any> {
     return this.http.get(`${this.openRouteGeocode}&text=${encodeURIComponent(address)}`);
