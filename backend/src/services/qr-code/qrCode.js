@@ -17,19 +17,27 @@ const generateQRCode = async (data, res) => {
             await QR.deleteOne({ _id: qrDatabaseData._id });
         }
 
-        const qrData = speakeasy.generateSecret({
-            name: `FOOD: Food Delivery App (${data.email})`,
-            issuer: 'FOOD',
-        });
+        // OTP using authenticator
+        // const qrData = speakeasy.generateSecret({
+        //     name: `FOOD: Food Delivery App (${data.email})`,
+        //     issuer: 'FOOD',
+        // });
+        // const qrSecret = qrData.base32;
+        // const newQR = new QR({ restaurantsEmail, ownerPhoneNumber, qrSecret });
+        // await newQR.save();
+        // const qrCode = await QRCode.toDataURL(qrData.otpauth_url);
+        // res.status(200).json({ qrCode, secret: qrSecret });
 
-        const qrSecret = qrData.base32;
-        
+
+        // Simple OTP
+        const qrSecret = generateOTP();
         const newQR = new QR({ restaurantsEmail, ownerPhoneNumber, qrSecret });
         await newQR.save();
+        
+        const qrCode = await QRCode.toDataURL(qrSecret);
 
-        const qrCode = await QRCode.toDataURL(qrData.otpauth_url);
+        res.status(200).json({ qrCode, qrSecret });
 
-        res.status(200).json({ qrCode, secret: qrSecret });
     } catch (error) {
         console.error('QR Code generation failed:', error);
         res.status(500).json({ message: 'Failed to generate QR code', error: error.message });
@@ -51,25 +59,39 @@ const verifyOTP = async (data, res) => {
             return res.status(400).json({ message: 'QR secret not found' });
         }
 
-        const secret = qrData.qrSecret;
-        
-        const isVerified = speakeasy.totp.verify({
-            secret: secret,
-            encoding: 'base32',
-            token: otp,
-            window: 1
-        });
-        
-        if (isVerified) {
+        // OTP using authenticator
+        // const secret = qrData.qrSecret;
+        // const isVerified = speakeasy.totp.verify({
+        //     secret: secret,
+        //     encoding: 'base32',
+        //     token: otp,
+        //     window: 1
+        // });
+        // if (isVerified) {
+        //     await QR.deleteOne({ _id: qrData._id });
+        //     return res.status(200).json({ message: 'QR OTP Verified Successfully', verified: true });
+        // } else {
+        //     return res.status(400).json({ message: 'Invalid QR OTP' });
+        // }
+
+        if (qrData.qrSecret === otp) {
             await QR.deleteOne({ _id: qrData._id });
-            return res.status(200).json({ message: 'QR OTP Verified Successfully', verified: true });
+            return res.status(200).json({ message: 'OTP Verified Successfully', verified: true });
         } else {
-            return res.status(400).json({ message: 'Invalid QR OTP' });
+            return res.status(400).json({ message: 'Invalid OTP' });
         }
     } catch (error) {
         console.error('OTP verification failed:', error);
         return res.status(500).json({ message: 'Failed to verify OTP', error: error.message });
     }
 };
+
+const generateOTP = (length = 6) => {
+    let otp = '';
+    for (let i = 0; i < length; i++) {
+      otp += Math.floor(Math.random() * 10);
+    }
+    return otp;
+}
 
 module.exports = { generateQRCode, verifyOTP }
