@@ -152,7 +152,7 @@
                   <mat-form-field class="form-field vendor-form-field" appearance="outline">
                     <mat-label>Cuisine Type</mat-label>
                     <mat-select formControlName="cuisineType" required multiple>
-                      <mat-option *ngFor="let cuisine of cuisineList" value="{{cuisine}}">{{cuisine}}</mat-option>
+                      <mat-option *ngFor="let cuisine of cuisineList" value="{{cuisine.categoryName}}">{{cuisine.categoryName}}</mat-option>
                     </mat-select>
                   </mat-form-field>
 

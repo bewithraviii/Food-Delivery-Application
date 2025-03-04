@@ -109,13 +109,13 @@
                 <button mat-fab extended class="forgotBtn" (click)="onSubmitQR()">View QR</button>
               </div>
             </div>
-            <div style="margin-top: 2rem;" *ngIf="qrVisible">
+            <div style="margin-top: 1rem;" *ngIf="qrVisible">
               <div *ngIf="qrCodeImage">
-                <div style="margin-bottom: 1rem; padding: 1rem;">
-                  <h3 style="color: #7E8A97; margin-top: 1rem;">Scan this QR to verify using authenticator:</h3>
+                <div style="padding: 1rem;">
+                  <h3 style="color: #7E8A97; margin: 0; font-size: 18px; font-weight: 300;">Scan this QR to verify using authenticator:</h3>
                   <img [src]="qrCodeImage" alt="QR Code" />
                 </div>
-                <mat-divider></mat-divider>
+                <!-- <mat-divider></mat-divider> -->
                 <div style="margin-top: 1rem; border: 1px solid; border-radius: 12px;">
                   <p class="credText" style="color: #7E8A97; margin-top: 1rem; font-size: 13px;">Enter QR OTP from authenticator</p>
                   <form [formGroup]="qrOtpForm" (ngSubmit)="onSubmitQrOTP()" style="padding: 1rem;">
