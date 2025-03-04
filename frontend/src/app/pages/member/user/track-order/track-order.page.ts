@@ -129,6 +129,7 @@ export class TrackOrderPage implements OnInit {
           this.cancelOrderAllowed = true;
           this.startCancelTimer();
           this.calculateArrivalTime();
+          this.loadMapWithCoordinates();
         } else if(this.orderDetails.status === ORDER_STATUS.CANCELLED){
           this.orderCancelled = true;
           this.cancelOrderAllowed = false;
@@ -143,9 +144,8 @@ export class TrackOrderPage implements OnInit {
           if(this.timerSubscription){
             this.timerSubscription.unsubscribe();
           }
-
+          this.loadMapWithCoordinates();
         }
-        this.loadMapWithCoordinates();
         await this.processData();
       }
     } catch(error: any) {
