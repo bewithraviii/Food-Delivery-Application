@@ -1,13 +1,99 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>vendor-dashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content id="main-content" [fullscreen]="true">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">vendor-dashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ng-container *ngIf="isMobileView; else desktopLayout">
+
+    <!-- Mobile Header -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          <ion-img [src]="logo" alt="logo" (click)="goToHome()" style="cursor: pointer;"></ion-img>
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button routerLink="/vendor-dashboard/notification" routerLinkActive="active">
+            <ion-icon name="notifications-outline" style="font-size: 1.5rem; padding: 0.4rem;"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- Main Content -->
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="dashboard" routerLink="/vendor-dashboard/dashboard" routerLinkActive="active">
+          <ion-icon name="desktop-outline"></ion-icon>
+          <ion-label>Dashboard</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="food" routerLink="/vendor-dashboard/food" routerLinkActive="active">
+          <ion-icon name="fast-food-outline"></ion-icon>
+          <ion-label>Food</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="profile" routerLink="/vendor-dashboard/profile" routerLinkActive="active">
+          <ion-icon name="storefront-outline"></ion-icon>
+          <ion-label>Profile</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="manage" routerLink="/vendor-dashboard/manage" routerLinkActive="active">
+          <ion-icon name="file-tray-full-outline"></ion-icon>
+          <ion-label>Manage</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+
+  </ng-container>
+
+  <ng-template #desktopLayout>
+
+    <!-- Desktop Header -->
+    <ion-header>
+      <div class="container p-0">
+        <ion-toolbar>
+          <ion-title><ion-img [src]="logo" alt="logo" style="cursor: pointer;" (click)="goToHome()"></ion-img></ion-title>
+          <ion-buttons slot="end">
+            <ion-button routerLink="/vendor-dashboard/dashboard" routerLinkActive="active">
+              <div class="iconButton">
+                <div class="iconAndText">
+                  <ion-icon name="desktop-outline"></ion-icon>
+                </div>
+                <span>Dashboard</span>
+              </div>
+            </ion-button>
+            <ion-button routerLink="/vendor-dashboard/food" routerLinkActive="active">
+              <div class="iconButton">
+                <div class="iconAndText">
+                  <ion-icon name="fast-food-outline"></ion-icon>
+                </div>
+                <span>Food</span>
+              </div>
+            </ion-button>
+            <ion-button routerLink="/vendor-dashboard/profile" routerLinkActive="active">
+              <div class="iconButton">
+                <div class="iconAndText">
+                  <ion-icon name="storefront-outline"></ion-icon>
+                </div>
+                <span>Profile</span>
+              </div>
+            </ion-button>
+            <ion-button routerLink="/vendor-dashboard/manage" routerLinkActive="active" >
+              <div class="iconButton">
+                <div class="iconAndText">
+                  <ion-icon name="file-tray-full-outline"></ion-icon>
+                </div>
+                <span>Manage</span>
+              </div>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </div>
+    </ion-header>
+
+    <router-outlet></router-outlet>
+    
+  </ng-template>
+
 </ion-content>

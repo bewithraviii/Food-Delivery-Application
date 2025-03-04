@@ -7,6 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { VendorDashboardPageRoutingModule } from './vendor-dashboard-routing.module';
 
 import { VendorDashboardPage } from './vendor-dashboard.page';
+import { FoodPage } from '../food/food.page';
+import { ManagePage } from '../manage/manage.page';
+import { NotificationPage } from '../notification/notification.page';
+import { DashboardPage } from '../dashboard/dashboard.page';
+import { ProfilePage } from '../profile/profile.page';
 
 @NgModule({
   imports: [
@@ -15,6 +20,13 @@ import { VendorDashboardPage } from './vendor-dashboard.page';
     IonicModule,
     VendorDashboardPageRoutingModule
   ],
-  declarations: [VendorDashboardPage]
+  declarations: [
+    VendorDashboardPage,
+    FoodPage,
+    ManagePage,
+    ProfilePage,
+    DashboardPage,
+    NotificationPage
+  ]
 })
 export class VendorDashboardPageModule {}

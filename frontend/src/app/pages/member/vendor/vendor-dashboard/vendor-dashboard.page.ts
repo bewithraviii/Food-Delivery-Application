@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vendor-dashboard',
@@ -7,9 +8,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VendorDashboardPage implements OnInit {
 
-  constructor() { }
+  isMobileView?: boolean = false;
+  logo: string = 'assets/svg/logo.svg';
+  menuToggle: string = 'assets/svg/menu-toggle-btn.svg';
 
-  ngOnInit() {
+  constructor(
+    private router: Router
+  ) { }
+
+  async ngOnInit(): Promise<void>
+  {    
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isMobileView = window.innerWidth <= 768;
+  }
+
+  goToHome(){
+    this.router.navigate(['/vendor-dashboard/dashboard'])
   }
 
 }
