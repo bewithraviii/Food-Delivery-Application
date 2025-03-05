@@ -1,0 +1,94 @@
+<ion-content>
+  <div class="console-page">
+    <div class="container">
+
+      <div class="console-content">
+        
+        <div class="order-request-information" [ngClass]="{padding: !isDesktop}">
+          <div class="row">
+            <div class="col-md-6 p-2">
+              <div class="running-order">
+                <div class="running-order-count">
+                  <span class="number-count">{{runningOrderCount}}</span>
+                </div>
+                <div class="running-order-title">
+                  <span class="number-count-title">{{"Running Orders" | uppercase}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 p-2">
+              <div class="order-request">
+                <div class="order-request-count">
+                  <span class="number-count">{{orderRequestCount}}</span>
+                </div>
+                <div class="order-request-title">
+                  <span class="number-count-title">{{"Order Requests" | uppercase}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="graph-section">
+
+          <div class="graph">
+            <div class="graph-details">
+
+              <div class="revenue-info">
+                <div class="revenue-info-data">
+                  <span class="revenue-title">{{"Total Revenue" | uppercase}}</span>
+                  <span class="revenue-value">{{'₹' + totalRevenue}}</span>
+                </div>
+              </div>
+
+              <div class="graph-updates">
+                <div>
+                  <ion-select [(ngModel)]="selectedPeriod" placeholder="Select Period" (ionChange)="onPeriodChange($event)" class="graph-updates-dropdown">
+                    <ion-select-option value="daily">Daily</ion-select-option>
+                    <ion-select-option value="weekly">Weekly</ion-select-option>
+                    <ion-select-option value="monthly">Monthly</ion-select-option>
+                    <ion-select-option value="quarterly">Quarterly</ion-select-option>
+                    <ion-select-option value="yearly">Yearly</ion-select-option>
+                  </ion-select>
+                </div>
+                <!-- <ng-template #showDropdown >
+                  <ion-segment [(ngModel)]="selectedPeriod" (ionChange)="onPeriodChange($event)" >
+                    <ion-segment-button value="daily">Daily</ion-segment-button>
+                    <ion-segment-button value="weekly">Weekly</ion-segment-button>
+                    <ion-segment-button value="monthly">Monthly</ion-segment-button>
+                    <ion-segment-button value="quarterly">Quarterly</ion-segment-button>
+                    <ion-segment-button value="yearly">Yearly</ion-segment-button>
+                  </ion-segment>
+                </ng-template> -->
+              </div>
+
+              <div class="see-details">
+                <div class="view-graph-details-title">
+                  <span>See Details</span>
+                </div>
+              </div>
+
+            </div>
+            <mat-divider></mat-divider>
+            <div class="chart">
+              <canvas
+                baseChart
+                [data]="chartData"
+                [options]="chartOptions"
+                [type]="'line'"
+                [legend]="true"
+              >
+              </canvas>
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+</ion-content>

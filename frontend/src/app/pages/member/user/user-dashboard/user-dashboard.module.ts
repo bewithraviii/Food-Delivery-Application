@@ -32,7 +32,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PaymentSuccessPage } from '../shared/components/payment-success/payment-success.page';
 import { TrackOrderPage } from '../track-order/track-order.page';
 import { OrderPage } from '../order/order.page';
-import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { OrderCardPage } from '../shared/components/order-card/order-card.page';
 import { RestaurantCardPage } from '../shared/components/restaurant-card/restaurant-card.page';
 

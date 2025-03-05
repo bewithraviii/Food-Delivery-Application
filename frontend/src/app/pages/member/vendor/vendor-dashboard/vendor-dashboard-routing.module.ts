@@ -6,8 +6,8 @@ import { FoodPage } from '../food/food.page';
 import { ManagePage } from '../manage/manage.page';
 
 import { NotificationPage } from '../notification/notification.page';
-import { DashboardPage } from '../dashboard/dashboard.page';
 import { ProfilePage } from '../profile/profile.page';
+import { ConsolePage } from '../console/console.page';
 
 const routes: Routes = [
   {
@@ -16,10 +16,10 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'console',
         pathMatch: 'full'
       },
-      { path: 'dashboard', component: DashboardPage },
+      { path: 'console', component: ConsolePage },
       { path: 'food', component: FoodPage },
       { path: 'profile', component: ProfilePage },
       { path: 'manage', component: ManagePage },

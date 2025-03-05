@@ -23,9 +23,9 @@
 
     <ion-tabs>
       <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="dashboard" routerLink="/vendor-dashboard/dashboard" routerLinkActive="active">
-          <ion-icon name="desktop-outline"></ion-icon>
-          <ion-label>Dashboard</ion-label>
+        <ion-tab-button tab="console" routerLink="/vendor-dashboard/console" routerLinkActive="active">
+          <ion-icon name="grid-outline"></ion-icon>
+          <ion-label>Console</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="food" routerLink="/vendor-dashboard/food" routerLinkActive="active">
@@ -55,12 +55,12 @@
         <ion-toolbar>
           <ion-title><ion-img [src]="logo" alt="logo" style="cursor: pointer;" (click)="goToHome()"></ion-img></ion-title>
           <ion-buttons slot="end">
-            <ion-button routerLink="/vendor-dashboard/dashboard" routerLinkActive="active">
+            <ion-button routerLink="/vendor-dashboard/console" routerLinkActive="active">
               <div class="iconButton">
                 <div class="iconAndText">
-                  <ion-icon name="desktop-outline"></ion-icon>
+                  <ion-icon name="grid-outline"></ion-icon>
                 </div>
-                <span>Dashboard</span>
+                <span>Console</span>
               </div>
             </ion-button>
             <ion-button routerLink="/vendor-dashboard/food" routerLinkActive="active">

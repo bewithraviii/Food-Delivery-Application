@@ -1,0 +1,18 @@
+ion-content {
+    --background: #FFFFFF !important;
+}
+
+.container {
+    background-color: #FFFFFF !important;
+    color: #181C2E;
+}
+
+.profile-page {
+
+}
+
+@media screen and (max-width: 768px) {
+    .profile-page{
+        margin-top: 5rem;
+    }
+}

@@ -1,0 +1,119 @@
+ion-content {
+    --background: #FFFFFF !important;
+}
+
+.container {
+    background-color: #FFFFFF !important;
+    color: #555;
+}
+
+.padding {
+    padding: 1rem;
+}
+
+.console-page {
+    margin-top: 2rem;
+}
+
+.console-content {
+
+    .order-request-information {
+
+        margin-bottom: 1rem;
+
+        .running-order{
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: roboto;
+            background: transparent;
+            font-size: 16px;
+            padding: 1rem;
+        }
+    
+        .order-request{
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: roboto;
+            background: transparent;
+            font-size: 16px;
+            padding: 1rem;
+        }
+    
+        .number-count {
+            color: #ff8b43;
+            font-size: 50px;
+            font-weight: 500;
+        }
+    
+        .number-count-title{
+            color: #838799;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .console-page{
+        margin-top: 5rem;
+    }
+}
+
+.graph-section {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-family: roboto;
+    background: transparent;
+    font-size: 16px;
+
+    .graph {
+        position: relative;
+        display: block;
+
+        .graph-details {
+            display: flex;
+            justify-content: space-evenly;
+            padding: 1rem;
+
+            .revenue-info{
+                .revenue-info-data {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    .revenue-title{
+                        font-size: 14px;
+                    }
+                    .revenue-value{
+
+                    }
+                }
+            }
+            .graph-updates{
+                .graph-updates-dropdown {
+                    border: 1px solid #ddd;
+                    height: fit-content;
+                    width: fit-content;
+                    border-radius: 12px;
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                }
+
+            }
+            .see-details {
+                .view-graph-details-title {
+
+                }
+            }
+        }
+
+        .chart{
+            canvas {
+                width: 400 !important;
+                height: 400 !important;
+            }
+        }
+
+    }
+}
+  

@@ -1,0 +1,18 @@
+ion-content {
+    --background: #FFFFFF !important;
+}
+
+.container {
+    background-color: #FFFFFF !important;
+    color: #181C2E;
+}
+
+.food-page {
+
+}
+
+@media screen and (max-width: 768px) {
+    .food-page{
+        margin-top: 5rem;
+    }
+}

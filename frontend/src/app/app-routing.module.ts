@@ -31,7 +31,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/member/user/user-dashboard/user-dashboard.module').then( m => m.UserDashboardPageModule)
   },
 
-
   
 ];
 

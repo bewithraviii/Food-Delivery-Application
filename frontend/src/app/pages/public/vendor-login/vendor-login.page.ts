@@ -76,7 +76,6 @@ export class VendorLoginPage implements OnInit {
     }
     this.email = this.vendorLoginForm.value.email;
     this.phoneNumber = this.vendorLoginForm.value.phoneNumber;
-    console.log('Vendor-Login', vendorLoginForm);
     this.authService.processVendorLogin(vendorLoginForm).subscribe(
       (response) => { 
         this.dismissLoader();
@@ -133,8 +132,6 @@ export class VendorLoginPage implements OnInit {
       otp: this.getOTPString(),
       email: this.email
     };
-
-    console.log('Verifying OTP:', otpPayload);
     
     this.apiService.verifyOTP(otpPayload).subscribe(
       (response) => {
