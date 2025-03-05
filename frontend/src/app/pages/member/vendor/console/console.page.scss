@@ -65,6 +65,7 @@ ion-content {
     font-family: roboto;
     background: transparent;
     font-size: 16px;
+    margin-bottom: 1rem;
 
     .graph {
         position: relative;
@@ -111,12 +112,19 @@ ion-content {
         }
 
         .chart{
+            padding: 0.5rem;
             canvas {
-                width: 400 !important;
-                height: 400 !important;
+                height: 400px !important;
             }
         }
 
     }
 }
   
+@media (max-width: 768px) {
+    .chart{
+        canvas {
+            height: 300px !important;
+        }
+    }
+}

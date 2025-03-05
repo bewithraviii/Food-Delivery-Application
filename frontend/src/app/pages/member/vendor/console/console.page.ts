@@ -12,7 +12,7 @@ export class ConsolePage implements OnInit {
   isDesktop: boolean = true;
   runningOrderCount: number = 12;
   orderRequestCount: number = 23;
-  totalRevenue: number = 0;
+  totalRevenue: number = 2200;
   selectedPeriod: string = 'daily';
   chartData!: ChartConfiguration<'line'>['data'];
   chartOptions!: ChartOptions<'line'>;
