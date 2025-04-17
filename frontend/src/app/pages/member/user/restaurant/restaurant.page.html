@@ -186,10 +186,13 @@
                     <p class="menu-item-desc">{{ item.description }}</p>
                     <span class="price" style="color: #555; margin-left: 0.2rem;">₹{{ item.price }}</span>
                     <div class="menu-item-add-to-cart">
-                      <button mat-raised-button class="add-btn" (click)="addToCart(item)">ADD</button>
+                      <button mat-raised-button class="add-btn" (click)="addToCart(item)" *ngIf="item.available; else outOfStock">ADD</button>
+                      <ng-template #outOfStock>
+                        <button class="not-available-btn">OUT OF STOCK</button>
+                      </ng-template>
                     </div>
                   </div>
-                  <div class="item-image">
+                  <div class="item-image" [ngClass]="{'unavailable-image': !item.available}">
                     <img *ngIf="item.itemImage; else defaultImage" src="{{item.itemImage}}">
                     <ng-template #defaultImage>
                       <img src="assets/images/default-cart-item.jpg">

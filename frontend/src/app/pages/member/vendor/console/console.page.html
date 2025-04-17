@@ -4,10 +4,10 @@
 
       <div class="console-content">
         
-        <div class="order-request-information" [ngClass]="{padding: !isDesktop}">
+        <div class="order-request-information">
           <div class="row">
-            <div class="col-md-6 p-2">
-              <div class="running-order">
+            <div class="col-md-6 p-3">
+              <div class="running-order" (click)="navigateToRunningOrderManagement()">
                 <div class="running-order-count">
                   <span class="number-count">{{runningOrderCount}}</span>
                 </div>
@@ -16,8 +16,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 p-2">
-              <div class="order-request">
+            <div class="col-md-6 p-3">
+              <div class="order-request" (click)="navigateToOrderRequestManagement()">
                 <div class="order-request-count">
                   <span class="number-count">{{orderRequestCount}}</span>
                 </div>
@@ -30,64 +30,97 @@
         </div>
 
         <div class="graph-section">
+          <div class="row">
+            <div class="graph">
 
-          <div class="graph">
-            <div class="graph-details">
+              <div class="graph-details">
 
-              <div class="revenue-info">
-                <div class="revenue-info-data">
-                  <span class="revenue-title">{{"Total Revenue" | uppercase}}</span>
-                  <span class="revenue-value">{{'₹' + totalRevenue}}</span>
+                <div class="revenue-info">
+                  <div class="revenue-info-data">
+                    <span class="revenue-title">{{"Total Revenue"}}:</span>
+                    <span class="revenue-value">{{'₹' + totalRevenue}}</span>
+                  </div>
                 </div>
+
+                <div class="see-details">
+                  <div class="view-graph-details-title" style="cursor: pointer;" (click)="navigateToRevenueManagement()">
+                    <span>{{"See Details"}}</span>
+                    <mat-icon>arrow_right</mat-icon>
+                  </div>
+                </div>
+
+              </div>
+    
+              <div class="graph-switch">
+                <mat-divider></mat-divider>
+
+                <div class="graph-updates">
+                  <div *ngIf="!isDesktop; else showDesktop">
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                      <mat-select [(ngModel)]="selectedPeriod"
+                                  placeholder="Select Period"
+                                  (selectionChange)="onPeriodChange($event)">
+                        <mat-option value="Daily">Daily</mat-option>
+                        <mat-option value="Weekly">Weekly</mat-option>
+                        <mat-option value="Monthly">Monthly</mat-option>
+                        <mat-option value="Quarterly">Quarterly</mat-option>
+                        <mat-option value="Yearly">Yearly</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <ng-template #showDesktop>
+                    <mat-tab-group [selectedIndex]="getTabIndex()" (selectedIndexChange)="onTabIndexChange($event)">
+                      <mat-tab label="Daily"></mat-tab>
+                      <mat-tab label="Weekly"></mat-tab>
+                      <mat-tab label="Monthly"></mat-tab>
+                      <mat-tab label="Quarterly"></mat-tab>
+                      <mat-tab label="Yearly"></mat-tab>
+                    </mat-tab-group>
+                    <mat-divider></mat-divider>
+                  </ng-template>
+                </div>
+
               </div>
 
-              <div class="graph-updates">
-                <div>
-                  <ion-select [(ngModel)]="selectedPeriod" placeholder="Select Period" (ionChange)="onPeriodChange($event)" class="graph-updates-dropdown">
-                    <ion-select-option value="daily">Daily</ion-select-option>
-                    <ion-select-option value="weekly">Weekly</ion-select-option>
-                    <ion-select-option value="monthly">Monthly</ion-select-option>
-                    <ion-select-option value="quarterly">Quarterly</ion-select-option>
-                    <ion-select-option value="yearly">Yearly</ion-select-option>
-                  </ion-select>
-                </div>
-                <!-- <ng-template #showDropdown >
-                  <ion-segment [(ngModel)]="selectedPeriod" (ionChange)="onPeriodChange($event)" >
-                    <ion-segment-button value="daily">Daily</ion-segment-button>
-                    <ion-segment-button value="weekly">Weekly</ion-segment-button>
-                    <ion-segment-button value="monthly">Monthly</ion-segment-button>
-                    <ion-segment-button value="quarterly">Quarterly</ion-segment-button>
-                    <ion-segment-button value="yearly">Yearly</ion-segment-button>
-                  </ion-segment>
-                </ng-template> -->
-              </div>
-
-              <div class="see-details">
-                <div class="view-graph-details-title">
-                  <span>See Details</span>
-                </div>
+              <div class="chart" [ngStyle]="{'margin-top': (isDesktop) ? '1rem' : '0'}">
+                <canvas
+                  baseChart
+                  [data]="chartData"
+                  [options]="chartOptions"
+                  [type]="'line'"
+                  [legend]="true"
+                >
+                </canvas>
               </div>
 
             </div>
-            <mat-divider></mat-divider>
-            <div class="chart">
-              <canvas
-                baseChart
-                [data]="chartData"
-                [options]="chartOptions"
-                [type]="'line'"
-                [legend]="true"
-              >
-              </canvas>
-            </div>
-
-
           </div>
+        </div>
 
+        <div class="review-section">
+          <div class="row">
+            <div class="review-info">
+              <div class="review-info-title">
+                <span>{{"Reviews" | uppercase}}</span>
+                <div class="see-all-reviews" (click)="navigateToReviewManagement()">
+                  <span>See All Reviews</span>
+                  <mat-icon>arrow_right</mat-icon>
+                </div>
+              </div>
+              <div class="review-info-data">
+                <div class="star-count">
+                  <mat-icon style="font-size: 21px;">star</mat-icon>
+                  <span>4.9</span>
+                </div>
+                <div class="rating-total">
+                  <span>Total {{20}} Reviews</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
-
 
     </div>
   </div>

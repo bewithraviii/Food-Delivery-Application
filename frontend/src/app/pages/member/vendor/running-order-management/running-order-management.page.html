@@ -1,0 +1,88 @@
+<ion-content>
+    <div class="running-order-management-page">
+        <div class="container">
+
+            <div class="running-orders">
+                <h5>{{"Running Orders" | uppercase}}</h5>
+                <div class="running-order-content">
+                    <div class="titleAndCount">
+                        <h6>{{"Total Running Orders " | uppercase}}: {{runningOrderCount}}</h6>
+                        <!-- Filter Input -->
+                        <mat-form-field appearance="outline" class="filter-input">
+                            <mat-label>Filter</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="Enter search text">
+                        </mat-form-field>                        
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="table-container">
+
+                        <!-- Angular Material Table -->
+                        <div class="table-responsive" *ngIf="runningOrderCount > 0, else noDataFound">
+                            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                                
+                                <!-- Order ID Column -->
+                                <ng-container matColumnDef="orderId">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ORDER ID </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.orderId}} </td>
+                                </ng-container>
+
+                                <!-- Date Column -->
+                                <ng-container matColumnDef="date">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> DATE </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                                </ng-container>
+
+                                <!-- item Column -->
+                                <ng-container matColumnDef="item">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ITEM </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span *ngFor="let item of element.item">
+                                          {{item.name + "(" + item.quantity + ")"}}
+                                        </span>
+                                    </td>
+                                </ng-container>
+        
+                                <!-- Status Column -->
+                                <ng-container matColumnDef="status">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> STATUS </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ACTION </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <div class="status-btn">
+                                            <div class="procced-btn">
+                                              <button mat-raised-button class="btn" (click)="proceedToDelivery(element.orderId)" [disabled]="element.status == 'Cooking'">
+                                                Pass to Delivery
+                                              </button>
+                                            </div>
+                                          </div>
+                                    </td>
+                                </ng-container>
+
+                                <!-- note Column -->
+                                <ng-container matColumnDef="note">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> NOTE </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.note}} </td>
+                                </ng-container>
+
+                                <!-- Header and Row Declarations -->
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns" style="color: #FF7622; font-weight: bold; font-size: 16px;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>
+                        <ng-template #noDataFound>
+                            <h6>No Data found</h6>
+                        </ng-template>
+
+                        <!-- Paginator -->
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="10" showFirstLastButtons style="margin-top: 2rem;"></mat-paginator>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</ion-content>

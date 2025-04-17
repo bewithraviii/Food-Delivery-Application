@@ -1,3 +1,4 @@
+import { ORDER_STATUS } from "../enums/enum";
 
 
 
@@ -173,4 +174,43 @@ interface UpdateOrderModal {
     orderId: string,
     updateOrderStatusTo: string,
     selectedCancelReason?: string
+}
+
+interface menuItemModal {
+    available?: boolean,
+    description?: string,
+    itemId: number,
+    itemImage?: string | null,
+    name?: string,
+    price?: string | number,
+    ratings?: number
+    ratingsCount?: number
+    _id: string
+}
+
+interface menuUpdateModal {
+    subCategoryName: string,
+    restaurantId: string,
+    items: any[],
+}
+
+interface menuItemDelete{
+    subCategoryName: string,
+    itemId: number
+}
+
+interface updateRestaurantValue {
+    restaurantId: string,
+    items: any,
+}
+
+interface menuItemEdit{
+    subCategoryName: string,
+    itemId: number
+}
+
+interface updateOrderFromVendor {
+    orderId: string,
+    restaurantId: string,
+    status: ORDER_STATUS
 }

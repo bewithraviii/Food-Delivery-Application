@@ -108,15 +108,20 @@ export class CheckoutPage implements OnInit {
 
   async populateData() {
     this.user.userId = this.authService.getUserId();
+    await this.getUserDetails();
+    await this.getUserCartData();
+  }
+
+  async getUserCartData() {
     this.apiService.getUserCartData(this.user.userId).subscribe(
       async (data: any) => {
         if(data){
           this.rawCartData = data.payload;
-          this.rawCartData.cartItems.forEach((cart: any) => {
+          this.rawCartData.cartItems.forEach(async(cart: any) => {
             this.cartDetails.push(cart);
             this.deliveryTimeCalculationService
               .calculateDeliveryTime(this.selectedAddressData.details, cart.restaurant.address)
-              .subscribe(
+              .subscribe(                                                                                        
                 (minutes: number) => {
                   this.deliveryTimeEstimation = minutes;
                 },
@@ -151,11 +156,15 @@ export class CheckoutPage implements OnInit {
       },
       (error: any) => {
         console.log(error.error.message);
+        this.dismissLoader();
         if(error.error.message == "Cart not found"){
           this.router.navigate(['/user-dashboard/home']);
         }
       }
     );
+  }
+
+  async getUserDetails() {
     this.apiService.getUserDetails().subscribe(
       (response: any) => {
         this.user.phoneNumber = response.payload.phoneNumber;
@@ -164,7 +173,6 @@ export class CheckoutPage implements OnInit {
         console.log(error.message || "Something went wrong while adding address from user data.");
       }
     );
-
   }
 
   async presentLoader(message?: string) {

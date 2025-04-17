@@ -7,6 +7,11 @@ const orderSchema = new mongoose.Schema({
         ref: 'User', 
         required: true,
     },
+    restaurantId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Restaurant', 
+        required: true,
+    },
     userAddress: {
         title: { type: String, require: true },
         details: { type: String, require: true }
@@ -17,7 +22,7 @@ const orderSchema = new mongoose.Schema({
     cookingInstructions: { type: String, default: null },
     totalPrice: { type: Number, required: true },
     cancelReason: { type: String, default: null },
-    status: { type: String, enum: orderStatus, default: orderStatus.CONFIRMED },
+    status: { type: String, enum: orderStatus, default: orderStatus.PENDING },
 }, { timestamps: true });
 
 const Order = mongoose.model('Order', orderSchema);

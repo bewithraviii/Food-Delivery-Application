@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 // import { ChartConfiguration, ChartOptions } from "chart.js";
 
@@ -10,12 +11,13 @@ import { ChartConfiguration, ChartOptions } from 'chart.js';
 export class ConsolePage implements OnInit {
 
   isDesktop: boolean = true;
-  runningOrderCount: number = 12;
-  orderRequestCount: number = 23;
-  totalRevenue: number = 2200;
-  selectedPeriod: string = 'daily';
+  runningOrderCount: number = 0;
+  orderRequestCount: number = 0;
+  totalRevenue: number = 0;
+  selectedPeriod: string = '';
   chartData!: ChartConfiguration<'line'>['data'];
   chartOptions!: ChartOptions<'line'>;
+  periods: string[] = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
 
   dailyData = {
     labels: ['10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM'],
@@ -82,11 +84,14 @@ export class ConsolePage implements OnInit {
     ]
   };
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.checkScreenSize();
     this.initializeChart();
+    this.selectedPeriod = 'Daily';
   }
 
   @HostListener('window:resize', [])
@@ -95,6 +100,7 @@ export class ConsolePage implements OnInit {
   }
 
   initializeChart(): void {
+    this.calculateRevenue(this.dailyData);
     this.chartData = this.dailyData;
     this.chartOptions = {
       responsive: true,
@@ -117,36 +123,76 @@ export class ConsolePage implements OnInit {
     };
   }
 
-    // Handler for period changes
-    onPeriodChange(event: any) {
-      // Optionally read from 'event.detail.value'
-      // or just rely on 'this.selectedPeriod'
-      // Call API for data
-      switch (this.selectedPeriod) {
-        case 'daily':
-          this.chartData = this.dailyData;
-          break;
-        case 'weekly':
-          this.chartData = this.weeklyData;
-          break;
-        case 'monthly':
-          this.chartData = this.monthlyData;
-          break;
-        case 'quarterly':
-          this.chartData = this.quarterlyData;
-          break;
-        case 'yearly':
-          this.chartData = this.yearlyData;
-          break;
-        default:
-          this.chartData = this.dailyData;
-          break;
-      }
+  // Handler for period changes
+  onPeriodChange(event: any) {
+
+    const selected = event.value || event.detail?.value;
+    if (selected) {
+      this.selectedPeriod = selected;
     }
 
+    // Call API for data
+    switch (this.selectedPeriod) {
+      case 'Weekly':
+        this.chartData = this.weeklyData;
+        this.calculateRevenue(this.weeklyData);
+        break;
+      case 'Monthly':
+        this.chartData = this.monthlyData;
+        this.calculateRevenue(this.monthlyData);
+        break;
+      case 'Quarterly':
+        this.chartData = this.quarterlyData;
+        this.calculateRevenue(this.quarterlyData);
+        break;
+      case 'Yearly':
+        this.chartData = this.yearlyData;
+        this.calculateRevenue(this.yearlyData);
+        break;
+      default:
+        this.chartData = this.dailyData;
+        this.calculateRevenue(this.dailyData);
+        break;
+    }
+  }
 
+  getTabIndex(): number {
+    return this.periods.indexOf(this.selectedPeriod);
+  }
+
+  onTabIndexChange(index: number): void {
+    this.selectedPeriod = this.periods[index];
+    // Re-use the chart update logic
+    this.onPeriodChange({ value: this.selectedPeriod });
+  }
   
+  calculateRevenue(dataType: any){
+    let amount = 0;
+    dataType.datasets[0].data.forEach((value: number) => {
+      amount = amount + value;
+    });
+
+    this.totalRevenue = amount;
+  }
+
+  navigateToReviewManagement() {
+    this.router.navigate(['vendor-dashboard/review-management']);
+  }
+
+  navigateToRevenueManagement() {
+    this.router.navigate(['vendor-dashboard/revenue-management']);
+  }
+
+  navigateToOrderRequestManagement() {
+    this.router.navigate(['vendor-dashboard/order-request-management']);
+  }
+
+  navigateToRunningOrderManagement() {
+    this.router.navigate(['vendor-dashboard/running-order-management']);
+  }
+
 }
+
 
 
 // this.yourDataService.getRevenue(this.selectedPeriod).subscribe((response) => {

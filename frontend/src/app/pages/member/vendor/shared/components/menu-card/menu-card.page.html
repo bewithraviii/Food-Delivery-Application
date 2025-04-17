@@ -1,0 +1,53 @@
+<div class="menu-card">
+  <div class="card-title">
+    <div class="category-name" >CATEGORY: <span>{{menuItem?.categoryName}}</span></div>
+    <div class="sub-category-name">SUB-CATEGORY: <span>{{menuItem?.subCategoryName}}</span></div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="menu-list">
+    <div class="menu-item" *ngFor="let item of menuItem.items; let i = index" 
+    [ngStyle]="{'border-bottom': i !== menuItem.items.length - 1 ? '1px solid #eee' : 'none'}">
+      <div class="item-image">
+        <img *ngIf="item.itemImage; else defaultImage" src="{{item.itemImage}}">
+        <ng-template #defaultImage>
+          <img src="assets/images/default-cart-item.jpg">
+        </ng-template>
+      </div>
+      <div class="item-info">
+        <div class="item-manage">
+          <span class="menu-item-title">{{ item.name }}</span>
+          <div>
+            <button mat-button [matMenuTriggerFor]="manageMenuItemOption"><mat-icon style="margin: 0;">more_vert</mat-icon></button>
+            <mat-menu #manageMenuItemOption="matMenu" xPosition="before">
+              <button mat-menu-item (click)="editItem(item.itemId, menuItem?.subCategoryName)">
+                <div class="icon-custom-section">
+                  <span class="icon-custom"><ion-icon name="create-outline"></ion-icon></span>
+                  <span style="margin-left: 0.5rem;">Edit Item</span>
+                </div>
+              </button>
+              <button mat-menu-item (click)="deleteMenuItem(item.itemId, menuItem.subCategoryName, $event)">
+                <div class="icon-custom-section">
+                  <span class="icon-custom"><ion-icon name="trash-outline"></ion-icon></span>
+                  <span style="margin-left: 0.5rem;">Remove Item</span>
+                </div>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+        <p class="menu-item-desc">{{ item.description }}</p>
+        <div class="priceAndAvailability">
+          <span class="price">₹{{ item.price }}</span>
+          <span class="toggle-status">
+            <span *ngIf="item.available" style="color: #FC6E2A; font-weight: 400;">{{"Available" | uppercase}}</span>
+            <span *ngIf="!item.available" style="color:  #ccc; font-weight: 400;">{{"Not-Available" | uppercase}}</span>
+            <mat-slide-toggle 
+              class="availability-toggle"
+              [checked]="item.available" 
+              (change)="toggleAvailability(item, $event, menuItem?.subCategoryName)">
+            </mat-slide-toggle>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

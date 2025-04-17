@@ -15,12 +15,14 @@ const Roles = require('../utils/enums/roles');
 router.get('/fetchUserDetails', authorizeRoles(Roles.USER), authController.fetchUser);
 // Restaurant
 router.get('/fetchRestaurantDetails', authorizeRoles(Roles.USER, Roles.VENDOR), authController.fetchAllRestaurant);
+router.get('/fetchRestaurantData', authorizeRoles(Roles.VENDOR), authController.fetchRestaurantData);
 router.get('/getRestaurantDetails/:id', authorizeRoles(Roles.USER, Roles.VENDOR), authController.fetchRestaurant);
 // Cuisine
 router.get('/getAllCuisineCategory', authController.getCuisineCategory);
 router.get('/getAllCuisineCategoryName', authController.getCuisineCategoryName);
 router.get('/getAllCuisineCategoryDetails', authController.getAllCuisineCategoryDetails);
 router.get('/getCuisineCategoryRestaurantDetails', authController.getCuisineCategoryRestaurantDetails);
+router.get('/getCuisineNameById/:id', authController.getCuisineNameById);
 // Cart
 router.get('/getCartByUserId/:id', authorizeRoles(Roles.USER), cartController.getUserCart);
 router.get('/getUserCartDataForCheck/:id', authorizeRoles(Roles.USER), cartController.getUserCartDataForCheck);
@@ -31,8 +33,7 @@ router.get('/getDealInfo/:id', authController.getDealInfo);
 router.get('/searchRestaurant', authorizeRoles(Roles.USER), searchController.searchRestaurant);
 // Order
 router.get('/getOrderDetails/:id', authorizeRoles(Roles.USER, Roles.VENDOR), orderController.getOrderDetailsById);
-router.get('/fetchOrderDetails', authorizeRoles(Roles.USER), orderController.fetchOrderDetails)
-
+router.get('/fetchOrderDetails', authorizeRoles(Roles.USER), orderController.fetchOrderDetails);
 
 
 // POST
@@ -72,10 +73,19 @@ router.post('/addDeal', authController.addNewDeal);
 
 
 // Vendor API's
-router.post('/addRestaurantMenu', vendorController.addRestaurantMenu);
-router.post('/editRestaurantMenu', vendorController.editRestaurantMenu);
-router.post('/removeItemFromRestaurantMenu', vendorController.removeItemFromRestaurantMenu);
 
+// GET
+router.get('/getMenuItemDetails', authorizeRoles(Roles.VENDOR), vendorController.getMenuItemDetails);
+router.get('/getOrderRequest', authorizeRoles(Roles.VENDOR), vendorController.getOrderRequest);
+router.get('/getActiveOrders', authorizeRoles(Roles.VENDOR), vendorController.getActiveOrders);
 
+// POST
+router.post('/addRestaurantMenu', authorizeRoles(Roles.VENDOR), vendorController.addRestaurantMenu);
+router.post('/editRestaurantMenu', authorizeRoles(Roles.VENDOR), vendorController.editRestaurantMenu);
+router.post('/removeItemFromRestaurantMenu', authorizeRoles(Roles.VENDOR), vendorController.removeItemFromRestaurantMenu);
+router.post('/updateRestaurantData', authorizeRoles(Roles.VENDOR), vendorController.updateRestaurantData);
+
+//PATCH
+router.patch('/updateOrderRequest', authorizeRoles(Roles.VENDOR), vendorController.updateOrderRequest);
 
 module.exports = router;

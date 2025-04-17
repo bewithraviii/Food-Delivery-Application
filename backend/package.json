@@ -22,7 +22,9 @@
     "nodemailer": "^6.9.16",
     "qrcode": "^1.5.4",
     "random": "^5.1.1",
-    "speakeasy": "^2.0.0"
+    "socket.io": "^4.8.1",
+    "speakeasy": "^2.0.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

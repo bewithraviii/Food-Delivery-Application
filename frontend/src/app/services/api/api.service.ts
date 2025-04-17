@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { addNewAddressRequest, addToCartReqForm, addToFavorite, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, OrderDataModal, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, UpdateOrderModal, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
+import { addNewAddressRequest, addToCartReqForm, addToFavorite, applyCouponReqForm, deleteAddressRequest, editAddressRequest, loginRequest, menuItemDelete, menuItemEdit, menuItemModal, menuUpdateModal, OrderDataModal, otpSendRequest, otpVerifyRequest, qrOtpVerifyRequest, removeCouponReqForm, updateOrderFromVendor, UpdateOrderModal, updateRestaurantValue, updateUserProfileRequest, userSignUpReqForm, vendorLoginRequest, vendorSignUpReqForm } from 'src/app/models/api.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -90,6 +90,9 @@ export class ApiService {
   getAllCategories(): Observable<any> {
     return this.http.get(`${this.baseURL}/auth/getAllCuisineCategoryDetails`);
   }
+  getCategoriesData(): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getAllCuisineCategory`);
+  }
 
 
   // Profile-Page
@@ -163,5 +166,42 @@ export class ApiService {
   }
 
 
+
+
+
+
+
+  // Vendor-Side
+  getRestaurantData(): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/fetchRestaurantData`);
+  }
+  getCuisineNameById(reqPayload: string): Observable<any> {
+    return this.http.get(`${this.baseURL}/auth/getCuisineNameById/${reqPayload}`);
+  }
+  editRestaurantMenu(reqPayload: menuUpdateModal): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/editRestaurantMenu`, reqPayload);
+  }
+  updateRestaurantData(reqPayload: updateRestaurantValue): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/updateRestaurantData`, reqPayload);
+  }
+  addRestaurantMenu(reqPayload: any): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/addRestaurantMenu`, reqPayload);
+  }
+  removeItemFromRestaurantMenu(reqPayload: menuItemDelete): Observable<any> {
+    return this.http.post(`${this.baseURL}/auth/removeItemFromRestaurantMenu`, reqPayload);
+  }
+  getMenuItemDetails(reqPayload: menuItemEdit): Observable<any> {
+    const params = new HttpParams().set('itemId', reqPayload.itemId).set('subCategoryName', reqPayload.subCategoryName);
+    return this.http.get(`${this.baseURL}/auth/getMenuItemDetails`, { params });
+  }
+  getOrderRequest(): Observable<any>{
+    return this.http.get(`${this.baseURL}/auth/getOrderRequest`);
+  }
+  getActiveOrders(): Observable<any>{
+    return this.http.get(`${this.baseURL}/auth/getActiveOrders`);
+  }
+  updateOrderRequest(reqPayload: updateOrderFromVendor): Observable<any> {
+    return this.http.patch(`${this.baseURL}/auth/updateOrderRequest`, reqPayload);
+  }
 
 }

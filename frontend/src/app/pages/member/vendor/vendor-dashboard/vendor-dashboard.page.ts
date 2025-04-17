@@ -13,7 +13,7 @@ export class VendorDashboardPage implements OnInit {
   menuToggle: string = 'assets/svg/menu-toggle-btn.svg';
 
   constructor(
-    private router: Router
+    private router: Router,
   ) { }
 
   async ngOnInit(): Promise<void>
@@ -31,7 +31,7 @@ export class VendorDashboardPage implements OnInit {
   }
 
   goToHome(){
-    this.router.navigate(['/vendor-dashboard/dashboard'])
+    this.router.navigate(['/vendor-dashboard/console'])
   }
 
 }

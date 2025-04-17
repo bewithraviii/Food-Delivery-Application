@@ -1,0 +1,149 @@
+.menu-card {
+    margin: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #555; 
+
+
+    .card-title{
+        display: flex;
+        justify-content: space-between;
+
+        .category-name{
+            padding: 1rem;
+            // color: #9C9BA6;
+            span {
+                font-weight: 500;
+            }
+
+        }
+
+        .sub-category-name {
+            padding: 1rem;
+            // color: #9C9BA6;
+
+            span {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .menu-list {
+
+        .menu-item {
+            display: flex;
+        }
+        
+        .menu-item .item-info {
+            padding: 1rem;
+            width: 100%;
+
+            .item-manage {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+
+
+            span{
+                font-weight: 500;
+
+            }
+
+            p {
+                font-size: 15px;
+            }
+        }
+
+        .item-image {
+            display: flex;
+            width: 7rem !important;
+            padding: 1rem;
+            img {
+              border-radius: 12px;
+              width: 100%;
+              height: 100%;
+            }
+        }
+
+    }
+}
+
+.icon-custom-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon-custom {
+        ion-icon {
+            font-size: 20px;
+        }
+    }
+}
+
+.priceAndAvailability{
+    display: flex;
+    justify-content: space-between;
+    
+    .price {
+        margin-left: 0.2rem;
+    }
+
+
+}
+
+.toggle-status {
+
+    span {
+        letter-spacing: 2px;
+    }
+
+    mat-slide-toggle {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .card-title{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .toggle-status{
+       span {
+        letter-spacing: normal;
+       }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .priceAndAvailability {
+        flex-direction: column;
+    }
+
+    .toggle-status{
+        margin-top: 0.5rem;
+    }
+}
+
+mat-slide-toggle.availability-toggle {
+    --mdc-switch-selected-focus-state-layer-color: #FC6E2A;
+    --mdc-switch-selected-handle-color: #FC6E2A;
+    --mdc-switch-selected-hover-state-layer-color: #FC6E2A;
+    --mdc-switch-selected-pressed-state-layer-color: #FC6E2A;
+
+    --mdc-switch-selected-focus-handle-color: #D64703;
+    --mdc-switch-selected-hover-handle-color: #D64703;
+    --mdc-switch-selected-pressed-handle-color: #D64703;
+
+    --mdc-switch-selected-focus-track-color: #FDA175;
+    --mdc-switch-selected-hover-track-color: #FDA175;
+    --mdc-switch-selected-pressed-track-color: #FDA175;
+    --mdc-switch-selected-track-color: #FDA175;
+}

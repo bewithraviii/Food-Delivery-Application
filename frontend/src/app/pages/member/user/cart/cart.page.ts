@@ -19,6 +19,7 @@ import { CartNotificationService } from 'src/app/services/util/cart-notification
   selector: 'app-cart',
   templateUrl: './cart.page.html',
   styleUrls: ['./cart.page.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartPage implements OnInit {
   @ViewChild('stepper') stepper!: MatStepper;

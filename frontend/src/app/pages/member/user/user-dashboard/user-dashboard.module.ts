@@ -12,7 +12,7 @@ import { TabsPage } from '../shared/tabs/tabs.page';
 import { CartPage } from '../cart/cart.page';
 import { SearchPage } from '../search/search.page';
 import { ProfilePage } from '../profile/profile.page';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogPage } from '../shared/dialog/dialog.page';

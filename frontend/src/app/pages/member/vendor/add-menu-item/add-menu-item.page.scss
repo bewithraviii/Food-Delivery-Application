@@ -1,0 +1,174 @@
+ion-content {
+    --background: #FFFFFF !important;
+}
+  
+.container {
+    background-color: #FFFFFF !important;
+    color: #555;
+}
+  
+.padding {
+    padding: 0.5rem;
+}
+  
+.add-menu-item-page {
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+.add-menu-item-content {
+    .add-menu{
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        font-family: roboto;
+        background: transparent;
+        font-size: 16px;
+    }
+}
+
+.card-intro {
+    padding: 1rem;
+
+    .card-into-section-header {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .card-into-section {
+        // border: 1px solid #ddd;
+        // border-radius: 12px;
+        // background: transparent;
+
+
+        .card-into-section-content {
+            display: flex;
+            justify-content: space-between;
+
+            mat-form-field {
+                width: 100%;
+                padding: 0.5rem;
+            }
+        }
+
+    }
+}
+  
+.card-item {
+    padding: 1rem;
+
+
+    .card-item-section-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+     
+    .card-item-section-content {
+        // border: 1px solid #ddd;
+        // border-radius: 12px;
+        // padding: 1rem;
+    }
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    h6{
+        color: #FC6E2A;
+        font-size: 15px;
+        padding: 1rem;
+        margin: 0;
+        display: flex;
+    }
+}
+
+.card-content-input {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+
+    .input-content {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+.item-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.file-upload{
+    .file-upload-heading {
+        padding: 1rem;
+        span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .upload-area {
+            padding: 1rem;
+            border: 1px dashed #ddd;
+            border-radius: 5px;
+        }
+    }
+}
+
+.file-info {
+    padding: 1rem;
+}
+
+.file-upload-item{
+    margin: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.button-group {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.reset-button,
+.save-button,
+.add-button {
+    color: white !important;
+    background-color: #FC6E2A !important;
+
+    &:disabled{
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .add-menu-item-page {
+      margin-top: 5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-into-section-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-into-section-content {
+        mat-form-field {
+            width: 100%;
+            padding: 0;
+        }
+    }
+
+    .card-content-input {
+        display: flex;
+        flex-direction: column;
+    
+    }
+}
+  

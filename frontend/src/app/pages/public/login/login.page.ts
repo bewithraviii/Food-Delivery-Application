@@ -6,6 +6,9 @@ import { loginRequest, otpSendRequest, otpVerifyRequest } from 'src/app/models/a
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
+import { Clipboard } from '@angular/cdk/clipboard';
+
+
 
 @Component({
   selector: 'app-login',
@@ -28,10 +31,11 @@ export class LoginPage implements OnInit {
   timerInterval: any;
   
   constructor(
-    private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService,
+    private fb: FormBuilder,
+    private clipboard: Clipboard,
     private apiService: ApiService,
+    private authService: AuthService,
     private loadingController: LoadingController,
     private notification: NotificationService,
   ) { }
@@ -71,10 +75,11 @@ export class LoginPage implements OnInit {
     }
 
     try {
-      this.authService.processLogin(reqPayload).subscribe(() => {
-        this.userEmail = reqPayload.email;
-        this.sendOTPRequest();
-        this.dismissLoader();
+      this.authService.processLogin(reqPayload).subscribe(
+        () => {
+          this.userEmail = reqPayload.email;
+          this.sendOTPRequest();
+          this.dismissLoader();
         }, error => {
           this.dismissLoader();
           this.notification.notifyUser("errorSnack", error.error.message);
@@ -98,10 +103,15 @@ export class LoginPage implements OnInit {
     }
 
     try {
-      this.apiService.sendOTP(otpSendReq).subscribe(() => {
-        this.isOtpStage = true;
-        this.startOtpTimer();
-        this.dismissLoader();
+      this.apiService.sendOTP(otpSendReq).subscribe(
+        (data: any) => {
+          if(data.otp){
+            this.isOtpStage = true;
+            this.startOtpTimer();
+            this.clipboard.copy(data.otpValue);
+            this.dismissLoader();
+            this.notification.notifyUser("successSnack", data.message);
+          }
       }, error => {
         this.dismissLoader();
         this.notification.notifyUser("errorSnack", error.error.message);
@@ -113,6 +123,30 @@ export class LoginPage implements OnInit {
       console.log("OTP ERROR: ", error.message);
     }
 
+  }
+
+  async pasteOtp() {
+    try {
+      
+      const otp = await navigator.clipboard.readText();
+
+      if (otp && otp.length === 6) {
+        this.otpForm.patchValue({
+          otp1: otp.charAt(0),
+          otp2: otp.charAt(1),
+          otp3: otp.charAt(2),
+          otp4: otp.charAt(3),
+          otp5: otp.charAt(4),
+          otp6: otp.charAt(5)
+        });
+        this.notification.notifyUser("successSnack", "OTP pasted from clipboard!");
+      } else {
+        this.notification.notifyUser("errorSnack", "Invalid OTP format in clipboard.");
+      }
+    } catch (err) {
+      console.error("Failed to read clipboard: ", err);
+      this.notification.notifyUser("errorSnack", "Failed to read from clipboard.");
+    }
   }
 
   async onSubmitOtp() {

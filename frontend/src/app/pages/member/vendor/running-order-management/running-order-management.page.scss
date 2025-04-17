@@ -1,0 +1,111 @@
+ion-content {
+    --background: #FFFFFF !important;
+}
+
+.container {
+    background-color: #FFFFFF !important;
+    color: #32343E;
+
+}
+
+.padding {
+    padding: 0.5rem;
+}
+
+.running-order-management-page {
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+.running-orders {
+
+    .running-order-content {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-family: roboto;
+        background: transparent;
+        font-size: 16px;
+        
+        .titleAndCount{
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            // color: #838799;
+            color: #555; 
+            h6{
+                margin: 0;
+                padding: 1rem;
+            }
+        }
+        
+        .table-container{
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+    }
+
+}
+
+.filter-input {
+    padding: 1rem;
+    width: 30%;
+}
+
+.status-btn{
+    display: flex;
+
+    .procced-btn {
+        .btn{
+            border-radius: 12px;
+            color: #ff8b43;
+            border: 1px solid #ff8b43;
+            &:hover{
+                background-color: #ff8b43;
+                color: #fff;
+            }
+        }
+    }
+    
+    .cancel-btn {
+        padding-left: 1rem;
+        .btn{
+            border-radius: 12px;
+            color: #ff8b43;
+            border: 1px solid #ff8b43;
+            &:hover{
+                background-color: #ff8b43;
+                color: #fff;
+            }
+        }
+    }
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .running-order-management-page{
+        margin-top: 5rem;
+        margin-bottom: 2rem;
+    }
+
+    .titleAndCount{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-input {
+        width: 100%;
+    }
+}
+
+
+.mat-mdc-form-field-appearance-outline {
+    --mdc-theme-primary: #FF7622 !important;
+}
+  
+::ng-deep .custom-text-field .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__notch,
+::ng-deep .custom-text-field .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__leading,
+::ng-deep .custom-text-field .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: #FF7622 !important;
+}

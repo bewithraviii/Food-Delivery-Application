@@ -270,6 +270,84 @@ const getRestaurantDetails = async(req, res) => {
     }
 }
 
+const getRestaurantData = async(req, res) => {
+    try {
+        
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'Authorization token is missing' });
+        }
+        
+        const JWT_SECRET = 'FoodDeliveryApp';
+        const decoded = JWT.verify(token, JWT_SECRET);
+        
+        const id = decoded.id;
+        if(!id){
+            return res.status(404).json({ message: 'Restaurants id not found' });
+        }
+
+        const restaurantsData = await Restaurant.findOne({
+            _id: id
+        });
+        if(!restaurantsData){
+            return res.status(404).json({ message: 'Restaurants not found' });
+        }
+
+        const updatedMenu = await Promise.all(
+            restaurantsData.menu.map(async (menu) => {
+              if (menu.categoryId) {
+                const categoryData = await Category.findOne({ _id: menu.categoryId });
+                if (categoryData) {
+                  return { 
+                    _id: menu._id,
+                    items: menu.items,
+                    subCategoryName: menu.subCategoryName,
+                    categoryId: menu.categoryId,
+                    categoryName: categoryData.categoryName };
+                }
+              }
+              return menu;
+            })
+          );
+        
+        const restaurantsDetails = {
+            name: restaurantsData.name,
+            ownerDetail: restaurantsData.owner,
+            description: restaurantsData?.description,
+            address: restaurantsData.address,
+            email: restaurantsData.email,
+            cuisineType: restaurantsData.cuisineType,
+            website: restaurantsData.website,
+            menu: updatedMenu,
+            _id: restaurantsData._id,
+            restaurantCharges: restaurantsData.restaurantCharges,
+            restaurantRatings: restaurantsData.restaurantRatings,
+            restaurantRatingsCount: restaurantsData.restaurantRatingsCount,
+            priceForTwo: restaurantsData.priceForTwo,
+            profileImage: restaurantsData.profileImage,
+            deliveryFeeApplicable: restaurantsData.deliveryFeeApplicable,
+            gstApplicable: restaurantsData.gstApplicable,
+            fssaiLicense: restaurantsData.fssaiLicense,
+            tradeLicense: restaurantsData.tradeLicense,
+            restaurantLicense: restaurantsData.restaurantLicense,
+            gstNo: restaurantsData.gstNo,
+            priceForTwo: restaurantsData.priceForTwo,
+        };
+
+        return res.status(200).json({
+            message: 'Restaurant details fetched successfully',
+            payload: restaurantsDetails
+        });
+
+    } catch(error) {
+        console.error('Error fetching restaurant details:', error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+        }
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
 const updateUserProfile = async(data, res) => {
     if(!data) {
         return res.status(400).json({ message: 'User data is required' });
@@ -403,6 +481,28 @@ const deleteUserAddress = async(data, res) => {
 
         res.status(200).json(response);
     } catch(err) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+const getCuisineNameById = async(req, res) => {
+    try {
+        const id = req.params.id;
+        if(!id){
+            return res.status(404).json({ message: 'Restaurants id not found' });
+        }
+
+        const category = await Category.find({ _id: id });
+        if(!category) return res.status(404).json({ message: 'Cuisine category not found' });
+
+        const response = {
+            message: 'Cuisine category details fetched successfully',
+            payload: category.categoryName
+        }
+
+        return res.status(200).json(response);
+
+    } catch(err){
         res.status(400).json({ message: err.message });
     }
 }
@@ -668,6 +768,7 @@ module.exports = {
     addNewUserAddress,
     deleteUserAddress,
     updateUserAddress,
+    getCuisineNameById,
     getCuisineCategory,
     getCuisineCategoryName,
     getAllCuisineCategoryDetails,
@@ -676,5 +777,6 @@ module.exports = {
     addNewDeal,
     getRestaurantDeal,
     getDealInfo,
-    addToFavorite
+    addToFavorite,
+    getRestaurantData,
 }

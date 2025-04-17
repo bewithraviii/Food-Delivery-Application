@@ -21,6 +21,7 @@ export enum ORDER_STATUS {
     COMPLETED = 'COMPLETED',
     CANCELLED = 'CANCELLED',
     LIVE = 'LIVE',
+    REJECTED = 'REJECTED',
 };
 
 
@@ -43,10 +44,11 @@ export enum ARRIVAL_UPDATES {
 }
 
 export enum ORDER_STEPS {
-    ORDER_CONFIRMED = 'Order Confirmed',
-    COOKING_IN_PROGRESS = 'Cooking in Progress',
-    OUT_FOR_DELIVERY = 'Out for Delivery',
-    ORDER_DELIVERED = 'Order Delivered'
+    ORDER_CONFIRMED = 'CONFIRMED',
+    COOKING_IN_PROGRESS = 'COOKING IN PROGRESS',
+    OUT_FOR_DELIVERY = 'OUT FOR DELIVERY',
+    ORDER_DELIVERED = 'DELIVERED',
+    ORDER_PENDING = 'PENDING',
 }
 
 export enum CANCEL_REASONS {

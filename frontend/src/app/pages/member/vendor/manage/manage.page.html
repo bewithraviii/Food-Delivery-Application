@@ -1,7 +1,49 @@
 <ion-content>
   <div class="manage-page">
     <div class="container">
-      <h1>Manage</h1>
+      <div class="manage-menu">
+        <h5>{{ 'Manage Menu' | uppercase }}</h5>
+        <div class="menu-item-list">
+          <div class="menu-item-list-header">
+            <div class="menu-item-button-section">
+              <div class="toggle-cls">
+                <span>{{"GST Applicable : " | uppercase}}</span>
+                <mat-slide-toggle 
+                class="gstApplicable-toggle"
+                [checked]="restaurantDetails.gstApplicable" 
+                (change)="toggleGstApplicable($event)">
+                </mat-slide-toggle>
+              </div>
+              <div class="toggle-cls">
+                <span>{{"Delivery-Fee Applicable : " | uppercase}}</span>
+                <mat-slide-toggle 
+                class="gstApplicable-toggle"
+                [checked]="restaurantDetails.deliveryFeeApplicable" 
+                (change)="toggleDeliveryFee($event)">
+                </mat-slide-toggle>
+              </div>
+              <div class="toggle-cls" style="cursor: pointer;" (click)="addNewItem()">
+                <span class="menu-item-label">{{"Add New Item" | uppercase}} 
+                  <ion-icon name="add-circle-outline"></ion-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="menu-item-list-content">
+            <div class="menu-title">
+              <span>M.E.N.U</span>
+            </div>
+            <app-menu-card 
+              *ngFor="let menuItem of menuItems" 
+              [menuItem]="menuItem"
+              (availabilityChange)="updateAvailability($event)"
+              (deleteItem)="deleteMenuItem($event)"
+            ></app-menu-card>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ion-content>
+  

@@ -11,7 +11,7 @@ const sendOtpMail = async(data, res) => {
         let OTP = generateOTP();   
         const email = data.email;
         const subject = 'Your OTP Code';
-        const content = `Your OTP is  ${OTP}  . It will expire in 30 seconds.`;
+        const content = `Your OTP is  ${OTP}  . It will expire in 60 seconds.`;
         const otpExists = await findOTPWithMail(email);
         if(otpExists){
             otpExists.otp = OTP;
@@ -26,7 +26,7 @@ const sendOtpMail = async(data, res) => {
     
         // Send Mail Logic
         // await sendMailService(email, subject, content);
-        res.status(201).json({ message: 'OTP sent to user email', otp: true });
+        res.status(201).json({ message: 'OTP successfully sent', otp: true, otpValue: OTP });
     } catch(err){
         console.log("Something went wrong during OTP generation, Please try again.", err);
         res.status(500).json({ message: 'Server error', error: err.message });

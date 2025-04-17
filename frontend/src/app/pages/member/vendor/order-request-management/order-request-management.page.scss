@@ -1,0 +1,106 @@
+ion-content {
+    --background: #FFFFFF !important;
+}
+
+.container {
+    background-color: #FFFFFF !important;
+    color: #32343E;
+
+}
+
+.padding {
+    padding: 0.5rem;
+}
+
+.order-request-management-page {
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+.order-request {
+    
+    .order-request-content{
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-family: roboto;
+        background: transparent;
+        font-size: 16px;
+
+        .titleAndCount{
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            // color: #838799;
+            color: #555; 
+            h6{
+                padding: 1rem;
+                margin: 0;
+            }
+        }
+
+        .table-container{
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    }
+}
+
+.status-btn{
+    display: flex;
+
+    .approve-btn {
+        .btn{
+            border-radius: 12px;
+            color: #ff8b43;
+            border: 1px solid #ff8b43;
+            &:hover{
+                background-color: #ff8b43;
+                color: #fff;
+            }
+        }
+    }
+    
+    .reject-btn {
+        padding-left: 1rem;
+        .btn{
+            border-radius: 12px;
+            color: #ff8b43;
+            border: 1px solid #ff8b43;
+            &:hover{
+                background-color: #ff8b43;
+                color: #fff;
+            }
+        }
+    }
+}
+
+.filter-input {
+    padding: 1rem;
+    width: 30%;
+}
+
+@media screen and (max-width: 768px) {
+    .order-request-management-page{
+        margin-top: 5rem;
+        margin-bottom: 2rem;
+    }
+
+    .titleAndCount{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-input {
+        width: 100%;
+    }
+}
+
+
+
+  
+.order-toast {
+    /* Optionally, add custom styling for your toast notifications */
+    --background: #323232;
+    color: #fff;
+    /* By default, Ionic toasts are positioned with a top offset which we override via inline style */
+}

@@ -379,6 +379,27 @@ ion-delegate-host.popover-viewport {
     }
 }
 
+.not-available-btn{
+    color: white;
+    transition: all 0.25s ease-in-out;
+    font-family: "Roboto";
+    background: lightgray;
+    font-size: 16px;
+    font-weight: 500;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    cursor:not-allowed;
+}
+
+.unavailable-image {
+    filter: grayscale(100%);
+    opacity: 0.8;
+}
   
 
 // ::ng-deep .mat-expansion-panel-content {

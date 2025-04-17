@@ -1,12 +1,14 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { jwtDecode } from 'jwt-decode';
 import * as L from 'leaflet';
 import { firstValueFrom, interval, Subscription, switchMap, take, timer } from 'rxjs';
 import { ARRIVAL_UPDATES, CANCEL_DATA, CANCEL_REASONS, HELP_SUPPORT, ORDER_STATUS, ORDER_STEPS } from 'src/app/enums/enum';
 import { UpdateOrderModal } from 'src/app/models/api.interface';
 import { ApiService } from 'src/app/services/api/api.service';
 import { NotificationService } from 'src/app/services/snack-notification/notification.service';
+import { SocketService } from 'src/app/services/socket/socket.service';
 import { DeliveryTimeCalculationService } from 'src/app/services/util/delivery-time-calculation.service';
 
 @Component({
@@ -20,6 +22,7 @@ export class TrackOrderPage implements OnInit {
   map!: L.Map;
   mapLoading: boolean = true;
   isDesktop: boolean = true;
+  userId: any;
   orderId!: any;
   orderDetails: any = {};
   orderItemQuantity: number = 0;
@@ -33,6 +36,7 @@ export class TrackOrderPage implements OnInit {
   dealInformation: any = [];
   currentStepIndex = 0;
   orderSteps: {label: string, completed: boolean}[] = [
+    { label: ORDER_STEPS.ORDER_PENDING, completed: false },
     { label: ORDER_STEPS.ORDER_CONFIRMED, completed: false },
     { label: ORDER_STEPS.COOKING_IN_PROGRESS, completed: false },
     { label: ORDER_STEPS.OUT_FOR_DELIVERY, completed: false },
@@ -65,6 +69,7 @@ export class TrackOrderPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private apiService: ApiService,
+    private socketService: SocketService,
     private loadingController: LoadingController,
     private notificationService: NotificationService,
     private deliveryTimeCalculationService: DeliveryTimeCalculationService,
@@ -76,9 +81,30 @@ export class TrackOrderPage implements OnInit {
       this.orderId = params['id'];
     });
     
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      this.userId = decodedToken.id;
+    }
+
+    this.socketService.listen(`orderStatusUpdate_${this.userId}`, (statusData: any) => {
+      console.log('Order status update received on user side:', statusData);
+      if (statusData.status == ORDER_STATUS.CANCELLED) {
+        this.orderCancelled = true;
+        this.cancelOrderAllowed = false;
+        this.cancelTimer = 0;
+        if (this.timerSubscription) {
+          this.timerSubscription.unsubscribe();
+        }
+      }
+      this.orderDetails.status = statusData.status;
+      this.updateOrderSteps(this.orderDetails.status);
+    });
+
     if(this.isDesktop){
       this.loadOrderData();
     }
+
   }
 
   async ionViewWillEnter() {
@@ -125,7 +151,7 @@ export class TrackOrderPage implements OnInit {
       if(orderData){
         this.orderDetails = orderData.payload;
         this.updateOrderSteps(this.orderDetails.status);
-        if (this.orderDetails.status === ORDER_STATUS.CONFIRMED) {
+        if (this.orderDetails.status === ORDER_STATUS.PENDING) {
           this.cancelOrderAllowed = true;
           this.startCancelTimer();
           this.calculateArrivalTime();
@@ -215,7 +241,7 @@ export class TrackOrderPage implements OnInit {
       complete: () => {
         this.cancelTimer = 0;
         this.cancelOrderAllowed = false;
-        this.updateOrderStatus(this.orderId, ORDER_STATUS.PROCESSING);
+        this.updateOrderStatus(this.orderId, ORDER_STATUS.CONFIRMED);
       }
     });   
   }
@@ -265,20 +291,27 @@ export class TrackOrderPage implements OnInit {
     this.orderSteps.forEach(step => step.completed = false);
 
     switch (orderStatus) {
-      case ORDER_STATUS.PROCESSING:
+      case ORDER_STATUS.CONFIRMED:
         this.orderSteps[0].completed = true;
         this.orderSteps[1].completed = true;
         this.currentStepIndex = 1;
         break;
-      case ORDER_STATUS.OUT_FOR_DELIVERY:
+      case ORDER_STATUS.PROCESSING:
         this.orderSteps[0].completed = true;
         this.orderSteps[1].completed = true;
         this.orderSteps[2].completed = true;
         this.currentStepIndex = 2;
         break;
+      case ORDER_STATUS.OUT_FOR_DELIVERY:
+        this.orderSteps[0].completed = true;
+        this.orderSteps[1].completed = true;
+        this.orderSteps[2].completed = true;
+        this.orderSteps[3].completed = true;
+        this.currentStepIndex = 3;
+        break;
       case ORDER_STATUS.COMPLETED:
         this.orderSteps.forEach(step => step.completed = true);
-        this.currentStepIndex = 3;
+        this.currentStepIndex = 4;
         break;
       default:
         this.orderSteps[0].completed = true;
@@ -295,7 +328,7 @@ export class TrackOrderPage implements OnInit {
         updateOrderStatusTo: status
       }
       const updatedOrderData: any = await firstValueFrom(this.apiService.updateOrderStatus(updateOrderPayload));
-      if(updatedOrderData){
+      if(updatedOrderData.payload.updated){
         this.orderDetails.status = updatedOrderData.payload.status;
         this.updateOrderSteps(this.orderDetails.status);
       }
@@ -316,8 +349,10 @@ export class TrackOrderPage implements OnInit {
         selectedCancelReason:selectedCancelReason
       }
       const updatedOrderData: any = await firstValueFrom(this.apiService.updateOrderStatus(updateOrderPayload));
-      if(updatedOrderData){
-        this.orderDetails = updatedOrderData.payload;
+      if(updatedOrderData.payload.updated){
+        this.orderDetails.status = updatedOrderData.payload.status;
+        // this.orderDetails = updatedOrderData.payload;
+        this.updateOrderSteps(this.orderDetails.status);
       }
       this.dismissLoader();
       return true;

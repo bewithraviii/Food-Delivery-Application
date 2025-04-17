@@ -46,6 +46,10 @@ exports.fetchRestaurant = async (req, res) => {
     return await authService.getRestaurantDetails(req, res);
 }
 
+exports.fetchRestaurantData = async (req, res) => {
+    return await authService.getRestaurantData(req, res);
+}
+
 exports.updateUserProfileData = async (req, res) => {
     return await authService.updateUserProfile(req.body, res);
 }
@@ -77,6 +81,11 @@ exports.getAllCuisineCategoryDetails = async(req, res) => {
 exports.getCuisineCategoryRestaurantDetails = async(req, res) => {
     return await authService.getCuisineCategoryRestaurantDetails(req.body, res);
 }
+
+exports.getCuisineNameById = async(req, res) => {
+    return await authService.getCuisineNameById(req, res);
+}
+
 
 exports.addCuisineCategory = async(req, res) => {
     return await authService.addCuisineCategory(req.body, res);

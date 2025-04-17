@@ -8,11 +8,109 @@ ion-content {
 }
 
 .manage-page {
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+
+    .manage-menu{
+        font-size: 16px;
+
+
+        .menu-item-list {
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-family: roboto;
+            background: transparent;
+            font-size: 16px;
+
+            .menu-item-list-header{
+                margin: 1rem;    
+
+
+                .menu-item-button-section {
+                    display: flex;
+                    justify-content: space-evenly;
+                
+
+                }
+
+                span{
+                    justify-content: end;
+                    align-items: center;
+                    display: flex;
+                    
+                }
+            }
+
+            .menu-item-list-content {
+
+                .menu-title{
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    font-size: 20px;
+                    margin: 1rem;
+                    letter-spacing: 2px;
+                    color: #FC6E2A;
+                    font-weight: 500;
+                }
+
+            }
+        }
+
+    }
 
 }
+
+
+.toggle-cls {
+    margin: 1rem;
+    border: 1px solid #FC6E2A;
+    display: flex;
+    border-radius: 12px;
+    font-family: roboto;
+    padding: 1rem;
+    color: #FC6E2A;
+    font-weight: 500;
+
+    .menu-item-label {
+
+        ion-icon{
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+    }
+}
+
+.gstApplicable-toggle {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+mat-slide-toggle.gstApplicable-toggle {
+    --mdc-switch-selected-focus-state-layer-color: #FC6E2A;
+    --mdc-switch-selected-handle-color: #FC6E2A;
+    --mdc-switch-selected-hover-state-layer-color: #FC6E2A;
+    --mdc-switch-selected-pressed-state-layer-color: #FC6E2A;
+
+    --mdc-switch-selected-focus-handle-color: #D64703;
+    --mdc-switch-selected-hover-handle-color: #D64703;
+    --mdc-switch-selected-pressed-handle-color: #D64703;
+
+    --mdc-switch-selected-focus-track-color: #FDA175;
+    --mdc-switch-selected-hover-track-color: #FDA175;
+    --mdc-switch-selected-pressed-track-color: #FDA175;
+    --mdc-switch-selected-track-color: #FDA175;
+}
+
 
 @media screen and (max-width: 768px) {
     .manage-page{
         margin-top: 5rem;
+    }
+
+    .menu-item-button-section {
+        display: flex;
+        flex-direction: column;
     }
 }
